@@ -1,5 +1,5 @@
 
-![](imgs/logo.jpg){width=600 fig-align="center"}
+![](imgs/logo.jpg)
 
 <center> A Python library for the quantitative study of archaeological pottery. </center>
 
