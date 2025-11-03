@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPottery Splash Screen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #ff6b6b 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            animation: fadeIn 2s ease-in;
+            margin-top: -5vh;
+        }
+        .title {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: slideInFromTop 1s ease-out;
+        }
+        .app-grid {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .app-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.8s ease, box-shadow 0.5s ease, opacity 0.8s ease;
+            animation: fadeInUp 1s ease-out;
+            animation-fill-mode: both;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .app-card.animating {
+            pointer-events: none;
+        }
+        .app-card.animating:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        .app-card.selected {
+            transform: translateX(var(--center-offset, 0px));
+        }
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .app-card:hover .app-desc {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .app-card.enlarged:hover .app-desc,
+        .app-card.secret:hover .app-desc {
+            opacity: 0 !important;
+        }
+        .app-desc {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 10;
+            text-align: left;
+        }
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .app-card:nth-child(1) { animation-delay: 0.2s; }
+        .app-card:nth-child(2) { animation-delay: 0.4s; }
+        .app-card:nth-child(3) { animation-delay: 0.6s; }
+        .app-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .app-logo:hover {
+            transform: scale(1.1);
+        }
+        .app-button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+        .app-button:hover {
+            background: linear-gradient(45deg, #ffa500, #ff6b6b);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+        .close-x {
+            display: flex;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+        .close-x:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .app-card.secret .app-logo {
+            filter: blur(3px) grayscale(100%);
+        }
+        .app-card.secret h5, .app-card.secret .app-desc {
+            filter: blur(2px);
+        }
+        .app-card.secret {
+            opacity: 0.6;
+        }
+        .info-panel {
+            position: fixed;
+            left: -420px;
+            top: 0;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInFromTop {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .app-card.animating {
+            pointer-events: none;
+        }
+        .app-card.animating:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">PyPottery Apps</h1>
+        <div class="app-grid">
+            {% for app in apps %}
+            <div class="app-card{% if app.secret %} secret{% endif %}" data-details="{{ app.details | safe }}">
+                <img src="{{ url_for('static', filename=app.logo) }}" alt="{{ app.name }}" class="app-logo">
+                <h5 class="text-white">{{ app.name }}</h5>
+                <a href="{{ app.url }}" class="app-button">Launch</a>
+                <p class="app-desc">{{ app.desc | safe }}</p>
+                <span class="close-x">✕</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="info-panel"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.app-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Prevent selection if clicking on button or close-x
+                    if (e.target.closest('.app-button') || e.target.closest('.close-x')) return;
+                    // Prevent if already selected or secret
+                    if (this.classList.contains('enlarged') || this.classList.contains('secret')) return;
+                    const selectedCard = this;
+                    const allCards = document.querySelectorAll('.app-card');
+                    allCards.forEach(card => card.classList.add('animating'));
+                    const container = document.querySelector('.app-grid');
+                    const containerRect = container.getBoundingClientRect();
+                    const cardRect = selectedCard.getBoundingClientRect();
+                    const centerX = window.innerWidth / 2;
+                    const cardCenterX = cardRect.left + cardRect.width / 2;
+                    const offset = centerX - cardCenterX;
+                    setTimeout(() => {
+                        selectedCard.style.transform = `translateX(${offset}px)`;
+                        selectedCard.classList.add('enlarged');
+                        allCards.forEach(card => {
+                            if (card !== selectedCard) {
+                                card.style.transform = 'translateY(1000px)';
+                                card.style.opacity = '0';
+                            }
+                        });
+                        // Re-enable interactions after animation
+                        setTimeout(() => {
+                            allCards.forEach(card => card.classList.remove('animating'));
+                            // Show close button and launch button on selected card with animation
+                            const closeX = selectedCard.querySelector('.close-x');
+                            const launchButton = selectedCard.querySelector('.app-button');
+                            closeX.style.opacity = '1';
+                            launchButton.style.opacity = '1';
+                            // Show info panel aligned to card top
+                            const infoPanel = document.querySelector('.info-panel');
+                            infoPanel.innerHTML = selectedCard.dataset.details;
+                            infoPanel.style.display = 'block';
+                            // Wait a bit more to ensure transform is fully applied, then calculate position
+                            setTimeout(() => {
+                                const selectedCardRect = selectedCard.getBoundingClientRect();
+                                infoPanel.style.top = `${selectedCardRect.top}px`;
+                                // Position info-panel next to the centered card
+                                // Since card is centered, use window center + half card width + gap
+                                const centerX = window.innerWidth / 2;
+                                const gap = 20; // pixels of distance from card
+                                const cardHalfWidth = selectedCardRect.width / 2;
+                                const infoPanelLeft = centerX + cardHalfWidth + gap;
+                                infoPanel.style.left = `${infoPanelLeft}px`;
+                                infoPanel.style.right = 'auto';
+                                setTimeout(() => {
+                                    infoPanel.style.opacity = '1';
+                                }, 10);
+                            }, 50);
+                            closeX.addEventListener('click', () => {
+                                // Reset all cards
+                                allCards.forEach(card => {
+                                    card.style.transform = '';
+                                    card.style.opacity = '';
+                                    card.classList.remove('enlarged');
+                                    card.querySelector('.close-x').style.opacity = '0';
+                                    card.querySelector('.app-button').style.opacity = '0';
+                                });
+                                // Hide info panel with fade
+                                infoPanel.style.opacity = '0';
+                                setTimeout(() => {
+                                    infoPanel.style.display = 'none';
+                                }, 500);
+                            });
+                        }, 800);
+                    }, 10);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
