@@ -1,0 +1,56 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "PyPottery"
+  sidebar:
+    logo: "imgs/LogoScan.png"
+    collapse-level: 1
+    style: "docked"
+    search: true
+    contents:
+      - intro.qmd
+      - section: "PyPottery-Suite"
+        contents:
+          - index.qmd
+          - requirements.qmd
+      - section: "PyPotteryScan"
+        contents:
+          - pypotteryscan/index.qmd
+          - pypotteryscan/installation.qmd
+          - pypotteryscan/usage.qmd
+          - pypotteryscan/version_history.qmd
+      - section: "PyPotteryInk"
+        contents:
+          - pypotteryink/index.qmd
+          - pypotteryink/installation.qmd
+          - pypotteryink/usage.qmd
+          - pypotteryink/advanced.qmd
+          - pypotteryink/model_zoo.qmd
+          - pypotteryink/version_history.qmd
+      - section: "PyPotteryTrace"
+        contents:
+          - pypotterytrace/index.qmd
+          - pypotterytrace/installation.qmd
+          - pypotterytrace/usage.qmd
+          - pypotterytrace/version_history.qmd
+      - section: "PyPotteryLayout"
+        contents:
+          - pypotterylayout/index.qmd
+          - pypotterylayout/installation.qmd
+          - pypotterylayout/usage.qmd
+          - pypotterylayout/version_history.qmd
+      - section: "PyPotteryLens"
+        contents:
+          - pypotterylens/index.qmd
+          - pypotterylens/installation.qmd
+          - pypotterylens/usage.qmd
+          - pypotterylens/version_history.qmd
+      - acknowledgment.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

@@ -1,0 +1,188 @@
+---
+title: "Installation"
+format: html
+toc: true
+---
+
+
+<div style="text-align: center;">
+  <img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+</div>
+
+## Requirements
+
+Before installing PyPotteryScan, make sure you have:
+
+- **Python 3.12** installed on your system
+- A NVIDIA GPU with CUDA support
+
+## Automated Installation
+
+Automated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:
+
+- ✅ Create a Python virtual environment
+- ✅ Automatically install all dependencies
+- ✅ Start the application
+
+### Windows
+
+Double click on the `PyPotteryScan_WIN.bat` file.
+
+The script will automatically perform the following steps:
+
+- Check for Python on the system
+- Create the `.venv` virtual environment (if it doesn't exist)
+- Activate the virtual environment
+- Install/upgrade pip
+- Install dependencies from `requirements.txt`
+- Start the Flask server at `http://localhost:5002`
+
+::: {.callout-tip}
+## 💡 Tip
+On first run, dependency installation may take a few minutes. Subsequent runs will be much faster!
+:::
+
+### Linux / macOS
+
+1. Open the **Terminal** in the project directory
+2. Make the script executable (first time only):
+
+```bash
+chmod +x PyPotteryScan_UNIX.sh
+```
+
+3. Run the script:
+
+```bash
+./PyPotteryScan_UNIX.sh
+```
+
+The script will automatically:
+
+- Check for Python 3 on the system
+- Create the `.venv` virtual environment (if it doesn't exist)
+- Activate the virtual environment
+- Install/upgrade pip
+- Install dependencies from `requirements.txt`
+- Start the Flask server at `http://127.0.0.1:5002`
+
+::: {.callout-note}
+## 📌 Note
+To stop the server, press `Ctrl+C` in the terminal.
+:::
+
+
+## Manual Installation
+
+If you prefer full control over the installation process, you can follow these manual steps:
+
+### 1. Create a Virtual Environment
+
+It is strongly recommended to use a virtual environment to isolate project dependencies:
+
+::: {.panel-tabset}
+
+#### Windows
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+:::
+
+### 2. Upgrade pip
+
+Upgrade pip to the latest available version:
+
+```bash
+python -m pip install --upgrade pip
+```
+
+### 3. Install Dependencies
+
+Install all required dependencies from the `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+::: {.callout-warning}
+## ⚠️ Warning
+Make sure you are in the project's root directory where the `requirements.txt` file is located.
+:::
+
+### 4. Start the Application
+
+Once installation is complete, start the application with:
+
+```bash
+python app.py
+```
+
+The application will be available at:
+
+::: {.callout-important}
+## 🌐 Application URL
+**http://localhost:5002**
+:::
+
+
+
+## Installation Verification
+
+To verify that everything was installed correctly:
+
+1. The application should start without errors
+2. You should see a confirmation message in the terminal
+3. Opening your browser at `http://localhost:5002` should display the PyPotteryScan interface
+
+
+## Troubleshooting
+
+### Python not found
+
+If you receive an error indicating that Python is not installed:
+
+- **Windows**: Download Python from [python.org](https://www.python.org/downloads/) and make sure to check "Add Python to PATH" during installation
+- **Linux**: Install Python using your distribution's package manager (e.g., `sudo apt install python3`)
+- **macOS**: Install Python via [Homebrew](https://brew.sh/) with `brew install python3`
+
+### Dependency installation errors
+
+If dependency installation fails:
+
+1. Make sure you have an active internet connection
+2. Try upgrading pip: `python -m pip install --upgrade pip`
+3. Install dependencies one at a time to identify which package is causing issues
+
+### Port 5002 already in use
+
+If port 5002 is already occupied by another application, you can:
+
+1. Close the application using the port
+2. Or modify the port in the `app.py` file
+
+
+## Updating
+
+To update PyPotteryScan to the latest version:
+
+1. Download the latest version of the code
+2. Activate the virtual environment
+3. Update dependencies:
+
+```bash
+pip install -r requirements.txt --upgrade
+```

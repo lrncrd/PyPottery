@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPS Icon Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .icon-container {
+            width: 300px;
+            height: auto;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .icon-container:hover {
+            transform: scale(1.05);
+        }
+
+        /* Screen Glow Animation */
+        .screen-glow {
+            animation: glow 3s infinite ease-in-out;
+        }
+
+        @keyframes glow {
+            0% {
+                fill: #f5f3ff;
+            }
+
+            50% {
+                fill: #ede9fe;
+            }
+
+            100% {
+                fill: #f5f3ff;
+            }
+        }
+
+        /* M Logo Pulse */
+        .m-logo {
+            animation: pulse 3s infinite ease-in-out;
+            transform-origin: center;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+                transform: scale(0.95);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="icon-container">
+        <svg viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Laptop Base -->
+            <path d="M50 200 L350 200 L350 210 C350 215 345 220 340 220 L60 220 C55 220 50 215 50 210 Z" fill="#9ca3af"
+                stroke="#4b5563" stroke-width="2" />
+            <!-- Notch/Opener -->
+            <path d="M180 200 L220 200 L215 205 H185 Z" fill="#6b7280" />
+
+            <!-- Laptop Screen (Lid) -->
+            <rect x="70" y="30" width="260" height="170" rx="8" fill="#d1d5db" stroke="#4b5563" stroke-width="2" />
+
+            <!-- Screen Display (Bezel) -->
+            <rect x="75" y="35" width="250" height="160" rx="4" fill="#111827" />
+
+            <!-- Screen Content (Active Area) -->
+            <rect x="80" y="40" width="240" height="150" rx="2" class="screen-glow" fill="#f5f3ff" />
+
+            <!-- M Logo -->
+            <g transform="translate(200, 115)">
+                <!-- Improved M Logo -->
+                <path d="M-25 25 L-25 -25 L0 0 L25 -25 L25 25" stroke="#7c3aed" stroke-width="8" stroke-linecap="square"
+                    stroke-linejoin="miter" fill="none" class="m-logo" />
+            </g>
+
+            <!-- Reflection on Base -->
+            <path d="M50 200 H350" stroke="#e5e7eb" stroke-width="1" opacity="0.5" />
+
+        </svg>
+    </div>
+
+    <script>
+        const container = document.querySelector('.icon-container');
+        const logo = document.querySelector('.m-logo');
+
+        container.addEventListener('click', () => {
+            logo.style.animationDuration = '0.5s';
+            setTimeout(() => {
+                logo.style.animationDuration = '3s';
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

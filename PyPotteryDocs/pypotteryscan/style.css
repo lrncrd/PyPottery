@@ -1,0 +1,283 @@
+/* PyPotteryScan Main Styles */
+
+.canvas-container {
+    overflow: auto;
+    max-height: 600px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.thumbnail {
+    transition: all 0.2s;
+    position: relative;
+}
+
+.thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.thumbnail.active {
+    border: 3px solid #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.thumbnail.annotated::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #10b981;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+#annotationCanvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.text-box-review {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 15px;
+    padding: 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: white;
+}
+
+.text-box-review:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.text-box-preview {
+    width: 200px;
+    height: 100px;
+    object-fit: contain;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #f9fafb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
+    position: relative;
+    z-index: 1;
+}
+
+.text-box-preview:hover {
+    transform: scale(3.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    border: 2px solid #3b82f6;
+}
+
+/* Disable hover effect when modal is open */
+body.modal-open .text-box-preview:hover {
+    transform: scale(1);
+    box-shadow: none;
+    z-index: 1;
+    border: 1px solid #d1d5db;
+}
+
+.cursor-zoom-in {
+    cursor: zoom-in;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.splash-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.splash-log {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.splash-log p {
+    margin: 5px 0;
+}
+
+.spinner {
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Parser Highlight Colors */
+.inventario { background-color: #ffff99; }
+.sito { background-color: #99ff99; }
+.anno { background-color: #99ccff; }
+.us { background-color: #ffb366; }
+.area { background-color: #ffcc99; }
+.taglio { background-color: #ff99cc; }
+.settore { background-color: #cc99ff; }
+.note { background-color: #99ffff; }
+
+/* Selection Popup - Leaflet-like */
+#selection-popup {
+    position: fixed;
+    background: white;
+    border: 2px solid #3b82f6;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 1000;
+    max-width: 200px;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#selection-popup:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#selection-popup::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 10px 8px;
+    border-color: transparent transparent #3b82f6 transparent;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#selection-popup::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7px 9px 7px;
+    border-color: transparent transparent white transparent;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.popup-tag-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 10px;
+    margin: 2px 0;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+}
+
+.popup-tag-btn:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateX(2px);
+}
+
+/* Modal Animations */
+.modal-overlay {
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+}
+
+.modal-content {
+    animation: modalSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalSlideIn {
+    0% {
+        transform: scale(0.7) translateY(-30px);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05) translateY(0);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content.closing {
+    animation: modalSlideOut 0.3s ease-out forwards;
+}
+
+@keyframes modalSlideOut {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8) translateY(20px);
+        opacity: 0;
+    }
+}
+
+/* Tab Styles */
+.tab-btn.active {
+    background-color: #2563eb;
+    color: white;
+}
+
+.tab-btn:not(.active) {
+    background-color: white;
+    color: #374151;
+}
+
+.tab-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tab-btn:not(:disabled):hover {
+    background-color: #dbeafe;
+}

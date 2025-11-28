@@ -1,0 +1,76 @@
+---
+title: "Introduction"
+format: html
+toc: true
+---
+
+
+```{=html}
+<div style="text-align: center;">
+  <img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+
+  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+    
+    <!-- CPU -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
+      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        CPU (Not Supported)
+      </span>
+    </div>
+
+    <!-- CUDA (Active) -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
+        CUDA (Supported)
+      </span>
+    </div>
+
+    <!-- MPS -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
+      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        MPS (Coming Soon)
+      </span>
+    </div>
+
+  </div>
+</div>
+
+```
+
+<br>
+
+**PyPotteryScan** is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data.
+
+::: {.callout-warning appearance="simple"}
+## System Requirements
+This application requires an **NVIDIA GPU with CUDA support** to run the OCR and AI models efficiently.
+:::
+
+## Key Features
+
+*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
+*   **✏️ Annotation & OCR**: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.
+*   **🧹 Image Cleaning**: Integrated tools to clean and refine extracted drawing images.
+*   **📝 Data Review & Parsing**: Verify OCR results and use the **Few-Shot Parser** (LLM) to structure free text into data fields.
+*   **📦 Structured Export**: Export everything into organized folders with Excel reports for easy analysis.
+
+## Contributors
+```{=html}
+<div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
+  <div style="text-align: center;">
+    <a href="https://github.com/lrncrd" target="_blank">
+      <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Lorenzo Cardarelli</span>
+  </div>
+  <!-- Add more contributors here following the same pattern -->
+</div>
+```

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleaning Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .window {
+            width: 700px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .app-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            align-items: center;
+            background: #fff;
+        }
+
+        .canvas-area {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            position: relative;
+            background: #f3f4f6;
+            /* Changed to match annotate.html canvas bg */
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Generic Plate/Sherd Image Placeholder - Copied from annotate.html */
+        .pottery-shape {
+            position: relative;
+            width: 320px;
+            height: 240px;
+            background-color: #e5e7eb;
+            background-image: radial-gradient(circle at 50% 50%, #d1d5db 2px, transparent 2.5px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pottery-label {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #6b7280;
+            font-family: monospace;
+        }
+
+        .dirt {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            transition: transform 0.2s, opacity 0.2s;
+            z-index: 5;
+        }
+
+        .eraser {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #9333ea;
+            /* purple-600 */
+            border-radius: 50%;
+            background: rgba(147, 51, 234, 0.1);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.2);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            width: 100%;
+            max-width: 500px;
+            justify-content: space-between;
+        }
+
+        .tool-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .tool-btn.active {
+            background: #9333ea;
+            /* purple-600 */
+            color: white;
+        }
+
+        .tool-btn.success {
+            background: #16a34a;
+            /* green-600 */
+            color: white;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            z-index: 9999;
+            transition: all 0.5s ease-out;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryScan v0.2.0
+            </div>
+        </div>
+        <div class="app-body">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">🎨 Clean Drawings</h2>
+
+            <div class="toolbar">
+                <div class="flex gap-2">
+                    <div class="tool-btn">←</div>
+                    <div class="tool-btn bg-white border border-gray-200">1 / 1</div>
+                    <div class="tool-btn">→</div>
+                </div>
+                <div class="flex gap-2">
+                    <div class="tool-btn" id="eraserTool">🧹 Eraser</div>
+                    <div class="tool-btn success" id="markCleanBtn">✓ Mark Clean</div>
+                </div>
+            </div>
+
+            <div class="canvas-area" id="canvas">
+                <!-- Main Drawing (Generic Plate) -->
+                <div class="pottery-shape">
+                    <div class="pottery-label">Plate_001.jpg</div>
+                </div>
+
+                <!-- Dirt Particles (Positioned relative to canvas-area) -->
+                <!-- Adjusted positions to be over the plate (center is roughly 250, 150) -->
+                <div class="dirt" style="top: 100px; left: 180px;"></div>
+                <div class="dirt" style="top: 105px; left: 190px;"></div>
+                <div class="dirt" style="top: 140px; left: 220px;"></div>
+                <div class="dirt" style="top: 135px; left: 210px;"></div>
+                <div class="dirt" style="top: 180px; left: 300px;"></div>
+                <div class="dirt" style="top: 170px; left: 290px;"></div>
+
+                <div class="eraser" id="eraser"></div>
+            </div>
+
+            <div class="mt-4 w-full max-w-lg">
+                <div class="text-xs font-semibold text-gray-500 mb-2">All Drawings:</div>
+                <div class="flex gap-2 overflow-x-auto pb-2">
+                    <div class="w-16 h-16 bg-gray-100 border-2 border-green-500 rounded relative">
+                        <div
+                            class="absolute top-1 right-1 w-4 h-4 bg-green-500 rounded-full text-white text-[10px] flex items-center justify-center">
+                            ✓</div>
+                    </div>
+                    <div class="w-16 h-16 bg-gray-100 border border-gray-200 rounded"></div>
+                    <div class="w-16 h-16 bg-gray-100 border border-gray-200 rounded"></div>
+                </div>
+            </div>
+        </div>
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const eraser = document.getElementById('eraser');
+        const dirtParticles = document.querySelectorAll('.dirt');
+        const eraserTool = document.getElementById('eraserTool');
+        const markCleanBtn = document.getElementById('markCleanBtn');
+        const cursor = document.getElementById('cursor');
+        const appWindow = document.getElementById('appWindow');
+        const canvas = document.getElementById('canvas');
+
+        function getRelativePos(element) {
+            const rect = element.getBoundingClientRect();
+            const winRect = appWindow.getBoundingClientRect();
+            return {
+                top: rect.top - winRect.top,
+                left: rect.left - winRect.left,
+                width: rect.width,
+                height: rect.height
+            };
+        }
+
+        function runAnimation() {
+            // Reset
+            dirtParticles.forEach(d => {
+                d.style.opacity = '1';
+                d.style.transform = 'scale(1)';
+            });
+            eraser.style.display = 'none';
+            eraserTool.classList.remove('active');
+            markCleanBtn.style.transform = 'scale(1)';
+
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            cursor.style.transition = 'none';
+
+            // Start
+
+            // 0.5s: Move to Eraser Tool
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                const btnPos = getRelativePos(eraserTool);
+                cursor.style.top = (btnPos.top + 15) + 'px';
+                cursor.style.left = (btnPos.left + 30) + 'px';
+            }, 500);
+
+            // 1.0s: Click
+            setTimeout(() => {
+                eraserTool.classList.add('active'); // Select tool
+                eraserTool.style.transform = 'scale(0.95)';
+                setTimeout(() => eraserTool.style.transform = 'scale(1)', 100);
+            }, 1000);
+
+            // 1.5s: Move to Canvas Start Position
+            setTimeout(() => {
+                const canvasPos = getRelativePos(canvas);
+                // Start pos: 100, 180 (Dirt 1)
+                cursor.style.top = (canvasPos.top + 100) + 'px';
+                cursor.style.left = (canvasPos.left + 180) + 'px';
+
+                eraser.style.display = 'block';
+                eraser.style.top = '100px';
+                eraser.style.left = '180px';
+            }, 1500);
+
+            // 2.0s: Start Cleaning (Move Cursor & Eraser together)
+            setTimeout(() => {
+                // Move to Dirt 2 (140, 220)
+                cursor.style.transition = 'all 1s linear';
+                eraser.style.transition = 'all 1s linear';
+
+                const canvasPos = getRelativePos(canvas);
+                cursor.style.top = (canvasPos.top + 140) + 'px';
+                cursor.style.left = (canvasPos.left + 220) + 'px';
+
+                eraser.style.top = '140px';
+                eraser.style.left = '220px';
+
+                // Clear Dirt 1 group
+                setTimeout(() => {
+                    dirtParticles[0].style.opacity = '0'; dirtParticles[0].style.transform = 'scale(0)';
+                    dirtParticles[1].style.opacity = '0'; dirtParticles[1].style.transform = 'scale(0)';
+                }, 200);
+
+            }, 2000);
+
+            // 3.0s: Move to Dirt 3 (180, 300)
+            setTimeout(() => {
+                const canvasPos = getRelativePos(canvas);
+                cursor.style.top = (canvasPos.top + 180) + 'px';
+                cursor.style.left = (canvasPos.left + 300) + 'px';
+
+                eraser.style.top = '180px';
+                eraser.style.left = '300px';
+
+                // Clear Dirt 2 group
+                setTimeout(() => {
+                    dirtParticles[2].style.opacity = '0'; dirtParticles[2].style.transform = 'scale(0)';
+                    dirtParticles[3].style.opacity = '0'; dirtParticles[3].style.transform = 'scale(0)';
+                }, 200);
+            }, 3000);
+
+            // 4.0s: Finish Cleaning
+            setTimeout(() => {
+                // Clear Dirt 3 group
+                dirtParticles[4].style.opacity = '0'; dirtParticles[4].style.transform = 'scale(0)';
+                dirtParticles[5].style.opacity = '0'; dirtParticles[5].style.transform = 'scale(0)';
+            }, 4000);
+
+            // 4.5s: Move to "Mark Clean"
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                const btnPos = getRelativePos(markCleanBtn);
+                cursor.style.top = (btnPos.top + 15) + 'px';
+                cursor.style.left = (btnPos.left + 30) + 'px';
+
+                eraser.style.display = 'none';
+            }, 4500);
+
+            // 5.0s: Click Mark Clean
+            setTimeout(() => {
+                markCleanBtn.style.transform = 'scale(0.95)';
+                eraserTool.classList.remove('active');
+            }, 5000);
+
+            // 5.2s: Release
+            setTimeout(() => {
+                markCleanBtn.style.transform = 'scale(1)';
+            }, 5200);
+
+            // 6.0s: Move away
+            setTimeout(() => {
+                cursor.style.top = '110%';
+                cursor.style.left = '110%';
+            }, 6000);
+        }
+
+        setInterval(runAnimation, 7000);
+        setTimeout(runAnimation, 100);
+
+    </script>
+</body>
+
+</html>

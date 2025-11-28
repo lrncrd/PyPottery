@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyPottery Splash Screen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
         }
+
         body {
             background: linear-gradient(135deg, #667eea 0%, #ff6b6b 100%);
             font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -25,13 +29,15 @@
             animation: fadeIn 2s ease-in;
             margin-top: -5vh;
         }
+
         .title {
             color: white;
             font-size: 3rem;
             margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             animation: slideInFromTop 1s ease-out;
         }
+
         .app-grid {
             display: flex;
             flex-direction: row;
@@ -41,6 +47,7 @@
             width: 100%;
             max-width: 1200px;
         }
+
         .app-card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -57,28 +64,35 @@
             align-items: center;
             justify-content: flex-start;
         }
+
         .app-card.animating {
             pointer-events: none;
         }
+
         .app-card.animating:hover {
             transform: none !important;
             box-shadow: none !important;
         }
+
         .app-card.selected {
             transform: translateX(var(--center-offset, 0px));
         }
+
         .app-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
+
         .app-card:hover .app-desc {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
         .app-card.enlarged:hover .app-desc,
         .app-card.secret:hover .app-desc {
             opacity: 0 !important;
         }
+
         .app-desc {
             position: absolute;
             bottom: -100px;
@@ -96,13 +110,19 @@
             z-index: 10;
             text-align: left;
         }
-        .app-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+
+        .app-card:nth-child(1) {
+            animation-delay: 0.2s;
         }
-        .app-card:nth-child(1) { animation-delay: 0.2s; }
-        .app-card:nth-child(2) { animation-delay: 0.4s; }
-        .app-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .app-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .app-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
         .app-logo {
             width: 100px;
             height: auto;
@@ -110,9 +130,11 @@
             transition: transform 0.3s ease;
             position: relative;
         }
+
         .app-logo:hover {
             transform: scale(1.1);
         }
+
         .app-button {
             background: linear-gradient(45deg, #ff6b6b, #ffa500);
             border: none;
@@ -122,13 +144,16 @@
             text-decoration: none;
             transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
             opacity: 0;
+            cursor: pointer;
         }
+
         .app-button:hover {
             background: linear-gradient(45deg, #ffa500, #ff6b6b);
             color: white;
             transform: scale(1.1);
             box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
         }
+
         .close-x {
             display: flex;
             position: absolute;
@@ -147,18 +172,24 @@
             transition: background 0.3s ease, opacity 0.5s ease;
             opacity: 0;
         }
+
         .close-x:hover {
             background: rgba(255, 255, 255, 0.4);
         }
+
         .app-card.secret .app-logo {
             filter: blur(3px) grayscale(100%);
         }
-        .app-card.secret h5, .app-card.secret .app-desc {
+
+        .app-card.secret h5,
+        .app-card.secret .app-desc {
             filter: blur(2px);
         }
+
         .app-card.secret {
             opacity: 0.6;
         }
+
         .info-panel {
             position: fixed;
             left: -420px;
@@ -177,23 +208,31 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         @keyframes slideInFromTop {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .app-card.animating {
-            pointer-events: none;
-        }
-        .app-card.animating:hover {
-            transform: none !important;
-            box-shadow: none !important;
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1 class="title">PyPottery Apps</h1>
@@ -212,10 +251,58 @@
     <div class="info-panel"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.app-card');
+
+            // Handle launch button clicks
+            document.querySelectorAll('.app-button').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const url = this.getAttribute('href');
+
+                    // If URL is just '#', app is not available yet
+                    if (url === '#') {
+                        alert('This app is not available yet.');
+                        return;
+                    }
+
+                    // Show loading state
+                    const originalText = this.textContent;
+                    this.textContent = 'Loading...';
+                    this.style.pointerEvents = 'none';
+
+                    // Make AJAX call to launch endpoint
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert('Error: ' + data.error + (data.details ? '\\n\\n' + data.details : ''));
+                            } else {
+                                // Open app in new tab
+                                window.open(data.url, '_blank');
+
+                                // Show message if app was already running
+                                if (data.status === 'already_running') {
+                                    console.log(data.message);
+                                }
+                            }
+
+                            // Restore button state
+                            this.textContent = originalText;
+                            this.style.pointerEvents = '';
+                        })
+                        .catch(error => {
+                            alert('Failed to launch app: ' + error.message);
+                            this.textContent = originalText;
+                            this.style.pointerEvents = '';
+                        });
+                });
+            });
+
             cards.forEach(card => {
-                card.addEventListener('click', function(e) {
+                card.addEventListener('click', function (e) {
                     // Prevent selection if clicking on button or close-x
                     if (e.target.closest('.app-button') || e.target.closest('.close-x')) return;
                     // Prevent if already selected or secret
@@ -288,4 +375,5 @@
         });
     </script>
 </body>
+
 </html>

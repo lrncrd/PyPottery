@@ -1,0 +1,244 @@
+[
+  {
+    "objectID": "pypotteryscan/index.html",
+    "href": "pypotteryscan/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 0.2.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU (Not Supported)\n      \n    \n\n    \n    \n      \n      \n        CUDA (Supported)\n      \n    \n\n    \n    \n      \n      \n        MPS (Coming Soon)\nPyPotteryScan is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/index.html#key-features",
+    "href": "pypotteryscan/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n✏️ Annotation & OCR: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.\n🧹 Image Cleaning: Integrated tools to clean and refine extracted drawing images.\n📝 Data Review & Parsing: Verify OCR results and use the Few-Shot Parser (LLM) to structure free text into data fields.\n📦 Structured Export: Export everything into organized folders with Excel reports for easy analysis.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/index.html#contributors",
+    "href": "pypotteryscan/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli",
+    "crumbs": [
+      "PyPotteryScan",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html",
+    "href": "pypotteryscan/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.2.0",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#requirements",
+    "href": "pypotteryscan/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryScan, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#automated-installation",
+    "href": "pypotteryscan/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryScan_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5002\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryScan_UNIX.sh\n\nRun the script:\n\n./PyPotteryScan_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5002\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#manual-installation",
+    "href": "pypotteryscan/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5002",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#installation-verification",
+    "href": "pypotteryscan/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5002 should display the PyPotteryScan interface",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#troubleshooting",
+    "href": "pypotteryscan/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5002 already in use\nIf port 5002 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#updating",
+    "href": "pypotteryscan/installation.html#updating",
+    "title": "Installation",
+    "section": "Updating",
+    "text": "Updating\nTo update PyPotteryScan to the latest version:\n\nDownload the latest version of the code\nActivate the virtual environment\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html",
+    "href": "pypotteryscan/usage.html",
+    "title": "Using PyPotteryScan",
+    "section": "",
+    "text": "version 0.2.0",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#creating-a-new-project",
+    "href": "pypotteryscan/usage.html#creating-a-new-project",
+    "title": "Using PyPotteryScan",
+    "section": "Creating a New Project",
+    "text": "Creating a New Project\n\nClick the “New Project” button.\nEnter a name for your project.\n(Optional) Add a description.\nClick “Create”. You can create a new project by clicking on ➕ New Project or ➕ Create First Project if you don’t have any projects yet (Figure 1)\n\n\n\n\n\n\n\nFigure 1\n\n\n\nOnce the project is created and information such as name and description is added, the program moves to the Load tab where you can select the folder containing the images to process (Figure 2).\n\n\n\n\n\n\nFigure 2\n\n\n\nA loading screen will show the progress of the image import (Figure 3).\n\n\n\n\n\n\nFigure 3\n\n\n\nThe imported images will be visible in the Load tab (Figure 4).\n\n\n\n\n\n\nFigure 4\n\n\n\nClicking on Start Annotation → will start the scanning process and take you to the Annotate tab.\n\nProject Structure\nFor reference, PyPotteryScan projects are stored in the projects directory with the following structure:\nproject_id/\n├── original_images/    # Source scans\n├── thumbnails/         # Cached thumbnails\n├── annotations/        # JSON annotation files\n├── cropped_drawings/   # Intermediate crops\n├── cleaned_drawings/   # Cleaned images\n├── ocr_results/        # OCR JSON data\n├── exports/            # Export history\n├── fewshot_examples/   # Saved training examples\n└── project.json        # Project metadata",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#gui-elements",
+    "href": "pypotteryscan/usage.html#gui-elements",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nThe tab is dominated by the canvas where the plates are visualized. Above it, the number of plates and navigation buttons are indicated (Figure 5). The + Drawing button allows you to create a new annotation, while the Clear button deletes all annotations created on the plate.\nOn the right, there are text boxes indicating information related to the plate such as name (filename), a free field for context, and notes. The 💾 Save Metadata button allows you to save the inserted information.\nBelow, there are summary boxes for the created annotations.\nThe Finish & Process OCR → button allows you to save the annotations and proceed to the Process OCR tab.\n\n\n\n\n\n\nFigure 5",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#creating-annotations",
+    "href": "pypotteryscan/usage.html#creating-annotations",
+    "title": "Using PyPotteryScan",
+    "section": "Creating Annotations",
+    "text": "Creating Annotations\nTo create a new annotation, click on the + Drawing button. A window will alert the user to select a rectangular area on the plate (Figure 6).\nAnnotations are of two types: “Drawing” and “Text”. The first is used to select areas with drawings, the second to select areas with text.\nOnce the selection is complete, the selected area will be highlighted and added to the list of annotations.\n\n\n\n\n\n\nFigure 6\n\n\n\nInside Drawings, it is possible to add text. A window will alert the user to insert the text associated with the drawing.\nTo delete a text annotation, you can click on the ❌ button next to the annotation in the list (Figure 7).\n\n\n\n\n\n\nFigure 7\n\n\n\nTo add a new image annotation, click again on the + Drawing button and repeat the process.\nIt is possible to add multiple text annotations for each drawing by clicking again on the + Text button inside the drawing annotation (Figure 8).\n\n\n\n\n\n\nFigure 8\n\n\n\nClicking on Finish & Process OCR → will save the annotations and move to the Process OCR tab.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#gui-elements-1",
+    "href": "pypotteryscan/usage.html#gui-elements-1",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nIn the center of the tab is the canvas with the extracted image. Above are the navigation buttons and the total number of drawings. On the right are some commands for cleaning the image (Figure 11).\nImmediately above the canvas are text boxes showing information related to the drawing, and a slider for the eraser size.\nBelow the canvas is a gallery showing all images.\n\n\n\n\n\n\nFigure 11",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#cleaning-tools",
+    "href": "pypotteryscan/usage.html#cleaning-tools",
+    "title": "Using PyPotteryScan",
+    "section": "Cleaning Tools",
+    "text": "Cleaning Tools\nTo clean an image, an eraser is available which can be adjusted in size via the slider above the canvas. In the example, the number 1 present in the image has been removed (Figure 12).\n\n\n\n\n\n\nFigure 12\n\n\n\nClick on the navigation button, as well as on ✓ Mark as Clean, or click on the preview in the gallery to save the cleaned image and move to the next drawing.\nA green checkmark will indicate that the image has been manually reviewed (Figure 13).\n\n\n\n\n\n\nFigure 13\n\n\n\nClick on Continue to Review Texts → to save the cleaned images and proceed to the Review Texts tab.\n\n\n\n\n\n\nImportant\n\n\n\nAt this stage, eraser can’t show a brush preview on hover. The feature will be added in future releases.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#review-texts",
+    "href": "pypotteryscan/usage.html#review-texts",
+    "title": "Using PyPotteryScan",
+    "section": "Review Texts",
+    "text": "Review Texts\nThis tab allows you to review and correct the text extracted via OCR (Figure 14).\n\n\n\n\n\n\n\n\nFigure 14\n\n\n\nThe interface is extremely simple: a series of bipartite records where on the left we find the image of the text area and on the right the extracted text in an editable text box. Just write inside the box to correct the text.\nTo see the image better, you can hover the mouse over the image to enlarge it; clicking on the image will open a modal window with the enlarged image {Figure 15}.\n\n\n\n\n\n\nFigure 15\n\n\n\nClick on Continue to Export → to save changes and proceed to the Export tab.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#exported-folder-structure",
+    "href": "pypotteryscan/usage.html#exported-folder-structure",
+    "title": "Using PyPotteryScan",
+    "section": "Exported Folder Structure",
+    "text": "Exported Folder Structure\nInside the exported folder, you will find the following structure:\n[Selected Folder]/\n├── images/                                 # Folder containing cropped drawings\n│   ├── {prefix}_001.jpg                    # Individual drawing images\n│   ├── {prefix}_002.jpg\n│   └── ...\n├── {prefix}_data_{timestamp}.xlsx          # Excel file with Metadata and OCR results\n└── {prefix}_ml_training_{timestamp}.xlsx   # Excel file with Bounding Box data for ML\nThe Data Excel contains:\n\nfilename: Name of the cropped image file\noriginal_image: Source plate filename\ndrawing_number: ID of the drawing\ntable_name, context, notes: Metadata\nocr_result: Raw OCR text\nocr_corrected: Manually corrected text\n\nThe ML Training Excel contains bounding box coordinates for vessels and text areas, useful for training machine learning models.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#gui-elements-2",
+    "href": "pypotteryscan/usage.html#gui-elements-2",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nOn the left of the tab are Available fields representing the fields that can be identified in the text. The + Add Field button allows you to add a new custom field (Figure 17).\nOn the right are a series of commands that allow you to configure the parser.\n\n\n\n\n\n\nFigure 17\n\n\n\nThe 📂 Select Files button allows you to select the .xlsx file exported from the Export tab. The model will look for an “ocr_corrected” column.\nThe content of the “ocr_corrected” column will be displayed in the text box. By selecting the text, you can associate the available fields (Figure 18).\n\n\n\n\n\n\nFigure 18\n\n\n\nClicking on ➕ Add Example will allow you to add an example of association between text and fields (Figure 19).\n\n\n\n\n\n\nFigure 19\n\n\n\nClicking on 🚀 Run Parsing will start the parsing process. A progress bar will show the advancement of the process. Once processing is finished, a dialog window will allow you to save the exported file in .xlsx format (Figure 20).\n\n\n\n\n\n\nFigure 20",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#load-a-project",
+    "href": "pypotteryscan/usage.html#load-a-project",
+    "title": "Using PyPotteryScan",
+    "section": "Load a Project",
+    "text": "Load a Project\nIf you want to load an existing project, you can do so from the initial screen by clicking on 📂 Load Project (Figure 21).\n\n\n\n\n\n\nFigure 21\n\n\n\nEach project will be listed as a card, with information such as name, description, creation date, and last modification date, as well as the number of uploaded images and created annotations, along with a progress bar indicating the project’s completion status.\nThe 🗑️ (trash can) icon next to each project allows you to delete the selected project.\n\n\n\n\n\n\nCaution\n\n\n\nCaution: Deleting a project is irreversible and will permanently remove all associated data.\n\n\nOpening a project allows you to resume work exactly where it was left off. Even if the Load tab is opened, you will be able to navigate between other tabs to complete the workflow (Figure 22).\n\n\n\n\n\n\nFigure 22\n\n\n\nThe Load table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the Annotate tab on that specific image.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Using PyPotteryScan"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/version_history.html",
+    "href": "pypotteryscan/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of PyPotteryScan.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---24112025",
+    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---24112025",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of PyPotteryScan.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Version History"
+    ]
+  }
+]

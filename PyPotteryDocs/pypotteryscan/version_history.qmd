@@ -1,0 +1,8 @@
+---
+title: "Version History"
+---
+
+## v0.2.0 (Initial Release) - 24/11/2025
+
+*   Initial release of PyPotteryScan.
+

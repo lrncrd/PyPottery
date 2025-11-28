@@ -1,0 +1,10 @@
+/* styles.css */
+
+/* Add your custom styles here */
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.sidebar {
+    background-color: #f8f9fa;
+}

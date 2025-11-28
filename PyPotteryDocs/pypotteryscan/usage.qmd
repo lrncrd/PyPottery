@@ -1,0 +1,275 @@
+---
+title: "Using PyPotteryScan"
+format: html
+toc: true
+---
+
+<div style="text-align: center;">
+  <img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+</div>
+
+# Interface Overview
+
+The PyPotteryScan interface is divided into three main sections:
+
+- Projects
+- Load
+- Annotate
+- Process OCR
+- Clean Drawings
+- Review Texts 
+- Export
+- Few-Shot Parser
+
+Clicking on each tab takes you to a specific section of the application. Each tab is designed for a specific task in the workflow and becomes accessible as you complete the previous steps.
+
+# Project Management
+
+Like other `PyPottery` modules, `PyPotteryScan` allows you to manage projects. Essentially, you can define projects as persistent and autonomous work folders containing all data related to a session.
+
+The first tab allows you to manage your projects. You can create new projects, open existing ones, or delete them.
+
+<iframe src="animations/create_project.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+
+## Creating a New Project
+
+1. Click the **"New Project"** button.
+2. Enter a name for your project.
+3. (Optional) Add a description.
+4. Click **"Create"**.
+You can create a new project by clicking on **➕ New Project** or **➕ Create First Project** if you don't have any projects yet (@fig-create_project)
+
+![](imgs\1.png){#fig-create_project}
+
+Once the project is created and information such as name and description is added, the program moves to the **Load** tab where you can select the folder containing the images to process (@fig-project_created).
+
+![](imgs\3.png){#fig-project_created}
+
+A loading screen will show the progress of the image import (@fig-loading_screen).
+
+![](imgs\4.png){#fig-loading_screen}
+
+The imported images will be visible in the **Load** tab (@fig-imported_images).
+
+![](imgs\5.png){#fig-imported_images}
+
+Clicking on **Start Annotation →** will start the scanning process and take you to the **Annotate** tab.
+
+### Project Structure
+
+For reference, PyPotteryScan projects are stored in the `projects` directory with the following structure:
+
+```
+project_id/
+├── original_images/    # Source scans
+├── thumbnails/         # Cached thumbnails
+├── annotations/        # JSON annotation files
+├── cropped_drawings/   # Intermediate crops
+├── cleaned_drawings/   # Cleaned images
+├── ocr_results/        # OCR JSON data
+├── exports/            # Export history
+├── fewshot_examples/   # Saved training examples
+└── project.json        # Project metadata
+```
+
+# Annotate Tab
+
+The **Annotate** tab allows you to view plates and create annotations.
+
+<iframe src="animations/annotate.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## GUI Elements
+
+The tab is dominated by the canvas where the plates are visualized. Above it, the number of plates and navigation buttons are indicated (@fig-annotate_tab). The **+ Drawing** button allows you to create a new annotation, while the **Clear** button deletes all annotations created on the plate.
+
+On the right, there are text boxes indicating information related to the plate such as name (filename), a free field for context, and notes.
+The **💾 Save Metadata** button allows you to save the inserted information.
+
+Below, there are summary boxes for the created annotations.
+
+The **Finish & Process OCR →** button allows you to save the annotations and proceed to the **Process OCR** tab.
+
+![](imgs\6.png){#fig-annotate_tab}
+
+## Creating Annotations
+
+To create a new annotation, click on the **+ Drawing** button. A window will alert the user to select a rectangular area on the plate (@fig-select_drawing).
+
+Annotations are of two types: "Drawing" and "Text". The first is used to select areas with drawings, the second to select areas with text.
+
+Once the selection is complete, the selected area will be highlighted and added to the list of annotations.
+
+![](imgs\7.png){#fig-select_drawing}
+
+Inside Drawings, it is possible to add text. A window will alert the user to insert the text associated with the drawing.
+
+To delete a text annotation, you can click on the **❌** button next to the annotation in the list (@fig-add_text).
+
+![](imgs\8.png){#fig-add_text}
+
+To add a new image annotation, click again on the **+ Drawing** button and repeat the process.
+
+It is possible to add multiple text annotations for each drawing by clicking again on the **+ Text** button inside the drawing annotation (@fig-multiple_texts).
+
+![](imgs\9.png){#fig-multiple_texts}
+
+Clicking on **Finish & Process OCR →** will save the annotations and move to the **Process OCR** tab.
+
+# Process OCR
+
+The **Process OCR** tab allows you to perform Optical Character Recognition (OCR) on the annotated text areas (@fig-process_ocr).
+
+<iframe src="animations/ocr.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+The user has two options:
+
+- Use the default OCR model
+- Skip the OCR process, moving to manual text entry
+
+![](imgs\10.png){#fig-process_ocr}
+
+Clicking on **🚀 Start OCR Processing** will start the text recognition process.
+
+A progress bar will show the advancement of saving annotations, as well as a series of system logs (@fig-ocr_processing).
+
+![](imgs\11.png){#fig-ocr_processing}
+
+Clicking on **Continue to Clean Drawings →** will take you to the **Clean Drawings** tab.
+
+# Clean Drawings
+
+The **Clean Drawings** tab allows you to view drawing annotations and clean them if necessary.
+
+<iframe src="animations/clean.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## GUI Elements
+
+In the center of the tab is the canvas with the extracted image.
+Above are the navigation buttons and the total number of drawings. On the right are some commands for cleaning the image (@fig-clean_drawings).
+
+Immediately above the canvas are text boxes showing information related to the drawing, and a slider for the eraser size.
+
+Below the canvas is a gallery showing all images.
+
+![](imgs\12.png){#fig-clean_drawings}
+
+## Cleaning Tools
+
+To clean an image, an eraser is available which can be adjusted in size via the slider above the canvas.
+In the example, the number 1 present in the image has been removed (@fig-cleaning_tools).
+
+![](imgs\13.png){#fig-cleaning_tools}
+
+Click on the navigation button, as well as on **✓ Mark as Clean**, or click on the preview in the gallery to save the cleaned image and move to the next drawing.
+
+A green checkmark will indicate that the image has been manually reviewed (@fig-cleaned_image).
+
+![](imgs\14.png){#fig-cleaned_image}
+
+Click on **Continue to Review Texts →** to save the cleaned images and proceed to the **Review Texts** tab.
+
+::: {.callout-important}
+At this stage, eraser can't show a brush preview on hover. The feature will be added in future releases.
+:::
+
+## Review Texts
+
+This tab allows you to review and correct the text extracted via OCR (@fig-review_texts).
+
+<iframe src="animations/review.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+![](imgs\15.png){#fig-review_texts}
+
+The interface is extremely simple: a series of bipartite records where on the left we find the image of the text area and on the right the extracted text in an editable text box. Just write inside the box to correct the text.
+
+To see the image better, you can hover the mouse over the image to enlarge it; clicking on the image will open a modal window with the enlarged image {@fig-review_texts_zoom}.
+
+![](imgs\16.png){#fig-review_texts_zoom}
+
+Click on **Continue to Export →** to save changes and proceed to the **Export** tab.
+
+# Export
+
+The **Export** tab allows you to export project data. A series of summary information is shown in the central part of the tab.
+You can choose the folder name and the prefix of the exported files (@fig-export_tab).
+
+Clicking on **Save to Folder** will open a dialog window to select the destination folder.
+
+![](imgs\17.png){#fig-export_tab}
+
+## Exported Folder Structure
+
+Inside the exported folder, you will find the following structure:
+
+```
+[Selected Folder]/
+├── images/                                 # Folder containing cropped drawings
+│   ├── {prefix}_001.jpg                    # Individual drawing images
+│   ├── {prefix}_002.jpg
+│   └── ...
+├── {prefix}_data_{timestamp}.xlsx          # Excel file with Metadata and OCR results
+└── {prefix}_ml_training_{timestamp}.xlsx   # Excel file with Bounding Box data for ML
+```
+
+The **Data Excel** contains:
+
+- **filename**: Name of the cropped image file
+- **original_image**: Source plate filename
+- **drawing_number**: ID of the drawing
+- **table_name**, **context**, **notes**: Metadata
+- **ocr_result**: Raw OCR text
+- **ocr_corrected**: Manually corrected text
+
+The **ML Training Excel** contains bounding box coordinates for vessels and text areas, useful for training machine learning models.
+
+# Few-Shot Parser
+
+The few-shot module allows you to organize exported information into a structured format, using a Large Language Model (LLM) and a few-shot learning approach.
+
+## GUI Elements
+
+On the left of the tab are **Available fields** representing the fields that can be identified in the text. The **+ Add Field** button allows you to add a new custom field (@fig-fewshot_gui).
+
+On the right are a series of commands that allow you to configure the parser.
+
+![](imgs\18.png){#fig-fewshot_gui}
+
+The **📂 Select Files** button allows you to select the `.xlsx` file exported from the **Export** tab.
+The model will look for an "*ocr_corrected*" column.
+
+The content of the "*ocr_corrected*" column will be displayed in the text box. By selecting the text, you can associate the available fields (@fig-fewshot_select_text).
+
+![](imgs\19.png){#fig-fewshot_select_text}
+
+Clicking on **➕ Add Example** will allow you to add an example of association between text and fields (@fig-fewshot_add_example).
+
+![](imgs\20.png){#fig-fewshot_add_example}
+
+Clicking on **🚀 Run Parsing** will start the parsing process. A progress bar will show the advancement of the process. Once processing is finished, a dialog window will allow you to save the exported file in `.xlsx` format (@fig-fewshot_run_parsing).
+
+![](imgs\21.png){#fig-fewshot_run_parsing}
+
+## Load a Project
+
+If you want to load an existing project, you can do so from the initial screen by clicking on **📂 Load Project** (@fig-load_project).
+
+![](imgs\22.png){#fig-load_project}
+
+Each project will be listed as a card, with information such as name, description, creation date, and last modification date, as well as the number of uploaded images and created annotations, along with a progress bar indicating the project's completion status.
+
+The **🗑️** (trash can) icon next to each project allows you to delete the selected project.
+
+::: {.callout-caution}
+**Caution:** Deleting a project is irreversible and will permanently remove all associated data.
+:::
+
+Opening a project allows you to resume work exactly where it was left off. Even if the **Load** tab is opened, you will be able to navigate between other tabs to complete the workflow (@fig-loaded_project).
+
+![](imgs\23.png){#fig-loaded_project}
+
+The **Load** table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the **Annotate** tab on that specific image.
+
