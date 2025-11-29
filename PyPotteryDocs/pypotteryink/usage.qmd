@@ -1,5 +1,124 @@
 ---
-title: "Usage (GUI)"
+title: "Using PyPotteryInk"
+format: html
+toc: true
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+<div style="text-align: center;">
+  <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 2.0.0
+  </span>
+</div>
+
+# Interface Overview
+
+The PyPotteryInk interface is divided into four main tabs:
+
+- **Hardware Check**
+- **Model Diagnostic**
+- **Preprocessing**
+- **Batch Processing**
+
+Additionally, you can toggle **Dark Mode** using the button in the interface.
+
+# Hardware Check
+
+This tab allows you to analyze your PC's hardware to verify compatibility with PyPotteryInk.
+
+<iframe src="animations/hardware_check.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+The page displays **Recommended Specifications**, indicating the minimum requirements to use the program.
+
+Clicking on **🔍 Check Hardware** will display your machine's specifications along with a performance score.
+
+Here is an example of a hardware check result on a MacBook Air M3:
+
+::: {.callout-note appearance="simple"}
+## 🟠 Recommendation Level: RECOMMENDED
+
+### 🖥️ Hardware Specifications
+- **GPU:** Apple Metal Performance Shaders (MPS)
+- **CPU:** arm (8 cores)
+- **RAM:** 16.0 GB
+- **Disk speed:** Read: 5931.6 MB/s | Write: 233.8 MB/s
+
+### 📊 Hardware Score: 78/100 (78.0%)
+
+### 💡 Recommendations
+- ✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon
+- ✅ 16GB or more RAM - Ideal for large image batches
+- ⚠️ Processor with 4+ cores
+- ⚠️ Decent disk but could be improved with an NVMe SSD
+- ✅ macOS system - Good compatibility
+- 💡 If using a laptop, ensure it's well ventilated and connected to power
+- 💡 Consider using a cooling pad for laptops to avoid thermal throttling
+
+### ✅ Conclusion
+Your hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.
+
+💡 *If you're using a laptop, ensure it's well ventilated and connected to power during processing*
+:::
+
+# Model Diagnostic
+
+This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.
+
+<iframe src="animations/model_diagnostic.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+The available elements are:
+
+- **Select Model**: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.
+- **Patch Size**: Determines the size of the "chunks" the image is divided into for processing. Refer to the dedicated documentation section.
+- **Upload Images**: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.
+- **Overlap**: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.
+- **Contrast Test Values**: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.
+
+Clicking on **🚀 Run Diagnostic** will start the process, and a progress bar will indicate advancement.
+At the end of the process, a gallery will allow you to view the results.
+
+# Preprocessing
+
+This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.
+
+<iframe src="animations/preprocessing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+There are two options:
+
+### Step 1: Calculate Statistics
+You can calculate statistics from a set of images. Uploading is done in the same way as the previous tab.
+The **Save Statistics As** text box allows you to decide the path and name of the `.npy` file.
+Click **📊 Calculate Statistics** to perform the calculation.
+
+### Step 2: Apply Preprocessing
+This step allows you to apply the statistics.
+Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1.
+Alternatively, you can use an existing `.npy` file.
+
+PyPotteryInk provides two default `.npy` files:
+- `Montale_stats.npy` (Metric measures of the dataset used to train the 6h-MCG model)
+- `Cimino_stats.npy` (Metric measures of the dataset used to train the 6h-MC model)
+
+In short, these metrics can be used to make your images resemble those used to train the model.
+
+The **Output Directory** text box allows you to indicate where the modified images will be saved.
+Click **✨ Apply Preprocessing** to start. A progress bar will indicate the status.
+
+# Batch Processing
+
+This tab represents the core of the program where you can process a series of images.
+
+<iframe src="animations/batch_processing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+Parameters like **Select Model**, **Upload Images**, **Patch Size**, and **Overlap** are the same as in the Preprocessing tab.
+
+New parameters include:
+
+- **Output Directory**: Allows you to indicate where to save the results.
+- **Contrast Scale**: Allows you to indicate the contrast value to apply to the batch.
+- **Scale Factor**: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.
+- **Use FP16**: Allows you to apply the model using half-precision (requires CUDA).
+
+Clicking on **🚀 Start Processing** will start the operation. A double progress bar will indicate the processing of patches and drawings.
+The results will be shown in a gallery.

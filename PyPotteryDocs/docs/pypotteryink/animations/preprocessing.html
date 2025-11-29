@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPotteryInk - Preprocessing Simulation</title>
+
+    <style>
+        /* Simulation Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .container {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 900px;
+            height: 800px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* App Header */
+        .app-header {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .app-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1.1em;
+        }
+
+        .version-badge {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 30px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        h2 {
+            font-size: 1.3em;
+            margin: 0 0 8px 0;
+            color: #1f2937;
+        }
+
+        h3 {
+            font-size: 1em;
+            margin: 15px 0 8px 0;
+            color: #374151;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 3px;
+        }
+
+        .info-text {
+            color: #6b7280;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #1f2937;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area.active {
+            border-color: #667eea;
+            background: #eff6ff;
+        }
+
+        .upload-text {
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s;
+        }
+
+        .btn.clicked {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        /* Output Container */
+        .output-container {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.85em;
+            color: #374151;
+            display: none;
+        }
+
+        .output-container.visible {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            /* Standard macOS pointer size */
+            background-image: url('data:image/svg+xml;utf8,<svg width="20" height="29" viewBox="0 0 20 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0V28.3L6.8 21.5L13.2 28.5L16.5 25.5L10.2 18.5H19.5L0 0Z" fill="black" stroke="white" stroke-width="2"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v0.2.0
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <div class="tab">⚙️ Hardware Check</div>
+            <div class="tab">🔍 Model Diagnostics</div>
+            <div class="tab active">📊 Preprocessing</div>
+            <div class="tab">🎨 Batch Processing</div>
+        </div>
+
+        <!-- Content -->
+        <div class="main-content">
+            <h2 style="margin-bottom: 10px;">📊 Image Preprocessing</h2>
+            <p class="info-text">Calculate statistics from training images and apply preprocessing to optimize images
+                for AI processing.</p>
+
+            <!-- Step 1 -->
+            <h3>Step 1: Calculate Statistics (Optional)</h3>
+            <div class="form-group">
+                <label class="form-label">Upload Images for Statistics:</label>
+                <div id="stats-upload" class="upload-area">
+                    <div class="upload-text">Click to select images</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Save Statistics As:</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" value="./custom_stats.npy" class="form-control">
+                    <button class="btn btn-secondary" style="padding: 8px 12px;">Browse...</button>
+                </div>
+            </div>
+            <button id="calc-btn" class="btn btn-secondary">
+                <span>📊</span> Calculate Statistics
+            </button>
+            <div id="stats-output" class="output-container">
+                <div>> Analyzing 50 images...</div>
+                <div style="color:#059669;">> Statistics saved to ./custom_stats.npy</div>
+            </div>
+
+            <!-- Step 2 -->
+            <h3>Step 2: Apply Preprocessing</h3>
+            <div class="form-group">
+                <label class="form-label">Upload Images to Preprocess:</label>
+                <div id="preprocess-upload" class="upload-area">
+                    <div class="upload-text">Click to select images</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.9em;">
+                    <input type="checkbox" checked> Use calculated statistics from Step 1
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Output Directory:</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" value="./preprocessed_images" class="form-control">
+                    <button class="btn btn-secondary" style="padding: 8px 12px;">Browse...</button>
+                </div>
+            </div>
+            <button id="process-btn" class="btn btn-primary">
+                <span>✨</span> Apply Preprocessing
+            </button>
+            <div id="process-output" class="output-container">
+                <div>> Processing 12 images...</div>
+                <div style="width:100%; height:6px; background:#eee; margin:5px 0; border-radius:3px;">
+                    <div style="width:100%; height:100%; background:#10b981; border-radius:3px;"></div>
+                </div>
+                <div style="color:#059669;">> Preprocessing Complete!</div>
+            </div>
+
+        </div>
+
+        <div id="cursor" class="cursor"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('cursor');
+            const statsUpload = document.getElementById('stats-upload');
+            const calcBtn = document.getElementById('calc-btn');
+            const statsOutput = document.getElementById('stats-output');
+
+            const preprocessUpload = document.getElementById('preprocess-upload');
+            const processBtn = document.getElementById('process-btn');
+            const processOutput = document.getElementById('process-output');
+
+            // Helper to move cursor
+            function moveCursorTo(element, duration = 800, delay = 0) {
+                const rect = element.getBoundingClientRect();
+                const containerRect = document.querySelector('.container').getBoundingClientRect();
+
+                const x = rect.left - containerRect.left + rect.width / 2;
+                const y = rect.top - containerRect.top + rect.height / 2;
+
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                        cursor.style.transform = `translate(${x}px, ${y}px)`;
+                        setTimeout(resolve, duration);
+                    }, delay);
+                });
+            }
+
+            async function runAnimation() {
+                // 1. Upload Stats Images
+                await moveCursorTo(statsUpload, 1000, 500);
+                statsUpload.classList.add('active');
+                statsUpload.innerHTML = '<div class="upload-text" style="color:#667eea; font-weight:bold;">50 Images Selected</div>';
+
+                // 2. Calculate Stats
+                await moveCursorTo(calcBtn, 800, 200);
+                calcBtn.classList.add('clicked');
+                await new Promise(r => setTimeout(r, 150));
+                calcBtn.classList.remove('clicked');
+
+                // Show stats output
+                await new Promise(r => setTimeout(r, 500));
+                statsOutput.classList.add('visible');
+
+                // 3. Upload Preprocess Images
+                await moveCursorTo(preprocessUpload, 1000, 500);
+                preprocessUpload.classList.add('active');
+                preprocessUpload.innerHTML = '<div class="upload-text" style="color:#667eea; font-weight:bold;">12 Images Selected</div>';
+
+                // 4. Apply Preprocessing
+                await moveCursorTo(processBtn, 800, 200);
+                processBtn.classList.add('clicked');
+                await new Promise(r => setTimeout(r, 150));
+                processBtn.classList.remove('clicked');
+
+                // Show process output
+                await new Promise(r => setTimeout(r, 500));
+                processOutput.classList.add('visible');
+
+                // Move cursor away
+                cursor.style.transform = `translate(850px, 550px)`;
+
+                // Loop after 2 seconds
+                setTimeout(() => {
+                    // Reset state
+                    statsUpload.classList.remove('active');
+                    statsUpload.innerHTML = '<div class="upload-text">Click to select images</div>';
+                    statsOutput.classList.remove('visible');
+                    preprocessUpload.classList.remove('active');
+                    preprocessUpload.innerHTML = '<div class="upload-text">Click to select images</div>';
+                    processOutput.classList.remove('visible');
+                    runAnimation();
+                }, 2000);
+            }
+
+            runAnimation();
+        });
+    </script>
+</body>
+
+</html>

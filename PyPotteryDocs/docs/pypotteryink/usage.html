@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Usage (GUI) – PyPottery</title>
+<title>Using PyPotteryInk – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/usage.html">Usage (GUI)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/usage.html">Using PyPotteryInk</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -193,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryink/usage.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Usage (GUI)</span></a>
+ <span class="menu-text">Using PyPotteryInk</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -332,15 +332,29 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#interface-overview" id="toc-interface-overview" class="nav-link active" data-scroll-target="#interface-overview">Interface Overview</a></li>
+  <li><a href="#hardware-check" id="toc-hardware-check" class="nav-link" data-scroll-target="#hardware-check">Hardware Check</a></li>
+  <li><a href="#model-diagnostic" id="toc-model-diagnostic" class="nav-link" data-scroll-target="#model-diagnostic">Model Diagnostic</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#step-1-calculate-statistics" id="toc-step-1-calculate-statistics" class="nav-link" data-scroll-target="#step-1-calculate-statistics">Step 1: Calculate Statistics</a></li>
+  <li><a href="#step-2-apply-preprocessing" id="toc-step-2-apply-preprocessing" class="nav-link" data-scroll-target="#step-2-apply-preprocessing">Step 2: Apply Preprocessing</a></li>
+  </ul></li>
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing">Batch Processing</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/usage.html">Usage (GUI)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/usage.html">Using PyPotteryInk</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Usage (GUI)</h1>
+<h1 class="title">Using PyPotteryInk</h1>
 </div>
 
 
@@ -357,10 +371,120 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;">
+<div style="text-align: center;">
+<p><img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 2.0.0 </span></p>
+</div>
+<section id="interface-overview" class="level1">
+<h1>Interface Overview</h1>
+<p>The PyPotteryInk interface is divided into four main tabs:</p>
+<ul>
+<li><strong>Hardware Check</strong></li>
+<li><strong>Model Diagnostic</strong></li>
+<li><strong>Preprocessing</strong></li>
+<li><strong>Batch Processing</strong></li>
+</ul>
+<p>Additionally, you can toggle <strong>Dark Mode</strong> using the button in the interface.</p>
+</section>
+<section id="hardware-check" class="level1">
+<h1>Hardware Check</h1>
+<p>This tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.</p>
+<iframe src="animations/hardware_check.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
+<p>The page displays <strong>Recommended Specifications</strong>, indicating the minimum requirements to use the program.</p>
+<p>Clicking on <strong>🔍 Check Hardware</strong> will display your machine’s specifications along with a performance score.</p>
+<p>Here is an example of a hardware check result on a MacBook Air M3:</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🟠 Recommendation Level: RECOMMENDED
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="hardware-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="hardware-specifications">🖥️ Hardware Specifications</h3>
+<ul>
+<li><strong>GPU:</strong> Apple Metal Performance Shaders (MPS)</li>
+<li><strong>CPU:</strong> arm (8 cores)</li>
+<li><strong>RAM:</strong> 16.0 GB</li>
+<li><strong>Disk speed:</strong> Read: 5931.6 MB/s | Write: 233.8 MB/s</li>
+</ul>
+</section>
+<section id="hardware-score-78100-78.0" class="level3">
+<h3 class="anchored" data-anchor-id="hardware-score-78100-78.0">📊 Hardware Score: 78/100 (78.0%)</h3>
+</section>
+<section id="recommendations" class="level3">
+<h3 class="anchored" data-anchor-id="recommendations">💡 Recommendations</h3>
+<ul>
+<li>✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon</li>
+<li>✅ 16GB or more RAM - Ideal for large image batches</li>
+<li>⚠️ Processor with 4+ cores</li>
+<li>⚠️ Decent disk but could be improved with an NVMe SSD</li>
+<li>✅ macOS system - Good compatibility</li>
+<li>💡 If using a laptop, ensure it’s well ventilated and connected to power</li>
+<li>💡 Consider using a cooling pad for laptops to avoid thermal throttling</li>
+</ul>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h3>
+<p>Your hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.</p>
+<p>💡 <em>If you’re using a laptop, ensure it’s well ventilated and connected to power during processing</em></p>
+</section>
+</div>
+</div>
+</section>
+<section id="model-diagnostic" class="level1">
+<h1>Model Diagnostic</h1>
+<p>This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.</p>
+<iframe src="animations/model_diagnostic.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+</iframe>
+<p>The available elements are:</p>
+<ul>
+<li><strong>Select Model</strong>: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.</li>
+<li><strong>Patch Size</strong>: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.</li>
+<li><strong>Upload Images</strong>: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.</li>
+<li><strong>Overlap</strong>: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.</li>
+<li><strong>Contrast Test Values</strong>: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.</li>
+</ul>
+<p>Clicking on <strong>🚀 Run Diagnostic</strong> will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.</p>
+</section>
+<section id="preprocessing" class="level1">
+<h1>Preprocessing</h1>
+<p>This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.</p>
+<iframe src="animations/preprocessing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+</iframe>
+<p>There are two options:</p>
+<section id="step-1-calculate-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-calculate-statistics">Step 1: Calculate Statistics</h3>
+<p>You can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The <strong>Save Statistics As</strong> text box allows you to decide the path and name of the <code>.npy</code> file. Click <strong>📊 Calculate Statistics</strong> to perform the calculation.</p>
+</section>
+<section id="step-2-apply-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-apply-preprocessing">Step 2: Apply Preprocessing</h3>
+<p>This step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing <code>.npy</code> file.</p>
+<p>PyPotteryInk provides two default <code>.npy</code> files: - <code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model) - <code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</p>
+<p>In short, these metrics can be used to make your images resemble those used to train the model.</p>
+<p>The <strong>Output Directory</strong> text box allows you to indicate where the modified images will be saved. Click <strong>✨ Apply Preprocessing</strong> to start. A progress bar will indicate the status.</p>
+</section>
+</section>
+<section id="batch-processing" class="level1">
+<h1>Batch Processing</h1>
+<p>This tab represents the core of the program where you can process a series of images.</p>
+<iframe src="animations/batch_processing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+</iframe>
+<p>Parameters like <strong>Select Model</strong>, <strong>Upload Images</strong>, <strong>Patch Size</strong>, and <strong>Overlap</strong> are the same as in the Preprocessing tab.</p>
+<p>New parameters include:</p>
+<ul>
+<li><strong>Output Directory</strong>: Allows you to indicate where to save the results.</li>
+<li><strong>Contrast Scale</strong>: Allows you to indicate the contrast value to apply to the batch.</li>
+<li><strong>Scale Factor</strong>: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.</li>
+<li><strong>Use FP16</strong>: Allows you to apply the model using half-precision (requires CUDA).</li>
+</ul>
+<p>Clicking on <strong>🚀 Start Processing</strong> will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
