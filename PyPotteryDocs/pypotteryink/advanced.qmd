@@ -358,3 +358,252 @@ The `DatasetAnalyzer` class calculates eight key metrics that characterise archa
 3. Contrast ratio: Ratio between the brightest and darkest areas
 4. Median: Middle intensity value
 5. Dynamic range: Difference between the 99th and 1st percentile intensities
+6. Entropy: Measure of information content
+7. IQR (Interquartile Range): Spread of middle 50% of intensity values
+8. Non-empty ratio: Proportion of pixels above background threshold
+
+You can either analyse your own dataset to establish reference metrics or use our pre-computed metrics from the training dataset:
+
+```python
+# Option 1: Analyse your own dataset
+analyzer = DatasetAnalyzer()
+model_stats = analyzer.analyze_dataset('PATH_TO_YOUR_DATASET')
+analyzer.save_analysis('DATASET_RESULTS_PATH')
+
+# Option 2: Use pre-computed metrics
+analyzer = DatasetAnalyzer()
+analyzer = analyzer.load_analysis('Montale_stats.npy')
+model_stats = analyzer.distributions
+```
+
+The distribution of these metrics can be visualized:
+
+```python
+analyzer.visualize_distributions_kde()
+```
+
+::: {#fig-model_stats}
+![](images_docs/model_stats_kde.png)
+
+Figure 6: Distribution of image metrics from the training dataset. Each plot shows the distribution curve, actual data points, mean (red dashed line), median (blue dotted line), and ±2σ range (green shading).
+:::
+
+## Preprocessing Pipeline
+
+The preprocessing pipeline adjusts images to match the statistical properties of the training dataset. Here's how to process a single image:
+
+```python
+original_image = 'PATH_TO_YOUR_IMAGE'
+adjusted_image, adjusted_metrics = process_image_metrics(original_image, model_stats)
+```
+
+The pipeline performs these adjustments:
+
+1. Contrast normalization based on the training set's contrast ratio distribution
+2. Dynamic range adjustment to match the target range
+3. Brightness correction to align with the training set's mean intensity
+
+The adjusted image shows more balanced contrast and better preservation of details:
+
+::: {#fig-image_adjusted}
+![](images_docs/2_contrast_adjusted.jpg){width=80%}
+
+Figure 7: Preprocessed image showing normalized contrast and preserved details.
+:::
+
+We can visualize how the preprocessing affected our image metrics:
+
+::: {#fig-metrics_change}
+![](images_docs/model_stats_comparison.png){width=80%}
+
+Figure 8: Comparison of original (orange) and adjusted (teal) metrics against the training distribution.
+:::
+
+## Model Application
+
+After preprocessing, the model produces significantly better results:
+
+::: {#fig-image_adjusted_res}
+![](images_docs\res_2_contrast_adjusted.jpg){width=80%}
+
+Figure 9: Model output after preprocessing, showing proper dotting patterns and no artifacts.
+:::
+
+The improvements include:
+
+- Consistent dotting patterns in shaded areas
+- No colour artefacts or tiling effects
+- Better preservation of fine details
+- More natural transition between different tonal areas
+
+I'll add a section about batch processing to the documentation:
+
+## Batch Processing
+
+While processing individual images is useful for testing and fine-tuning parameters, in archaeological practice we often need to process entire collections of drawings. The `process_folder_metrics` function automates this task by applying our preprocessing pipeline to all images in a directory.
+
+Here's how to use batch processing:
+
+```python
+# Define the input folder containing your drawings
+input_folder = "path/to/your/drawings"
+
+# Process all images in the folder
+process_folder_metrics(
+    input_folder=input_folder,
+    model_stats=model_stats,
+    file_extensions=('.jpg', '.jpeg', '.png')  # Supported file formats
+)
+```
+
+The function creates a new directory named `input_folder_adjusted` that contains all the processed images. During processing, it provides detailed feedback about each image:
+
+```
+📁 Found 25 images to process
+==================================================
+
+🔍 Analyzing: drawing_001.jpg
+⚙️ Image Analysis:
+└─ Contrast: 0.85x | Brightness adjustment needed
+✨ Adjustments applied
+
+Progress: 1/25
+--------------------------------------------------
+
+🔍 Analyzing: drawing_002.jpg
+✅ Image metrics within normal ranges
+
+Progress: 2/25
+--------------------------------------------------
+```
+
+At the end of processing, you'll receive a summary report:
+
+```
+📊 Processing Summary
+==================================================
+Total processed:  25
+Images adjusted:  18
+No adjustments:   7
+
+💾 All images saved to: path/to/your/drawings_adjusted
+```
+
+This summary helps you understand how many images required adjustment, which can be useful for:
+
+- Identifying systematic issues in your drawing or scanning process
+- Planning future preprocessing strategies
+- Documenting the processing pipeline for publication
+
+The batch processing maintains all the benefits of individual processing while saving time and ensuring consistency across your entire dataset. All adjusted images will have metrics that align with your training data distribution, leading to better results when applying the model.
+
+Note that each image still receives individual analysis and custom adjustments - the batch process doesn't apply a one-size-fits-all transformation. Instead, it analyses each drawing's specific characteristics and applies the precise adjustments needed to bring that particular image into alignment with your target metrics.
+
+# Guide to Fine-tuning PyPotteryInk Models
+
+This guide walks you through the process of fine-tuning a PyPotteryInk model for your specific archaeological context.
+
+## Prerequisites
+
+Before starting the fine-tuning process, ensure you have:
+
+1. A GPU with at least 20GB VRAM for training
+2. Python 3.10 or higher
+3. A paired dataset of pencil drawings and their inked versions
+4. Storage space for model checkpoints and training data
+
+## Environment Setup
+
+1. First, clone the repository:
+
+   ```bash
+   git clone https://github.com/GaParmar/img2img-turbo.git
+   ```
+
+2. Install the required dependencies:
+
+   ```bash
+   pip install -r img2img-turbo/requirements.txt
+   pip install git+https://github.com/openai/CLIP.git
+   pip install wandb vision_aided_loss huggingface-hub==0.25.0
+   ```
+
+## Dataset Preparation
+
+1. To create a training dataset check out the [original docs](https://github.com/GaParmar/img2img-turbo/blob/main/docs/training_pix2pix_turbo.md)
+
+2. Important considerations for dataset preparation:
+   - Images should be paired (same filename in both folders)
+   - Standard image formats (jpg, jpeg, png) are supported
+   - Both pencil and inked versions should be aligned
+   - Recommended resolution: at least 512x512 pixels
+
+3. Data requirements:
+   - Minimum recommended: 10-20 pairs for fine-tuning
+   - Each drawing should be clean and well-scanned
+   - Include variety in pottery types and decorations
+   - Consistent drawing style across the dataset
+
+## Setting Up Fine-tuning
+
+To fine-tune a pre-trained model (like "6h-MCG"), you'll need to modify the base img2img-turbo repository. This enables the use of a pre-trained model as a starting point for your specialised training.
+
+1. **Prepare the Repository:**
+   - Navigate to your cloned `img2img-turbo` directory
+
+   ```bash
+   cd img2img-turbo
+   ```
+
+2. **Replace Key Files:**
+   - Copy these files from the PyPotteryInk repository's "fine-tuning" folder into the `src` folder:
+     - pix2pix_turbo.py
+     - train_pix2pix_turbo.py
+
+   These modified files contain the necessary adaptations to support training from a pre-trained model.
+
+## Running Fine-tuning
+
+1. **Initialize Accelerate Environment:**
+
+   ```bash
+   accelerate config
+   ```
+
+   This will guide you through setting up your training environment. Follow the prompts to configure for your GPU setup.
+
+2. **Start Training:**
+
+   ```bash
+   accelerate launch src/train_pix2pix_turbo.py \
+       --pretrained_model_name_or_path="6h-MCG.pkl" \
+       --output_dir="YOUR_OUTPUT_DIR" \
+       --dataset_folder="YOUR_INPUT_DATA" \
+       --resolution=512 \
+       --train_batch_size=2 \
+       --enable_xformers_memory_efficient_attention \
+       --viz_freq 25 \
+       --track_val_fid \
+       --report_to "wandb" \
+       --tracker_project_name "YOUR_PROJECT_NAME"
+   ```
+
+   Key Parameters:
+   - `pretrained_model_name_or_path`: Path to your pre-trained model (e.g., "6h-MCG.pkl")
+   - `output_dir`: Where to save training outputs and checkpoints
+   - `dataset_folder`: Location of your training dataset
+   - `resolution`: Image resolution (512 recommended)
+   - `train_batch_size`: Number of images per training batch
+   - `viz_freq`: How often to generate visualization samples
+   - `track_val_fid`: Enable FID score tracking
+   - `tracker_project_name`: Your Weights & Biases project name
+
+   > **Note:** Adjust the batch size based on your GPU memory. Start with 2 and increase if your GPU can handle it.
+
+## Important Considerations
+
+- Ensure your pre-trained model file (e.g., "6h-MCG.pkl") is in the correct location
+- Monitor GPU memory usage during training
+- Use Weights & Biases (wandb) to track training progress
+- Check the output directory periodically for sample outputs
+- Training time will vary based on your GPU and dataset size

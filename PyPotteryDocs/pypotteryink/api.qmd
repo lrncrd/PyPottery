@@ -294,3 +294,401 @@ def process_image_binarize(
 ```
 
 Combined function for binarization and background removal.
+
+### Parameters
+
+`image_path`
+: Path to input image
+
+`binarize_threshold`
+: Threshold for black/white conversion
+
+`white_threshold`
+: Threshold for transparency
+
+`save_path`
+: Optional output path
+
+## Binarize Folder Images
+
+```python
+def binarize_folder_images(
+    input_folder: str,
+    binarize_threshold: int = 127,
+    white_threshold: int = 250
+) -> None
+```
+
+Batch processes a folder of drawings, applying binarization and background removal.
+
+### Parameters
+
+`input_folder`
+: Directory containing drawings
+
+`binarize_threshold`
+: Threshold for binarization
+
+`white_threshold`
+: Threshold for transparency
+
+## Enhance Stippling
+
+```python
+def enhance_stippling(
+    img: PIL.Image,
+    min_size: int = 80,
+    connectivity: int = 2
+) -> Tuple[PIL.Image, PIL.Image]
+```
+
+Isolates and enhances stippling patterns in archaeological drawings.
+
+### Parameters
+
+`img`
+: Input drawing
+
+`min_size`
+: Minimum object size to preserve
+
+`connectivity`
+: Connection parameter for pattern detection
+
+### Returns
+
+Returns tuple containing: - processed_image: Drawing with enhanced stippling - stippling_pattern: Isolated stippling mask
+
+## Modify Stippling
+
+```python
+def modify_stippling(
+    processed_img: PIL.Image,
+    stippling_pattern: PIL.Image,
+    operation: str = 'dilate',
+    intensity: float = 0.5,
+    opacity: float = 1.0
+) -> PIL.Image
+```
+
+Adjusts stippling patterns through morphological operations and intensity modulation.
+
+### Parameters
+
+`processed_img`
+: Base image without stippling
+
+`stippling_pattern`
+: Isolated stippling pattern
+
+`operation`
+: Type of modification ('dilate', 'fade', or 'both')
+
+`intensity`
+: Morphological modification strength (0.0-1.0)
+
+`opacity`
+: Stippling opacity factor (0.0-1.0)
+
+### Examples
+
+```python
+enhanced = modify_stippling(
+    base_img,
+    dots_pattern,
+    operation='both',
+    intensity=0.7,
+    opacity=0.8
+)
+```
+
+## Control Stippling
+
+```python
+def control_stippling(
+    input_folder: str,
+    min_size: int = 50,
+    connectivity: int = 2,
+    operation: str = 'fade',
+    intensity: float = 0.5,
+    opacity: float = 0.5
+) -> None
+```
+
+Batch processes stippling patterns in a folder of archaeological drawings.
+
+### Parameters
+
+`input_folder`
+: Directory containing drawings
+
+`min_size`
+: Minimum object size to preserve
+
+`connectivity`
+: Pattern detection parameter
+
+`operation`
+: Modification type ('dilate', 'fade', 'both')
+
+`intensity`
+: Modification strength
+
+`opacity`
+: Pattern opacity
+
+### Examples
+
+```python
+control_stippling(
+    "vessel_drawings/",
+    min_size=60,
+    operation='both',
+    intensity=0.6
+)
+```
+
+# Preprocessing Module
+
+## Overview
+
+The preprocessing module provides tools for analyzing and adjusting archaeological drawings before conversion. It ensures optimal input quality through statistical analysis and targeted adjustments.
+
+## Dataset Analyzer
+
+```python
+class DatasetAnalyzer:
+    def __init__(self):
+        self.metrics = {}
+        self.distributions = {}
+```
+
+A comprehensive tool for analysing collections of archaeological drawings, establishing statistical baselines for quality control.
+
+### Key Methods
+
+#### analyze_image
+
+```python
+def analyze_image(self, image: Union[str, Image.Image]) -> dict
+```
+
+Extracts key metrics from a single drawing.
+
+**Returns**
+
+- mean: Average brightness
+- std: Standard deviation
+- contrast_ratio: Dynamic range measure
+- median: Middle intensity value
+- dynamic_range: Total intensity range
+- entropy: Image information content
+- iqr: Inter-quartile range
+- non_empty_ratio: Drawing density measure
+
+#### analyze_dataset
+
+```python
+def analyze_dataset(
+    self, 
+    dataset_path: str,
+    file_pattern: tuple = ('.png', '.jpg', '.jpeg')
+) -> dict
+```
+
+Builds statistical distributions from a collection of drawings.
+
+#### visualize_distributions_kde
+
+```python
+def visualize_distributions_kde(
+    self,
+    metrics_to_plot: Optional[List[str]] = None,
+    save: bool = False
+)
+```
+
+Creates KDE plots of metric distributions with statistical annotations.
+
+#### save_analysis
+
+```python
+def save_analysis(self, path: str) -> None
+```
+
+Saves the current analysis results to a file for later use. This is particularly useful when establishing reference metrics for a specific archaeological context or drawing style.
+
+##### Parameters
+
+`path`
+: File path to save the analysis results
+
+##### Examples
+
+```python
+analyzer = DatasetAnalyzer()
+stats = analyzer.analyze_dataset("reference_drawings/")
+analyzer.save_analysis("reference_metrics.npy")
+```
+
+#### load_analysis
+
+```python
+@classmethod
+def load_analysis(cls, path: str) -> 'DatasetAnalyzer'
+```
+
+Class method that loads previously saved analysis results. This allows reuse of established reference metrics without reanalyzing the dataset.
+
+##### Parameters
+
+`path`
+: Path to previously saved analysis file
+
+##### Returns
+
+Returns a new DatasetAnalyzer instance with loaded analysis results
+
+##### Examples
+
+```python
+# Load previously computed statistics
+analyzer = DatasetAnalyzer.load_analysis("reference_metrics.npy")
+
+# Use loaded stats for quality checks
+check = check_image_quality("new_drawing.jpg", analyzer.distributions)
+```
+
+These methods enable efficient reuse of analysis results across multiple processing sessions, particularly valuable when working with established archaeological documentation standards or specific site collections.
+
+## Process Folder Metrics
+
+```python
+def process_folder_metrics(
+    input_folder: str,
+    model_stats: dict,
+    file_extensions: tuple = ('.jpg', '.jpeg', '.png')
+) -> None
+```
+
+Batch processes a folder of drawings to align their metrics with reference statistics.
+
+### Parameters
+
+`input_folder`
+: Directory containing drawings to process
+
+`model_stats`
+: Reference statistics from DatasetAnalyzer
+
+`file_extensions`
+: Supported file types
+
+## Apply Recommended Adjustments
+
+```python
+def apply_recommended_adjustments(
+    image: Union[str, Image.Image],
+    model_stats: dict,
+    verbose: bool = True
+) -> Image.Image
+```
+
+Automatically adjusts a drawing based on statistical analysis.
+
+### Parameters
+
+`image`
+: Drawing to adjust
+
+`model_stats`
+: Reference statistics
+
+`verbose`
+: Print adjustment details
+
+### Adjustments Applied
+
+- Contrast normalization
+- Brightness alignment
+- Standard deviation correction
+- Dynamic range optimization
+
+### Examples
+
+```python
+adjusted = apply_recommended_adjustments(
+    "drawing.jpg",
+    reference_stats,
+    verbose=True
+)
+```
+
+## Check Image Quality
+
+```python
+def check_image_quality(
+    image: Union[str, Image.Image],
+    model_stats: dict
+) -> dict
+```
+
+Evaluates a drawing against reference metrics to identify needed adjustments.
+
+### Returns
+
+Returns a dictionary containing:
+
+- metrics: Current image measurements
+- recommendations: List of suggested adjustments
+- is_compatible: Boolean indicating if adjustments needed
+
+### Examples
+
+```python
+check = check_image_quality("new_drawing.jpg", reference_stats)
+if not check['is_compatible']:
+    print("Adjustments needed:", check['recommendations'])
+```
+
+## Visualize Metrics Change
+
+```python
+def visualize_metrics_change(
+    original_metrics: dict,
+    adjusted_metrics: dict,
+    model_stats: dict,
+    metrics_to_plot: Optional[List[str]] = None,
+    save: bool = False
+) -> None
+```
+
+Creates detailed visualizations comparing original and adjusted metrics against reference distributions.
+
+### Parameters
+
+`original_metrics`
+: Metrics before adjustment
+
+`adjusted_metrics`
+: Metrics after adjustment
+
+`model_stats`
+: Reference statistics
+
+`metrics_to_plot`
+: Specific metrics to visualize
+
+`save`
+: Save plot to file
+
+### Examples
+
+```python
+visualize_metrics_change(
+    original_metrics,
+    adjusted_metrics,
+    reference_stats,
+    metrics_to_plot=['contrast_ratio', 'mean', 'std']
+)
+```

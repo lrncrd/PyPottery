@@ -253,6 +253,17 @@
     ]
   },
   {
+    "objectID": "pypotteryink/usage.html",
+    "href": "pypotteryink/usage.html",
+    "title": "Using PyPotteryInk",
+    "section": "",
+    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files: - Montale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model) - Cimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Using PyPotteryInk"
+    ]
+  },
+  {
     "objectID": "pypotteryink/installation.html",
     "href": "pypotteryink/installation.html",
     "title": "Installation",
@@ -327,259 +338,6 @@
     "crumbs": [
       "PyPotteryInk",
       "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html",
-    "href": "pypotteryink/index.html",
-    "title": "Introduction",
-    "section": "",
-    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html#key-features",
-    "href": "pypotteryink/index.html#key-features",
-    "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html#contributors",
-    "href": "pypotteryink/index.html#contributors",
-    "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/usage.html",
-    "href": "pypotteryink/usage.html",
-    "title": "Using PyPotteryInk",
-    "section": "",
-    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files: - Montale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model) - Cimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
-    "crumbs": [
-      "PyPotteryInk",
-      "Using PyPotteryInk"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html",
-    "href": "pypotterylens/installation.html",
-    "title": "Installation",
-    "section": "",
-    "text": "version 0.1.0",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#requirements",
-    "href": "pypotterylens/installation.html#requirements",
-    "title": "Installation",
-    "section": "Requirements",
-    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support (recommended for AI models)",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#automated-installation",
-    "href": "pypotterylens/installation.html#automated-installation",
-    "title": "Installation",
-    "section": "Automated Installation",
-    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLens_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLens_UNIX.sh\n\nRun the script:\n\n./PyPotteryLens_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#manual-installation",
-    "href": "pypotterylens/installation.html#manual-installation",
-    "title": "Installation",
-    "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#installation-verification",
-    "href": "pypotterylens/installation.html#installation-verification",
-    "title": "Installation",
-    "section": "Installation Verification",
-    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at the indicated URL should display the PyPotteryLens interface",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#troubleshooting",
-    "href": "pypotterylens/installation.html#troubleshooting",
-    "title": "Installation",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/version_history.html",
-    "href": "pypotterylens/version_history.html",
-    "title": "Version History",
-    "section": "",
-    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/version_history.html#v0.1.0",
-    "href": "pypotterylens/version_history.html#v0.1.0",
-    "title": "Version History",
-    "section": "",
-    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html",
-    "href": "pypotteryscan/installation.html",
-    "title": "Installation",
-    "section": "",
-    "text": "version 0.2.0",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#requirements",
-    "href": "pypotteryscan/installation.html#requirements",
-    "title": "Installation",
-    "section": "Requirements",
-    "text": "Requirements\nBefore installing PyPotteryScan, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#automated-installation",
-    "href": "pypotteryscan/installation.html#automated-installation",
-    "title": "Installation",
-    "section": "Automated Installation",
-    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryScan_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5002\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryScan_UNIX.sh\n\nRun the script:\n\n./PyPotteryScan_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5002\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#manual-installation",
-    "href": "pypotteryscan/installation.html#manual-installation",
-    "title": "Installation",
-    "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5002",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#installation-verification",
-    "href": "pypotteryscan/installation.html#installation-verification",
-    "title": "Installation",
-    "section": "Installation Verification",
-    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5002 should display the PyPotteryScan interface",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#troubleshooting",
-    "href": "pypotteryscan/installation.html#troubleshooting",
-    "title": "Installation",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5002 already in use\nIf port 5002 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/installation.html#updating",
-    "href": "pypotteryscan/installation.html#updating",
-    "title": "Installation",
-    "section": "Updating",
-    "text": "Updating\nTo update PyPotteryScan to the latest version:\n\nDownload the latest version of the code\nActivate the virtual environment\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade",
-    "crumbs": [
-      "PyPotteryScan",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
-    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
-    "title": "Version History",
-    "section": "v0.2.0 (Initial Release) - (December 2025)",
-    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.",
-    "crumbs": [
-      "PyPotteryScan",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html",
-    "href": "pypotteryink/version_history.html",
-    "title": "Version History",
-    "section": "",
-    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html#latest-release",
-    "href": "pypotteryink/version_history.html#latest-release",
-    "title": "Version History",
-    "section": "",
-    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html#version-history",
-    "href": "pypotteryink/version_history.html#version-history",
-    "title": "Version History",
-    "section": "Version History",
-    "text": "Version History\n\nVersion 1.0.0 (September 2025)\n🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nMulti-GPU Support: Added support for Apple Silicon (M1/M2/M3) GPUs via Metal Performance Shaders\nGradio Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking\n\nAutomated Installation: One-click installation scripts for all platforms\nImproved Compatibility: Fixed compatibility issues with newest packages\nStatistics Visualization: New detailed statistics analysis with:\n\nSummary tables showing all key metrics\nInteractive distribution plots\nHistogram and KDE visualizations\nBox plots for metric overview\n\nAdvanced Export Options (Experimental):\n\nElement extraction: Automatically identify and extract individual pottery elements\nSVG export: Convert processed images to scalable vector graphics for publication\n\n\nwith contributions from Francesco di Filippo and Enzo Cocca\n\n\nVersion 0.0.3 (July 2025)\nUpdate to the PyPotteryInk package, with a few improvements\nKey Features:\n\n📌 Added new model 6h-MC model as default 📌\nAdded a test_imgto visualize the performance of each model\nReworking of the test.py module: now it test the library on the test_img\nAdded downscaling options in process_single_image and process_folder\n\nModels:\n\nFine-tuned example for Monte Cimino assemblage (6h-MC)\nFine-tuned model for historical and painted pottery (4h-PAINT)\n\n\n\nVersion 0.0.2 (April 2025)\nA little update to the PyPotteryInk package, with a few bug fixes and improvements.\nKey Features:\n\nAdded an AI disclosure reminder when running the process_folder function\nAdded a Google Colab notebook for easy testing of the package\nFixed some errors in the documentation\n\n\n\nVersion 0.0.1 (January 2025)\nInitial public release of PyPotteryInk.\nKey Features:\n\nImage-to-image translation using pix2pix-turbo architecture\nAdaptive patch-based processing for high-resolution drawings\nComprehensive preprocessing and postprocessing tools\nWeb documentation\n\nModels:\n\nBase model trained on 500 protohistoric pottery drawings (10k)\nFine-tuned example for Monte Croce Guardia assemblage (6h-MCG)",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
     ]
   },
   {
@@ -880,6 +638,39 @@
     ]
   },
   {
+    "objectID": "pypotteryink/index.html",
+    "href": "pypotteryink/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/index.html#key-features",
+    "href": "pypotteryink/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/index.html#contributors",
+    "href": "pypotteryink/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
     "objectID": "pypotteryink/model_zoo.html",
     "href": "pypotteryink/model_zoo.html",
     "title": "PyPotteryInk Model Zoo",
@@ -921,6 +712,215 @@
     "crumbs": [
       "PyPotteryInk",
       "PyPotteryInk Model Zoo"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/version_history.html",
+    "href": "pypotteryink/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
+    "crumbs": [
+      "PyPotteryInk",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/version_history.html#latest-release",
+    "href": "pypotteryink/version_history.html#latest-release",
+    "title": "Version History",
+    "section": "",
+    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
+    "crumbs": [
+      "PyPotteryInk",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/version_history.html#version-history",
+    "href": "pypotteryink/version_history.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 1.0.0 (September 2025)\n🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nMulti-GPU Support: Added support for Apple Silicon (M1/M2/M3) GPUs via Metal Performance Shaders\nGradio Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking\n\nAutomated Installation: One-click installation scripts for all platforms\nImproved Compatibility: Fixed compatibility issues with newest packages\nStatistics Visualization: New detailed statistics analysis with:\n\nSummary tables showing all key metrics\nInteractive distribution plots\nHistogram and KDE visualizations\nBox plots for metric overview\n\nAdvanced Export Options (Experimental):\n\nElement extraction: Automatically identify and extract individual pottery elements\nSVG export: Convert processed images to scalable vector graphics for publication\n\n\nwith contributions from Francesco di Filippo and Enzo Cocca\n\n\nVersion 0.0.3 (July 2025)\nUpdate to the PyPotteryInk package, with a few improvements\nKey Features:\n\n📌 Added new model 6h-MC model as default 📌\nAdded a test_imgto visualize the performance of each model\nReworking of the test.py module: now it test the library on the test_img\nAdded downscaling options in process_single_image and process_folder\n\nModels:\n\nFine-tuned example for Monte Cimino assemblage (6h-MC)\nFine-tuned model for historical and painted pottery (4h-PAINT)\n\n\n\nVersion 0.0.2 (April 2025)\nA little update to the PyPotteryInk package, with a few bug fixes and improvements.\nKey Features:\n\nAdded an AI disclosure reminder when running the process_folder function\nAdded a Google Colab notebook for easy testing of the package\nFixed some errors in the documentation\n\n\n\nVersion 0.0.1 (January 2025)\nInitial public release of PyPotteryInk.\nKey Features:\n\nImage-to-image translation using pix2pix-turbo architecture\nAdaptive patch-based processing for high-resolution drawings\nComprehensive preprocessing and postprocessing tools\nWeb documentation\n\nModels:\n\nBase model trained on 500 protohistoric pottery drawings (10k)\nFine-tuned example for Monte Croce Guardia assemblage (6h-MCG)",
+    "crumbs": [
+      "PyPotteryInk",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html",
+    "href": "pypotterylens/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.1.0",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#requirements",
+    "href": "pypotterylens/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support (recommended for AI models)",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#automated-installation",
+    "href": "pypotterylens/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLens_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLens_UNIX.sh\n\nRun the script:\n\n./PyPotteryLens_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#manual-installation",
+    "href": "pypotterylens/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#installation-verification",
+    "href": "pypotterylens/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at the indicated URL should display the PyPotteryLens interface",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#troubleshooting",
+    "href": "pypotterylens/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html",
+    "href": "pypotterylens/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#v0.1.0",
+    "href": "pypotterylens/version_history.html#v0.1.0",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html",
+    "href": "pypotteryscan/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.2.0",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#requirements",
+    "href": "pypotteryscan/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryScan, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#automated-installation",
+    "href": "pypotteryscan/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryScan_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5002\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryScan_UNIX.sh\n\nRun the script:\n\n./PyPotteryScan_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5002\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#manual-installation",
+    "href": "pypotteryscan/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5002",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#installation-verification",
+    "href": "pypotteryscan/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5002 should display the PyPotteryScan interface",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#troubleshooting",
+    "href": "pypotteryscan/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5002 already in use\nIf port 5002 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html#updating",
+    "href": "pypotteryscan/installation.html#updating",
+    "title": "Installation",
+    "section": "Updating",
+    "text": "Updating\nTo update PyPotteryScan to the latest version:\n\nDownload the latest version of the code\nActivate the virtual environment\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade",
+    "crumbs": [
+      "PyPotteryScan",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "title": "Version History",
+    "section": "v0.2.0 (Initial Release) - (December 2025)",
+    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.",
+    "crumbs": [
+      "PyPotteryScan",
+      "Version History"
     ]
   }
 ]

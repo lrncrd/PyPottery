@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Installation – PyPottery</title>
+<title>PyPotteryInk Model Zoo – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -114,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/installation.html">Installation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/model_zoo.html">PyPotteryInk Model Zoo</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -129,7 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../imgs/LogoScan.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -147,13 +113,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">PyPottery-Suite</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
@@ -170,13 +136,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">PyPotteryScan</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryscan/index.html" class="sidebar-item-text sidebar-link">
@@ -185,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pypotteryscan/installation.html" class="sidebar-item-text sidebar-link active">
+  <a href="../pypotteryscan/installation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Installation</span></a>
   </div>
 </li>
@@ -238,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pypotteryink/model_zoo.html" class="sidebar-item-text sidebar-link">
+  <a href="../pypotteryink/model_zoo.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">PyPotteryInk Model Zoo</span></a>
   </div>
 </li>
@@ -258,13 +224,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">PyPotteryTrace</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
@@ -293,13 +259,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
  <span class="menu-text">PyPotteryLayout</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
@@ -328,13 +294,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
  <span class="menu-text">PyPotteryLens</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/index.html" class="sidebar-item-text sidebar-link">
@@ -350,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Usage</span></a>
+ <span class="menu-text">Usage (GUI)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -377,36 +343,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#requirements" id="toc-requirements" class="nav-link active" data-scroll-target="#requirements">Requirements</a></li>
-  <li><a href="#automated-installation" id="toc-automated-installation" class="nav-link" data-scroll-target="#automated-installation">Automated Installation</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#benchmark-image" id="toc-benchmark-image" class="nav-link" data-scroll-target="#benchmark-image">Benchmark image</a></li>
+  <li><a href="#available-models" id="toc-available-models" class="nav-link" data-scroll-target="#available-models">Available Models</a>
   <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
-  <li><a href="#linux-macos" id="toc-linux-macos" class="nav-link" data-scroll-target="#linux-macos">Linux / macOS</a></li>
+  <li><a href="#k" id="toc-k" class="nav-link" data-scroll-target="#k"><strong>10k</strong></a></li>
+  <li><a href="#h-mcg" id="toc-h-mcg" class="nav-link" data-scroll-target="#h-mcg"><strong>6h-MCG</strong></a></li>
+  <li><a href="#h-mc" id="toc-h-mc" class="nav-link" data-scroll-target="#h-mc"><strong>6h-MC</strong></a></li>
+  <li><a href="#h-paint" id="toc-h-paint" class="nav-link" data-scroll-target="#h-paint"><strong>4h-PAINT</strong></a></li>
+  <li><a href="#h-papergrid" id="toc-h-papergrid" class="nav-link" data-scroll-target="#h-papergrid"><strong>5h-PAPERGRID</strong></a></li>
   </ul></li>
-  <li><a href="#manual-installation" id="toc-manual-installation" class="nav-link" data-scroll-target="#manual-installation">Manual Installation</a>
-  <ul class="collapse">
-  <li><a href="#create-a-virtual-environment" id="toc-create-a-virtual-environment" class="nav-link" data-scroll-target="#create-a-virtual-environment">1. Create a Virtual Environment</a></li>
-  <li><a href="#upgrade-pip" id="toc-upgrade-pip" class="nav-link" data-scroll-target="#upgrade-pip">2. Upgrade pip</a></li>
-  <li><a href="#install-dependencies" id="toc-install-dependencies" class="nav-link" data-scroll-target="#install-dependencies">3. Install Dependencies</a></li>
-  <li><a href="#start-the-application" id="toc-start-the-application" class="nav-link" data-scroll-target="#start-the-application">4. Start the Application</a></li>
-  </ul></li>
-  <li><a href="#installation-verification" id="toc-installation-verification" class="nav-link" data-scroll-target="#installation-verification">Installation Verification</a></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
-  <ul class="collapse">
-  <li><a href="#python-not-found" id="toc-python-not-found" class="nav-link" data-scroll-target="#python-not-found">Python not found</a></li>
-  <li><a href="#dependency-installation-errors" id="toc-dependency-installation-errors" class="nav-link" data-scroll-target="#dependency-installation-errors">Dependency installation errors</a></li>
-  <li><a href="#port-5002-already-in-use" id="toc-port-5002-already-in-use" class="nav-link" data-scroll-target="#port-5002-already-in-use">Port 5002 already in use</a></li>
-  </ul></li>
-  <li><a href="#updating" id="toc-updating" class="nav-link" data-scroll-target="#updating">Updating</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/installation.html">Installation</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/model_zoo.html">PyPotteryInk Model Zoo</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Installation</h1>
+<h1 class="title">PyPotteryInk Model Zoo</h1>
 </div>
 
 
@@ -424,197 +379,920 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div style="text-align: center;">
-<p><img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 0.2.0 </span></p>
+<p><img src="..\imgs\LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 2.0.0 </span></p>
 </div>
-<section id="requirements" class="level2">
-<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
-<p>Before installing PyPotteryScan, make sure you have:</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This page lists the available pre-trained models for <code>PyPotteryInk</code>. Each model is show specific pros and cons. You can use these models directly or fine-tune them for your specific needs.</p>
+</section>
+<section id="benchmark-image" class="level2">
+<h2 class="anchored" data-anchor-id="benchmark-image">Benchmark image</h2>
+<p>The benchmark image contains a variety of images and styles for testing each model. It can be used to quickly assess the quality of the output. As the library will be used for a variety of different styles and morphologies, new images will be added to the benchmark images.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/test_img.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
+</div>
+</section>
+<section id="available-models" class="level2">
+<h2 class="anchored" data-anchor-id="available-models">Available Models</h2>
+<section id="k" class="level3">
+<h3 class="anchored" data-anchor-id="k"><strong>10k</strong></h3>
+<p><strong>Description</strong>: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.</p>
 <ul>
-<li><strong>Python 3.12</strong> installed on your system</li>
-<li>A NVIDIA GPU with CUDA support</li>
+<li><strong>Training Data</strong>: 492 paired drawings</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 10,000</li>
+<li><strong>Best For</strong>: General purpose archaeological drawing inking, starting point for fine-tuning</li>
 </ul>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>10k</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>500</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.5</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.000005</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“constant”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>500</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>10,000</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>“stabilityai/sd-turbo”</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli</p>
+<p><a href="https://huggingface.co/lrncrd/PyPotteryInk"><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid"></a></p>
+<section id="benchmark" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark">Benchmark</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/test_img_10k.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
+</div>
 </section>
-<section id="automated-installation" class="level2">
-<h2 class="anchored" data-anchor-id="automated-installation">Automated Installation</h2>
-<p>Automated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:</p>
+</section>
+<section id="h-mcg" class="level3">
+<h3 class="anchored" data-anchor-id="h-mcg"><strong>6h-MCG</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.</p>
 <ul>
-<li>✅ Create a Python virtual environment</li>
-<li>✅ Automatically install all dependencies</li>
-<li>✅ Start the application</li>
+<li><strong>Training Data</strong>: 9 paired drawings from Monte Croce Guardia</li>
+<li><strong>Base Model</strong>: 10k Base Model</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 600</li>
+<li><strong>Best For</strong>: Middle Bronze Age / Recent Bronze Age pottery</li>
 </ul>
-<section id="windows" class="level3">
-<h3 class="anchored" data-anchor-id="windows">Windows</h3>
-<p>Double click on the <code>PyPotteryScan_WIN.bat</code> file.</p>
-<p>The script will automatically perform the following steps:</p>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>6h-MCG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>128</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“constant”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>600</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./10k.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli</p>
+<p><a href="https://huggingface.co/lrncrd/PyPotteryInk"><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid"></a></p>
+<section id="benchmark-1" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark-1">Benchmark</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/test_img_MCG.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="h-mc" class="level3">
+<h3 class="anchored" data-anchor-id="h-mc"><strong>6h-MC</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.</p>
 <ul>
-<li>Check for Python on the system</li>
-<li>Create the <code>.venv</code> virtual environment (if it doesn’t exist)</li>
-<li>Activate the virtual environment</li>
-<li>Install/upgrade pip</li>
-<li>Install dependencies from <code>requirements.txt</code></li>
-<li>Start the Flask server at <code>http://localhost:5002</code></li>
+<li><strong>Training Data</strong>: 15 paired drawings from Monte Cimino</li>
+<li><strong>Base Model</strong>: 10k Base Model</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 600</li>
+<li><strong>Best For</strong>: Recent Bronze Age pottery / Final Bronze Age / Historic Age</li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-💡 Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>On first run, dependency installation may take a few minutes. Subsequent runs will be much faster!</p>
-</div>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>6h-MC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>600</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./10k.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli</p>
+<p><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid"></p>
+<section id="benchmark-2" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark-2">Benchmark</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/test_img_MC.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
 </div>
 </section>
-<section id="linux-macos" class="level3">
-<h3 class="anchored" data-anchor-id="linux-macos">Linux / macOS</h3>
-<ol type="1">
-<li>Open the <strong>Terminal</strong> in the project directory</li>
-<li>Make the script executable (first time only):</li>
-</ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x PyPotteryScan_UNIX.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="3" type="1">
-<li>Run the script:</li>
-</ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./PyPotteryScan_UNIX.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The script will automatically:</p>
+</section>
+<section id="h-paint" class="level3">
+<h3 class="anchored" data-anchor-id="h-paint"><strong>4h-PAINT</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for painted decoration and historical pottery.</p>
 <ul>
-<li>Check for Python 3 on the system</li>
-<li>Create the <code>.venv</code> virtual environment (if it doesn’t exist)</li>
-<li>Activate the virtual environment</li>
-<li>Install/upgrade pip</li>
-<li>Install dependencies from <code>requirements.txt</code></li>
-<li>Start the Flask server at <code>http://127.0.0.1:5002</code></li>
+<li><strong>Training Data</strong>: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy</li>
+<li><strong>Base Model</strong>: 6h-MC</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 400</li>
+<li><strong>Best For</strong>: Historic Age / Painted Pottery (No shadows!)</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-📌 Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>To stop the server, press <code>Ctrl+C</code> in the terminal.</p>
-</div>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>4h-PAINT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>400</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./6h-MC.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli, Elisa Pizzuti</p>
+<p><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid"></p>
+<section id="benchmark-3" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark-3">Benchmark</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/test_img_PAINT.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
 </div>
 </section>
 </section>
-<section id="manual-installation" class="level2">
-<h2 class="anchored" data-anchor-id="manual-installation">Manual Installation</h2>
-<p>If you prefer full control over the installation process, you can follow these manual steps:</p>
-<section id="create-a-virtual-environment" class="level3">
-<h3 class="anchored" data-anchor-id="create-a-virtual-environment">1. Create a Virtual Environment</h3>
-<p>It is strongly recommended to use a virtual environment to isolate project dependencies:</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Linux / macOS</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="upgrade-pip" class="level3">
-<h3 class="anchored" data-anchor-id="upgrade-pip">2. Upgrade pip</h3>
-<p>Upgrade pip to the latest available version:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="install-dependencies" class="level3">
-<h3 class="anchored" data-anchor-id="install-dependencies">3. Install Dependencies</h3>
-<p>Install all required dependencies from the <code>requirements.txt</code> file:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-⚠️ Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Make sure you are in the project’s root directory where the <code>requirements.txt</code> file is located.</p>
-</div>
-</div>
-</section>
-<section id="start-the-application" class="level3">
-<h3 class="anchored" data-anchor-id="start-the-application">4. Start the Application</h3>
-<p>Once installation is complete, start the application with:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> app.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The application will be available at:</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🌐 Application URL
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>http://localhost:5002</strong></p>
-</div>
-</div>
-</section>
-</section>
-<section id="installation-verification" class="level2">
-<h2 class="anchored" data-anchor-id="installation-verification">Installation Verification</h2>
-<p>To verify that everything was installed correctly:</p>
-<ol type="1">
-<li>The application should start without errors</li>
-<li>You should see a confirmation message in the terminal</li>
-<li>Opening your browser at <code>http://localhost:5002</code> should display the PyPotteryScan interface</li>
-</ol>
-</section>
-<section id="troubleshooting" class="level2">
-<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<section id="python-not-found" class="level3">
-<h3 class="anchored" data-anchor-id="python-not-found">Python not found</h3>
-<p>If you receive an error indicating that Python is not installed:</p>
+<section id="h-papergrid" class="level3">
+<h3 class="anchored" data-anchor-id="h-papergrid"><strong>5h-PAPERGRID</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for papergrid pottery.</p>
 <ul>
-<li><strong>Windows</strong>: Download Python from <a href="https://www.python.org/downloads/">python.org</a> and make sure to check “Add Python to PATH” during installation</li>
-<li><strong>Linux</strong>: Install Python using your distribution’s package manager (e.g., <code>sudo apt install python3</code>)</li>
-<li><strong>macOS</strong>: Install Python via <a href="https://brew.sh/">Homebrew</a> with <code>brew install python3</code></li>
+<li><strong>Training Data</strong>: 15 paired drawings from Middle Bronze Age of Northern Italy</li>
+<li><strong>Base Model</strong>: 6h-MC</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 400</li>
+<li><strong>Best For</strong>: Papergrid Pottery (No shadows!)</li>
 </ul>
-</section>
-<section id="dependency-installation-errors" class="level3">
-<h3 class="anchored" data-anchor-id="dependency-installation-errors">Dependency installation errors</h3>
-<p>If dependency installation fails:</p>
-<ol type="1">
-<li>Make sure you have an active internet connection</li>
-<li>Try upgrading pip: <code>python -m pip install --upgrade pip</code></li>
-<li>Install dependencies one at a time to identify which package is causing issues</li>
-</ol>
-</section>
-<section id="port-5002-already-in-use" class="level3">
-<h3 class="anchored" data-anchor-id="port-5002-already-in-use">Port 5002 already in use</h3>
-<p>If port 5002 is already occupied by another application, you can:</p>
-<ol type="1">
-<li>Close the application using the port</li>
-<li>Or modify the port in the <code>app.py</code> file</li>
-</ol>
-</section>
-</section>
-<section id="updating" class="level2">
-<h2 class="anchored" data-anchor-id="updating">Updating</h2>
-<p>To update PyPotteryScan to the latest version:</p>
-<ol type="1">
-<li>Download the latest version of the code</li>
-<li>Activate the virtual environment</li>
-<li>Update dependencies:</li>
-</ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt <span class="at">--upgrade</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 64%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>5h-PAPERGRID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>400</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./6h-MC.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli, Federico Erbetti</p>
+<p><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid"></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

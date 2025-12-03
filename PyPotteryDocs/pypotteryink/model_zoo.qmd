@@ -162,3 +162,158 @@ The benchmark image contains a variety of images and styles for testing each mod
 | adam_weight_decay | 0.01 |
 | allow_tf32 | false |
 | checkpointing_steps | 100 |
+| dataloader_num_workers | 4 |
+| enable_xformers_memory_efficient_attention | true |
+| eval_freq | 100 |
+| gan_disc_type | "vagan_clip" |
+| gan_loss_type | "multilevel_sigmoid_s" |
+| gradient_accumulation_steps | 4 |
+| gradient_checkpointing | false |
+| lambda_clipsim | 3 |
+| lambda_gan | 0.9 |
+| lambda_l2 | 1 |
+| lambda_lpips | 10 |
+| learning_rate | 0.00001 |
+| lora_rank_unet | 256 |
+| lora_rank_vae | 48 |
+| lr_num_cycles | 1 |
+| lr_power | 1 |
+| lr_scheduler | "cosine" |
+| lr_warmup_steps | 200 |
+| max_grad_norm | 1 |
+| max_train_steps | 600 |
+| mixed_precision | "no" |
+| num_samples_eval | 100 |
+| num_training_epochs | 1 |
+| pretrained_model_name_or_path | ./10k.pkl |
+| resolution | 512 |
+| set_grads_to_none | false |
+| test_image_prep | "resized_crop_512" |
+| track_val_fid | true |
+| train_batch_size | 1 |
+| train_image_prep | "resized_crop_512" |
+| viz_freq | 50 |
+
+**Author**: Lorenzo Cardarelli
+
+[![Models](https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg)](https://huggingface.co/lrncrd/PyPotteryInk)
+
+#### Benchmark
+
+![](images_docs/test_img_MC.jpg){width=800}
+
+### **4h-PAINT**
+
+**Description**: Fine-tuned model specialized for painted decoration and historical pottery.
+
+- **Training Data**: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy
+- **Base Model**: 6h-MC
+- **Resolution**: 512×512 pixels
+- **Training Steps**: 400
+- **Best For**: Historic Age / Painted Pottery (No shadows!)
+
+**Parameters used for training**:
+
+| Parameter | 4h-PAINT |
+|---|---|
+| adam_beta1 | 0.9 |
+| adam_beta2 | 0.999 |
+| adam_epsilon | 0.00000001 |
+| adam_weight_decay | 0.01 |
+| allow_tf32 | false |
+| checkpointing_steps | 100 |
+| dataloader_num_workers | 4 |
+| enable_xformers_memory_efficient_attention | true |
+| eval_freq | 100 |
+| gan_disc_type | "vagan_clip" |
+| gan_loss_type | "multilevel_sigmoid_s" |
+| gradient_accumulation_steps | 4 |
+| gradient_checkpointing | false |
+| lambda_clipsim | 3 |
+| lambda_gan | 0.9 |
+| lambda_l2 | 1 |
+| lambda_lpips | 10 |
+| learning_rate | 0.00001 |
+| lora_rank_unet | 256 |
+| lora_rank_vae | 48 |
+| lr_num_cycles | 1 |
+| lr_power | 1 |
+| lr_scheduler | "cosine" |
+| lr_warmup_steps | 200 |
+| max_grad_norm | 1 |
+| max_train_steps | 400 |
+| mixed_precision | "no" |
+| num_samples_eval | 100 |
+| num_training_epochs | 1 |
+| pretrained_model_name_or_path | ./6h-MC.pkl |
+| resolution | 512 |
+| set_grads_to_none | false |
+| test_image_prep | "resized_crop_512" |
+| track_val_fid | true |
+| train_batch_size | 1 |
+| train_image_prep | "resized_crop_512" |
+| viz_freq | 50 |
+
+**Author**: Lorenzo Cardarelli, Elisa Pizzuti
+
+[![Models](https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg)](https://huggingface.co/lrncrd/PyPotteryInk)
+
+#### Benchmark
+
+![](images_docs/test_img_PAINT.jpg){width=800}
+
+### **5h-PAPERGRID**
+
+**Description**: Fine-tuned model specialized for papergrid pottery.
+
+- **Training Data**: 15 paired drawings from Middle Bronze Age of Northern Italy
+- **Base Model**: 6h-MC
+- **Resolution**: 512×512 pixels
+- **Training Steps**: 400
+- **Best For**: Papergrid Pottery (No shadows!)
+
+**Parameters used for training**:
+
+| Parameter | 5h-PAPERGRID |
+|---|---|
+| adam_beta1 | 0.9 |
+| adam_beta2 | 0.999 |
+| adam_epsilon | 0.00000001 |
+| adam_weight_decay | 0.01 |
+| allow_tf32 | false |
+| checkpointing_steps | 100 |
+| dataloader_num_workers | 4 |
+| enable_xformers_memory_efficient_attention | true |
+| eval_freq | 100 |
+| gan_disc_type | "vagan_clip" |
+| gan_loss_type | "multilevel_sigmoid_s" |
+| gradient_accumulation_steps | 4 |
+| gradient_checkpointing | false |
+| lambda_clipsim | 3 |
+| lambda_gan | 0.9 |
+| lambda_l2 | 1 |
+| lambda_lpips | 10 |
+| learning_rate | 0.00001 |
+| lora_rank_unet | 256 |
+| lora_rank_vae | 48 |
+| lr_num_cycles | 1 |
+| lr_power | 1 |
+| lr_scheduler | "cosine" |
+| lr_warmup_steps | 200 |
+| max_grad_norm | 1 |
+| max_train_steps | 400 |
+| mixed_precision | "no" |
+| num_samples_eval | 100 |
+| num_training_epochs | 1 |
+| pretrained_model_name_or_path | ./6h-MC.pkl |
+| resolution | 512 |
+| set_grads_to_none | false |
+| test_image_prep | "resized_crop_512" |
+| track_val_fid | true |
+| train_batch_size | 1 |
+| train_image_prep | "resized_crop_512" |
+| viz_freq | 50 |
+
+**Author**: Lorenzo Cardarelli, Federico Erbetti
+
+[![Models](https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg)](https://huggingface.co/lrncrd/PyPotteryInk)
