@@ -1,0 +1,360 @@
+---
+title: "Advanced Documentation"
+format: html
+toc: true
+---
+
+<div style="text-align: center;">
+  <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 2.0.0
+  </span>
+</div>
+
+# First steps into automatic inking
+
+## Introduction
+
+::: {.callout-important}
+While this guide uses the API approach, it provides a solid foundation for understanding the underlying process.
+:::
+
+Archaeological drawing digitisation represents a crucial step in preserving and sharing our cultural heritage. While traditionally done by hand, modern computational methods can help streamline this process while maintaining the high standards required for archaeological documentation. This guide walks you through using the `ink` module, a specialised tool designed for converting pencil drawings of archaeological artefacts into publication-ready inked versions.
+
+## Setting Up Your Environment
+
+Let's begin by importing the necessary functions from the toolset:
+
+```python
+from ink import process_folder, run_diagnostics
+```
+
+These two functions serve as the foundation of our processing pipeline. The `run_diagnostics` function helps us understand how our images will interact with the model, while `process_folder` handles the actual conversion process.
+
+Think of `run_diagnostics` as our planning phase and `process_folder` as our execution phase.
+
+## Understanding the Diagnostic Process
+
+Before processing an entire collection of drawings, we need to understand how our specific drawings will interact with the model.
+
+First, let's set up our working directory:
+
+```python
+my_path = "Montale_example"
+```
+
+Now we can run our diagnostic analysis:
+
+```python
+run_diagnostics(
+    input_folder=my_path,           # Where your drawings are stored
+    model_path="6h-MCG.pkl",        # The trained model file
+    num_sample_images=1,            # How many test images to analyze
+    contrast_values=[0.5, 0.75, 1, 1.5, 2, 3],  # Different contrast levels to test
+)
+```
+
+Let's understand each parameter in detail:
+
+- `input_folder`: This is where your pencil drawings are stored. The function will randomly select images from this folder for analysis.
+- `model_path`: Points to your trained model file. This model contains the learned patterns for converting pencil drawings to inked versions.
+- `num_sample_images`: Controls how many images to analyse. For a small collection, 1-2 images might suffice, but for larger collections with varying drawing styles, you might want to test more.
+- `contrast_values`: These values help us understand how different contrast levels affect the model's output. Think of this like adjusting the pressure of your pen when inking - too light (low contrast) might lose details, while too heavy (high contrast) might create unwanted artefacts.
+
+The diagnostic process creates a structured output that helps us understand how our images will be processed:
+
+```plaintext
+diagnostic/
+├── contrast_analysis_{progressive_number}.png  # Shows how contrast affects results
+├── patches_{progressive_number}.png            # Shows how images will be divided
+└── summary_{progressive_number}.txt            # Contains detailed analysis
+```
+
+Let's examine the patch division output (@fig-patches):
+
+::: {#fig-patches}
+![](images_docs/patches_1.png)
+
+This visualization shows how your image will be processed in smaller chunks.
+:::
+
+The patch division is crucial because it shows us how the model will break down larger images into manageable pieces. The overlap between patches helps prevent visible seams in the final output.
+
+Next, let's look at the contrast analysis (@fig-contrast):
+
+::: {#fig-contrast}
+![](images_docs/contrast_analysis_1.png){width=80%}
+
+This analysis shows how different contrast values affect the model's output. Notice how extreme values can either lose detail (too low) or create artefacts (too high).
+:::
+
+This visualization is particularly important because it helps us find the sweet spot for contrast enhancement. Looking at the results:
+
+- A contrast value of 0.5 is too low, causing loss of fine details
+- A contrast value of 3.0 is too high, introducing unwanted artefacts
+- Values between 1.0 and 1.5 seem to produce the most balanced results
+
+## Processing Your Collection
+
+After understanding how our images interact with the model through diagnostics, we can proceed with processing our entire collection:
+
+```python
+process_folder(
+    input_folder=my_path,
+    model_path="6h-MCG.pkl",
+    contrast_scale=1.25,            # Chosen based on diagnostic results
+    output_dir="Montale_processed", # We define an output folder
+    use_fp16=True,                  # Enables faster processing
+    upscale=1                       # Upscale the image (1: no upscaling)
+)
+```
+
+The processing creates an organized output structure that helps us track and validate our results:
+
+```plaintext
+Montale_processed/
+├── comparisons/                # Before/after comparisons
+│   ├── comparison_{image_name}.jpg
+├── logs/                       # Detailed processing records
+│   └── processing_log_{timestamp}.txt
+├── {image_name}.jpg           # Final processed images
+```
+
+The log files contain valuable information about the processing:
+
+```plaintext
+Processing started at: 2024-12-30 13:26:26.607305
+Configuration:
+- Input folder: Montale_example
+- Output directory: Montale_processed
+- Model path: model_601.pkl
+- FP16 mode: True
+- Patch size: 512px
+- Overlap: 64px
+- Contrast scale: 1.25
+- Prompt: make it ready for publication
+
+[Processing details...]
+```
+
+The comparison images (@fig-result) help us verify the quality of our results:
+
+::: {#fig-result}
+![](images_docs/comparison_2.jpg){width=80%}
+
+Side-by-side comparison showing the transformation from pencil drawing to inked version.
+:::
+
+## Best Practices and Troubleshooting
+
+To get the best results from your processing:
+
+1. Always start with diagnostics, even if you're familiar with the model. Different collections might require slightly different parameters.
+2. Pay attention to image resolution. The model works best with clear, well-scanned drawings. If your scans are too light or too dark, consider adjusting them before processing (@sec-preprocessing).
+3. Monitor the processing logs. If you see many failed conversions, it might indicate issues with your input images or parameters.
+4. Review the comparison images carefully. They can help you spot any systematic issues that might need addressing.
+5. Upscaling can help achieve a better result, especially when dealing with complex decorations. Upscaling factor is just for processing. The upscaling factor is for processing only. It doesn't affect the output size.
+
+::: {.callout-important}
+Remember that while this tool automates much of the inking process, it's still important to review the results with an archaeological perspective. The model is a tool to assist, not replace, archaeological expertise.
+:::
+
+# Post-Processing Tools for Archaeological Drawings
+
+## Introduction
+
+After generating inked versions of archaeological drawings, we often need to refine the results to meet some publication requirements or enhance the result. The post-processing module provides tools for image binarization, background removal, and stippling pattern enhancement. This guide will walk you through the main functions and best practices for using these tools.
+
+## Required Libraries
+
+Let's start by importing the necessary functions:
+
+```python
+from postprocessing import (
+    binarize_image,
+    remove_white_background,
+    process_image_binarize,
+    binarize_folder_images,
+    enhance_stippling,
+    modify_stippling,
+    control_stippling
+)
+```
+
+## Binarization and Background Removal
+
+For many publication contexts, we want to remove the white background to create binary transparent images that can be easily integrated into figures:
+
+```python
+
+# You can combine binarization and background removal in one step:
+processed_image = process_image_binarize(
+    image_path="path/to/image.jpg",
+    binarize_threshold=127,
+    white_threshold=250,
+    save_path="output.png"  # Must use PNG to preserve transparency
+)
+```
+
+Here the result:
+
+![Original ink](images_docs/2.jpg)
+
+![Binarized and background-clear image](images_docs/output.png)
+
+## Batch Processing
+
+When working with multiple drawings, you can process an entire folder at once:
+
+```python
+binarize_folder_images(
+    input_folder="path/to/drawings",
+    binarize_threshold=127,
+    white_threshold=250
+)
+```
+
+This creates a new folder with "_binarized" suffix containing processed images
+
+## Advanced Stippling Control
+
+By using the post-processing module you can enhance and modify stippling patterns, check out this example!
+
+### Enhancing Stippling Patterns
+
+First, we can isolate and enhance existing stippling patterns:
+
+```python
+# Separate the main drawing from stippling patterns
+processed_img, stippling_pattern = enhance_stippling(
+    img=Image.open("drawing.png"),
+    min_size=80,     # Minimum size of dots to preserve
+    connectivity=2    # How dots connect to form patterns
+)
+```
+
+The function returns two images:
+
+- processed_img: Main drawing without small dots
+- stippling_pattern: Isolated stippling pattern
+
+![Image without dotting](images_docs/no_dots.png)
+
+![Isolated dotting](images_docs/dots.png)
+
+### Modifying Stippling
+
+Once we've isolated the stippling patterns, we can modify them in several ways:
+
+```python
+modified_image = modify_stippling(
+    processed_img=processed_img,
+    stippling_pattern=stippling_pattern,
+    operation='dilate',  # Options: 'dilate', 'fade', or 'both'
+    intensity=0.5,      # Controls strength of dilation (0.0-1.0)
+    opacity=1.0         # Controls darkness of stippling (0.0-1.0)
+)
+```
+
+The `operation` parameter offers three different modification approaches:
+
+- 'dilate': Makes dots larger while maintaining their density
+- 'fade': Adjusts the opacity of dots without changing their size
+- 'both': Combines dilation and opacity adjustments
+
+Here a bunch of examples:
+
+First, we increase the dots using the "dilate" option:
+
+![](images_docs/dilated.png)
+
+Secondly, we try to adjust the opacity using the fade option:
+
+![](images_docs/faded.png)
+
+Finally, we combine the techniques:
+
+![](images_docs/combined.png)
+
+### Batch Stippling Control
+
+For consistent stippling across multiple drawings:
+
+```python
+control_stippling(
+    input_folder="path/to/drawings",
+    min_size=50,          # Size threshold for dot detection
+    connectivity=2,        # How dots connect to each other
+    operation='fade',      # Type of modification
+    intensity=0.5,        # Strength of effect
+    opacity=0.5           # Final opacity of stippling
+)
+```
+
+This creates a new folder with "_dotting_modified" suffix containing the processed images.
+
+## Understanding the Parameters
+
+When working with the stippling controls, it's important to understand how different parameters affect the result:
+
+- `min_size`: Controls which dots are considered part of stippling patterns versus actual drawing elements. Larger values preserve only larger dots.
+- `connectivity`: Determines how dots are grouped together. Higher values (2 or 3) allow more diagonal connections.
+- `intensity`: When dilating, controls how much dots expand. Values between 0.3-0.7 usually give the best results.
+- `opacity`: Controls the final darkness of stippling patterns. Lower values create lighter shading.
+
+## Best Practices
+
+1. Always work with high-resolution images to ensure clean binarization.
+2. Start with conservative threshold values and adjust as needed.
+3. Save intermediate results when working with stippling modifications.
+4. Test your parameters on a small sample before processing entire collections.
+
+# Preprocessing Pipeline Documentation {#sec-preprocessing}
+
+## Introduction to Image Preprocessing
+
+Archaeological drawings often vary in their characteristics due to different artists, scanning conditions, and original materials. These variations can impact the performance of the model. This guide outlines the preprocessing pipeline that helps standardise images before they are processed by the model.
+
+## Import Required Libraries
+
+```python
+from ink import process_folder, process_single_image
+from preprocessing import DatasetAnalyzer, process_image_metrics, 
+                visualize_metrics_change, process_folder_metrics
+```
+
+## Understanding the Problem: Image Metric Variations
+
+Let's examine a specific case that illustrates why preprocessing is necessary. Consider the following high-contrast image (@fig-high-contrast).
+
+::: {#fig-high-contrast}
+![](images_docs/2_contrast.jpg){width=80%}
+
+An archaeological drawing with excessive contrast. The high contrast is evident in the black areas
+:::
+
+When we apply our model directly to this image without preprocessing, we get problematic results (@fig-high-contrast-result):
+
+::: {#fig-high-contrast-result}
+![](images_docs/fig_high_constrast_result.png){width=80%}
+
+Direct model application showing artefacts. Note the missing dotting patterns and blue tiling artefacts in the bottom-right region.
+:::
+
+The output shows two significant issues:
+
+1. Missing dot patterns in shaded areas
+2. Unwanted blue tiling artefacts, particularly visible in the bottom-right section
+
+These issues arise because the input image's characteristics deviate significantly from the training dataset's standard properties. Our preprocessing pipeline addresses this by analysing and adjusting key image metrics to align them with our training data distribution.
+
+## Image Metrics Analysis
+
+The `DatasetAnalyzer` class calculates eight key metrics that characterise archaeological drawings:
+
+1. Mean brightness: Overall lightness of the image
+2. Standard deviation: Measure of tonal variation
+3. Contrast ratio: Ratio between the brightest and darkest areas
+4. Median: Middle intensity value
+5. Dynamic range: Difference between the 99th and 1st percentile intensities

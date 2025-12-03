@@ -1,0 +1,164 @@
+---
+title: "PyPotteryInk Model Zoo"
+format: html
+---
+
+<div style="text-align: center;">
+  <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 2.0.0
+  </span>
+</div>
+
+## Overview
+
+This page lists the available pre-trained models for `PyPotteryInk`. Each model is show specific pros and cons. You can use these models directly or fine-tune them for your specific needs.
+
+## Benchmark image
+
+The benchmark image contains a variety of images and styles for testing each model. It can be used to quickly assess the quality of the output. As the library will be used for a variety of different styles and morphologies, new images will be added to the benchmark images.
+
+![](images_docs/test_img.jpg){width=800}
+
+## Available Models
+
+### **10k**
+
+**Description**: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.
+
+- **Training Data**: 492 paired drawings
+- **Resolution**: 512×512 pixels
+- **Training Steps**: 10,000
+- **Best For**: General purpose archaeological drawing inking, starting point for fine-tuning
+
+**Parameters used for training**:
+
+| Parameter | 10k |
+|---|---|
+| adam_beta1 | 0.9 |
+| adam_beta2 | 0.999 |
+| adam_epsilon | 0.00000001 |
+| adam_weight_decay | 0.01 |
+| allow_tf32 | false |
+| checkpointing_steps | 500 |
+| dataloader_num_workers | 0 |
+| enable_xformers_memory_efficient_attention | true |
+| eval_freq | 100 |
+| gan_disc_type | "vagan_clip" |
+| gan_loss_type | "multilevel_sigmoid_s" |
+| gradient_accumulation_steps | 1 |
+| gradient_checkpointing | false |
+| lambda_clipsim | 5 |
+| lambda_gan | 0.5 |
+| lambda_l2 | 1 |
+| lambda_lpips | 5 |
+| learning_rate | 0.000005 |
+| lora_rank_unet | 8 |
+| lora_rank_vae | 4 |
+| lr_num_cycles | 1 |
+| lr_power | 1 |
+| lr_scheduler | "constant" |
+| lr_warmup_steps | 500 |
+| max_grad_norm | 1 |
+| max_train_steps | 10,000 |
+| mixed_precision | "no" |
+| num_samples_eval | 100 |
+| num_training_epochs | 1 |
+| pretrained_model_name_or_path | "stabilityai/sd-turbo" |
+| resolution | 512 |
+| set_grads_to_none | false |
+| test_image_prep | "resized_crop_512" |
+| track_val_fid | true |
+| train_batch_size | 2 |
+| train_image_prep | "resized_crop_512" |
+| viz_freq | 25 |
+
+**Author**: Lorenzo Cardarelli
+
+[![Models](https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg)](https://huggingface.co/lrncrd/PyPotteryInk)
+
+#### Benchmark
+
+![](images_docs/test_img_10k.jpg){width=800}
+
+### **6h-MCG**
+
+**Description**: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.
+
+- **Training Data**: 9 paired drawings from Monte Croce Guardia
+- **Base Model**: 10k Base Model
+- **Resolution**: 512×512 pixels
+- **Training Steps**: 600
+- **Best For**: Middle Bronze Age / Recent Bronze Age pottery
+
+**Parameters used for training**:
+
+| Parameter | 6h-MCG |
+|---|---|
+| adam_beta1 | 0.9 |
+| adam_beta2 | 0.999 |
+| adam_epsilon | 0.00000001 |
+| adam_weight_decay | 0.01 |
+| allow_tf32 | false |
+| checkpointing_steps | 100 |
+| dataloader_num_workers | 4 |
+| enable_xformers_memory_efficient_attention | true |
+| eval_freq | 100 |
+| gan_disc_type | "vagan_clip" |
+| gan_loss_type | "multilevel_sigmoid_s" |
+| gradient_accumulation_steps | 4 |
+| gradient_checkpointing | false |
+| lambda_clipsim | 3 |
+| lambda_gan | 0.9 |
+| lambda_l2 | 1 |
+| lambda_lpips | 10 |
+| learning_rate | 0.00001 |
+| lora_rank_unet | 128 |
+| lora_rank_vae | 48 |
+| lr_num_cycles | 1 |
+| lr_power | 1 |
+| lr_scheduler | "constant" |
+| lr_warmup_steps | 200 |
+| max_grad_norm | 1 |
+| max_train_steps | 600 |
+| mixed_precision | "no" |
+| num_samples_eval | 100 |
+| num_training_epochs | 1 |
+| pretrained_model_name_or_path | ./10k.pkl |
+| resolution | 512 |
+| set_grads_to_none | false |
+| test_image_prep | "resized_crop_512" |
+| track_val_fid | true |
+| train_batch_size | 1 |
+| train_image_prep | "resized_crop_512" |
+| viz_freq | 50 |
+
+**Author**: Lorenzo Cardarelli
+
+[![Models](https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg)](https://huggingface.co/lrncrd/PyPotteryInk)
+
+#### Benchmark
+
+![](images_docs/test_img_MCG.jpg){width=800}
+
+### **6h-MC**
+
+**Description**: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.
+
+- **Training Data**: 15 paired drawings from Monte Cimino
+- **Base Model**: 10k Base Model
+- **Resolution**: 512×512 pixels
+- **Training Steps**: 600
+- **Best For**: Recent Bronze Age pottery / Final Bronze Age / Historic Age
+
+**Parameters used for training**:
+
+| Parameter | 6h-MC |
+|---|---|
+| adam_beta1 | 0.9 |
+| adam_beta2 | 0.999 |
+| adam_epsilon | 0.00000001 |
+| adam_weight_decay | 0.01 |
+| allow_tf32 | false |
+| checkpointing_steps | 100 |

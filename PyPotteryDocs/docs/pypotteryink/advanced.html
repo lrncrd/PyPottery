@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Advanced Documentation – PyPottery</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d13b9eec3d8f70059c8760d72d2de5d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/advanced.html">Advanced Documentation</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PyPottery</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPottery-Suite</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PyPottery-Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../requirements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Requirements</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPotteryScan</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryscan/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryscan/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryscan/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using PyPotteryScan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryscan/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPotteryInk</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using PyPotteryInk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/advanced.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Advanced Documentation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/model_zoo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PyPotteryInk Model Zoo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">API Documentation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotteryink/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPotteryTrace</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Usage (GUI)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPotteryLayout</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylayout/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylayout/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Usage (GUI)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylayout/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">PyPotteryLens</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylens/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylens/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Usage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pypotterylens/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../acknowledgment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#first-steps-into-automatic-inking" id="toc-first-steps-into-automatic-inking" class="nav-link active" data-scroll-target="#first-steps-into-automatic-inking">First steps into automatic inking</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#setting-up-your-environment" id="toc-setting-up-your-environment" class="nav-link" data-scroll-target="#setting-up-your-environment">Setting Up Your Environment</a></li>
+  <li><a href="#understanding-the-diagnostic-process" id="toc-understanding-the-diagnostic-process" class="nav-link" data-scroll-target="#understanding-the-diagnostic-process">Understanding the Diagnostic Process</a></li>
+  <li><a href="#processing-your-collection" id="toc-processing-your-collection" class="nav-link" data-scroll-target="#processing-your-collection">Processing Your Collection</a></li>
+  <li><a href="#best-practices-and-troubleshooting" id="toc-best-practices-and-troubleshooting" class="nav-link" data-scroll-target="#best-practices-and-troubleshooting">Best Practices and Troubleshooting</a></li>
+  </ul></li>
+  <li><a href="#post-processing-tools-for-archaeological-drawings" id="toc-post-processing-tools-for-archaeological-drawings" class="nav-link" data-scroll-target="#post-processing-tools-for-archaeological-drawings">Post-Processing Tools for Archaeological Drawings</a>
+  <ul class="collapse">
+  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1">Introduction</a></li>
+  <li><a href="#required-libraries" id="toc-required-libraries" class="nav-link" data-scroll-target="#required-libraries">Required Libraries</a></li>
+  <li><a href="#binarization-and-background-removal" id="toc-binarization-and-background-removal" class="nav-link" data-scroll-target="#binarization-and-background-removal">Binarization and Background Removal</a></li>
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing">Batch Processing</a></li>
+  <li><a href="#advanced-stippling-control" id="toc-advanced-stippling-control" class="nav-link" data-scroll-target="#advanced-stippling-control">Advanced Stippling Control</a>
+  <ul class="collapse">
+  <li><a href="#enhancing-stippling-patterns" id="toc-enhancing-stippling-patterns" class="nav-link" data-scroll-target="#enhancing-stippling-patterns">Enhancing Stippling Patterns</a></li>
+  <li><a href="#modifying-stippling" id="toc-modifying-stippling" class="nav-link" data-scroll-target="#modifying-stippling">Modifying Stippling</a></li>
+  <li><a href="#batch-stippling-control" id="toc-batch-stippling-control" class="nav-link" data-scroll-target="#batch-stippling-control">Batch Stippling Control</a></li>
+  </ul></li>
+  <li><a href="#understanding-the-parameters" id="toc-understanding-the-parameters" class="nav-link" data-scroll-target="#understanding-the-parameters">Understanding the Parameters</a></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices">Best Practices</a></li>
+  </ul></li>
+  <li><a href="#sec-preprocessing" id="toc-sec-preprocessing" class="nav-link" data-scroll-target="#sec-preprocessing">Preprocessing Pipeline Documentation</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-image-preprocessing" id="toc-introduction-to-image-preprocessing" class="nav-link" data-scroll-target="#introduction-to-image-preprocessing">Introduction to Image Preprocessing</a></li>
+  <li><a href="#import-required-libraries" id="toc-import-required-libraries" class="nav-link" data-scroll-target="#import-required-libraries">Import Required Libraries</a></li>
+  <li><a href="#understanding-the-problem-image-metric-variations" id="toc-understanding-the-problem-image-metric-variations" class="nav-link" data-scroll-target="#understanding-the-problem-image-metric-variations">Understanding the Problem: Image Metric Variations</a></li>
+  <li><a href="#image-metrics-analysis" id="toc-image-metrics-analysis" class="nav-link" data-scroll-target="#image-metrics-analysis">Image Metrics Analysis</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryink/index.html">PyPotteryInk</a></li><li class="breadcrumb-item"><a href="../pypotteryink/advanced.html">Advanced Documentation</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Advanced Documentation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="text-align: center;">
+<p><img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 2.0.0 </span></p>
+</div>
+<section id="first-steps-into-automatic-inking" class="level1">
+<h1>First steps into automatic inking</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While this guide uses the API approach, it provides a solid foundation for understanding the underlying process.</p>
+</div>
+</div>
+<p>Archaeological drawing digitisation represents a crucial step in preserving and sharing our cultural heritage. While traditionally done by hand, modern computational methods can help streamline this process while maintaining the high standards required for archaeological documentation. This guide walks you through using the <code>ink</code> module, a specialised tool designed for converting pencil drawings of archaeological artefacts into publication-ready inked versions.</p>
+</section>
+<section id="setting-up-your-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-your-environment">Setting Up Your Environment</h2>
+<p>Let’s begin by importing the necessary functions from the toolset:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ink <span class="im">import</span> process_folder, run_diagnostics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These two functions serve as the foundation of our processing pipeline. The <code>run_diagnostics</code> function helps us understand how our images will interact with the model, while <code>process_folder</code> handles the actual conversion process.</p>
+<p>Think of <code>run_diagnostics</code> as our planning phase and <code>process_folder</code> as our execution phase.</p>
+</section>
+<section id="understanding-the-diagnostic-process" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-diagnostic-process">Understanding the Diagnostic Process</h2>
+<p>Before processing an entire collection of drawings, we need to understand how our specific drawings will interact with the model.</p>
+<p>First, let’s set up our working directory:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_path <span class="op">=</span> <span class="st">"Montale_example"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can run our diagnostic analysis:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>run_diagnostics(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    input_folder<span class="op">=</span>my_path,           <span class="co"># Where your drawings are stored</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    model_path<span class="op">=</span><span class="st">"6h-MCG.pkl"</span>,        <span class="co"># The trained model file</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    num_sample_images<span class="op">=</span><span class="dv">1</span>,            <span class="co"># How many test images to analyze</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    contrast_values<span class="op">=</span>[<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">3</span>],  <span class="co"># Different contrast levels to test</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s understand each parameter in detail:</p>
+<ul>
+<li><code>input_folder</code>: This is where your pencil drawings are stored. The function will randomly select images from this folder for analysis.</li>
+<li><code>model_path</code>: Points to your trained model file. This model contains the learned patterns for converting pencil drawings to inked versions.</li>
+<li><code>num_sample_images</code>: Controls how many images to analyse. For a small collection, 1-2 images might suffice, but for larger collections with varying drawing styles, you might want to test more.</li>
+<li><code>contrast_values</code>: These values help us understand how different contrast levels affect the model’s output. Think of this like adjusting the pressure of your pen when inking - too light (low contrast) might lose details, while too heavy (high contrast) might create unwanted artefacts.</li>
+</ul>
+<p>The diagnostic process creates a structured output that helps us understand how our images will be processed:</p>
+<pre class="plaintext"><code>diagnostic/
+├── contrast_analysis_{progressive_number}.png  # Shows how contrast affects results
+├── patches_{progressive_number}.png            # Shows how images will be divided
+└── summary_{progressive_number}.txt            # Contains detailed analysis</code></pre>
+<p>Let’s examine the patch division output (<a href="#fig-patches" class="quarto-xref">Figure&nbsp;1</a>):</p>
+<div id="fig-patches" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/patches_1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: This visualization shows how your image will be processed in smaller chunks.
+</figcaption>
+</figure>
+</div>
+<p>The patch division is crucial because it shows us how the model will break down larger images into manageable pieces. The overlap between patches helps prevent visible seams in the final output.</p>
+<p>Next, let’s look at the contrast analysis (<a href="#fig-contrast" class="quarto-xref">Figure&nbsp;2</a>):</p>
+<div id="fig-contrast" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-contrast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/contrast_analysis_1.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-contrast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: This analysis shows how different contrast values affect the model’s output. Notice how extreme values can either lose detail (too low) or create artefacts (too high).
+</figcaption>
+</figure>
+</div>
+<p>This visualization is particularly important because it helps us find the sweet spot for contrast enhancement. Looking at the results:</p>
+<ul>
+<li>A contrast value of 0.5 is too low, causing loss of fine details</li>
+<li>A contrast value of 3.0 is too high, introducing unwanted artefacts</li>
+<li>Values between 1.0 and 1.5 seem to produce the most balanced results</li>
+</ul>
+</section>
+<section id="processing-your-collection" class="level2">
+<h2 class="anchored" data-anchor-id="processing-your-collection">Processing Your Collection</h2>
+<p>After understanding how our images interact with the model through diagnostics, we can proceed with processing our entire collection:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>process_folder(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    input_folder<span class="op">=</span>my_path,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    model_path<span class="op">=</span><span class="st">"6h-MCG.pkl"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    contrast_scale<span class="op">=</span><span class="fl">1.25</span>,            <span class="co"># Chosen based on diagnostic results</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"Montale_processed"</span>, <span class="co"># We define an output folder</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    use_fp16<span class="op">=</span><span class="va">True</span>,                  <span class="co"># Enables faster processing</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    upscale<span class="op">=</span><span class="dv">1</span>                       <span class="co"># Upscale the image (1: no upscaling)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The processing creates an organized output structure that helps us track and validate our results:</p>
+<pre class="plaintext"><code>Montale_processed/
+├── comparisons/                # Before/after comparisons
+│   ├── comparison_{image_name}.jpg
+├── logs/                       # Detailed processing records
+│   └── processing_log_{timestamp}.txt
+├── {image_name}.jpg           # Final processed images</code></pre>
+<p>The log files contain valuable information about the processing:</p>
+<pre class="plaintext"><code>Processing started at: 2024-12-30 13:26:26.607305
+Configuration:
+- Input folder: Montale_example
+- Output directory: Montale_processed
+- Model path: model_601.pkl
+- FP16 mode: True
+- Patch size: 512px
+- Overlap: 64px
+- Contrast scale: 1.25
+- Prompt: make it ready for publication
+
+[Processing details...]</code></pre>
+<p>The comparison images (<a href="#fig-result" class="quarto-xref">Figure&nbsp;3</a>) help us verify the quality of our results:</p>
+<div id="fig-result" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/comparison_2.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Side-by-side comparison showing the transformation from pencil drawing to inked version.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="best-practices-and-troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices-and-troubleshooting">Best Practices and Troubleshooting</h2>
+<p>To get the best results from your processing:</p>
+<ol type="1">
+<li>Always start with diagnostics, even if you’re familiar with the model. Different collections might require slightly different parameters.</li>
+<li>Pay attention to image resolution. The model works best with clear, well-scanned drawings. If your scans are too light or too dark, consider adjusting them before processing (<a href="#sec-preprocessing" class="quarto-xref">Section&nbsp;3</a>).</li>
+<li>Monitor the processing logs. If you see many failed conversions, it might indicate issues with your input images or parameters.</li>
+<li>Review the comparison images carefully. They can help you spot any systematic issues that might need addressing.</li>
+<li>Upscaling can help achieve a better result, especially when dealing with complex decorations. Upscaling factor is just for processing. The upscaling factor is for processing only. It doesn’t affect the output size.</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember that while this tool automates much of the inking process, it’s still important to review the results with an archaeological perspective. The model is a tool to assist, not replace, archaeological expertise.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="post-processing-tools-for-archaeological-drawings" class="level1">
+<h1>Post-Processing Tools for Archaeological Drawings</h1>
+<section id="introduction-1" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-1">Introduction</h2>
+<p>After generating inked versions of archaeological drawings, we often need to refine the results to meet some publication requirements or enhance the result. The post-processing module provides tools for image binarization, background removal, and stippling pattern enhancement. This guide will walk you through the main functions and best practices for using these tools.</p>
+</section>
+<section id="required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="required-libraries">Required Libraries</h2>
+<p>Let’s start by importing the necessary functions:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> postprocessing <span class="im">import</span> (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    binarize_image,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    remove_white_background,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    process_image_binarize,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    binarize_folder_images,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    enhance_stippling,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    modify_stippling,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    control_stippling</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="binarization-and-background-removal" class="level2">
+<h2 class="anchored" data-anchor-id="binarization-and-background-removal">Binarization and Background Removal</h2>
+<p>For many publication contexts, we want to remove the white background to create binary transparent images that can be easily integrated into figures:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You can combine binarization and background removal in one step:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>processed_image <span class="op">=</span> process_image_binarize(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    image_path<span class="op">=</span><span class="st">"path/to/image.jpg"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    binarize_threshold<span class="op">=</span><span class="dv">127</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    white_threshold<span class="op">=</span><span class="dv">250</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    save_path<span class="op">=</span><span class="st">"output.png"</span>  <span class="co"># Must use PNG to preserve transparency</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here the result:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/2.jpg" class="img-fluid figure-img"></p>
+<figcaption>Original ink</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/output.png" class="img-fluid figure-img"></p>
+<figcaption>Binarized and background-clear image</figcaption>
+</figure>
+</div>
+</section>
+<section id="batch-processing" class="level2">
+<h2 class="anchored" data-anchor-id="batch-processing">Batch Processing</h2>
+<p>When working with multiple drawings, you can process an entire folder at once:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>binarize_folder_images(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    input_folder<span class="op">=</span><span class="st">"path/to/drawings"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    binarize_threshold<span class="op">=</span><span class="dv">127</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    white_threshold<span class="op">=</span><span class="dv">250</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates a new folder with “_binarized” suffix containing processed images</p>
+</section>
+<section id="advanced-stippling-control" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-stippling-control">Advanced Stippling Control</h2>
+<p>By using the post-processing module you can enhance and modify stippling patterns, check out this example!</p>
+<section id="enhancing-stippling-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="enhancing-stippling-patterns">Enhancing Stippling Patterns</h3>
+<p>First, we can isolate and enhance existing stippling patterns:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate the main drawing from stippling patterns</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>processed_img, stippling_pattern <span class="op">=</span> enhance_stippling(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    img<span class="op">=</span>Image.<span class="bu">open</span>(<span class="st">"drawing.png"</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    min_size<span class="op">=</span><span class="dv">80</span>,     <span class="co"># Minimum size of dots to preserve</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    connectivity<span class="op">=</span><span class="dv">2</span>    <span class="co"># How dots connect to form patterns</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The function returns two images:</p>
+<ul>
+<li>processed_img: Main drawing without small dots</li>
+<li>stippling_pattern: Isolated stippling pattern</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/no_dots.png" class="img-fluid figure-img"></p>
+<figcaption>Image without dotting</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images_docs/dots.png" class="img-fluid figure-img"></p>
+<figcaption>Isolated dotting</figcaption>
+</figure>
+</div>
+</section>
+<section id="modifying-stippling" class="level3">
+<h3 class="anchored" data-anchor-id="modifying-stippling">Modifying Stippling</h3>
+<p>Once we’ve isolated the stippling patterns, we can modify them in several ways:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>modified_image <span class="op">=</span> modify_stippling(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    processed_img<span class="op">=</span>processed_img,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    stippling_pattern<span class="op">=</span>stippling_pattern,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    operation<span class="op">=</span><span class="st">'dilate'</span>,  <span class="co"># Options: 'dilate', 'fade', or 'both'</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    intensity<span class="op">=</span><span class="fl">0.5</span>,      <span class="co"># Controls strength of dilation (0.0-1.0)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">1.0</span>         <span class="co"># Controls darkness of stippling (0.0-1.0)</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>operation</code> parameter offers three different modification approaches:</p>
+<ul>
+<li>‘dilate’: Makes dots larger while maintaining their density</li>
+<li>‘fade’: Adjusts the opacity of dots without changing their size</li>
+<li>‘both’: Combines dilation and opacity adjustments</li>
+</ul>
+<p>Here a bunch of examples:</p>
+<p>First, we increase the dots using the “dilate” option:</p>
+<p><img src="images_docs/dilated.png" class="img-fluid"></p>
+<p>Secondly, we try to adjust the opacity using the fade option:</p>
+<p><img src="images_docs/faded.png" class="img-fluid"></p>
+<p>Finally, we combine the techniques:</p>
+<p><img src="images_docs/combined.png" class="img-fluid"></p>
+</section>
+<section id="batch-stippling-control" class="level3">
+<h3 class="anchored" data-anchor-id="batch-stippling-control">Batch Stippling Control</h3>
+<p>For consistent stippling across multiple drawings:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>control_stippling(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    input_folder<span class="op">=</span><span class="st">"path/to/drawings"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    min_size<span class="op">=</span><span class="dv">50</span>,          <span class="co"># Size threshold for dot detection</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    connectivity<span class="op">=</span><span class="dv">2</span>,        <span class="co"># How dots connect to each other</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    operation<span class="op">=</span><span class="st">'fade'</span>,      <span class="co"># Type of modification</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    intensity<span class="op">=</span><span class="fl">0.5</span>,        <span class="co"># Strength of effect</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.5</span>           <span class="co"># Final opacity of stippling</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates a new folder with “_dotting_modified” suffix containing the processed images.</p>
+</section>
+</section>
+<section id="understanding-the-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-parameters">Understanding the Parameters</h2>
+<p>When working with the stippling controls, it’s important to understand how different parameters affect the result:</p>
+<ul>
+<li><code>min_size</code>: Controls which dots are considered part of stippling patterns versus actual drawing elements. Larger values preserve only larger dots.</li>
+<li><code>connectivity</code>: Determines how dots are grouped together. Higher values (2 or 3) allow more diagonal connections.</li>
+<li><code>intensity</code>: When dilating, controls how much dots expand. Values between 0.3-0.7 usually give the best results.</li>
+<li><code>opacity</code>: Controls the final darkness of stippling patterns. Lower values create lighter shading.</li>
+</ul>
+</section>
+<section id="best-practices" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices">Best Practices</h2>
+<ol type="1">
+<li>Always work with high-resolution images to ensure clean binarization.</li>
+<li>Start with conservative threshold values and adjust as needed.</li>
+<li>Save intermediate results when working with stippling modifications.</li>
+<li>Test your parameters on a small sample before processing entire collections.</li>
+</ol>
+</section>
+</section>
+<section id="sec-preprocessing" class="level1">
+<h1>Preprocessing Pipeline Documentation</h1>
+<section id="introduction-to-image-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-image-preprocessing">Introduction to Image Preprocessing</h2>
+<p>Archaeological drawings often vary in their characteristics due to different artists, scanning conditions, and original materials. These variations can impact the performance of the model. This guide outlines the preprocessing pipeline that helps standardise images before they are processed by the model.</p>
+</section>
+<section id="import-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="import-required-libraries">Import Required Libraries</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ink <span class="im">import</span> process_folder, process_single_image</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> preprocessing <span class="im">import</span> DatasetAnalyzer, process_image_metrics, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                visualize_metrics_change, process_folder_metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="understanding-the-problem-image-metric-variations" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-problem-image-metric-variations">Understanding the Problem: Image Metric Variations</h2>
+<p>Let’s examine a specific case that illustrates why preprocessing is necessary. Consider the following high-contrast image (<a href="#fig-high-contrast" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<div id="fig-high-contrast" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-high-contrast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/2_contrast.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-high-contrast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: An archaeological drawing with excessive contrast. The high contrast is evident in the black areas
+</figcaption>
+</figure>
+</div>
+<p>When we apply our model directly to this image without preprocessing, we get problematic results (<a href="#fig-high-contrast-result" class="quarto-xref">Figure&nbsp;5</a>):</p>
+<div id="fig-high-contrast-result" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-high-contrast-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/fig_high_constrast_result.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-high-contrast-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Direct model application showing artefacts. Note the missing dotting patterns and blue tiling artefacts in the bottom-right region.
+</figcaption>
+</figure>
+</div>
+<p>The output shows two significant issues:</p>
+<ol type="1">
+<li>Missing dot patterns in shaded areas</li>
+<li>Unwanted blue tiling artefacts, particularly visible in the bottom-right section</li>
+</ol>
+<p>These issues arise because the input image’s characteristics deviate significantly from the training dataset’s standard properties. Our preprocessing pipeline addresses this by analysing and adjusting key image metrics to align them with our training data distribution.</p>
+</section>
+<section id="image-metrics-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="image-metrics-analysis">Image Metrics Analysis</h2>
+<p>The <code>DatasetAnalyzer</code> class calculates eight key metrics that characterise archaeological drawings:</p>
+<ol type="1">
+<li>Mean brightness: Overall lightness of the image</li>
+<li>Standard deviation: Measure of tonal variation</li>
+<li>Contrast ratio: Ratio between the brightest and darkest areas</li>
+<li>Median: Middle intensity value</li>
+<li>Dynamic range: Difference between the 99th and 1st percentile intensities</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

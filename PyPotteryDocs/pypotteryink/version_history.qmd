@@ -1,0 +1,88 @@
+---
+title: "Version History"
+subtitle: "Development timeline and changes"
+format: html
+---
+
+## Latest Release
+
+### Version 2.0.0 (December 2025)
+
+🚀 A PyPotteryInk major release 🚀
+
+**Key Features:**
+
+- **Flask Web Interface**: New user-friendly web interface with multiple tabs:
+    - Hardware Check: Verify system compatibility
+    - Model Diagnostics: Preview processing with different settings
+    - Preprocessing: Analyze and optimize images before processing
+    - Batch Processing: Process multiple images with progress tracking
+
+## Version History
+
+### Version 1.0.0 (September 2025)
+
+🚀 A PyPotteryInk major release 🚀
+
+**Key Features:**
+
+- **Multi-GPU Support**: Added support for Apple Silicon (M1/M2/M3) GPUs via Metal Performance Shaders
+- **Gradio Web Interface**: New user-friendly web interface with multiple tabs:
+    - Hardware Check: Verify system compatibility
+    - Model Diagnostics: Preview processing with different settings
+    - Preprocessing: Analyze and optimize images before processing
+    - Batch Processing: Process multiple images with progress tracking
+- **Automated Installation**: One-click installation scripts for all platforms
+- **Improved Compatibility**: Fixed compatibility issues with newest packages
+- **Statistics Visualization**: New detailed statistics analysis with:
+    - Summary tables showing all key metrics
+    - Interactive distribution plots
+    - Histogram and KDE visualizations
+    - Box plots for metric overview
+- **Advanced Export Options (Experimental)**:
+    - Element extraction: Automatically identify and extract individual pottery elements
+    - SVG export: Convert processed images to scalable vector graphics for publication
+
+with contributions from Francesco di Filippo and Enzo Cocca
+
+### Version 0.0.3 (July 2025)
+
+Update to the `PyPotteryInk` package, with a few improvements
+
+**Key Features:**
+
+- 📌 Added new model `6h-MC` model as default 📌
+- Added a `test_img`to visualize the performance of each model
+- Reworking of the `test.py` module: now it test the library on the `test_img`
+- Added downscaling options in `process_single_image` and `process_folder`
+
+**Models:**
+
+- Fine-tuned example for Monte Cimino assemblage (*6h-MC*)
+- Fine-tuned model for historical and painted pottery (4h-PAINT)
+
+### Version 0.0.2 (April 2025)
+
+A little update to the `PyPotteryInk` package, with a few bug fixes and improvements.
+
+**Key Features:**
+
+- Added an AI disclosure reminder when running the `process_folder` function
+- Added a Google Colab notebook for easy testing of the package
+- Fixed some errors in the documentation
+
+### Version 0.0.1 (January 2025)
+
+Initial public release of `PyPotteryInk`.
+
+**Key Features:**
+
+- Image-to-image translation using pix2pix-turbo architecture
+- Adaptive patch-based processing for high-resolution drawings
+- Comprehensive preprocessing and postprocessing tools
+- Web documentation
+
+**Models:**
+
+- Base model trained on 500 protohistoric pottery drawings (*10k*)
+- Fine-tuned example for Monte Croce Guardia assemblage (*6h-MCG*)

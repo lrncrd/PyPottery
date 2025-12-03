@@ -1,0 +1,296 @@
+---
+title: "API Documentation"
+format: html
+---
+
+<div style="text-align: center;">
+  <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 2.0.0
+  </span>
+</div>
+
+# Ink Module
+
+## Overview
+
+The ink module provides the foundation for transforming archaeological pencil drawings into publication-ready inked versions. Each function serves a specific purpose in the workflow, carefully preserving archaeological details while ensuring professional output quality.
+
+## Process Single Image
+
+```python
+def process_single_image(
+    input_image_path_or_pil: Union[str, Image.Image],
+    prompt: str,
+    model_path: str,
+    output_dir: str = 'output',
+    use_fp16: bool = False,
+    output_name: Optional[str] = None,
+    contrast_scale: float = 1,
+    return_pil: bool = False,
+    patch_size: int = 512,
+    overlap: int = 64,
+    upscale: float = 1,
+) -> Union[str, Image.Image]
+```
+
+This function handles the conversion of individual drawings, providing fine control over the processing parameters. Think of it as a digital artisan, carefully converting each drawing while maintaining archaeological accuracy.
+
+### Core Parameters
+
+`input_image_path_or_pil`
+: Your drawing to process - either a file path or a PIL Image
+
+`prompt`
+: Instructions for the model, typically "make it ready for publication"
+
+`model_path`
+: Location of your trained model file
+
+### Optional Controls
+
+`contrast_scale` · default: 1.0
+: Fine-tunes the intensity of lines and shading. Values between 1.25-1.5 often work best for archaeological materials.
+
+`patch_size` · default: 512
+: Processing segment size. Like dividing a large drawing into manageable sections.
+
+`overlap` · default: 64
+: Controls smooth transitions between processed sections.
+
+`upscale` · default: 1
+: Upscaling or downscaling factor for processing. It doesn't affect the output size
+
+### Examples
+
+Basic processing:
+
+```python
+result = process_single_image(
+    "vessel_123.jpg",
+    prompt="make it ready for publication",
+    model_path="model_601.pkl"
+)
+```
+
+## Process Folder
+
+```python
+def process_folder(
+    input_folder: str,
+    model_path: str,
+    prompt: str = "make it ready for publication",
+    output_dir: str = 'output',
+    use_fp16: bool = False,
+    contrast_scale: float = 1,
+    patch_size: int = 512,
+    overlap: int = 64,
+    file_extensions: tuple = ('.jpg', '.jpeg', '.png'),
+    upscale: float = 1,
+) -> dict
+```
+
+Batch processes a directory of archaeological drawings, maintaining consistency across the entire collection. The function tracks progress and generates detailed logs and comparisons.
+
+### Core Parameters
+
+`input_folder`
+: Directory containing your archaeological drawings
+
+`model_path`
+: Location of your trained model file
+
+### Optional Controls
+
+`contrast_scale` · default: 1.0
+: Global contrast adjustment for the entire batch
+
+`file_extensions` · default: ('.jpg', '.jpeg', '.png')
+: Supported file types to process
+
+`upscale` · default: 1
+: Upscaling or downscaling factor for processing. It doesn't affect the output size
+
+### Returns
+
+Returns a dictionary containing:
+- successful: Number of successfully processed images
+- failed: Number of failed conversions
+- failed_files: List of problematic files
+- average_time: Mean processing time per image
+- log_file: Path to detailed processing log
+- comparison_dir: Path to before/after comparisons
+
+### Examples
+
+Process all drawings in a directory:
+
+```python
+results = process_folder(
+    "excavation_2024_drawings/",
+    model_path="model_601.pkl",
+    contrast_scale=1.25
+)
+```
+
+## Run Diagnostics
+
+```python
+def run_diagnostics(
+    input_folder: str,
+    model_path: str,
+    prompt: str = "make it ready for publication",
+    patch_size: int = 512,
+    overlap: int = 64,
+    num_sample_images: int = 5,
+    contrast_values: list = [0.5, 0.75, 1, 1.5, 2, 3],
+    output_dir: str = 'diagnostics'
+) -> None
+```
+
+Performs preliminary analysis on your dataset to optimize processing parameters. Creates visualizations of patch divisions and contrast effects to help fine-tune settings.
+
+### Core Parameters
+
+`input_folder`
+: Directory with sample drawings to analyse
+
+`model_path`
+: Location of your trained model file
+
+### Optional Parameters
+
+`num_sample_images` · default: 5
+: Number of drawings to analyse (max 5)
+
+`contrast_values` · default: [0.5, 0.75, 1, 1.5, 2, 3]
+: Contrast levels to test
+
+### Generated Outputs
+
+- Patch visualization diagrams
+- Contrast effect comparisons
+- Image summary statistics
+- Processing recommendations
+
+### Examples
+
+Run analysis on a new dataset:
+
+```python
+run_diagnostics(
+    "new_site_drawings/",
+    model_path="model_601.pkl",
+    contrast_values=[0.75, 1, 1.25, 1.5]
+)
+```
+
+## Calculate Patches
+
+```python
+def calculate_patches(
+    width: int,
+    height: int,
+    patch_size: int = 512,
+    overlap: int = 64
+) -> tuple[int, int, int]
+```
+
+Internal utility that determines optimal patch division for processing large drawings. Ensures efficient memory usage while maintaining detail preservation.
+
+### Parameters
+
+`width`, `height`
+: Image dimensions in pixels
+
+`patch_size` · default: 512
+: Size of processing segments
+
+`overlap` · default: 64
+: Overlap between segments
+
+### Returns
+
+Returns a tuple containing:
+- total_patches: Total number of segments
+- patches_per_row: Number of patches horizontally
+- num_rows: Number of patches vertically
+
+### Examples
+
+Calculate processing segments:
+
+```python
+patches, rows, cols = calculate_patches(2048, 1536)
+print(f"Processing in {patches} segments")
+```
+
+# Postprocessing Module
+
+## Overview
+
+The postprocessing module provides tools for refining and enhancing the converted archaeological drawings, focusing on output quality and archaeological detail preservation.
+
+## Binarize Image
+
+```python
+def binarize_image(
+    image: Union[PIL.Image, np.ndarray],
+    threshold: int = 127
+) -> PIL.Image
+```
+
+Converts grayscale drawings to binary format, ideal for final publication preparation.
+
+### Parameters
+
+`image`
+: Input image (PIL Image or numpy array)
+
+`threshold`
+: Intensity threshold (0-255)
+
+### Examples
+
+```python
+binary = binarize_image("processed_vessel.png", threshold=150)
+```
+
+## Remove White Background
+
+```python
+def remove_white_background(
+    image: PIL.Image,
+    threshold: int = 250
+) -> PIL.Image
+```
+
+Creates transparent backgrounds for archaeological drawings, useful for figure composition.
+
+### Parameters
+
+`image`
+: Input drawing
+
+`threshold`
+: Value above which pixels are considered white
+
+### Examples
+
+```python
+transparent = remove_white_background("vessel.png", threshold=245)
+```
+
+## Process Image Binarize
+
+```python
+def process_image_binarize(
+    image_path: str,
+    binarize_threshold: int = 127,
+    white_threshold: int = 250,
+    save_path: Optional[str] = None
+) -> PIL.Image
+```
+
+Combined function for binarization and background removal.
