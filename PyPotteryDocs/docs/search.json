@@ -143,14 +143,113 @@
     ]
   },
   {
-    "objectID": "pypotteryink/usage.html",
-    "href": "pypotteryink/usage.html",
-    "title": "Using PyPotteryInk",
+    "objectID": "pypotterylens/usage.html",
+    "href": "pypotterylens/usage.html",
+    "title": "Usage",
     "section": "",
-    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files: - Montale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model) - Cimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
+    "text": "The program is composed of a series of tab that represent the image extraction process:\n\nProject Manager\nPDF Document Processing\nApply Model\nReview Annotations and extract masks\nTabular Information\nPost Processing\n\n\n\nLike other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.\n\n\n\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.\n\n\n\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\nThe GUI is divided into two parts: - Right Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again. - Left Side: Contains the model parameters.\n\n\n\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on Apply Model, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.\n\n\n\n\n\n\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\n\nYou can modify the masks identified by the model using the buttons below the canvas: - Brush: To draw new masks. - Eraser: To delete existing masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on Extract Cards.\n\n\n\n\nThis tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click Add Column. Once the information is entered, you can click on Mark as Reviewed. The inserted columns are persistent across the project’s images.\n\n\n\nFinally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\n\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\n\nTo start post-processing, click on Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
     "crumbs": [
-      "PyPotteryInk",
-      "Using PyPotteryInk"
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#project-manager",
+    "href": "pypotterylens/usage.html#project-manager",
+    "title": "Usage",
+    "section": "",
+    "text": "Like other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#pdf-document-processing",
+    "href": "pypotterylens/usage.html#pdf-document-processing",
+    "title": "Usage",
+    "section": "",
+    "text": "In this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#apply-model",
+    "href": "pypotterylens/usage.html#apply-model",
+    "title": "Usage",
+    "section": "",
+    "text": "In this tab, you can use the Computer Vision (CV) model to extract information.\n\n\nThe GUI is divided into two parts: - Right Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again. - Left Side: Contains the model parameters.\n\n\n\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on Apply Model, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#review-annotations",
+    "href": "pypotterylens/usage.html#review-annotations",
+    "title": "Usage",
+    "section": "",
+    "text": "In this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\n\nYou can modify the masks identified by the model using the buttons below the canvas: - Brush: To draw new masks. - Eraser: To delete existing masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on Extract Cards.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#tabular-information",
+    "href": "pypotterylens/usage.html#tabular-information",
+    "title": "Usage",
+    "section": "",
+    "text": "This tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click Add Column. Once the information is entered, you can click on Mark as Reviewed. The inserted columns are persistent across the project’s images.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#post-processing",
+    "href": "pypotterylens/usage.html#post-processing",
+    "title": "Usage",
+    "section": "",
+    "text": "Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\n\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\n\nTo start post-processing, click on Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Usage"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/index.html",
+    "href": "pypotterylens/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 0.1.0\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/index.html#key-features",
+    "href": "pypotterylens/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/index.html#contributors",
+    "href": "pypotterylens/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli",
+    "crumbs": [
+      "PyPotteryLens",
+      "Introduction"
     ]
   },
   {
@@ -264,6 +363,105 @@
     ]
   },
   {
+    "objectID": "pypotteryink/usage.html",
+    "href": "pypotteryink/usage.html",
+    "title": "Using PyPotteryInk",
+    "section": "",
+    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files: - Montale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model) - Cimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Using PyPotteryInk"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html",
+    "href": "pypotterylens/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.1.0",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#requirements",
+    "href": "pypotterylens/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support (recommended for AI models)",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#automated-installation",
+    "href": "pypotterylens/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLens_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLens_UNIX.sh\n\nRun the script:\n\n./PyPotteryLens_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#manual-installation",
+    "href": "pypotterylens/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#installation-verification",
+    "href": "pypotterylens/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at the indicated URL should display the PyPotteryLens interface",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#troubleshooting",
+    "href": "pypotterylens/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html",
+    "href": "pypotterylens/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#v0.1.0",
+    "href": "pypotterylens/version_history.html#v0.1.0",
+    "title": "Version History",
+    "section": "",
+    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
     "objectID": "pypotteryscan/installation.html",
     "href": "pypotteryscan/installation.html",
     "title": "Installation",
@@ -341,22 +539,11 @@
     ]
   },
   {
-    "objectID": "pypotteryscan/version_history.html",
-    "href": "pypotteryscan/version_history.html",
+    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
     "title": "Version History",
-    "section": "",
-    "text": "Initial release of PyPotteryScan.",
-    "crumbs": [
-      "PyPotteryScan",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---24112025",
-    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---24112025",
-    "title": "Version History",
-    "section": "",
-    "text": "Initial release of PyPotteryScan.",
+    "section": "v0.2.0 (Initial Release) - (December 2025)",
+    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.",
     "crumbs": [
       "PyPotteryScan",
       "Version History"

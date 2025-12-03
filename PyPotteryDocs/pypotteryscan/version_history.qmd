@@ -1,8 +1,13 @@
 ---
 title: "Version History"
+subtitle: "Development timeline and changes"
 ---
 
-## v0.2.0 (Initial Release) - 24/11/2025
+## Latest Release
 
-*   Initial release of PyPotteryScan.
+## v0.2.0 (Initial Release) - (December 2025)
+
+🚀 A PyPotteryScan major release 🚀
+
+-   **Initial release of PyPotteryScan**.
 

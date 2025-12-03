@@ -1,5 +1,48 @@
 ---
 title: "Introduction"
+format: html
+toc: true
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>>
+
+```{=html}
+<div style="text-align: center;">
+  <img src="..\imgs\LogoLens.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.1.0
+  </span>
+</div>
+
+```
+
+<br>
+
+**PyPotteryLens** is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.
+
+::: {.callout-warning appearance="simple"}
+## System Requirements
+This application requires an **NVIDIA GPU with CUDA support** to run the CV models efficiently.
+:::
+
+## Key Features
+
+*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
+*   **📄 PDF Processing**: Convert PDF documents into processable images.
+*   **🤖 Apply Model**: Use Computer Vision models to extract information and masks from images.
+*   **✏️ Review Annotations**: Review and modify the masks identified by the model.
+*   **📊 Tabular Information**: Associate tabular data with identified elements.
+*   **🔄 Post Processing**: Standardize images (orientation, positioning) and export results.
+
+## Contributors
+```{=html}
+<div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
+  <div style="text-align: center;">
+    <a href="https://github.com/lrncrd" target="_blank">
+      <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Lorenzo Cardarelli</span>
+  </div>
+</div>
+```

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Review Animation</title>
+    <style>
+        /* Base Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .window {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 800px;
+            height: 500px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Header */
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Layout */
+        .content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f9fafb;
+            border-right: 1px solid #e5e7eb;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-view {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        /* Image List */
+        .image-list {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .list-item.active {
+            background: #eff6ff;
+            border-left: 3px solid #667eea;
+            color: #1e40af;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+
+        .status-dot.green {
+            background: #10b981;
+        }
+
+        /* Canvas Area */
+        .canvas-container {
+            width: 400px;
+            height: 300px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Kylix Shape */
+        .kylix-shape {
+            width: 120px;
+            height: 60px;
+            background: #374151;
+            /* Dark grey/black */
+            border-radius: 0 0 60px 60px;
+            /* Bowl shape */
+            position: relative;
+            margin: 20px auto;
+            transform: scale(1.5);
+        }
+
+        /* Handles */
+        .kylix-shape::before,
+        .kylix-shape::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            width: 30px;
+            height: 50px;
+            border: 4px solid #374151;
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .kylix-shape::before {
+            left: -30px;
+            transform: rotate(-20deg);
+        }
+
+        .kylix-shape::after {
+            right: -30px;
+            transform: rotate(20deg);
+        }
+
+        /* Foot */
+        .kylix-foot {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: #374151;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Foot Stem */
+        .kylix-foot::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            width: 20px;
+            height: 10px;
+            background: #374151;
+        }
+
+        .mask-overlay {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            width: 80px;
+            height: 40px;
+            background: rgba(220, 38, 38, 0.4);
+            /* Red mask */
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mask-overlay.visible {
+            opacity: 1;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            background: #f9fafb;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .tool-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            cursor: pointer;
+            background: white;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .tool-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s;
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="20" height="29" viewBox="0 0 20 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0V28.3L6.8 21.5L13.2 28.5L16.5 25.5L10.2 18.5H19.5L0 0Z" fill="black" stroke="white" stroke-width="2"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.0
+            </div>
+        </div>
+        <div class="tabs">
+            <div class="tab">Project Manager</div>
+            <div class="tab">PDF Processing</div>
+            <div class="tab">Apply Model</div>
+            <div class="tab active">Review</div>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <h3 style="margin-top: 0; font-size: 1rem; color: #1f2937;">🖼️ Images</h3>
+                <div class="image-list">
+                    <div class="list-item active" id="item1">
+                        <div class="status-dot green"></div>
+                        <span>Plate_001.jpg</span>
+                    </div>
+                    <div class="list-item" id="item2">
+                        <div class="status-dot" id="dot2"></div>
+                        <span>Plate_002.jpg</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="status-dot"></div>
+                        <span>Plate_003.jpg</span>
+                    </div>
+                </div>
+                <button class="btn-success" id="saveBtn">💾 Save Mask</button>
+            </div>
+
+            <div class="main-view">
+                <div class="canvas-container" id="canvas">
+                    <div class="kylix-shape">
+                        <div class="kylix-foot"></div>
+                        <div class="mask-overlay" id="mask"></div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="tool-btn active" id="brushBtn">🖌️ Brush</button>
+                    <button class="tool-btn">🧹 Eraser</button>
+                    <button class="tool-btn">🗑️ Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const item2 = document.getElementById('item2');
+        const dot2 = document.getElementById('dot2');
+        const canvas = document.getElementById('canvas');
+        const mask = document.getElementById('mask');
+        const saveBtn = document.getElementById('saveBtn');
+        const appWindow = document.getElementById('appWindow');
+
+        function moveCursorTo(element, duration = 1000, delay = 0) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = appWindow.getBoundingClientRect();
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                    cursor.style.transform = `translate(${x}px, ${y}px)`;
+                    setTimeout(resolve, duration);
+                }, delay);
+            });
+        }
+
+        function reset() {
+            mask.classList.remove('visible');
+            dot2.classList.remove('green');
+            item2.classList.remove('active');
+            document.getElementById('item1').classList.add('active');
+            cursor.style.transform = 'translate(850px, 600px)';
+        }
+
+        async function runAnimation() {
+            reset();
+
+            // 1. Move to Item 2
+            await moveCursorTo(item2, 800, 500);
+
+            // 2. Click Item 2
+            document.getElementById('item1').classList.remove('active');
+            item2.classList.add('active');
+
+            // 3. Move to Canvas (Start Drawing)
+            await moveCursorTo(canvas, 800, 200);
+
+            // 4. Draw (Move cursor across canvas)
+            cursor.style.transition = 'transform 1s linear';
+            const canvasRect = canvas.getBoundingClientRect();
+            const containerRect = appWindow.getBoundingClientRect();
+            const startX = canvasRect.left - containerRect.left + 150;
+            const startY = canvasRect.top - containerRect.top + 150;
+
+            cursor.style.transform = `translate(${startX}px, ${startY}px)`;
+
+            // Show mask gradually
+            setTimeout(() => {
+                mask.style.transition = 'opacity 1s linear';
+                mask.classList.add('visible');
+            }, 500);
+
+            await new Promise(r => setTimeout(r, 1000));
+
+            // 5. Move to Save Button
+            await moveCursorTo(saveBtn, 800, 200);
+
+            // 6. Click Save
+            saveBtn.style.transform = 'scale(0.95)';
+            await new Promise(r => setTimeout(r, 200));
+            saveBtn.style.transform = 'scale(1)';
+            dot2.classList.add('green');
+
+            // 7. Move Away
+            cursor.style.transform = 'translate(850px, 600px)';
+        }
+
+        setInterval(runAnimation, 8000);
+        setTimeout(runAnimation, 100);
+    </script>
+</body>
+
+</html>

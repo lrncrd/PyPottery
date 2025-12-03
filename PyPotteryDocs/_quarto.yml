@@ -5,8 +5,8 @@ project:
 website:
   title: "PyPottery"
   sidebar:
-    logo: "imgs/LogoScan.png"
-    collapse-level: 1
+    logo: "/logo.png"
+    collapse-level: 0
     style: "docked"
     search: true
     contents:
@@ -28,6 +28,7 @@ website:
           - pypotteryink/usage.qmd
           - pypotteryink/advanced.qmd
           - pypotteryink/model_zoo.qmd
+          - pypotteryink/api.qmd
           - pypotteryink/version_history.qmd
       - section: "PyPotteryTrace"
         contents:

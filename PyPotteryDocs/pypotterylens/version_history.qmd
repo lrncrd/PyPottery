@@ -1,5 +1,11 @@
 ---
 title: "Version History"
+format: html
+toc: true
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+## v0.1.0
+
+*   Initial release of documentation.
+*   Basic project management and PDF processing.
+*   Integration of CV models for mask extraction.
