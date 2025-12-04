@@ -202,7 +202,7 @@
     "href": "pypotterylens/usage.html#pdf-document-processing",
     "title": "Using PyPotteryLens",
     "section": "PDF Document Processing",
-    "text": "PDF Document Processing\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF to current project will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
+    "text": "PDF Document Processing\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF to current project will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n \n\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
     "crumbs": [
       "PyPotteryLens",
       "Using PyPotteryLens"
@@ -213,7 +213,7 @@
     "href": "pypotterylens/usage.html#apply-model",
     "title": "Using PyPotteryLens",
     "section": "Apply Model",
-    "text": "Apply Model\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\n\nGUI Layout\nThe GUI is divided into two parts:\n\nRight Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.\nLeft Side: Contains the model parameters.\n\n\n\nParameters\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on 🚀 Apply Model to Project, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
+    "text": "Apply Model\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\n\nGUI Layout\nThe GUI is divided into two parts:\n\nRight Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.\nLeft Side: Contains the model parameters.\n\n\n\nParameters\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters:\n\nConfidence: The confidence threshold for the model.\nKernel size: The size of the kernel for the post-processing operations.\nIterations: The number of iterations for the post-processing operations.\n\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\n\n\n\n\n\n\nNote\n\n\n\nThe results of applying different Kernel size and Iterations are shown. \n\n\nOnce you click on 🚀 Apply Model to Project, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
     "crumbs": [
       "PyPotteryLens",
       "Using PyPotteryLens"
@@ -224,7 +224,7 @@
     "href": "pypotterylens/usage.html#review-annotations",
     "title": "Using PyPotteryLens",
     "section": "Review Annotations",
-    "text": "Review Annotations\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\nEditing Masks\nYou can modify the masks identified by the model using the buttons below the canvas: - 🖌️ Brush: To draw new masks. - 🧹 Eraser: To delete existing masks. - 🗑️ Clear: To delete all masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on 💾 Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on 📤 Extract Cards.",
+    "text": "Review Annotations\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list:\n\nGreen Checkmark (✔️): Images where the model has identified vases.\nWhite Dot (•): Images where the model has not recognized any vases.\n\n\nEditing Masks\nYou can modify the masks identified by the model using the buttons below the canvas:\n\n🖌️ Brush: To draw new masks.\n🧹 Eraser: To delete existing masks.\n🗑️ Clear: To delete all masks.\n\nNew masks will appear in transparent red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on 💾 Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on 📤 Extract Cards.",
     "crumbs": [
       "PyPotteryLens",
       "Using PyPotteryLens"
@@ -1152,6 +1152,136 @@
     "crumbs": [
       "PyPotteryLens",
       "Version History"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "PyPottery brings the traditional archaeological pottery documentation workflow into the digital age. \n    Each manual step in the classical process finds its digital counterpart in our suite of specialized tools.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "requirements.html",
+    "href": "requirements.html",
+    "title": "Requirements",
+    "section": "",
+    "text": "All PyPottery tools are designed to work independently, yet they share a unified set of dependencies. \n    This modular approach means you only need to install once and can use any combination of tools seamlessly.",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "requirements.html#core-technologies",
+    "href": "requirements.html#core-technologies",
+    "title": "Requirements",
+    "section": "Core Technologies",
+    "text": "Core Technologies\nThe PyPottery ecosystem is built on these foundational technologies:\n\n\n  \n  \n    \n      🔥\n      \n        PyTorch\n        v2.9.0+cu126\n      \n    \n    \n      The deep learning framework powering all AI capabilities. Includes CUDA 12.6 support for GPU acceleration.\n    \n    \n      Neural network training & inference\n      GPU-accelerated tensor operations\n      TorchVision for image processing\n    \n  \n\n  \n  \n    \n      🤗\n      \n        Transformers\n        v4.57.1\n      \n    \n    \n      Hugging Face's library for state-of-the-art NLP and vision models. Powers OCR and text understanding.\n    \n    \n      Pre-trained model access\n      Text recognition (OCR)\n      Few-shot learning capabilities\n    \n  \n\n  \n  \n    \n      👁️\n      \n        OpenCV\n        v4.12.0\n      \n    \n    \n      Computer vision library for image processing, manipulation, and analysis tasks.\n    \n    \n      Image reading & writing\n      Morphological operations\n      Contour detection & analysis\n    \n  \n\n  \n  \n    \n      🎯\n      \n        Ultralytics YOLO\n        v8.3.223\n      \n    \n    \n      State-of-the-art object detection framework for identifying pottery drawings in documents.\n    \n    \n      Real-time object detection\n      Instance segmentation\n      Custom model training\n    \n  \n\n  \n  \n    \n      ✂️\n      \n        SAM2\n        v1.1.0\n      \n    \n    \n      Meta's Segment Anything Model for precise image segmentation and mask generation.\n    \n    \n      Zero-shot segmentation\n      Interactive mask editing\n      High-quality boundaries\n    \n  \n\n  \n  \n    \n      🎨\n      \n        Diffusers\n        v0.35.2\n      \n    \n    \n      Hugging Face's diffusion models library for image enhancement and restoration.\n    \n    \n      Image super-resolution\n      Drawing enhancement\n      Noise reduction",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "requirements.html#data-processing",
+    "href": "requirements.html#data-processing",
+    "title": "Requirements",
+    "section": "Data Processing",
+    "text": "Data Processing\n\n\n  \n  \n    \n      🐼\n      \n        Pandas\n        v2.3.3\n      \n    \n    \n      Powerful data manipulation and analysis library for structured data handling.\n    \n    \n      DataFrame operations\n      Data cleaning & transformation\n      Excel/CSV export\n    \n  \n\n  \n  \n    \n      ⚡\n      \n        Polars\n        v1.35.1\n      \n    \n    \n      Lightning-fast DataFrame library for high-performance data processing.\n    \n    \n      Parallel processing\n      Memory efficient\n      Lazy evaluation\n    \n  \n\n  \n  \n    \n      📄\n      \n        PyMuPDF\n        v1.26.5\n      \n    \n    \n      High-performance PDF processing library for extracting images and text from documents.\n    \n    \n      PDF page rendering\n      Image extraction\n      Text extraction",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "requirements.html#visualization-export",
+    "href": "requirements.html#visualization-export",
+    "title": "Requirements",
+    "section": "Visualization & Export",
+    "text": "Visualization & Export\n\n\n  \n  \n    \n      📊\n      \n        Matplotlib\n        v3.10.7\n      \n    \n    \n      Comprehensive plotting library for creating static, animated, and interactive visualizations.\n    \n    \n      Publication-quality figures\n      Image display & annotation\n      Customizable layouts\n    \n  \n\n  \n  \n    \n      📑\n      \n        ReportLab\n        v4.4.4\n      \n    \n    \n      PDF generation toolkit for creating professional publication layouts and plates.\n    \n    \n      PDF document creation\n      Vector graphics support\n      Layout automation\n    \n  \n\n  \n  \n    \n      ✏️\n      \n        SVGWrite\n        v1.4.3\n      \n    \n    \n      SVG generation library for creating scalable vector graphics from traced drawings.\n    \n    \n      Vector output generation\n      Path manipulation\n      Scalable exports",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "requirements.html#system-requirements",
+    "href": "requirements.html#system-requirements",
+    "title": "Requirements",
+    "section": "System Requirements",
+    "text": "System Requirements\n\n\n\n\n\n\nHardware Recommendations\n\n\n\n\nGPU: NVIDIA GPU with CUDA 12.6 support (8GB+ VRAM recommended)\nRAM: 16GB minimum, 32GB recommended for large batch processing\n\nStorage: SSD recommended for faster model loading\n\n\n\n\n\n\n\n\n\nPython Version\n\n\n\nPyPottery requires Python 3.10 or higher. We recommend using a virtual environment to manage dependencies.\n\n\n\n  📥 Quick Installation\n  \n    Install all dependencies with a single command:\n  \n  \n    pip install -r requirements.txt",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "PyPottery",
+    "section": "",
+    "text": "🏺 A Complete Toolkit for Digital Pottery Analysis\n  \n    PyPottery is a collection of specialized software tools designed for archaeologists and researchers \n    working with pottery documentation. From scanning and digitizing plates to AI-powered image enhancement \n    and layout generation, we've got you covered.\n  \n\n\n\n\n\n  \n  \n    \n      \n      \n        PyPotteryScan\n        v0.2.0\n      \n    \n    \n      A specialized tool for digitizing and processing scanned pottery plates. Streamline the workflow of extracting drawings, OCR text recognition, and structured data export.\n    \n    \n      Project-based organization\n      Automated OCR for handwritten notes\n      AI-powered few-shot parsing\n      Excel export with structured data\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    \n      \n      \n        PyPotteryInk\n        v2.0.0\n      \n    \n    \n      A specialized tool for inking pottery drawings. It enables diagnostic analysis, preprocessing, and batch processing of archaeological illustrations.\n    \n    \n      Image Inking in few seconds\n      All hardware compatibility\n      Preprocessing, batch processing and model diagnostic\n      Pretrained models available\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    \n      \n      \n        PyPotteryLens\n        v0.2.0\n      \n    \n    \n      Extract and process pottery images from PDF documents. Apply computer vision models to identify drawings and structure data for analysis.\n    \n    \n      PDF to image conversion\n      Computer vision model application\n      Annotation review & editing\n      Standardized image export\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    Coming Soon\n    \n      \n      \n        PyPotteryTrace\n        In Development\n      \n    \n    \n      Trace and vectorize pottery drawings with precision. Convert raster images to clean vector formats for publication-ready illustrations.\n    \n    \n      AI-assisted segmentation\n      Vector conversion tools\n      In-tool editing\n      Export to SVG/PNG/JPG formats\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    Coming Soon\n    \n      \n      \n        PyPotteryLayout\n        In Development\n      \n    \n    \n      Create publication-ready pottery plate layouts automatically. Arrange multiple drawings with consistent scaling and professional formatting.\n    \n    \n      Automatic layout generation\n      Consistent scaling system\n      Publication-ready exports\n      SVG export for further editing\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n\n\n\n\n  📦 Open Source on GitHub\n  \n    All PyPottery tools are open source and available on GitHub. Contributions are welcome!\n  \n  \n    \n    View on GitHub",
+    "crumbs": [
+      "PyPottery"
+    ]
+  },
+  {
+    "objectID": "intro.html#the-traditional-workflow",
+    "href": "intro.html#the-traditional-workflow",
+    "title": "Introduction",
+    "section": "The Traditional Workflow",
+    "text": "The Traditional Workflow\nArchaeological pottery documentation has followed a well-established workflow for decades. From initial scanning of pottery plates to the creation of publication-ready layouts, each step requires specialized skills and significant time investment.\nPyPottery automates and enhances each of these steps, allowing researchers to focus on interpretation rather than repetitive manual tasks.\n\n\n  \n  \n  \n    From Manual to Digital\n    Every traditional step has its PyPottery equivalent\n  \n\n  \n  \n    \n      \n        📋\n        \n          Traditional Step\n          Pottery Cards\n        \n      \n      \n        Handwritten pottery cards with drawings, measurements, and descriptions organized in physical archives.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryScan\n        \n      \n      \n        Digitize pottery plates with AI-powered OCR, extracting drawings and text into structured digital formats.\n      \n    \n  \n\n  \n  \n    \n      \n        ✍️\n        \n          Traditional Step\n          Tracings / Inking\n        \n      \n      \n        Manual tracing of pottery drawings on transparent paper, inking outlines, and creating clean reproducible illustrations.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n          \n          \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryInk + Trace\n        \n      \n      \n        AI-powered inking and vectorization. Enhance drawings and convert to clean vector formats in seconds.\n      \n    \n  \n\n  \n  \n    \n      \n        📐\n        \n          Traditional Step\n          Publication Plates\n        \n      \n      \n        Manually arranging pottery drawings on plates, ensuring consistent scaling and professional presentation for publication.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryLayout\n        \n      \n      \n        Automatic layout generation with consistent scaling and publication-ready exports in PDF and SVG formats.\n      \n    \n  \n\n\n\n\n\n  \n    \n    \n      PyPotteryLens — Extract from Publications\n      \n        Already have published PDFs? Extract pottery images directly from existing documents using computer vision, \n        then process them through the PyPottery pipeline.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#why-pypottery",
+    "href": "intro.html#why-pypottery",
+    "title": "Introduction",
+    "section": "Why PyPottery?",
+    "text": "Why PyPottery?\n\n\n  \n    ⚡\n    Save Time\n    \n      What takes hours manually can be done in minutes. Process hundreds of drawings in batch mode.\n    \n  \n\n  \n    🎯\n    Consistent Quality\n    \n      AI models ensure uniform results across your entire corpus. No more variations between different operators.\n    \n  \n\n  \n    🔄\n    Reproducible\n    \n      Every step is documented and reproducible. Share your workflow parameters with colleagues.\n    \n  \n\n  \n    🆓\n    Open Source\n    \n      Free to use, modify, and extend. Built by archaeologists, for archaeologists.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#get-started",
+    "href": "intro.html#get-started",
+    "title": "Introduction",
+    "section": "Get Started",
+    "text": "Get Started\nReady to transform your pottery documentation workflow?\n\nCheck the Requirements to ensure your system is compatible\nChoose your starting point based on your needs:\n\nHave physical pottery cards? → Start with PyPotteryScan\nHave published PDFs? → Start with PyPotteryLens\n\nHave digital drawings to enhance? → Start with PyPotteryInk\n\nFollow the tool-specific guides for detailed instructions\n\n\n  \n    Explore the Tools →",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#the-traditional-workflow",
+    "href": "index.html#the-traditional-workflow",
+    "title": "Home",
+    "section": "The Traditional Workflow",
+    "text": "The Traditional Workflow\nArchaeological pottery documentation has followed a well-established workflow for decades. From initial scanning of pottery plates to the creation of publication-ready layouts, each step requires specialized skills and significant time investment.\nPyPottery automates and enhances each of these steps, allowing researchers to focus on interpretation rather than repetitive manual tasks.\n\n\n  \n  \n  \n    From Manual to Digital\n    Every traditional step has its PyPottery equivalent\n  \n\n  \n  \n    \n      \n        📋\n        \n          Traditional Step\n          Pottery Cards\n        \n      \n      \n        Handwritten pottery cards with drawings, measurements, and descriptions organized in physical archives.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryScan\n        \n      \n      \n        Digitize pottery plates with AI-powered OCR, extracting drawings and text into structured digital formats.\n      \n    \n  \n\n  \n  \n    \n      \n        ✍️\n        \n          Traditional Step\n          Tracings / Inking\n        \n      \n      \n        Manual tracing of pottery drawings on transparent paper, inking outlines, and creating clean reproducible illustrations.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n          \n          \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryInk + Trace\n        \n      \n      \n        AI-powered inking and vectorization. Enhance drawings and convert to clean vector formats in seconds.\n      \n    \n  \n\n  \n  \n    \n      \n        📐\n        \n          Traditional Step\n          Publication Plates\n        \n      \n      \n        Manually arranging pottery drawings on plates, ensuring consistent scaling and professional presentation for publication.\n      \n    \n    \n      \n      \n    \n    \n      \n        \n        \n          PYPOTTERY SOLUTION\n          PyPotteryLayout\n        \n      \n      \n        Automatic layout generation with consistent scaling and publication-ready exports in PDF and SVG formats.\n      \n    \n  \n\n\n\n\n\n  \n    \n    \n      PyPotteryLens — Extract from Publications\n      \n        Already have published PDFs? Extract pottery images directly from existing documents using computer vision, \n        then process them through the PyPottery pipeline.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#why-pypottery",
+    "href": "index.html#why-pypottery",
+    "title": "Home",
+    "section": "Why PyPottery?",
+    "text": "Why PyPottery?\n\n\n  \n    ⚡\n    Save Time\n    \n      What takes hours manually can be done in minutes. Process hundreds of drawings in batch mode.\n    \n  \n\n  \n    🎯\n    Consistent Quality\n    \n      AI models ensure uniform results across your entire corpus. No more variations between different operators.\n    \n  \n\n  \n    🔄\n    Reproducible\n    \n      Every step is documented and reproducible. Share your workflow parameters with colleagues.\n    \n  \n\n  \n    🆓\n    Open Source\n    \n      Free to use, modify, and extend. Built by archaeologists, for archaeologists.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#get-started",
+    "href": "index.html#get-started",
+    "title": "Home",
+    "section": "Get Started",
+    "text": "Get Started\nReady to transform your pottery documentation workflow?\n\nCheck the Requirements to ensure your system is compatible\nChoose your starting point based on your needs:\n\nHave physical pottery cards? → Start with PyPotteryScan\nHave published PDFs? → Start with PyPotteryLens\n\nHave digital drawings to enhance? → Start with PyPotteryInk\n\nFollow the tool-specific guides for detailed instructions\n\n\n  \n    Explore the Tools →",
+    "crumbs": [
+      "Home"
     ]
   }
 ]

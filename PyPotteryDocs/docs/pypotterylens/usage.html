@@ -38,13 +38,13 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d13b9eec3d8f70059c8760d72d2de5d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f2fc34f457c482896ac72dfdba2d88e9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -71,10 +71,34 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PyPottery</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lrncrd/PyPottery"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -90,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
@@ -107,42 +131,31 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">PyPottery</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">PyPottery-Suite</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PyPottery-Suite</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../requirements.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Requirements</span></a>
   </div>
 </li>
-      </ul>
-  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryScan</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryscan/index.html" class="sidebar-item-text sidebar-link">
@@ -171,13 +184,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryInk</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryink/index.html" class="sidebar-item-text sidebar-link">
@@ -224,13 +237,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryTrace</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
@@ -259,17 +272,17 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryLayout</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
+ <span class="menu-text">PyPotteryLayout</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -294,13 +307,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryLens</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/index.html" class="sidebar-item-text sidebar-link">
@@ -365,7 +378,7 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#project-management-details" id="toc-project-management-details" class="nav-link" data-scroll-target="#project-management-details">Project Management Details</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -429,6 +442,9 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>The <strong>Split Scanned</strong> checkbox must be checked <strong>BEFORE</strong> selecting the file if the PDF to be processed has 2 pages side-by-side.</p>
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 10px;">
+<p><img src="imgs/example_pag_1.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"> <img src="imgs/example_pag_2.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></p>
+</div>
 </div>
 </div>
 <p>Once the PDF is processed, you can proceed to the next tab.</p>
@@ -450,9 +466,27 @@ Important
 <h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
 <ul>
 <li><strong>Model Selection</strong>: Allows you to select the model to apply.</li>
-<li><strong>Model Parameters</strong>: You can define the confidence threshold for the model as well as some post-processing operations for the masks.</li>
+<li><strong>Model Parameters</strong>: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters:
+<ul>
+<li><strong>Confidence</strong>: The confidence threshold for the model.</li>
+<li><strong>Kernel size</strong>: The size of the kernel for the post-processing operations.</li>
+<li><strong>Iterations</strong>: The number of iterations for the post-processing operations.</li>
+</ul></li>
 <li><strong>Advanced Options</strong>: Includes the possibility to limit the application to 25 pages for debugging purposes.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The results of applying different Kernel size and Iterations are shown. <img src="imgs/parameter_comparison.png" class="img-fluid"></p>
+</div>
+</div>
 <p>Once you click on <strong>🚀 Apply Model to Project</strong>, a progress bar will indicate the status of the process.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -472,18 +506,27 @@ Note
 <section id="review-annotations" class="level2">
 <h2 class="anchored" data-anchor-id="review-annotations">Review Annotations</h2>
 <p>In this tab, you can review and modify the model’s annotations.</p>
-<iframe src="animations/model_review.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no">
+<iframe src="animations/model_review.html" style="width: 100%; height: 700px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <ul>
 <li><strong>Left</strong>: A list of files indicating the pages.</li>
 <li><strong>Right</strong>: A canvas showing the image.</li>
 </ul>
 <p>You can navigate between images by selecting the name or using the buttons below the image.</p>
-<p>In the list: - <strong>Green Checkmark</strong>: Images where the model has identified vases. - <strong>White Dot</strong>: Images where the model has not recognized any vases.</p>
+<p>In the list:</p>
+<ul>
+<li><strong>Green Checkmark (✔️)</strong>: Images where the model has identified vases.</li>
+<li><strong>White Dot (•)</strong>: Images where the model has not recognized any vases.</li>
+</ul>
 <section id="editing-masks" class="level3">
 <h3 class="anchored" data-anchor-id="editing-masks">Editing Masks</h3>
-<p>You can modify the masks identified by the model using the buttons below the canvas: - <strong>🖌️ Brush</strong>: To draw new masks. - <strong>🧹 Eraser</strong>: To delete existing masks. - <strong>🗑️ Clear</strong>: To delete all masks.</p>
-<p>New masks will appear in red.</p>
+<p>You can modify the masks identified by the model using the buttons below the canvas:</p>
+<ul>
+<li><strong>🖌️ Brush</strong>: To draw new masks.</li>
+<li><strong>🧹 Eraser</strong>: To delete existing masks.</li>
+<li><strong>🗑️ Clear</strong>: To delete all masks.</li>
+</ul>
+<p>New masks will appear in transparent red.</p>
 <p>Once an image without masks (white dot) is modified, the indicator will update to a green checkmark.</p>
 <p>Changing the image or clicking on <strong>💾 Save Current Mask</strong> will save the changes.</p>
 <p>Once you have reviewed the images, you can extract them by clicking on <strong>📤 Extract Cards</strong>.</p>
@@ -492,7 +535,7 @@ Note
 <section id="tabular-information" class="level2">
 <h2 class="anchored" data-anchor-id="tabular-information">Tabular Information</h2>
 <p>This tab allows you to insert tabular information for the images.</p>
-<iframe src="animations/tabular_info.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no">
+<iframe src="animations/tabular_info.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <ul>
 <li><strong>Center</strong>: A canvas displaying the image where each identified element is associated with a bounding box and an ID.</li>
@@ -504,7 +547,7 @@ Note
 <section id="post-processing" class="level2">
 <h2 class="anchored" data-anchor-id="post-processing">Post Processing</h2>
 <p>Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).</p>
-<iframe src="animations/post_process.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no">
+<iframe src="animations/post_process.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <section id="gui-layout-1" class="level3">
 <h3 class="anchored" data-anchor-id="gui-layout-1">GUI Layout</h3>
@@ -527,8 +570,28 @@ Note
 <section id="project-management-details" class="level1">
 <h1>Project Management Details</h1>
 <p>Once created, you can reopen a project. Available projects are listed in “Your Projects” within the <strong>Project Manager</strong> tab.</p>
-<p>The project card displays information about the work, such as: - Number of images - Number of masks and annotations - Progress - Creation date - Last modification date</p>
+<p>The project card displays information about the work, such as:</p>
+<ul>
+<li>Number of images</li>
+<li>Number of masks and annotations</li>
+<li>Progress</li>
+<li>Creation date</li>
+<li>Last modification date</li>
+</ul>
 <p>You can select or remove a project from this view.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Removing a project will delete all associated data.</p>
+</div>
+</div>
 
 
 </section>
@@ -952,6 +1015,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2025 Lorenzo Cardarelli</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Documentation v0.0.1</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lrncrd/PyPottery">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

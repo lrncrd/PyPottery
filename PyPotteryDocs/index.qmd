@@ -1,6 +1,205 @@
 ---
-title: "PyPottery-Suite"
+title: "Home"
 ---
 
+```{=html}
+<!-- Hero Section -->
+<div class="hero-section">
+  <h2>🏺 Digitizing Pottery Documentation</h2>
+  <p>
+    PyPottery brings the traditional archaeological pottery documentation workflow into the digital age. 
+    Each manual step in the classical process finds its digital counterpart in our suite of specialized tools.
+  </p>
+</div>
+```
 
-<iframe src="animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+## The Traditional Workflow
+
+Archaeological pottery documentation has followed a well-established workflow for decades. From initial scanning of pottery plates to the creation of publication-ready layouts, each step requires specialized skills and significant time investment.
+
+**PyPottery automates and enhances each of these steps**, allowing researchers to focus on interpretation rather than repetitive manual tasks.
+
+```{=html}
+<!-- Workflow Diagram -->
+<div style="margin: 3rem 0; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 20px;">
+  
+  <!-- Header -->
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h3 style="color: #1f2937; margin-bottom: 0.5rem;">From Manual to Digital</h3>
+    <p style="color: #6b7280; font-size: 0.95rem;">Every traditional step has its PyPottery equivalent</p>
+  </div>
+
+  <!-- Step 1: Pottery Cards -->
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <span style="font-size: 2rem;">📋</span>
+        <div>
+          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Pottery Cards</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        Handwritten pottery cards with drawings, measurements, and descriptions organized in physical archives.
+      </p>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
+      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
+      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
+    </div>
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <img src="imgs/LogoScan.png" alt="PyPotteryScan" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
+        <div>
+          <div style="font-size: 0.8rem; color: #3b82f6; font-weight: 600;">PYPOTTERY SOLUTION</div>
+          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryScan</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        Digitize pottery plates with AI-powered OCR, extracting drawings and text into structured digital formats.
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 2: Tracings / Inking -->
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <span style="font-size: 2rem;">✍️</span>
+        <div>
+          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Tracings / Inking</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        Manual tracing of pottery drawings on transparent paper, inking outlines, and creating clean reproducible illustrations.
+      </p>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
+      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
+      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
+    </div>
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <div style="display: flex; gap: 0.5rem;">
+          <img src="imgs/LogoInk.png" alt="PyPotteryInk" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
+          <img src="imgs/LogoTrace.png" alt="PyPotteryTrace" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; color: #8b5cf6; font-weight: 600;">PYPOTTERY SOLUTION</div>
+          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryInk + Trace</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        AI-powered inking and vectorization. Enhance drawings and convert to clean vector formats in seconds.
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 3: Publication Plates -->
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <span style="font-size: 2rem;">📐</span>
+        <div>
+          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Publication Plates</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        Manually arranging pottery drawings on plates, ensuring consistent scaling and professional presentation for publication.
+      </p>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
+      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
+      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
+    </div>
+    <div style="flex: 1; min-width: 250px;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <img src="imgs/LogoLayout.png" alt="PyPotteryLayout" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
+        <div>
+          <div style="font-size: 0.8rem; color: #ec4899; font-weight: 600;">PYPOTTERY SOLUTION</div>
+          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #ec4899, #be185d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryLayout</div>
+        </div>
+      </div>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+        Automatic layout generation with consistent scaling and publication-ready exports in PDF and SVG formats.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Additional Tool: Lens -->
+<div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; color: white;">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;">
+    <img src="imgs/LogoLens.png" alt="PyPotteryLens" style="width: 60px; height: 60px; object-fit: contain; border-radius: 14px; background: rgba(255,255,255,0.2); padding: 5px;">
+    <div style="flex: 1; min-width: 250px;">
+      <h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">PyPotteryLens — Extract from Publications</h4>
+      <p style="margin: 0; opacity: 0.9; font-size: 0.95rem;">
+        Already have published PDFs? Extract pottery images directly from existing documents using computer vision, 
+        then process them through the PyPottery pipeline.
+      </p>
+    </div>
+  </div>
+</div>
+```
+
+## Why PyPottery?
+
+```{=html}
+<div class="software-grid" style="margin-top: 1.5rem;">
+
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
+    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Save Time</h4>
+    <p class="card-description">
+      What takes hours manually can be done in minutes. Process hundreds of drawings in batch mode.
+    </p>
+  </div>
+
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
+    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Consistent Quality</h4>
+    <p class="card-description">
+      AI models ensure uniform results across your entire corpus. No more variations between different operators.
+    </p>
+  </div>
+
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔄</div>
+    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Reproducible</h4>
+    <p class="card-description">
+      Every step is documented and reproducible. Share your workflow parameters with colleagues.
+    </p>
+  </div>
+
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🆓</div>
+    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Open Source</h4>
+    <p class="card-description">
+      Free to use, modify, and extend. Built by archaeologists, for archaeologists.
+    </p>
+  </div>
+
+</div>
+```
+
+## Get Started
+
+Ready to transform your pottery documentation workflow? 
+
+1. **Check the [Requirements](requirements.html)** to ensure your system is compatible
+2. **Choose your starting point** based on your needs:
+   - Have physical pottery cards? → Start with **PyPotteryScan**
+   - Have published PDFs? → Start with **PyPotteryLens**  
+   - Have digital drawings to enhance? → Start with **PyPotteryInk**
+3. **Follow the tool-specific guides** for detailed instructions
+
+```{=html}
+<div style="text-align: center; margin-top: 2rem;">
+  <a href="intro.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1rem; transition: all 0.2s ease;">
+    Explore the Tools →
+  </a>
+</div>
+```

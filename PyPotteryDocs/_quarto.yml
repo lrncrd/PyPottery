@@ -4,17 +4,22 @@ project:
 
 website:
   title: "PyPottery"
+  repo-url: https://github.com/lrncrd/PyPottery
+  repo-actions: [source, issue]
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/lrncrd/PyPottery
+        aria-label: GitHub
   sidebar:
     logo: "/logo.png"
     collapse-level: 0
     style: "docked"
     search: true
     contents:
+      - index.qmd
       - intro.qmd
-      - section: "PyPottery-Suite"
-        contents:
-          - index.qmd
-          - requirements.qmd
+      - requirements.qmd
       - section: "PyPotteryScan"
         contents:
           - pypotteryscan/index.qmd
@@ -49,6 +54,13 @@ website:
           - pypotterylens/usage.qmd
           - pypotterylens/version_history.qmd
       - acknowledgment.qmd
+  page-footer:
+    left: "© 2025 Lorenzo Cardarelli"
+    center: "Documentation v0.0.1"
+    right:
+      - icon: github
+        href: https://github.com/lrncrd/PyPottery
+    background: light
 
 format:
   html:

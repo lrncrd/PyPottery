@@ -46,6 +46,11 @@ Clicking on **Upload PDF to current project** will open a dialog window to selec
 
 ::: {.callout-important}
 The **Split Scanned** checkbox must be checked **BEFORE** selecting the file if the PDF to be processed has 2 pages side-by-side.
+
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 10px;">
+  <img src="imgs/example_pag_1.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <img src="imgs/example_pag_2.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+</div>
 :::
 
 Once the PDF is processed, you can proceed to the next tab.
@@ -66,8 +71,17 @@ The GUI is divided into two parts:
 ### Parameters
 
 - **Model Selection**: Allows you to select the model to apply.
-- **Model Parameters**: You can define the confidence threshold for the model as well as some post-processing operations for the masks.
+- **Model Parameters**: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters: 
+  - **Confidence**: The confidence threshold for the model.
+  - **Kernel size**: The size of the kernel for the post-processing operations.
+  - **Iterations**: The number of iterations for the post-processing operations.
 - **Advanced Options**: Includes the possibility to limit the application to 25 pages for debugging purposes.
+
+
+::: {.callout-note}
+The results of applying different Kernel size and Iterations are shown.
+![](imgs/parameter_comparison.png)
+:::
 
 Once you click on **🚀 Apply Model to Project**, a progress bar will indicate the status of the process.
 
@@ -79,7 +93,7 @@ To use a different model, place it in the appropriate folder.
 
 In this tab, you can review and modify the model's annotations.
 
-<iframe src="animations/model_review.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/model_review.html" style="width: 100%; height: 700px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 - **Left**: A list of files indicating the pages.
 - **Right**: A canvas showing the image.
@@ -87,17 +101,19 @@ In this tab, you can review and modify the model's annotations.
 You can navigate between images by selecting the name or using the buttons below the image.
 
 In the list:
-- **Green Checkmark**: Images where the model has identified vases.
-- **White Dot**: Images where the model has not recognized any vases.
+
+- **Green Checkmark (✔️)**: Images where the model has identified vases.
+- **White Dot (•)**: Images where the model has not recognized any vases.
 
 ### Editing Masks
 
 You can modify the masks identified by the model using the buttons below the canvas:
+
 - **🖌️ Brush**: To draw new masks.
 - **🧹 Eraser**: To delete existing masks.
 - **🗑️ Clear**: To delete all masks.
 
-New masks will appear in red.
+New masks will appear in transparent red.
 
 Once an image without masks (white dot) is modified, the indicator will update to a green checkmark.
 
@@ -109,7 +125,7 @@ Once you have reviewed the images, you can extract them by clicking on **📤 Ex
 
 This tab allows you to insert tabular information for the images.
 
-<iframe src="animations/tabular_info.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/tabular_info.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 - **Center**: A canvas displaying the image where each identified element is associated with a bounding box and an ID.
 - **Left**: A file list for navigation.
@@ -122,7 +138,7 @@ Once the information is entered, you can click on **👁️ Mark as Reviewed**. 
 
 Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).
 
-<iframe src="animations/post_process.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/post_process.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ### GUI Layout
 
@@ -148,6 +164,7 @@ An Excel file (.xlsx) containing the previously added tabular information will b
 Once created, you can reopen a project. Available projects are listed in "Your Projects" within the **Project Manager** tab.
 
 The project card displays information about the work, such as:
+
 - Number of images
 - Number of masks and annotations
 - Progress
@@ -155,3 +172,7 @@ The project card displays information about the work, such as:
 - Last modification date
 
 You can select or remove a project from this view.
+
+:::{.callout-warning}
+Removing a project will delete all associated data.
+:::

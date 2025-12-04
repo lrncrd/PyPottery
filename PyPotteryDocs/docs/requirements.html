@@ -38,13 +38,13 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d13b9eec3d8f70059c8760d72d2de5d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f2fc34f457c482896ac72dfdba2d88e9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -71,16 +71,40 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PyPottery</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lrncrd/PyPottery"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">PyPottery-Suite</a></li><li class="breadcrumb-item"><a href="./requirements.html">Requirements</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./requirements.html">Requirements</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -90,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
@@ -107,42 +131,31 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">PyPottery</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">PyPottery-Suite</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PyPottery-Suite</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./requirements.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Requirements</span></a>
   </div>
 </li>
-      </ul>
-  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryScan</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotteryscan/index.html" class="sidebar-item-text sidebar-link">
@@ -171,13 +184,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryInk</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotteryink/index.html" class="sidebar-item-text sidebar-link">
@@ -224,13 +237,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryTrace</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
@@ -259,17 +272,17 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryLayout</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
+ <span class="menu-text">PyPotteryLayout</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -294,13 +307,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">PyPotteryLens</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylens/index.html" class="sidebar-item-text sidebar-link">
@@ -316,7 +329,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Usage</span></a>
+ <span class="menu-text">Using PyPotteryLens</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -338,13 +351,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#core-technologies" id="toc-core-technologies" class="nav-link active" data-scroll-target="#core-technologies">Core Technologies</a></li>
+  <li><a href="#data-processing" id="toc-data-processing" class="nav-link" data-scroll-target="#data-processing">Data Processing</a></li>
+  <li><a href="#visualization-export" id="toc-visualization-export" class="nav-link" data-scroll-target="#visualization-export">Visualization &amp; Export</a></li>
+  <li><a href="#system-requirements" id="toc-system-requirements" class="nav-link" data-scroll-target="#system-requirements">System Requirements</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/requirements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">PyPottery-Suite</a></li><li class="breadcrumb-item"><a href="./requirements.html">Requirements</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Requirements</h1>
 </div>
@@ -363,10 +385,321 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe src="animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;">
-</iframe>
+<!-- Intro Section -->
+<div class="hero-section">
+  <h2 class="anchored">📦 Shared Requirements Architecture</h2>
+  <p>
+    All PyPottery tools are designed to work independently, yet they share a unified set of dependencies. 
+    This modular approach means you only need to install once and can use any combination of tools seamlessly.
+  </p>
+</div>
+
+<!-- Shared Concept Diagram -->
+<div style="text-align: center; margin: 2rem 0;">
+  <div style="display: inline-flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; padding: 1.5rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; max-width: 900px;">
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryScan</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryInk</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLens</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryTrace</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLayout</div>
+  </div>
+  <div style="font-size: 2rem; margin: 0.5rem 0;">⬇️</div>
+  <div style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); color: white; border-radius: 12px; font-weight: 700; font-size: 1.1rem;">
+    🔗 Shared Requirements Environment
+  </div>
+</div>
+<section id="core-technologies" class="level2">
+<h2 class="anchored" data-anchor-id="core-technologies">Core Technologies</h2>
+<p>The PyPottery ecosystem is built on these foundational technologies:</p>
+<div class="software-grid">
+
+  <!-- PyTorch Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🔥</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">PyTorch</h3>
+        <span class="card-version">v2.9.0+cu126</span>
+      </div>
+    </div>
+    <p class="card-description">
+      The deep learning framework powering all AI capabilities. Includes CUDA 12.6 support for GPU acceleration.
+    </p>
+    <ul class="card-features">
+      <li>Neural network training &amp; inference</li>
+      <li>GPU-accelerated tensor operations</li>
+      <li>TorchVision for image processing</li>
+    </ul>
+  </div>
+
+  <!-- Transformers Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ffb800 0%, #ff9500 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🤗</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Transformers</h3>
+        <span class="card-version">v4.57.1</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Hugging Face's library for state-of-the-art NLP and vision models. Powers OCR and text understanding.
+    </p>
+    <ul class="card-features">
+      <li>Pre-trained model access</li>
+      <li>Text recognition (OCR)</li>
+      <li>Few-shot learning capabilities</li>
+    </ul>
+  </div>
+
+  <!-- OpenCV Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">👁️</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">OpenCV</h3>
+        <span class="card-version">v4.12.0</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Computer vision library for image processing, manipulation, and analysis tasks.
+    </p>
+    <ul class="card-features">
+      <li>Image reading &amp; writing</li>
+      <li>Morphological operations</li>
+      <li>Contour detection &amp; analysis</li>
+    </ul>
+  </div>
+
+  <!-- Ultralytics Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎯</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Ultralytics YOLO</h3>
+        <span class="card-version">v8.3.223</span>
+      </div>
+    </div>
+    <p class="card-description">
+      State-of-the-art object detection framework for identifying pottery drawings in documents.
+    </p>
+    <ul class="card-features">
+      <li>Real-time object detection</li>
+      <li>Instance segmentation</li>
+      <li>Custom model training</li>
+    </ul>
+  </div>
+
+  <!-- SAM2 Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✂️</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">SAM2</h3>
+        <span class="card-version">v1.1.0</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Meta's Segment Anything Model for precise image segmentation and mask generation.
+    </p>
+    <ul class="card-features">
+      <li>Zero-shot segmentation</li>
+      <li>Interactive mask editing</li>
+      <li>High-quality boundaries</li>
+    </ul>
+  </div>
+
+  <!-- Diffusers Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #db2777 0%, #be185d 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #db2777 0%, #be185d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎨</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Diffusers</h3>
+        <span class="card-version">v0.35.2</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Hugging Face's diffusion models library for image enhancement and restoration.
+    </p>
+    <ul class="card-features">
+      <li>Image super-resolution</li>
+      <li>Drawing enhancement</li>
+      <li>Noise reduction</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+<section id="data-processing" class="level2">
+<h2 class="anchored" data-anchor-id="data-processing">Data Processing</h2>
+<div class="software-grid">
+
+  <!-- Pandas Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #130754 0%, #3b0764 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #130754 0%, #3b0764 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🐼</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Pandas</h3>
+        <span class="card-version">v2.3.3</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Powerful data manipulation and analysis library for structured data handling.
+    </p>
+    <ul class="card-features">
+      <li>DataFrame operations</li>
+      <li>Data cleaning &amp; transformation</li>
+      <li>Excel/CSV export</li>
+    </ul>
+  </div>
+
+  <!-- Polars Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">⚡</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Polars</h3>
+        <span class="card-version">v1.35.1</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Lightning-fast DataFrame library for high-performance data processing.
+    </p>
+    <ul class="card-features">
+      <li>Parallel processing</li>
+      <li>Memory efficient</li>
+      <li>Lazy evaluation</li>
+    </ul>
+  </div>
+
+  <!-- PyMuPDF Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📄</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">PyMuPDF</h3>
+        <span class="card-version">v1.26.5</span>
+      </div>
+    </div>
+    <p class="card-description">
+      High-performance PDF processing library for extracting images and text from documents.
+    </p>
+    <ul class="card-features">
+      <li>PDF page rendering</li>
+      <li>Image extraction</li>
+      <li>Text extraction</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+<section id="visualization-export" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-export">Visualization &amp; Export</h2>
+<div class="software-grid">
+
+  <!-- Matplotlib Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📊</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">Matplotlib</h3>
+        <span class="card-version">v3.10.7</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Comprehensive plotting library for creating static, animated, and interactive visualizations.
+    </p>
+    <ul class="card-features">
+      <li>Publication-quality figures</li>
+      <li>Image display &amp; annotation</li>
+      <li>Customizable layouts</li>
+    </ul>
+  </div>
+
+  <!-- ReportLab Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #059669 0%, #047857 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📑</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">ReportLab</h3>
+        <span class="card-version">v4.4.4</span>
+      </div>
+    </div>
+    <p class="card-description">
+      PDF generation toolkit for creating professional publication layouts and plates.
+    </p>
+    <ul class="card-features">
+      <li>PDF document creation</li>
+      <li>Vector graphics support</li>
+      <li>Layout automation</li>
+    </ul>
+  </div>
+
+  <!-- SVGWrite Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✏️</div>
+      <div class="card-title-group">
+        <h3 class="card-title anchored">SVGWrite</h3>
+        <span class="card-version">v1.4.3</span>
+      </div>
+    </div>
+    <p class="card-description">
+      SVG generation library for creating scalable vector graphics from traced drawings.
+    </p>
+    <ul class="card-features">
+      <li>Vector output generation</li>
+      <li>Path manipulation</li>
+      <li>Scalable exports</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+<section id="system-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="system-requirements">System Requirements</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hardware Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>GPU</strong>: NVIDIA GPU with CUDA 12.6 support (8GB+ VRAM recommended)</li>
+<li><strong>RAM</strong>: 16GB minimum, 32GB recommended for large batch processing<br>
+</li>
+<li><strong>Storage</strong>: SSD recommended for faster model loading</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Python Version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PyPottery requires <strong>Python 3.10 or higher</strong>. We recommend using a virtual environment to manage dependencies.</p>
+</div>
+</div>
+<div class="github-section">
+  <h3 class="anchored">📥 Quick Installation</h3>
+  <p style="color: #6b7280; margin-bottom: 1rem;">
+    Install all dependencies with a single command:
+  </p>
+  <code style="display: inline-block; background: #1f2937; color: #10b981; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.95rem;">
+    pip install -r requirements.txt
+  </code>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -787,6 +1120,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2025 Lorenzo Cardarelli</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Documentation v0.0.1</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/requirements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lrncrd/PyPottery">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

@@ -33,7 +33,7 @@ Like other `PyPottery` modules, `PyPotteryScan` allows you to manage projects. E
 
 The first tab allows you to manage your projects. You can create new projects, open existing ones, or delete them.
 
-<iframe src="animations/create_project.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+<iframe src="animations/create_project.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
 
 ## Creating a New Project
 
@@ -229,6 +229,8 @@ The **ML Training Excel** contains bounding box coordinates for vessels and text
 # Few-Shot Parser
 
 The few-shot module allows you to organize exported information into a structured format, using a Large Language Model (LLM) and a few-shot learning approach.
+
+<iframe src="animations/fewshot.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
 
 ## GUI Elements
 

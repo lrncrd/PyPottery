@@ -282,7 +282,7 @@
             width: 20px;
             height: 29px;
             /* Standard macOS pointer size */
-            background-image: url('data:image/svg+xml;utf8,<svg width="20" height="29" viewBox="0 0 20 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0V28.3L6.8 21.5L13.2 28.5L16.5 25.5L10.2 18.5H19.5L0 0Z" fill="black" stroke="white" stroke-width="2"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
             background-size: contain;
             background-repeat: no-repeat;
             position: absolute;
@@ -472,15 +472,16 @@
                 setTimeout(() => {
                     // Reset state
                     modelSelect.value = 'Select Model...';
-                    modelSelect.style.borderColor = '';
+                    modelSelect.style.borderColor = '#d1d5db';
                     uploadArea.classList.remove('active');
-                    uploadArea.innerHTML = '<div class="upload-text" style="color:#9ca3af;">Click to Upload</div>';
+                    uploadArea.innerHTML = '<div class="upload-icon">📁</div><div class="upload-text">Click to Upload</div>';
                     runBtn.innerText = 'Start Processing';
+                    runBtn.classList.remove('clicked');
                     runBtn.disabled = false;
                     progressFill.style.width = '0%';
                     percentText.innerText = '0%';
                     gallery.innerHTML = '';
-                    runAnimation();
+                    setTimeout(runAnimation, 100);
                 }, 2000);
             }
 

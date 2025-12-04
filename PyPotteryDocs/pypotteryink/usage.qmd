@@ -27,7 +27,7 @@ Additionally, you can toggle **Dark Mode** using the button in the interface.
 
 This tab allows you to analyze your PC's hardware to verify compatibility with PyPotteryInk.
 
-<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 The page displays **Recommended Specifications**, indicating the minimum requirements to use the program.
 
@@ -82,7 +82,7 @@ At the end of the process, a gallery will allow you to view the results.
 
 This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.
 
-<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 980px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 There are two options:
 

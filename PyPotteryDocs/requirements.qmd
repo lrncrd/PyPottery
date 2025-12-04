@@ -1,4 +1,309 @@
 ---
 title: "Requirements"
 ---
-<iframe src="animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+
+```{=html}
+<!-- Intro Section -->
+<div class="hero-section">
+  <h2>📦 Shared Requirements Architecture</h2>
+  <p>
+    All PyPottery tools are designed to work independently, yet they share a unified set of dependencies. 
+    This modular approach means you only need to install once and can use any combination of tools seamlessly.
+  </p>
+</div>
+
+<!-- Shared Concept Diagram -->
+<div style="text-align: center; margin: 2rem 0;">
+  <div style="display: inline-flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; padding: 1.5rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; max-width: 900px;">
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryScan</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryInk</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLens</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryTrace</div>
+    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLayout</div>
+  </div>
+  <div style="font-size: 2rem; margin: 0.5rem 0;">⬇️</div>
+  <div style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); color: white; border-radius: 12px; font-weight: 700; font-size: 1.1rem;">
+    🔗 Shared Requirements Environment
+  </div>
+</div>
+```
+
+## Core Technologies
+
+The PyPottery ecosystem is built on these foundational technologies:
+
+```{=html}
+<div class="software-grid">
+
+  <!-- PyTorch Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🔥</div>
+      <div class="card-title-group">
+        <h3 class="card-title">PyTorch</h3>
+        <span class="card-version">v2.9.0+cu126</span>
+      </div>
+    </div>
+    <p class="card-description">
+      The deep learning framework powering all AI capabilities. Includes CUDA 12.6 support for GPU acceleration.
+    </p>
+    <ul class="card-features">
+      <li>Neural network training & inference</li>
+      <li>GPU-accelerated tensor operations</li>
+      <li>TorchVision for image processing</li>
+    </ul>
+  </div>
+
+  <!-- Transformers Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ffb800 0%, #ff9500 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🤗</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Transformers</h3>
+        <span class="card-version">v4.57.1</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Hugging Face's library for state-of-the-art NLP and vision models. Powers OCR and text understanding.
+    </p>
+    <ul class="card-features">
+      <li>Pre-trained model access</li>
+      <li>Text recognition (OCR)</li>
+      <li>Few-shot learning capabilities</li>
+    </ul>
+  </div>
+
+  <!-- OpenCV Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">👁️</div>
+      <div class="card-title-group">
+        <h3 class="card-title">OpenCV</h3>
+        <span class="card-version">v4.12.0</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Computer vision library for image processing, manipulation, and analysis tasks.
+    </p>
+    <ul class="card-features">
+      <li>Image reading & writing</li>
+      <li>Morphological operations</li>
+      <li>Contour detection & analysis</li>
+    </ul>
+  </div>
+
+  <!-- Ultralytics Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎯</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Ultralytics YOLO</h3>
+        <span class="card-version">v8.3.223</span>
+      </div>
+    </div>
+    <p class="card-description">
+      State-of-the-art object detection framework for identifying pottery drawings in documents.
+    </p>
+    <ul class="card-features">
+      <li>Real-time object detection</li>
+      <li>Instance segmentation</li>
+      <li>Custom model training</li>
+    </ul>
+  </div>
+
+  <!-- SAM2 Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✂️</div>
+      <div class="card-title-group">
+        <h3 class="card-title">SAM2</h3>
+        <span class="card-version">v1.1.0</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Meta's Segment Anything Model for precise image segmentation and mask generation.
+    </p>
+    <ul class="card-features">
+      <li>Zero-shot segmentation</li>
+      <li>Interactive mask editing</li>
+      <li>High-quality boundaries</li>
+    </ul>
+  </div>
+
+  <!-- Diffusers Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #db2777 0%, #be185d 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #db2777 0%, #be185d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎨</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Diffusers</h3>
+        <span class="card-version">v0.35.2</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Hugging Face's diffusion models library for image enhancement and restoration.
+    </p>
+    <ul class="card-features">
+      <li>Image super-resolution</li>
+      <li>Drawing enhancement</li>
+      <li>Noise reduction</li>
+    </ul>
+  </div>
+
+</div>
+```
+
+## Data Processing
+
+```{=html}
+<div class="software-grid">
+
+  <!-- Pandas Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #130754 0%, #3b0764 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #130754 0%, #3b0764 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🐼</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Pandas</h3>
+        <span class="card-version">v2.3.3</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Powerful data manipulation and analysis library for structured data handling.
+    </p>
+    <ul class="card-features">
+      <li>DataFrame operations</li>
+      <li>Data cleaning & transformation</li>
+      <li>Excel/CSV export</li>
+    </ul>
+  </div>
+
+  <!-- Polars Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">⚡</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Polars</h3>
+        <span class="card-version">v1.35.1</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Lightning-fast DataFrame library for high-performance data processing.
+    </p>
+    <ul class="card-features">
+      <li>Parallel processing</li>
+      <li>Memory efficient</li>
+      <li>Lazy evaluation</li>
+    </ul>
+  </div>
+
+  <!-- PyMuPDF Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📄</div>
+      <div class="card-title-group">
+        <h3 class="card-title">PyMuPDF</h3>
+        <span class="card-version">v1.26.5</span>
+      </div>
+    </div>
+    <p class="card-description">
+      High-performance PDF processing library for extracting images and text from documents.
+    </p>
+    <ul class="card-features">
+      <li>PDF page rendering</li>
+      <li>Image extraction</li>
+      <li>Text extraction</li>
+    </ul>
+  </div>
+
+</div>
+```
+
+## Visualization & Export
+
+```{=html}
+<div class="software-grid">
+
+  <!-- Matplotlib Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📊</div>
+      <div class="card-title-group">
+        <h3 class="card-title">Matplotlib</h3>
+        <span class="card-version">v3.10.7</span>
+      </div>
+    </div>
+    <p class="card-description">
+      Comprehensive plotting library for creating static, animated, and interactive visualizations.
+    </p>
+    <ul class="card-features">
+      <li>Publication-quality figures</li>
+      <li>Image display & annotation</li>
+      <li>Customizable layouts</li>
+    </ul>
+  </div>
+
+  <!-- ReportLab Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #059669 0%, #047857 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📑</div>
+      <div class="card-title-group">
+        <h3 class="card-title">ReportLab</h3>
+        <span class="card-version">v4.4.4</span>
+      </div>
+    </div>
+    <p class="card-description">
+      PDF generation toolkit for creating professional publication layouts and plates.
+    </p>
+    <ul class="card-features">
+      <li>PDF document creation</li>
+      <li>Vector graphics support</li>
+      <li>Layout automation</li>
+    </ul>
+  </div>
+
+  <!-- SVGWrite Card -->
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+    <div class="card-header">
+      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✏️</div>
+      <div class="card-title-group">
+        <h3 class="card-title">SVGWrite</h3>
+        <span class="card-version">v1.4.3</span>
+      </div>
+    </div>
+    <p class="card-description">
+      SVG generation library for creating scalable vector graphics from traced drawings.
+    </p>
+    <ul class="card-features">
+      <li>Vector output generation</li>
+      <li>Path manipulation</li>
+      <li>Scalable exports</li>
+    </ul>
+  </div>
+
+</div>
+```
+
+## System Requirements
+
+::: {.callout-important}
+## Hardware Recommendations
+- **GPU**: NVIDIA GPU with CUDA 12.6 support (8GB+ VRAM recommended)
+- **RAM**: 16GB minimum, 32GB recommended for large batch processing  
+- **Storage**: SSD recommended for faster model loading
+:::
+
+::: {.callout-note}
+## Python Version
+PyPottery requires **Python 3.10 or higher**. We recommend using a virtual environment to manage dependencies.
+:::
+
+```{=html}
+<div class="github-section">
+  <h3>📥 Quick Installation</h3>
+  <p style="color: #6b7280; margin-bottom: 1rem;">
+    Install all dependencies with a single command:
+  </p>
+  <code style="display: inline-block; background: #1f2937; color: #10b981; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.95rem;">
+    pip install -r requirements.txt
+  </code>
+</div>
+```
