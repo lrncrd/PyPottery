@@ -34,12 +34,15 @@
         /* Header */
         .header {
             height: 40px;
+            min-height: 40px;
+            max-height: 40px;
             background: #f1f3f4;
             display: flex;
             align-items: center;
             padding: 0 16px;
             gap: 8px;
             border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
         }
 
         .dot {
@@ -96,6 +99,81 @@
             display: flex;
             gap: 20px;
             background: #f9fafb;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            flex: 1;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pottery-canvas {
+            width: 100%;
+            max-width: 200px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fdfcfb 0%, #f7f6f4 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .pottery-canvas::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .pottery-with-id {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .pottery-icon {
+            font-size: 3rem;
+            filter: grayscale(0.2) contrast(1.1);
+        }
+
+        .pottery-id {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #667eea;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .canvas-label {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
         }
 
         /* Table */
@@ -202,17 +280,30 @@
             </div>
         </div>
         <div class="tabs">
-            <div class="tab">Project Manager</div>
-            <div class="tab">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab">Review</div>
-            <div class="tab active">Tabular Info</div>
+            <div class="tab">🗂️ Project Manager</div>
+            <div class="tab">📄 PDF Processing</div>
+            <div class="tab">🤖 Apply Model</div>
+            <div class="tab">📝 Review</div>
+            <div class="tab active">📊 Tabular Info</div>
         </div>
 
         <div class="content">
-            <!-- Simplified Sidebar -->
-            <div style="width: 200px; background: white; border-radius: 8px; border: 1px solid #e5e7eb;"></div>
+            <!-- Image Preview -->
+            <div class="image-preview">
+                <div class="pottery-canvas">
+                    <div class="pottery-with-id">
+                        <div class="pottery-icon">🏺</div>
+                        <div class="pottery-id">#001</div>
+                    </div>
+                    <div class="pottery-with-id">
+                        <div class="pottery-icon">🏺</div>
+                        <div class="pottery-id">#002</div>
+                    </div>
+                </div>
+                <div class="canvas-label">Extracted Items</div>
+            </div>
 
+            <!-- Table -->
             <div class="table-container">
                 <div class="controls-row">
                     <input type="text" class="input-control" id="colInput" placeholder="New column name...">
@@ -290,7 +381,7 @@
             await moveCursorTo(colInput, 800, 500);
 
             // 2. Click Input
-            colInput.focus();
+            // colInput.focus(); // Removed to prevent stealing focus
 
             // 3. Type "Period"
             await new Promise(r => setTimeout(r, 200));

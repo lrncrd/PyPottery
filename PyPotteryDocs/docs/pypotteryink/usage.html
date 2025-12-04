@@ -316,7 +316,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Usage</span></a>
+ <span class="menu-text">Using PyPotteryLens</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -394,7 +394,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="hardware-check" class="level1">
 <h1>Hardware Check</h1>
 <p>This tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.</p>
-<iframe src="animations/hardware_check.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
 <p>The page displays <strong>Recommended Specifications</strong>, indicating the minimum requirements to use the program.</p>
 <p>Clicking on <strong>🔍 Check Hardware</strong> will display your machine’s specifications along with a performance score.</p>
@@ -444,7 +444,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="model-diagnostic" class="level1">
 <h1>Model Diagnostic</h1>
 <p>This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.</p>
-<iframe src="animations/model_diagnostic.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+<iframe src="animations/model_diagnostic.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
 <p>The available elements are:</p>
 <ul>
@@ -459,7 +459,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="preprocessing" class="level1">
 <h1>Preprocessing</h1>
 <p>This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.</p>
-<iframe src="animations/preprocessing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
 <p>There are two options:</p>
 <section id="step-1-calculate-statistics" class="level3">
@@ -469,7 +469,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="step-2-apply-preprocessing" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-apply-preprocessing">Step 2: Apply Preprocessing</h3>
 <p>This step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing <code>.npy</code> file.</p>
-<p>PyPotteryInk provides two default <code>.npy</code> files: - <code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model) - <code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</p>
+<p>PyPotteryInk provides two default <code>.npy</code> files:</p>
+<ul>
+<li><code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model)</li>
+<li><code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</li>
+</ul>
 <p>In short, these metrics can be used to make your images resemble those used to train the model.</p>
 <p>The <strong>Output Directory</strong> text box allows you to indicate where the modified images will be saved. Click <strong>✨ Apply Preprocessing</strong> to start. A progress bar will indicate the status.</p>
 </section>
@@ -477,7 +481,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="batch-processing" class="level1">
 <h1>Batch Processing</h1>
 <p>This tab represents the core of the program where you can process a series of images.</p>
-<iframe src="animations/batch_processing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+<iframe src="animations/batch_processing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
 <p>Parameters like <strong>Select Model</strong>, <strong>Upload Images</strong>, <strong>Patch Size</strong>, and <strong>Overlap</strong> are the same as in the Preprocessing tab.</p>
 <p>New parameters include:</p>

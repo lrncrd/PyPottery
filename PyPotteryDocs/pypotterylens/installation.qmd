@@ -18,7 +18,6 @@ toc: true
 Before installing PyPotteryLens, make sure you have:
 
 - **Python 3.12** installed on your system
-- A NVIDIA GPU with CUDA support (recommended for AI models)
 
 ## Automated Installation
 

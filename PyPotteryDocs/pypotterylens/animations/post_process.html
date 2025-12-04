@@ -34,12 +34,15 @@
         /* Header */
         .header {
             height: 40px;
+            min-height: 40px;
+            max-height: 40px;
             background: #f1f3f4;
             display: flex;
             align-items: center;
             padding: 0 16px;
             gap: 8px;
             border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
         }
 
         .dot {
@@ -128,66 +131,15 @@
             color: #374151;
         }
 
-        /* Kylix Shape */
-        .kylix-shape {
-            width: 120px;
-            height: 60px;
-            background: #374151;
-            /* Dark grey/black */
-            border-radius: 0 0 60px 60px;
-            /* Bowl shape */
-            position: relative;
-            margin: 20px auto;
+        /* Pottery Emoji */
+        .pottery-emoji {
+            font-size: 100px;
             transition: all 0.5s ease;
+            line-height: 1;
+            user-select: none;
         }
 
-        /* Handles */
-        .kylix-shape::before,
-        .kylix-shape::after {
-            content: '';
-            position: absolute;
-            top: -20px;
-            width: 30px;
-            height: 50px;
-            border: 4px solid #374151;
-            border-bottom: none;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .kylix-shape::before {
-            left: -30px;
-            transform: rotate(-20deg);
-        }
-
-        .kylix-shape::after {
-            right: -30px;
-            transform: rotate(20deg);
-        }
-
-        /* Foot */
-        .kylix-foot {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 20px;
-            background: #374151;
-            border-radius: 0 0 10px 10px;
-        }
-
-        /* Foot Stem */
-        .kylix-foot::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            width: 20px;
-            height: 10px;
-            background: #374151;
-        }
-
-        .kylix-shape.processed {
+        .pottery-emoji.processed {
             transform: rotate(15deg);
             /* Simulate alignment */
             filter: drop-shadow(0 0 5px #10b981);
@@ -250,12 +202,12 @@
             </div>
         </div>
         <div class="tabs">
-            <div class="tab">Project Manager</div>
-            <div class="tab">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab">Review</div>
-            <div class="tab">Tabular Info</div>
-            <div class="tab active">Post Processing</div>
+            <div class="tab">🗂️ Project Manager</div>
+            <div class="tab">📄 PDF Processing</div>
+            <div class="tab">🤖 Apply Model</div>
+            <div class="tab">📝 Review</div>
+            <div class="tab">📊 Tabular Info</div>
+            <div class="tab active">🔧 Post Processing</div>
         </div>
 
         <div class="content">
@@ -278,15 +230,11 @@
             <div class="preview-area">
                 <div class="image-box">
                     <h4>Original</h4>
-                    <div class="kylix-shape" style="transform: rotate(-10deg);">
-                        <div class="kylix-foot"></div>
-                    </div>
+                    <div class="pottery-emoji" style="transform: rotate(-10deg);">🏺</div>
                 </div>
                 <div class="image-box">
                     <h4>Processed</h4>
-                    <div class="kylix-shape" id="processedImg" style="opacity: 0.3;">
-                        <div class="kylix-foot"></div>
-                    </div>
+                    <div class="pottery-emoji" id="processedImg" style="opacity: 0.3;">🏺</div>
                 </div>
             </div>
         </div>

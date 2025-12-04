@@ -406,6 +406,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#import-required-libraries" id="toc-import-required-libraries" class="nav-link" data-scroll-target="#import-required-libraries">Import Required Libraries</a></li>
   <li><a href="#understanding-the-problem-image-metric-variations" id="toc-understanding-the-problem-image-metric-variations" class="nav-link" data-scroll-target="#understanding-the-problem-image-metric-variations">Understanding the Problem: Image Metric Variations</a></li>
   <li><a href="#image-metrics-analysis" id="toc-image-metrics-analysis" class="nav-link" data-scroll-target="#image-metrics-analysis">Image Metrics Analysis</a></li>
+  <li><a href="#preprocessing-pipeline" id="toc-preprocessing-pipeline" class="nav-link" data-scroll-target="#preprocessing-pipeline">Preprocessing Pipeline</a></li>
+  <li><a href="#model-application" id="toc-model-application" class="nav-link" data-scroll-target="#model-application">Model Application</a></li>
+  <li><a href="#batch-processing-1" id="toc-batch-processing-1" class="nav-link" data-scroll-target="#batch-processing-1">Batch Processing</a></li>
+  </ul></li>
+  <li><a href="#guide-to-fine-tuning-pypotteryink-models" id="toc-guide-to-fine-tuning-pypotteryink-models" class="nav-link" data-scroll-target="#guide-to-fine-tuning-pypotteryink-models">Guide to Fine-tuning PyPotteryInk Models</a>
+  <ul class="collapse">
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
+  <li><a href="#environment-setup" id="toc-environment-setup" class="nav-link" data-scroll-target="#environment-setup">Environment Setup</a></li>
+  <li><a href="#dataset-preparation" id="toc-dataset-preparation" class="nav-link" data-scroll-target="#dataset-preparation">Dataset Preparation</a></li>
+  <li><a href="#setting-up-fine-tuning" id="toc-setting-up-fine-tuning" class="nav-link" data-scroll-target="#setting-up-fine-tuning">Setting Up Fine-tuning</a></li>
+  <li><a href="#running-fine-tuning" id="toc-running-fine-tuning" class="nav-link" data-scroll-target="#running-fine-tuning">Running Fine-tuning</a></li>
+  <li><a href="#important-considerations" id="toc-important-considerations" class="nav-link" data-scroll-target="#important-considerations">Important Considerations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -777,7 +789,244 @@ Figure&nbsp;5: Direct model application showing artefacts. Note the missing dott
 <li>Contrast ratio: Ratio between the brightest and darkest areas</li>
 <li>Median: Middle intensity value</li>
 <li>Dynamic range: Difference between the 99th and 1st percentile intensities</li>
+<li>Entropy: Measure of information content</li>
+<li>IQR (Interquartile Range): Spread of middle 50% of intensity values</li>
+<li>Non-empty ratio: Proportion of pixels above background threshold</li>
 </ol>
+<p>You can either analyse your own dataset to establish reference metrics or use our pre-computed metrics from the training dataset:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 1: Analyse your own dataset</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> DatasetAnalyzer()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model_stats <span class="op">=</span> analyzer.analyze_dataset(<span class="st">'PATH_TO_YOUR_DATASET'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>analyzer.save_analysis(<span class="st">'DATASET_RESULTS_PATH'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 2: Use pre-computed metrics</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> DatasetAnalyzer()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> analyzer.load_analysis(<span class="st">'Montale_stats.npy'</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>model_stats <span class="op">=</span> analyzer.distributions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The distribution of these metrics can be visualized:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>analyzer.visualize_distributions_kde()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-model_stats" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-model_stats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/model_stats_kde.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model_stats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Figure 6: Distribution of image metrics from the training dataset. Each plot shows the distribution curve, actual data points, mean (red dashed line), median (blue dotted line), and ±2σ range (green shading).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="preprocessing-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="preprocessing-pipeline">Preprocessing Pipeline</h2>
+<p>The preprocessing pipeline adjusts images to match the statistical properties of the training dataset. Here’s how to process a single image:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>original_image <span class="op">=</span> <span class="st">'PATH_TO_YOUR_IMAGE'</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>adjusted_image, adjusted_metrics <span class="op">=</span> process_image_metrics(original_image, model_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The pipeline performs these adjustments:</p>
+<ol type="1">
+<li>Contrast normalization based on the training set’s contrast ratio distribution</li>
+<li>Dynamic range adjustment to match the target range</li>
+<li>Brightness correction to align with the training set’s mean intensity</li>
+</ol>
+<p>The adjusted image shows more balanced contrast and better preservation of details:</p>
+<div id="fig-image_adjusted" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-image_adjusted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/2_contrast_adjusted.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image_adjusted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Figure 7: Preprocessed image showing normalized contrast and preserved details.
+</figcaption>
+</figure>
+</div>
+<p>We can visualize how the preprocessing affected our image metrics:</p>
+<div id="fig-metrics_change" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-metrics_change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs/model_stats_comparison.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metrics_change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Figure 8: Comparison of original (orange) and adjusted (teal) metrics against the training distribution.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="model-application" class="level2">
+<h2 class="anchored" data-anchor-id="model-application">Model Application</h2>
+<p>After preprocessing, the model produces significantly better results:</p>
+<div id="fig-image_adjusted_res" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-image_adjusted_res-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images_docs\res_2_contrast_adjusted.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image_adjusted_res-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Figure 9: Model output after preprocessing, showing proper dotting patterns and no artifacts.
+</figcaption>
+</figure>
+</div>
+<p>The improvements include:</p>
+<ul>
+<li>Consistent dotting patterns in shaded areas</li>
+<li>No colour artefacts or tiling effects</li>
+<li>Better preservation of fine details</li>
+<li>More natural transition between different tonal areas</li>
+</ul>
+<p>I’ll add a section about batch processing to the documentation:</p>
+</section>
+<section id="batch-processing-1" class="level2">
+<h2 class="anchored" data-anchor-id="batch-processing-1">Batch Processing</h2>
+<p>While processing individual images is useful for testing and fine-tuning parameters, in archaeological practice we often need to process entire collections of drawings. The <code>process_folder_metrics</code> function automates this task by applying our preprocessing pipeline to all images in a directory.</p>
+<p>Here’s how to use batch processing:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the input folder containing your drawings</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>input_folder <span class="op">=</span> <span class="st">"path/to/your/drawings"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Process all images in the folder</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>process_folder_metrics(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    input_folder<span class="op">=</span>input_folder,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    model_stats<span class="op">=</span>model_stats,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    file_extensions<span class="op">=</span>(<span class="st">'.jpg'</span>, <span class="st">'.jpeg'</span>, <span class="st">'.png'</span>)  <span class="co"># Supported file formats</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The function creates a new directory named <code>input_folder_adjusted</code> that contains all the processed images. During processing, it provides detailed feedback about each image:</p>
+<pre><code>📁 Found 25 images to process
+==================================================
+
+🔍 Analyzing: drawing_001.jpg
+⚙️ Image Analysis:
+└─ Contrast: 0.85x | Brightness adjustment needed
+✨ Adjustments applied
+
+Progress: 1/25
+--------------------------------------------------
+
+🔍 Analyzing: drawing_002.jpg
+✅ Image metrics within normal ranges
+
+Progress: 2/25
+--------------------------------------------------</code></pre>
+<p>At the end of processing, you’ll receive a summary report:</p>
+<pre><code>📊 Processing Summary
+==================================================
+Total processed:  25
+Images adjusted:  18
+No adjustments:   7
+
+💾 All images saved to: path/to/your/drawings_adjusted</code></pre>
+<p>This summary helps you understand how many images required adjustment, which can be useful for:</p>
+<ul>
+<li>Identifying systematic issues in your drawing or scanning process</li>
+<li>Planning future preprocessing strategies</li>
+<li>Documenting the processing pipeline for publication</li>
+</ul>
+<p>The batch processing maintains all the benefits of individual processing while saving time and ensuring consistency across your entire dataset. All adjusted images will have metrics that align with your training data distribution, leading to better results when applying the model.</p>
+<p>Note that each image still receives individual analysis and custom adjustments - the batch process doesn’t apply a one-size-fits-all transformation. Instead, it analyses each drawing’s specific characteristics and applies the precise adjustments needed to bring that particular image into alignment with your target metrics.</p>
+</section>
+</section>
+<section id="guide-to-fine-tuning-pypotteryink-models" class="level1">
+<h1>Guide to Fine-tuning PyPotteryInk Models</h1>
+<p>This guide walks you through the process of fine-tuning a PyPotteryInk model for your specific archaeological context.</p>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<p>Before starting the fine-tuning process, ensure you have:</p>
+<ol type="1">
+<li>A GPU with at least 20GB VRAM for training</li>
+<li>Python 3.10 or higher</li>
+<li>A paired dataset of pencil drawings and their inked versions</li>
+<li>Storage space for model checkpoints and training data</li>
+</ol>
+</section>
+<section id="environment-setup" class="level2">
+<h2 class="anchored" data-anchor-id="environment-setup">Environment Setup</h2>
+<ol type="1">
+<li><p>First, clone the repository:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/GaParmar/img2img-turbo.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Install the required dependencies:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> img2img-turbo/requirements.txt</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/openai/CLIP.git</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install wandb vision_aided_loss huggingface-hub==0.25.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="dataset-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-preparation">Dataset Preparation</h2>
+<ol type="1">
+<li><p>To create a training dataset check out the <a href="https://github.com/GaParmar/img2img-turbo/blob/main/docs/training_pix2pix_turbo.md">original docs</a></p></li>
+<li><p>Important considerations for dataset preparation:</p>
+<ul>
+<li>Images should be paired (same filename in both folders)</li>
+<li>Standard image formats (jpg, jpeg, png) are supported</li>
+<li>Both pencil and inked versions should be aligned</li>
+<li>Recommended resolution: at least 512x512 pixels</li>
+</ul></li>
+<li><p>Data requirements:</p>
+<ul>
+<li>Minimum recommended: 10-20 pairs for fine-tuning</li>
+<li>Each drawing should be clean and well-scanned</li>
+<li>Include variety in pottery types and decorations</li>
+<li>Consistent drawing style across the dataset</li>
+</ul></li>
+</ol>
+</section>
+<section id="setting-up-fine-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-fine-tuning">Setting Up Fine-tuning</h2>
+<p>To fine-tune a pre-trained model (like “6h-MCG”), you’ll need to modify the base img2img-turbo repository. This enables the use of a pre-trained model as a starting point for your specialised training.</p>
+<ol type="1">
+<li><strong>Prepare the Repository:</strong>
+<ul>
+<li>Navigate to your cloned <code>img2img-turbo</code> directory</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> img2img-turbo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><strong>Replace Key Files:</strong>
+<ul>
+<li>Copy these files from the PyPotteryInk repository’s “fine-tuning” folder into the <code>src</code> folder:
+<ul>
+<li>pix2pix_turbo.py</li>
+<li>train_pix2pix_turbo.py</li>
+</ul></li>
+</ul>
+These modified files contain the necessary adaptations to support training from a pre-trained model.</li>
+</ol>
+</section>
+<section id="running-fine-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="running-fine-tuning">Running Fine-tuning</h2>
+<ol type="1">
+<li><p><strong>Initialize Accelerate Environment:</strong></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">accelerate</span> config</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will guide you through setting up your training environment. Follow the prompts to configure for your GPU setup.</p></li>
+<li><p><strong>Start Training:</strong></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">accelerate</span> launch src/train_pix2pix_turbo.py <span class="dt">\</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--pretrained_model_name_or_path</span><span class="op">=</span><span class="st">"6h-MCG.pkl"</span> <span class="dt">\</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span><span class="op">=</span><span class="st">"YOUR_OUTPUT_DIR"</span> <span class="dt">\</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset_folder</span><span class="op">=</span><span class="st">"YOUR_INPUT_DATA"</span> <span class="dt">\</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--resolution</span><span class="op">=</span>512 <span class="dt">\</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--train_batch_size</span><span class="op">=</span>2 <span class="dt">\</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--enable_xformers_memory_efficient_attention</span> <span class="dt">\</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--viz_freq</span> 25 <span class="dt">\</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--track_val_fid</span> <span class="dt">\</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">--report_to</span> <span class="st">"wandb"</span> <span class="dt">\</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">--tracker_project_name</span> <span class="st">"YOUR_PROJECT_NAME"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Key Parameters:</p>
+<ul>
+<li><code>pretrained_model_name_or_path</code>: Path to your pre-trained model (e.g., “6h-MCG.pkl”)</li>
+<li><code>output_dir</code>: Where to save training outputs and checkpoints</li>
+<li><code>dataset_folder</code>: Location of your training dataset</li>
+<li><code>resolution</code>: Image resolution (512 recommended)</li>
+<li><code>train_batch_size</code>: Number of images per training batch</li>
+<li><code>viz_freq</code>: How often to generate visualization samples</li>
+<li><code>track_val_fid</code>: Enable FID score tracking</li>
+<li><code>tracker_project_name</code>: Your Weights &amp; Biases project name</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Note:</strong> Adjust the batch size based on your GPU memory. Start with 2 and increase if your GPU can handle it.</p>
+</blockquote></li>
+</ol>
+</section>
+<section id="important-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="important-considerations">Important Considerations</h2>
+<ul>
+<li>Ensure your pre-trained model file (e.g., “6h-MCG.pkl”) is in the correct location</li>
+<li>Monitor GPU memory usage during training</li>
+<li>Use Weights &amp; Biases (wandb) to track training progress</li>
+<li>Check the output directory periodically for sample outputs</li>
+<li>Training time will vary based on your GPU and dataset size</li>
+</ul>
 
 
 </section>

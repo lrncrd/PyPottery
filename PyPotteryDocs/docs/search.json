@@ -1,5 +1,38 @@
 [
   {
+    "objectID": "pypotteryink/index.html",
+    "href": "pypotteryink/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/index.html#key-features",
+    "href": "pypotteryink/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/index.html#contributors",
+    "href": "pypotteryink/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
     "objectID": "pypotteryscan/usage.html",
     "href": "pypotteryscan/usage.html",
     "title": "Using PyPotteryScan",
@@ -145,78 +178,78 @@
   {
     "objectID": "pypotterylens/usage.html",
     "href": "pypotterylens/usage.html",
-    "title": "Usage",
+    "title": "Using PyPotteryLens",
     "section": "",
-    "text": "The program is composed of a series of tab that represent the image extraction process:\n\nProject Manager\nPDF Document Processing\nApply Model\nReview Annotations and extract masks\nTabular Information\nPost Processing\n\n\n\nLike other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.\n\n\n\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.\n\n\n\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\nThe GUI is divided into two parts: - Right Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again. - Left Side: Contains the model parameters.\n\n\n\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on Apply Model, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.\n\n\n\n\n\n\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\n\nYou can modify the masks identified by the model using the buttons below the canvas: - Brush: To draw new masks. - Eraser: To delete existing masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on Extract Cards.\n\n\n\n\nThis tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click Add Column. Once the information is entered, you can click on Mark as Reviewed. The inserted columns are persistent across the project’s images.\n\n\n\nFinally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\n\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\n\nTo start post-processing, click on Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
+    "text": "version 0.2.0",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#project-manager",
     "href": "pypotterylens/usage.html#project-manager",
-    "title": "Usage",
-    "section": "",
-    "text": "Like other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.",
+    "title": "Using PyPotteryLens",
+    "section": "Project Manager",
+    "text": "Project Manager\nLike other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#pdf-document-processing",
     "href": "pypotterylens/usage.html#pdf-document-processing",
-    "title": "Usage",
-    "section": "",
-    "text": "In this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
+    "title": "Using PyPotteryLens",
+    "section": "PDF Document Processing",
+    "text": "PDF Document Processing\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF to current project will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#apply-model",
     "href": "pypotterylens/usage.html#apply-model",
-    "title": "Usage",
-    "section": "",
-    "text": "In this tab, you can use the Computer Vision (CV) model to extract information.\n\n\nThe GUI is divided into two parts: - Right Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again. - Left Side: Contains the model parameters.\n\n\n\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on Apply Model, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
+    "title": "Using PyPotteryLens",
+    "section": "Apply Model",
+    "text": "Apply Model\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\n\nGUI Layout\nThe GUI is divided into two parts:\n\nRight Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.\nLeft Side: Contains the model parameters.\n\n\n\nParameters\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks.\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\nOnce you click on 🚀 Apply Model to Project, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#review-annotations",
     "href": "pypotterylens/usage.html#review-annotations",
-    "title": "Usage",
-    "section": "",
-    "text": "In this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\n\nYou can modify the masks identified by the model using the buttons below the canvas: - Brush: To draw new masks. - Eraser: To delete existing masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on Extract Cards.",
+    "title": "Using PyPotteryLens",
+    "section": "Review Annotations",
+    "text": "Review Annotations\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list: - Green Checkmark: Images where the model has identified vases. - White Dot: Images where the model has not recognized any vases.\n\nEditing Masks\nYou can modify the masks identified by the model using the buttons below the canvas: - 🖌️ Brush: To draw new masks. - 🧹 Eraser: To delete existing masks. - 🗑️ Clear: To delete all masks.\nNew masks will appear in red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on 💾 Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on 📤 Extract Cards.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#tabular-information",
     "href": "pypotterylens/usage.html#tabular-information",
-    "title": "Usage",
-    "section": "",
-    "text": "This tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click Add Column. Once the information is entered, you can click on Mark as Reviewed. The inserted columns are persistent across the project’s images.",
+    "title": "Using PyPotteryLens",
+    "section": "Tabular Information",
+    "text": "Tabular Information\nThis tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click ➕ Add Column. Once the information is entered, you can click on 👁️ Mark as Reviewed. The inserted columns are persistent across the project’s images.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
     "objectID": "pypotterylens/usage.html#post-processing",
     "href": "pypotterylens/usage.html#post-processing",
-    "title": "Usage",
-    "section": "",
-    "text": "Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\n\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\n\nTo start post-processing, click on Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
+    "title": "Using PyPotteryLens",
+    "section": "Post Processing",
+    "text": "Post Processing\nFinally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\nGUI Layout\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\nWorkflow\nTo start post-processing, click on 🔍 Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on 📦 Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
     "crumbs": [
       "PyPotteryLens",
-      "Usage"
+      "Using PyPotteryLens"
     ]
   },
   {
@@ -224,7 +257,7 @@
     "href": "pypotterylens/index.html",
     "title": "Introduction",
     "section": "",
-    "text": "version 0.1.0\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.",
+    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\n      \n    \n\n\n\n\n\n\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.\n\n\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.\n\n\n\n\n\n\n&lt;a href=\"https://github.com/lrncrd\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/lrncrd.png\" alt=\"Lorenzo Cardarelli\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Lorenzo Cardarelli&lt;/span&gt;\n\n\n&lt;a href=\"https://github.com/enzococca\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/enzococca.png\" alt=\"Enzo Cocca\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Enzo Cocca&lt;/span&gt;\n\n&lt;div style=\"text-align: center;\"&gt;\n&lt;a href=\"https://github.com/pankus\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/pankus.png\" alt=\"Francesco Di Filippo\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;PanKus&lt;/span&gt;",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
@@ -234,8 +267,8 @@
     "objectID": "pypotterylens/index.html#key-features",
     "href": "pypotterylens/index.html#key-features",
     "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
+    "section": "",
+    "text": "📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
@@ -245,8 +278,8 @@
     "objectID": "pypotterylens/index.html#contributors",
     "href": "pypotterylens/index.html#contributors",
     "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli",
+    "section": "",
+    "text": "&lt;a href=\"https://github.com/lrncrd\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/lrncrd.png\" alt=\"Lorenzo Cardarelli\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Lorenzo Cardarelli&lt;/span&gt;\n\n\n&lt;a href=\"https://github.com/enzococca\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/enzococca.png\" alt=\"Enzo Cocca\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Enzo Cocca&lt;/span&gt;\n\n&lt;div style=\"text-align: center;\"&gt;\n&lt;a href=\"https://github.com/pankus\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/pankus.png\" alt=\"Francesco Di Filippo\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;PanKus&lt;/span&gt;",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
@@ -257,7 +290,7 @@
     "href": "pypotteryink/usage.html",
     "title": "Using PyPotteryInk",
     "section": "",
-    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files: - Montale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model) - Cimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
+    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files:\n\nMontale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model)\nCimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\n\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
     "crumbs": [
       "PyPotteryInk",
       "Using PyPotteryInk"
@@ -338,116 +371,6 @@
     "crumbs": [
       "PyPotteryInk",
       "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html",
-    "href": "pypotteryink/api.html",
-    "title": "API Documentation",
-    "section": "",
-    "text": "version 2.0.0",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#overview",
-    "href": "pypotteryink/api.html#overview",
-    "title": "API Documentation",
-    "section": "Overview",
-    "text": "Overview\nThe ink module provides the foundation for transforming archaeological pencil drawings into publication-ready inked versions. Each function serves a specific purpose in the workflow, carefully preserving archaeological details while ensuring professional output quality.",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#process-single-image",
-    "href": "pypotteryink/api.html#process-single-image",
-    "title": "API Documentation",
-    "section": "Process Single Image",
-    "text": "Process Single Image\ndef process_single_image(\n    input_image_path_or_pil: Union[str, Image.Image],\n    prompt: str,\n    model_path: str,\n    output_dir: str = 'output',\n    use_fp16: bool = False,\n    output_name: Optional[str] = None,\n    contrast_scale: float = 1,\n    return_pil: bool = False,\n    patch_size: int = 512,\n    overlap: int = 64,\n    upscale: float = 1,\n) -&gt; Union[str, Image.Image]\nThis function handles the conversion of individual drawings, providing fine control over the processing parameters. Think of it as a digital artisan, carefully converting each drawing while maintaining archaeological accuracy.\n\nCore Parameters\n\ninput_image_path_or_pil\n\nYour drawing to process - either a file path or a PIL Image\n\nprompt\n\nInstructions for the model, typically “make it ready for publication”\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Controls\n\ncontrast_scale · default: 1.0\n\nFine-tunes the intensity of lines and shading. Values between 1.25-1.5 often work best for archaeological materials.\n\npatch_size · default: 512\n\nProcessing segment size. Like dividing a large drawing into manageable sections.\n\noverlap · default: 64\n\nControls smooth transitions between processed sections.\n\nupscale · default: 1\n\nUpscaling or downscaling factor for processing. It doesn’t affect the output size\n\n\n\n\nExamples\nBasic processing:\nresult = process_single_image(\n    \"vessel_123.jpg\",\n    prompt=\"make it ready for publication\",\n    model_path=\"model_601.pkl\"\n)",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#process-folder",
-    "href": "pypotteryink/api.html#process-folder",
-    "title": "API Documentation",
-    "section": "Process Folder",
-    "text": "Process Folder\ndef process_folder(\n    input_folder: str,\n    model_path: str,\n    prompt: str = \"make it ready for publication\",\n    output_dir: str = 'output',\n    use_fp16: bool = False,\n    contrast_scale: float = 1,\n    patch_size: int = 512,\n    overlap: int = 64,\n    file_extensions: tuple = ('.jpg', '.jpeg', '.png'),\n    upscale: float = 1,\n) -&gt; dict\nBatch processes a directory of archaeological drawings, maintaining consistency across the entire collection. The function tracks progress and generates detailed logs and comparisons.\n\nCore Parameters\n\ninput_folder\n\nDirectory containing your archaeological drawings\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Controls\n\ncontrast_scale · default: 1.0\n\nGlobal contrast adjustment for the entire batch\n\nfile_extensions · default: (‘.jpg’, ‘.jpeg’, ‘.png’)\n\nSupported file types to process\n\nupscale · default: 1\n\nUpscaling or downscaling factor for processing. It doesn’t affect the output size\n\n\n\n\nReturns\nReturns a dictionary containing: - successful: Number of successfully processed images - failed: Number of failed conversions - failed_files: List of problematic files - average_time: Mean processing time per image - log_file: Path to detailed processing log - comparison_dir: Path to before/after comparisons\n\n\nExamples\nProcess all drawings in a directory:\nresults = process_folder(\n    \"excavation_2024_drawings/\",\n    model_path=\"model_601.pkl\",\n    contrast_scale=1.25\n)",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#run-diagnostics",
-    "href": "pypotteryink/api.html#run-diagnostics",
-    "title": "API Documentation",
-    "section": "Run Diagnostics",
-    "text": "Run Diagnostics\ndef run_diagnostics(\n    input_folder: str,\n    model_path: str,\n    prompt: str = \"make it ready for publication\",\n    patch_size: int = 512,\n    overlap: int = 64,\n    num_sample_images: int = 5,\n    contrast_values: list = [0.5, 0.75, 1, 1.5, 2, 3],\n    output_dir: str = 'diagnostics'\n) -&gt; None\nPerforms preliminary analysis on your dataset to optimize processing parameters. Creates visualizations of patch divisions and contrast effects to help fine-tune settings.\n\nCore Parameters\n\ninput_folder\n\nDirectory with sample drawings to analyse\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Parameters\n\nnum_sample_images · default: 5\n\nNumber of drawings to analyse (max 5)\n\ncontrast_values · default: [0.5, 0.75, 1, 1.5, 2, 3]\n\nContrast levels to test\n\n\n\n\nGenerated Outputs\n\nPatch visualization diagrams\nContrast effect comparisons\nImage summary statistics\nProcessing recommendations\n\n\n\nExamples\nRun analysis on a new dataset:\nrun_diagnostics(\n    \"new_site_drawings/\",\n    model_path=\"model_601.pkl\",\n    contrast_values=[0.75, 1, 1.25, 1.5]\n)",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#calculate-patches",
-    "href": "pypotteryink/api.html#calculate-patches",
-    "title": "API Documentation",
-    "section": "Calculate Patches",
-    "text": "Calculate Patches\ndef calculate_patches(\n    width: int,\n    height: int,\n    patch_size: int = 512,\n    overlap: int = 64\n) -&gt; tuple[int, int, int]\nInternal utility that determines optimal patch division for processing large drawings. Ensures efficient memory usage while maintaining detail preservation.\n\nParameters\n\nwidth, height\n\nImage dimensions in pixels\n\npatch_size · default: 512\n\nSize of processing segments\n\noverlap · default: 64\n\nOverlap between segments\n\n\n\n\nReturns\nReturns a tuple containing: - total_patches: Total number of segments - patches_per_row: Number of patches horizontally - num_rows: Number of patches vertically\n\n\nExamples\nCalculate processing segments:\npatches, rows, cols = calculate_patches(2048, 1536)\nprint(f\"Processing in {patches} segments\")",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#overview-1",
-    "href": "pypotteryink/api.html#overview-1",
-    "title": "API Documentation",
-    "section": "Overview",
-    "text": "Overview\nThe postprocessing module provides tools for refining and enhancing the converted archaeological drawings, focusing on output quality and archaeological detail preservation.",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#binarize-image",
-    "href": "pypotteryink/api.html#binarize-image",
-    "title": "API Documentation",
-    "section": "Binarize Image",
-    "text": "Binarize Image\ndef binarize_image(\n    image: Union[PIL.Image, np.ndarray],\n    threshold: int = 127\n) -&gt; PIL.Image\nConverts grayscale drawings to binary format, ideal for final publication preparation.\n\nParameters\n\nimage\n\nInput image (PIL Image or numpy array)\n\nthreshold\n\nIntensity threshold (0-255)\n\n\n\n\nExamples\nbinary = binarize_image(\"processed_vessel.png\", threshold=150)",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#remove-white-background",
-    "href": "pypotteryink/api.html#remove-white-background",
-    "title": "API Documentation",
-    "section": "Remove White Background",
-    "text": "Remove White Background\ndef remove_white_background(\n    image: PIL.Image,\n    threshold: int = 250\n) -&gt; PIL.Image\nCreates transparent backgrounds for archaeological drawings, useful for figure composition.\n\nParameters\n\nimage\n\nInput drawing\n\nthreshold\n\nValue above which pixels are considered white\n\n\n\n\nExamples\ntransparent = remove_white_background(\"vessel.png\", threshold=245)",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/api.html#process-image-binarize",
-    "href": "pypotteryink/api.html#process-image-binarize",
-    "title": "API Documentation",
-    "section": "Process Image Binarize",
-    "text": "Process Image Binarize\ndef process_image_binarize(\n    image_path: str,\n    binarize_threshold: int = 127,\n    white_threshold: int = 250,\n    save_path: Optional[str] = None\n) -&gt; PIL.Image\nCombined function for binarization and background removal.",
-    "crumbs": [
-      "PyPotteryInk",
-      "API Documentation"
     ]
   },
   {
@@ -631,43 +554,329 @@
     "href": "pypotteryink/advanced.html#image-metrics-analysis",
     "title": "Advanced Documentation",
     "section": "Image Metrics Analysis",
-    "text": "Image Metrics Analysis\nThe DatasetAnalyzer class calculates eight key metrics that characterise archaeological drawings:\n\nMean brightness: Overall lightness of the image\nStandard deviation: Measure of tonal variation\nContrast ratio: Ratio between the brightest and darkest areas\nMedian: Middle intensity value\nDynamic range: Difference between the 99th and 1st percentile intensities",
+    "text": "Image Metrics Analysis\nThe DatasetAnalyzer class calculates eight key metrics that characterise archaeological drawings:\n\nMean brightness: Overall lightness of the image\nStandard deviation: Measure of tonal variation\nContrast ratio: Ratio between the brightest and darkest areas\nMedian: Middle intensity value\nDynamic range: Difference between the 99th and 1st percentile intensities\nEntropy: Measure of information content\nIQR (Interquartile Range): Spread of middle 50% of intensity values\nNon-empty ratio: Proportion of pixels above background threshold\n\nYou can either analyse your own dataset to establish reference metrics or use our pre-computed metrics from the training dataset:\n# Option 1: Analyse your own dataset\nanalyzer = DatasetAnalyzer()\nmodel_stats = analyzer.analyze_dataset('PATH_TO_YOUR_DATASET')\nanalyzer.save_analysis('DATASET_RESULTS_PATH')\n\n# Option 2: Use pre-computed metrics\nanalyzer = DatasetAnalyzer()\nanalyzer = analyzer.load_analysis('Montale_stats.npy')\nmodel_stats = analyzer.distributions\nThe distribution of these metrics can be visualized:\nanalyzer.visualize_distributions_kde()\n\n\n\n\n\n\nFigure 6: Figure 6: Distribution of image metrics from the training dataset. Each plot shows the distribution curve, actual data points, mean (red dashed line), median (blue dotted line), and ±2σ range (green shading).",
     "crumbs": [
       "PyPotteryInk",
       "Advanced Documentation"
     ]
   },
   {
-    "objectID": "pypotteryink/index.html",
-    "href": "pypotteryink/index.html",
-    "title": "Introduction",
+    "objectID": "pypotteryink/advanced.html#preprocessing-pipeline",
+    "href": "pypotteryink/advanced.html#preprocessing-pipeline",
+    "title": "Advanced Documentation",
+    "section": "Preprocessing Pipeline",
+    "text": "Preprocessing Pipeline\nThe preprocessing pipeline adjusts images to match the statistical properties of the training dataset. Here’s how to process a single image:\noriginal_image = 'PATH_TO_YOUR_IMAGE'\nadjusted_image, adjusted_metrics = process_image_metrics(original_image, model_stats)\nThe pipeline performs these adjustments:\n\nContrast normalization based on the training set’s contrast ratio distribution\nDynamic range adjustment to match the target range\nBrightness correction to align with the training set’s mean intensity\n\nThe adjusted image shows more balanced contrast and better preservation of details:\n\n\n\n\n\n\nFigure 7: Figure 7: Preprocessed image showing normalized contrast and preserved details.\n\n\n\nWe can visualize how the preprocessing affected our image metrics:\n\n\n\n\n\n\nFigure 8: Figure 8: Comparison of original (orange) and adjusted (teal) metrics against the training distribution.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#model-application",
+    "href": "pypotteryink/advanced.html#model-application",
+    "title": "Advanced Documentation",
+    "section": "Model Application",
+    "text": "Model Application\nAfter preprocessing, the model produces significantly better results:\n\n\n\n\n\n\nFigure 9: Figure 9: Model output after preprocessing, showing proper dotting patterns and no artifacts.\n\n\n\nThe improvements include:\n\nConsistent dotting patterns in shaded areas\nNo colour artefacts or tiling effects\nBetter preservation of fine details\nMore natural transition between different tonal areas\n\nI’ll add a section about batch processing to the documentation:",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#batch-processing-1",
+    "href": "pypotteryink/advanced.html#batch-processing-1",
+    "title": "Advanced Documentation",
+    "section": "Batch Processing",
+    "text": "Batch Processing\nWhile processing individual images is useful for testing and fine-tuning parameters, in archaeological practice we often need to process entire collections of drawings. The process_folder_metrics function automates this task by applying our preprocessing pipeline to all images in a directory.\nHere’s how to use batch processing:\n# Define the input folder containing your drawings\ninput_folder = \"path/to/your/drawings\"\n\n# Process all images in the folder\nprocess_folder_metrics(\n    input_folder=input_folder,\n    model_stats=model_stats,\n    file_extensions=('.jpg', '.jpeg', '.png')  # Supported file formats\n)\nThe function creates a new directory named input_folder_adjusted that contains all the processed images. During processing, it provides detailed feedback about each image:\n📁 Found 25 images to process\n==================================================\n\n🔍 Analyzing: drawing_001.jpg\n⚙️ Image Analysis:\n└─ Contrast: 0.85x | Brightness adjustment needed\n✨ Adjustments applied\n\nProgress: 1/25\n--------------------------------------------------\n\n🔍 Analyzing: drawing_002.jpg\n✅ Image metrics within normal ranges\n\nProgress: 2/25\n--------------------------------------------------\nAt the end of processing, you’ll receive a summary report:\n📊 Processing Summary\n==================================================\nTotal processed:  25\nImages adjusted:  18\nNo adjustments:   7\n\n💾 All images saved to: path/to/your/drawings_adjusted\nThis summary helps you understand how many images required adjustment, which can be useful for:\n\nIdentifying systematic issues in your drawing or scanning process\nPlanning future preprocessing strategies\nDocumenting the processing pipeline for publication\n\nThe batch processing maintains all the benefits of individual processing while saving time and ensuring consistency across your entire dataset. All adjusted images will have metrics that align with your training data distribution, leading to better results when applying the model.\nNote that each image still receives individual analysis and custom adjustments - the batch process doesn’t apply a one-size-fits-all transformation. Instead, it analyses each drawing’s specific characteristics and applies the precise adjustments needed to bring that particular image into alignment with your target metrics.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#prerequisites",
+    "href": "pypotteryink/advanced.html#prerequisites",
+    "title": "Advanced Documentation",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nBefore starting the fine-tuning process, ensure you have:\n\nA GPU with at least 20GB VRAM for training\nPython 3.10 or higher\nA paired dataset of pencil drawings and their inked versions\nStorage space for model checkpoints and training data",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#environment-setup",
+    "href": "pypotteryink/advanced.html#environment-setup",
+    "title": "Advanced Documentation",
+    "section": "Environment Setup",
+    "text": "Environment Setup\n\nFirst, clone the repository:\ngit clone https://github.com/GaParmar/img2img-turbo.git\nInstall the required dependencies:\npip install -r img2img-turbo/requirements.txt\npip install git+https://github.com/openai/CLIP.git\npip install wandb vision_aided_loss huggingface-hub==0.25.0",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#dataset-preparation",
+    "href": "pypotteryink/advanced.html#dataset-preparation",
+    "title": "Advanced Documentation",
+    "section": "Dataset Preparation",
+    "text": "Dataset Preparation\n\nTo create a training dataset check out the original docs\nImportant considerations for dataset preparation:\n\nImages should be paired (same filename in both folders)\nStandard image formats (jpg, jpeg, png) are supported\nBoth pencil and inked versions should be aligned\nRecommended resolution: at least 512x512 pixels\n\nData requirements:\n\nMinimum recommended: 10-20 pairs for fine-tuning\nEach drawing should be clean and well-scanned\nInclude variety in pottery types and decorations\nConsistent drawing style across the dataset",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#setting-up-fine-tuning",
+    "href": "pypotteryink/advanced.html#setting-up-fine-tuning",
+    "title": "Advanced Documentation",
+    "section": "Setting Up Fine-tuning",
+    "text": "Setting Up Fine-tuning\nTo fine-tune a pre-trained model (like “6h-MCG”), you’ll need to modify the base img2img-turbo repository. This enables the use of a pre-trained model as a starting point for your specialised training.\n\nPrepare the Repository:\n\nNavigate to your cloned img2img-turbo directory\n\ncd img2img-turbo\nReplace Key Files:\n\nCopy these files from the PyPotteryInk repository’s “fine-tuning” folder into the src folder:\n\npix2pix_turbo.py\ntrain_pix2pix_turbo.py\n\n\nThese modified files contain the necessary adaptations to support training from a pre-trained model.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#running-fine-tuning",
+    "href": "pypotteryink/advanced.html#running-fine-tuning",
+    "title": "Advanced Documentation",
+    "section": "Running Fine-tuning",
+    "text": "Running Fine-tuning\n\nInitialize Accelerate Environment:\naccelerate config\nThis will guide you through setting up your training environment. Follow the prompts to configure for your GPU setup.\nStart Training:\naccelerate launch src/train_pix2pix_turbo.py \\\n    --pretrained_model_name_or_path=\"6h-MCG.pkl\" \\\n    --output_dir=\"YOUR_OUTPUT_DIR\" \\\n    --dataset_folder=\"YOUR_INPUT_DATA\" \\\n    --resolution=512 \\\n    --train_batch_size=2 \\\n    --enable_xformers_memory_efficient_attention \\\n    --viz_freq 25 \\\n    --track_val_fid \\\n    --report_to \"wandb\" \\\n    --tracker_project_name \"YOUR_PROJECT_NAME\"\nKey Parameters:\n\npretrained_model_name_or_path: Path to your pre-trained model (e.g., “6h-MCG.pkl”)\noutput_dir: Where to save training outputs and checkpoints\ndataset_folder: Location of your training dataset\nresolution: Image resolution (512 recommended)\ntrain_batch_size: Number of images per training batch\nviz_freq: How often to generate visualization samples\ntrack_val_fid: Enable FID score tracking\ntracker_project_name: Your Weights & Biases project name\n\n\nNote: Adjust the batch size based on your GPU memory. Start with 2 and increase if your GPU can handle it.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/advanced.html#important-considerations",
+    "href": "pypotteryink/advanced.html#important-considerations",
+    "title": "Advanced Documentation",
+    "section": "Important Considerations",
+    "text": "Important Considerations\n\nEnsure your pre-trained model file (e.g., “6h-MCG.pkl”) is in the correct location\nMonitor GPU memory usage during training\nUse Weights & Biases (wandb) to track training progress\nCheck the output directory periodically for sample outputs\nTraining time will vary based on your GPU and dataset size",
+    "crumbs": [
+      "PyPotteryInk",
+      "Advanced Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html",
+    "href": "pypotteryink/api.html",
+    "title": "API Documentation",
     "section": "",
-    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
+    "text": "version 2.0.0",
     "crumbs": [
       "PyPotteryInk",
-      "Introduction"
+      "API Documentation"
     ]
   },
   {
-    "objectID": "pypotteryink/index.html#key-features",
-    "href": "pypotteryink/index.html#key-features",
-    "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
+    "objectID": "pypotteryink/api.html#overview",
+    "href": "pypotteryink/api.html#overview",
+    "title": "API Documentation",
+    "section": "Overview",
+    "text": "Overview\nThe ink module provides the foundation for transforming archaeological pencil drawings into publication-ready inked versions. Each function serves a specific purpose in the workflow, carefully preserving archaeological details while ensuring professional output quality.",
     "crumbs": [
       "PyPotteryInk",
-      "Introduction"
+      "API Documentation"
     ]
   },
   {
-    "objectID": "pypotteryink/index.html#contributors",
-    "href": "pypotteryink/index.html#contributors",
-    "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca",
+    "objectID": "pypotteryink/api.html#process-single-image",
+    "href": "pypotteryink/api.html#process-single-image",
+    "title": "API Documentation",
+    "section": "Process Single Image",
+    "text": "Process Single Image\ndef process_single_image(\n    input_image_path_or_pil: Union[str, Image.Image],\n    prompt: str,\n    model_path: str,\n    output_dir: str = 'output',\n    use_fp16: bool = False,\n    output_name: Optional[str] = None,\n    contrast_scale: float = 1,\n    return_pil: bool = False,\n    patch_size: int = 512,\n    overlap: int = 64,\n    upscale: float = 1,\n) -&gt; Union[str, Image.Image]\nThis function handles the conversion of individual drawings, providing fine control over the processing parameters. Think of it as a digital artisan, carefully converting each drawing while maintaining archaeological accuracy.\n\nCore Parameters\n\ninput_image_path_or_pil\n\nYour drawing to process - either a file path or a PIL Image\n\nprompt\n\nInstructions for the model, typically “make it ready for publication”\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Controls\n\ncontrast_scale · default: 1.0\n\nFine-tunes the intensity of lines and shading. Values between 1.25-1.5 often work best for archaeological materials.\n\npatch_size · default: 512\n\nProcessing segment size. Like dividing a large drawing into manageable sections.\n\noverlap · default: 64\n\nControls smooth transitions between processed sections.\n\nupscale · default: 1\n\nUpscaling or downscaling factor for processing. It doesn’t affect the output size\n\n\n\n\nExamples\nBasic processing:\nresult = process_single_image(\n    \"vessel_123.jpg\",\n    prompt=\"make it ready for publication\",\n    model_path=\"model_601.pkl\"\n)",
     "crumbs": [
       "PyPotteryInk",
-      "Introduction"
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#process-folder",
+    "href": "pypotteryink/api.html#process-folder",
+    "title": "API Documentation",
+    "section": "Process Folder",
+    "text": "Process Folder\ndef process_folder(\n    input_folder: str,\n    model_path: str,\n    prompt: str = \"make it ready for publication\",\n    output_dir: str = 'output',\n    use_fp16: bool = False,\n    contrast_scale: float = 1,\n    patch_size: int = 512,\n    overlap: int = 64,\n    file_extensions: tuple = ('.jpg', '.jpeg', '.png'),\n    upscale: float = 1,\n) -&gt; dict\nBatch processes a directory of archaeological drawings, maintaining consistency across the entire collection. The function tracks progress and generates detailed logs and comparisons.\n\nCore Parameters\n\ninput_folder\n\nDirectory containing your archaeological drawings\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Controls\n\ncontrast_scale · default: 1.0\n\nGlobal contrast adjustment for the entire batch\n\nfile_extensions · default: (‘.jpg’, ‘.jpeg’, ‘.png’)\n\nSupported file types to process\n\nupscale · default: 1\n\nUpscaling or downscaling factor for processing. It doesn’t affect the output size\n\n\n\n\nReturns\nReturns a dictionary containing: - successful: Number of successfully processed images - failed: Number of failed conversions - failed_files: List of problematic files - average_time: Mean processing time per image - log_file: Path to detailed processing log - comparison_dir: Path to before/after comparisons\n\n\nExamples\nProcess all drawings in a directory:\nresults = process_folder(\n    \"excavation_2024_drawings/\",\n    model_path=\"model_601.pkl\",\n    contrast_scale=1.25\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#run-diagnostics",
+    "href": "pypotteryink/api.html#run-diagnostics",
+    "title": "API Documentation",
+    "section": "Run Diagnostics",
+    "text": "Run Diagnostics\ndef run_diagnostics(\n    input_folder: str,\n    model_path: str,\n    prompt: str = \"make it ready for publication\",\n    patch_size: int = 512,\n    overlap: int = 64,\n    num_sample_images: int = 5,\n    contrast_values: list = [0.5, 0.75, 1, 1.5, 2, 3],\n    output_dir: str = 'diagnostics'\n) -&gt; None\nPerforms preliminary analysis on your dataset to optimize processing parameters. Creates visualizations of patch divisions and contrast effects to help fine-tune settings.\n\nCore Parameters\n\ninput_folder\n\nDirectory with sample drawings to analyse\n\nmodel_path\n\nLocation of your trained model file\n\n\n\n\nOptional Parameters\n\nnum_sample_images · default: 5\n\nNumber of drawings to analyse (max 5)\n\ncontrast_values · default: [0.5, 0.75, 1, 1.5, 2, 3]\n\nContrast levels to test\n\n\n\n\nGenerated Outputs\n\nPatch visualization diagrams\nContrast effect comparisons\nImage summary statistics\nProcessing recommendations\n\n\n\nExamples\nRun analysis on a new dataset:\nrun_diagnostics(\n    \"new_site_drawings/\",\n    model_path=\"model_601.pkl\",\n    contrast_values=[0.75, 1, 1.25, 1.5]\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#calculate-patches",
+    "href": "pypotteryink/api.html#calculate-patches",
+    "title": "API Documentation",
+    "section": "Calculate Patches",
+    "text": "Calculate Patches\ndef calculate_patches(\n    width: int,\n    height: int,\n    patch_size: int = 512,\n    overlap: int = 64\n) -&gt; tuple[int, int, int]\nInternal utility that determines optimal patch division for processing large drawings. Ensures efficient memory usage while maintaining detail preservation.\n\nParameters\n\nwidth, height\n\nImage dimensions in pixels\n\npatch_size · default: 512\n\nSize of processing segments\n\noverlap · default: 64\n\nOverlap between segments\n\n\n\n\nReturns\nReturns a tuple containing: - total_patches: Total number of segments - patches_per_row: Number of patches horizontally - num_rows: Number of patches vertically\n\n\nExamples\nCalculate processing segments:\npatches, rows, cols = calculate_patches(2048, 1536)\nprint(f\"Processing in {patches} segments\")",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#overview-1",
+    "href": "pypotteryink/api.html#overview-1",
+    "title": "API Documentation",
+    "section": "Overview",
+    "text": "Overview\nThe postprocessing module provides tools for refining and enhancing the converted archaeological drawings, focusing on output quality and archaeological detail preservation.",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#binarize-image",
+    "href": "pypotteryink/api.html#binarize-image",
+    "title": "API Documentation",
+    "section": "Binarize Image",
+    "text": "Binarize Image\ndef binarize_image(\n    image: Union[PIL.Image, np.ndarray],\n    threshold: int = 127\n) -&gt; PIL.Image\nConverts grayscale drawings to binary format, ideal for final publication preparation.\n\nParameters\n\nimage\n\nInput image (PIL Image or numpy array)\n\nthreshold\n\nIntensity threshold (0-255)\n\n\n\n\nExamples\nbinary = binarize_image(\"processed_vessel.png\", threshold=150)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#remove-white-background",
+    "href": "pypotteryink/api.html#remove-white-background",
+    "title": "API Documentation",
+    "section": "Remove White Background",
+    "text": "Remove White Background\ndef remove_white_background(\n    image: PIL.Image,\n    threshold: int = 250\n) -&gt; PIL.Image\nCreates transparent backgrounds for archaeological drawings, useful for figure composition.\n\nParameters\n\nimage\n\nInput drawing\n\nthreshold\n\nValue above which pixels are considered white\n\n\n\n\nExamples\ntransparent = remove_white_background(\"vessel.png\", threshold=245)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#process-image-binarize",
+    "href": "pypotteryink/api.html#process-image-binarize",
+    "title": "API Documentation",
+    "section": "Process Image Binarize",
+    "text": "Process Image Binarize\ndef process_image_binarize(\n    image_path: str,\n    binarize_threshold: int = 127,\n    white_threshold: int = 250,\n    save_path: Optional[str] = None\n) -&gt; PIL.Image\nCombined function for binarization and background removal.\n\nParameters\n\nimage_path\n\nPath to input image\n\nbinarize_threshold\n\nThreshold for black/white conversion\n\nwhite_threshold\n\nThreshold for transparency\n\nsave_path\n\nOptional output path",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#binarize-folder-images",
+    "href": "pypotteryink/api.html#binarize-folder-images",
+    "title": "API Documentation",
+    "section": "Binarize Folder Images",
+    "text": "Binarize Folder Images\ndef binarize_folder_images(\n    input_folder: str,\n    binarize_threshold: int = 127,\n    white_threshold: int = 250\n) -&gt; None\nBatch processes a folder of drawings, applying binarization and background removal.\n\nParameters\n\ninput_folder\n\nDirectory containing drawings\n\nbinarize_threshold\n\nThreshold for binarization\n\nwhite_threshold\n\nThreshold for transparency",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#enhance-stippling",
+    "href": "pypotteryink/api.html#enhance-stippling",
+    "title": "API Documentation",
+    "section": "Enhance Stippling",
+    "text": "Enhance Stippling\ndef enhance_stippling(\n    img: PIL.Image,\n    min_size: int = 80,\n    connectivity: int = 2\n) -&gt; Tuple[PIL.Image, PIL.Image]\nIsolates and enhances stippling patterns in archaeological drawings.\n\nParameters\n\nimg\n\nInput drawing\n\nmin_size\n\nMinimum object size to preserve\n\nconnectivity\n\nConnection parameter for pattern detection\n\n\n\n\nReturns\nReturns tuple containing: - processed_image: Drawing with enhanced stippling - stippling_pattern: Isolated stippling mask",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#modify-stippling",
+    "href": "pypotteryink/api.html#modify-stippling",
+    "title": "API Documentation",
+    "section": "Modify Stippling",
+    "text": "Modify Stippling\ndef modify_stippling(\n    processed_img: PIL.Image,\n    stippling_pattern: PIL.Image,\n    operation: str = 'dilate',\n    intensity: float = 0.5,\n    opacity: float = 1.0\n) -&gt; PIL.Image\nAdjusts stippling patterns through morphological operations and intensity modulation.\n\nParameters\n\nprocessed_img\n\nBase image without stippling\n\nstippling_pattern\n\nIsolated stippling pattern\n\noperation\n\nType of modification (‘dilate’, ‘fade’, or ‘both’)\n\nintensity\n\nMorphological modification strength (0.0-1.0)\n\nopacity\n\nStippling opacity factor (0.0-1.0)\n\n\n\n\nExamples\nenhanced = modify_stippling(\n    base_img,\n    dots_pattern,\n    operation='both',\n    intensity=0.7,\n    opacity=0.8\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#control-stippling",
+    "href": "pypotteryink/api.html#control-stippling",
+    "title": "API Documentation",
+    "section": "Control Stippling",
+    "text": "Control Stippling\ndef control_stippling(\n    input_folder: str,\n    min_size: int = 50,\n    connectivity: int = 2,\n    operation: str = 'fade',\n    intensity: float = 0.5,\n    opacity: float = 0.5\n) -&gt; None\nBatch processes stippling patterns in a folder of archaeological drawings.\n\nParameters\n\ninput_folder\n\nDirectory containing drawings\n\nmin_size\n\nMinimum object size to preserve\n\nconnectivity\n\nPattern detection parameter\n\noperation\n\nModification type (‘dilate’, ‘fade’, ‘both’)\n\nintensity\n\nModification strength\n\nopacity\n\nPattern opacity\n\n\n\n\nExamples\ncontrol_stippling(\n    \"vessel_drawings/\",\n    min_size=60,\n    operation='both',\n    intensity=0.6\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#overview-2",
+    "href": "pypotteryink/api.html#overview-2",
+    "title": "API Documentation",
+    "section": "Overview",
+    "text": "Overview\nThe preprocessing module provides tools for analyzing and adjusting archaeological drawings before conversion. It ensures optimal input quality through statistical analysis and targeted adjustments.",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#dataset-analyzer",
+    "href": "pypotteryink/api.html#dataset-analyzer",
+    "title": "API Documentation",
+    "section": "Dataset Analyzer",
+    "text": "Dataset Analyzer\nclass DatasetAnalyzer:\n    def __init__(self):\n        self.metrics = {}\n        self.distributions = {}\nA comprehensive tool for analysing collections of archaeological drawings, establishing statistical baselines for quality control.\n\nKey Methods\n\nanalyze_image\ndef analyze_image(self, image: Union[str, Image.Image]) -&gt; dict\nExtracts key metrics from a single drawing.\nReturns\n\nmean: Average brightness\nstd: Standard deviation\ncontrast_ratio: Dynamic range measure\nmedian: Middle intensity value\ndynamic_range: Total intensity range\nentropy: Image information content\niqr: Inter-quartile range\nnon_empty_ratio: Drawing density measure\n\n\n\nanalyze_dataset\ndef analyze_dataset(\n    self, \n    dataset_path: str,\n    file_pattern: tuple = ('.png', '.jpg', '.jpeg')\n) -&gt; dict\nBuilds statistical distributions from a collection of drawings.\n\n\nvisualize_distributions_kde\ndef visualize_distributions_kde(\n    self,\n    metrics_to_plot: Optional[List[str]] = None,\n    save: bool = False\n)\nCreates KDE plots of metric distributions with statistical annotations.\n\n\nsave_analysis\ndef save_analysis(self, path: str) -&gt; None\nSaves the current analysis results to a file for later use. This is particularly useful when establishing reference metrics for a specific archaeological context or drawing style.\n\nParameters\n\npath\n\nFile path to save the analysis results\n\n\n\n\nExamples\nanalyzer = DatasetAnalyzer()\nstats = analyzer.analyze_dataset(\"reference_drawings/\")\nanalyzer.save_analysis(\"reference_metrics.npy\")\n\n\n\nload_analysis\n@classmethod\ndef load_analysis(cls, path: str) -&gt; 'DatasetAnalyzer'\nClass method that loads previously saved analysis results. This allows reuse of established reference metrics without reanalyzing the dataset.\n\nParameters\n\npath\n\nPath to previously saved analysis file\n\n\n\n\nReturns\nReturns a new DatasetAnalyzer instance with loaded analysis results\n\n\nExamples\n# Load previously computed statistics\nanalyzer = DatasetAnalyzer.load_analysis(\"reference_metrics.npy\")\n\n# Use loaded stats for quality checks\ncheck = check_image_quality(\"new_drawing.jpg\", analyzer.distributions)\nThese methods enable efficient reuse of analysis results across multiple processing sessions, particularly valuable when working with established archaeological documentation standards or specific site collections.",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#process-folder-metrics",
+    "href": "pypotteryink/api.html#process-folder-metrics",
+    "title": "API Documentation",
+    "section": "Process Folder Metrics",
+    "text": "Process Folder Metrics\ndef process_folder_metrics(\n    input_folder: str,\n    model_stats: dict,\n    file_extensions: tuple = ('.jpg', '.jpeg', '.png')\n) -&gt; None\nBatch processes a folder of drawings to align their metrics with reference statistics.\n\nParameters\n\ninput_folder\n\nDirectory containing drawings to process\n\nmodel_stats\n\nReference statistics from DatasetAnalyzer\n\nfile_extensions\n\nSupported file types",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#apply-recommended-adjustments",
+    "href": "pypotteryink/api.html#apply-recommended-adjustments",
+    "title": "API Documentation",
+    "section": "Apply Recommended Adjustments",
+    "text": "Apply Recommended Adjustments\ndef apply_recommended_adjustments(\n    image: Union[str, Image.Image],\n    model_stats: dict,\n    verbose: bool = True\n) -&gt; Image.Image\nAutomatically adjusts a drawing based on statistical analysis.\n\nParameters\n\nimage\n\nDrawing to adjust\n\nmodel_stats\n\nReference statistics\n\nverbose\n\nPrint adjustment details\n\n\n\n\nAdjustments Applied\n\nContrast normalization\nBrightness alignment\nStandard deviation correction\nDynamic range optimization\n\n\n\nExamples\nadjusted = apply_recommended_adjustments(\n    \"drawing.jpg\",\n    reference_stats,\n    verbose=True\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#check-image-quality",
+    "href": "pypotteryink/api.html#check-image-quality",
+    "title": "API Documentation",
+    "section": "Check Image Quality",
+    "text": "Check Image Quality\ndef check_image_quality(\n    image: Union[str, Image.Image],\n    model_stats: dict\n) -&gt; dict\nEvaluates a drawing against reference metrics to identify needed adjustments.\n\nReturns\nReturns a dictionary containing:\n\nmetrics: Current image measurements\nrecommendations: List of suggested adjustments\nis_compatible: Boolean indicating if adjustments needed\n\n\n\nExamples\ncheck = check_image_quality(\"new_drawing.jpg\", reference_stats)\nif not check['is_compatible']:\n    print(\"Adjustments needed:\", check['recommendations'])",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/api.html#visualize-metrics-change",
+    "href": "pypotteryink/api.html#visualize-metrics-change",
+    "title": "API Documentation",
+    "section": "Visualize Metrics Change",
+    "text": "Visualize Metrics Change\ndef visualize_metrics_change(\n    original_metrics: dict,\n    adjusted_metrics: dict,\n    model_stats: dict,\n    metrics_to_plot: Optional[List[str]] = None,\n    save: bool = False\n) -&gt; None\nCreates detailed visualizations comparing original and adjusted metrics against reference distributions.\n\nParameters\n\noriginal_metrics\n\nMetrics before adjustment\n\nadjusted_metrics\n\nMetrics after adjustment\n\nmodel_stats\n\nReference statistics\n\nmetrics_to_plot\n\nSpecific metrics to visualize\n\nsave\n\nSave plot to file\n\n\n\n\nExamples\nvisualize_metrics_change(\n    original_metrics,\n    adjusted_metrics,\n    reference_stats,\n    metrics_to_plot=['contrast_ratio', 'mean', 'std']\n)",
+    "crumbs": [
+      "PyPotteryInk",
+      "API Documentation"
     ]
   },
   {
@@ -708,7 +917,7 @@
     "href": "pypotteryink/model_zoo.html#available-models",
     "title": "PyPotteryInk Model Zoo",
     "section": "Available Models",
-    "text": "Available Models\n\n10k\nDescription: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.\n\nTraining Data: 492 paired drawings\nResolution: 512×512 pixels\nTraining Steps: 10,000\nBest For: General purpose archaeological drawing inking, starting point for fine-tuning\n\nParameters used for training:\n\n\n\nParameter\n10k\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n500\n\n\ndataloader_num_workers\n0\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n1\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n5\n\n\nlambda_gan\n0.5\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n5\n\n\nlearning_rate\n0.000005\n\n\nlora_rank_unet\n8\n\n\nlora_rank_vae\n4\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n500\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n10,000\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n“stabilityai/sd-turbo”\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n2\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n25\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MCG\nDescription: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.\n\nTraining Data: 9 paired drawings from Monte Croce Guardia\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Middle Bronze Age / Recent Bronze Age pottery\n\nParameters used for training:\n\n\n\nParameter\n6h-MCG\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n128\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MC\nDescription: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.\n\nTraining Data: 15 paired drawings from Monte Cimino\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Recent Bronze Age pottery / Final Bronze Age / Historic Age\n\nParameters used for training:\n\n\n\nParameter\n6h-MC\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100",
+    "text": "Available Models\n\n10k\nDescription: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.\n\nTraining Data: 492 paired drawings\nResolution: 512×512 pixels\nTraining Steps: 10,000\nBest For: General purpose archaeological drawing inking, starting point for fine-tuning\n\nParameters used for training:\n\n\n\nParameter\n10k\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n500\n\n\ndataloader_num_workers\n0\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n1\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n5\n\n\nlambda_gan\n0.5\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n5\n\n\nlearning_rate\n0.000005\n\n\nlora_rank_unet\n8\n\n\nlora_rank_vae\n4\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n500\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n10,000\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n“stabilityai/sd-turbo”\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n2\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n25\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MCG\nDescription: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.\n\nTraining Data: 9 paired drawings from Monte Croce Guardia\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Middle Bronze Age / Recent Bronze Age pottery\n\nParameters used for training:\n\n\n\nParameter\n6h-MCG\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n128\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MC\nDescription: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.\n\nTraining Data: 15 paired drawings from Monte Cimino\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Recent Bronze Age pottery / Final Bronze Age / Historic Age\n\nParameters used for training:\n\n\n\nParameter\n6h-MC\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n4h-PAINT\nDescription: Fine-tuned model specialized for painted decoration and historical pottery.\n\nTraining Data: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Historic Age / Painted Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n4h-PAINT\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Elisa Pizzuti\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n5h-PAPERGRID\nDescription: Fine-tuned model specialized for papergrid pottery.\n\nTraining Data: 15 paired drawings from Middle Bronze Age of Northern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Papergrid Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n5h-PAPERGRID\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Federico Erbetti\n\n\n\nModels",
     "crumbs": [
       "PyPotteryInk",
       "PyPotteryInk Model Zoo"
@@ -763,7 +972,7 @@
     "href": "pypotterylens/installation.html#requirements",
     "title": "Installation",
     "section": "Requirements",
-    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support (recommended for AI models)",
+    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system",
     "crumbs": [
       "PyPotteryLens",
       "Installation"
@@ -818,7 +1027,7 @@
     "href": "pypotterylens/version_history.html",
     "title": "Version History",
     "section": "",
-    "text": "Initial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
     "crumbs": [
       "PyPotteryLens",
       "Version History"
@@ -920,6 +1129,28 @@
     "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.",
     "crumbs": [
       "PyPotteryScan",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#latest-release",
+    "href": "pypotterylens/version_history.html#latest-release",
+    "title": "Version History",
+    "section": "",
+    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#version-history",
+    "href": "pypotterylens/version_history.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 0.1.3 (August 2025)\nKey Features:\n\nMinor bug fixes and performance improvements\n\n\n\nVersion 0.1.0 (April 2025)\nKey Features:\n\nInitial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
       "Version History"
     ]
   }

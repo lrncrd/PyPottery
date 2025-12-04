@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Usage – PyPottery</title>
+<title>Using PyPotteryLens – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/usage.html">Usage</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/usage.html">Using PyPotteryLens</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -316,7 +316,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/usage.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Usage</span></a>
+ <span class="menu-text">Using PyPotteryLens</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -370,9 +370,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/usage.html">Usage</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/usage.html">Using PyPotteryLens</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Usage</h1>
+<h1 class="title">Using PyPotteryLens</h1>
 </div>
 
 
@@ -389,6 +389,9 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div style="text-align: center;">
+<p><img src="../imgs/LogoLens.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 0.2.0 </span></p>
+</div>
 <section id="gui-overview" class="level1">
 <h1>GUI Overview</h1>
 <p>The program is composed of a series of tab that represent the image extraction process:</p>
@@ -404,15 +407,17 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="project-manager">Project Manager</h2>
 <p>Like other tools in the PyPottery suite, PyPotteryLens uses a project management system.</p>
 <p>You can create a project by entering a name in the text box, along with an optional description and an icon.</p>
-<p>Once created, the project will appear in the “Your Projects” list.</p>
+<p>Once created, the project will appear in the “<strong>Your Projects</strong>” list.</p>
 <p>Selecting a project will display its name in the status bar.</p>
+<iframe src="animations/project_create.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no">
+</iframe>
 </section>
 <section id="pdf-document-processing" class="level2">
 <h2 class="anchored" data-anchor-id="pdf-document-processing">PDF Document Processing</h2>
 <p>In this tab, you can upload and process a PDF file, transforming it into a series of images.</p>
-<iframe src="animations/pdf_process.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no">
+<iframe src="animations/pdf_process.html" style="width: 100%; height: 900px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
-<p>Clicking on <strong>Upload PDF</strong> will open a dialog window to select the PDF file.</p>
+<p>Clicking on <strong>Upload PDF to current project</strong> will open a dialog window to select the PDF file.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -431,9 +436,15 @@ Important
 <section id="apply-model" class="level2">
 <h2 class="anchored" data-anchor-id="apply-model">Apply Model</h2>
 <p>In this tab, you can use the Computer Vision (CV) model to extract information.</p>
+<iframe src="animations/apply_model.html" scrolling="no" style="width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+</iframe>
 <section id="gui-layout" class="level3">
 <h3 class="anchored" data-anchor-id="gui-layout">GUI Layout</h3>
-<p>The GUI is divided into two parts: - <strong>Right Side</strong>: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again. - <strong>Left Side</strong>: Contains the model parameters.</p>
+<p>The GUI is divided into two parts:</p>
+<ul>
+<li><strong>Right Side</strong>: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.</li>
+<li><strong>Left Side</strong>: Contains the model parameters.</li>
+</ul>
 </section>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
@@ -442,7 +453,7 @@ Important
 <li><strong>Model Parameters</strong>: You can define the confidence threshold for the model as well as some post-processing operations for the masks.</li>
 <li><strong>Advanced Options</strong>: Includes the possibility to limit the application to 25 pages for debugging purposes.</li>
 </ul>
-<p>Once you click on <strong>Apply Model</strong>, a progress bar will indicate the status of the process.</p>
+<p>Once you click on <strong>🚀 Apply Model to Project</strong>, a progress bar will indicate the status of the process.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -471,11 +482,11 @@ Note
 <p>In the list: - <strong>Green Checkmark</strong>: Images where the model has identified vases. - <strong>White Dot</strong>: Images where the model has not recognized any vases.</p>
 <section id="editing-masks" class="level3">
 <h3 class="anchored" data-anchor-id="editing-masks">Editing Masks</h3>
-<p>You can modify the masks identified by the model using the buttons below the canvas: - <strong>Brush</strong>: To draw new masks. - <strong>Eraser</strong>: To delete existing masks.</p>
+<p>You can modify the masks identified by the model using the buttons below the canvas: - <strong>🖌️ Brush</strong>: To draw new masks. - <strong>🧹 Eraser</strong>: To delete existing masks. - <strong>🗑️ Clear</strong>: To delete all masks.</p>
 <p>New masks will appear in red.</p>
 <p>Once an image without masks (white dot) is modified, the indicator will update to a green checkmark.</p>
-<p>Changing the image or clicking on <strong>Save Current Mask</strong> will save the changes.</p>
-<p>Once you have reviewed the images, you can extract them by clicking on <strong>Extract Cards</strong>.</p>
+<p>Changing the image or clicking on <strong>💾 Save Current Mask</strong> will save the changes.</p>
+<p>Once you have reviewed the images, you can extract them by clicking on <strong>📤 Extract Cards</strong>.</p>
 </section>
 </section>
 <section id="tabular-information" class="level2">
@@ -488,7 +499,7 @@ Note
 <li><strong>Left</strong>: A file list for navigation.</li>
 <li><strong>Right</strong>: A table where you can enter tabular information.</li>
 </ul>
-<p>Each record is indicated by an ID visible on the canvas. To add a column, write the name and click <strong>Add Column</strong>. Once the information is entered, you can click on <strong>Mark as Reviewed</strong>. The inserted columns are persistent across the project’s images.</p>
+<p>Each record is indicated by an ID visible on the canvas. To add a column, write the name and click <strong>➕ Add Column</strong>. Once the information is entered, you can click on <strong>👁️ Mark as Reviewed</strong>. The inserted columns are persistent across the project’s images.</p>
 </section>
 <section id="post-processing" class="level2">
 <h2 class="anchored" data-anchor-id="post-processing">Post Processing</h2>
@@ -504,11 +515,11 @@ Note
 </section>
 <section id="workflow" class="level3">
 <h3 class="anchored" data-anchor-id="workflow">Workflow</h3>
-<p>To start post-processing, click on <strong>Process All Images</strong>. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.</p>
+<p>To start post-processing, click on <strong>🔍 Process All Images</strong>. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.</p>
 <p>You can navigate through the records using the buttons and the file list.</p>
 <p>If the model has misclassified a vase, you can manually modify the classification.</p>
 <p>You can also set image transformations to lock specific transformations.</p>
-<p>Once post-processing is complete, click on <strong>Export Results</strong> to save the images in a ZIP folder.</p>
+<p>Once post-processing is complete, click on <strong>📦 Export Results</strong> to save the images in a ZIP folder.</p>
 <p>An Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.</p>
 </section>
 </section>

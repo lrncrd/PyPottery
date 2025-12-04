@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Processing Animation</title>
+    <title>Project Creation Animation</title>
     <style>
         /* Base Styles from Reference */
         body {
@@ -24,7 +24,7 @@
             border-radius: 12px;
             overflow: hidden;
             width: 800px;
-            height: 800px;
+            height: 500px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -100,20 +100,66 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            align-items: center;
-            justify-content: center;
-            height: 800px;
         }
 
-        .upload-area {
-            width: 100%;
-            max-width: 500px;
-            background: #f9fafb;
-            border: 2px dashed #d1d5db;
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #374151;
+        }
+
+        .form-control {
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .icon-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .icon-option {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-option.selected {
+            border-color: #667eea;
+            background: #eff6ff;
         }
 
         .btn-primary {
@@ -129,56 +175,9 @@
             gap: 8px;
             font-size: 1rem;
             transition: transform 0.1s;
+            width: fit-content;
         }
 
-        .file-info {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .file-info.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            max-width: 500px;
-            margin-top: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .progress-container.visible {
-            opacity: 1;
-        }
-
-        .progress-bar-bg {
-            background: #e5e7eb;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            background: #10b981;
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        /* Success Message */
         .success-msg {
             background: #ecfdf5;
             color: #065f46;
@@ -189,8 +188,6 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s;
-            width: 100%;
-            max-width: 500px;
         }
 
         .success-msg.visible {
@@ -220,6 +217,7 @@
 <body>
 
     <div class="window" id="appWindow">
+        <!-- Header -->
         <div class="header">
             <div class="dot red"></div>
             <div class="dot yellow"></div>
@@ -227,47 +225,48 @@
             <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.0
             </div>
         </div>
+
+        <!-- Tabs -->
         <div class="tabs">
-            <div class="tab">Project Manager</div>
-            <div class="tab active">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab">Review</div>
-            <div class="tab">Post Processing</div>
+            <div class="tab active">🗂️ Project Manager</div>
+            <div class="tab">📄 PDF Processing</div>
+            <div class="tab">🤖 Apply Model</div>
+            <div class="tab">📝 Review</div>
         </div>
 
         <!-- Content -->
         <div class="content">
-            <h2 style="color: #1f2937; margin-bottom: 0;">Select a PDF file</h2>
-            <p style="color: #6b7280; margin-top: 5px;">Upload your report to extract pottery images</p>
+            <h2 style="color: #1f2937; margin: 0;">Create New Project</h2>
 
-            <div class="upload-area" id="uploadArea">
-                <button class="btn-primary" id="uploadBtn">
-                    📄 Upload PDF
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Project Name *</label>
+                    <input type="text" class="form-control" id="projectName" placeholder="E.g.: Scavi_Capena_2024">
+                </div>
+
+                <div class="form-group">
+                    <label>Description (optional)</label>
+                    <textarea class="form-control" id="projectDesc" rows="2"
+                        placeholder="Project description..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Project Icon</label>
+                    <div class="icon-selector">
+                        <div class="icon-option" data-icon="🏺">🏺</div>
+                        <div class="icon-option selected" data-icon="📦" id="selectedIcon">📦</div>
+                        <div class="icon-option" data-icon="🗂️">🗂️</div>
+                        <div class="icon-option" data-icon="🔍">🔍</div>
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="createBtn">
+                    ➕ Create Project
                 </button>
-                <p style="color: #9ca3af; margin-top: 1rem; font-size: 0.9em;">or drag and drop here</p>
-            </div>
-
-            <div class="file-info" id="fileInfo">
-                <div style="font-size: 24px;">📄</div>
-                <div>
-                    <div style="font-weight: 600; color: #374151;">Scavi_Capena_Report.pdf</div>
-                    <div style="font-size: 0.8rem; color: #6b7280;">2.4 MB</div>
-                </div>
-            </div>
-
-            <div class="progress-container" id="progressContainer">
-                <div
-                    style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: #4b5563;">
-                    <span>Processing pages...</span>
-                    <span id="progressText">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
             </div>
 
             <div class="success-msg" id="successMsg">
-                ✅ PDF processed successfully! 12 images extracted.
+                ✅ Project "Scavi_Capena_2024" created successfully!
             </div>
         </div>
 
@@ -276,11 +275,10 @@
 
     <script>
         const cursor = document.getElementById('cursor');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const fileInfo = document.getElementById('fileInfo');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
+        const projectName = document.getElementById('projectName');
+        const projectDesc = document.getElementById('projectDesc');
+        const selectedIcon = document.getElementById('selectedIcon');
+        const createBtn = document.getElementById('createBtn');
         const successMsg = document.getElementById('successMsg');
         const appWindow = document.getElementById('appWindow');
 
@@ -299,54 +297,64 @@
             });
         }
 
+        async function typeText(element, text) {
+            element.value = '';
+            for (let i = 0; i < text.length; i++) {
+                element.value += text[i];
+                await new Promise(r => setTimeout(r, 80));
+            }
+        }
+
         function reset() {
-            fileInfo.classList.remove('visible');
-            progressContainer.classList.remove('visible');
+            projectName.value = '';
+            projectDesc.value = '';
             successMsg.classList.remove('visible');
-            progressBar.style.width = '0%';
-            progressText.innerText = '0%';
-            uploadBtn.style.transform = 'scale(1)';
             cursor.style.transform = 'translate(850px, 600px)';
         }
 
         async function runAnimation() {
             reset();
 
-            // 1. Move to Upload Button
-            await moveCursorTo(uploadBtn, 1000, 500);
+            // 1. Move to Project Name
+            await moveCursorTo(projectName, 800, 500);
 
-            // 2. Click
-            uploadBtn.style.transform = 'scale(0.95)';
+            // 2. Click and Type
+            // projectName.focus(); // Removed to prevent stealing focus
             await new Promise(r => setTimeout(r, 200));
-            uploadBtn.style.transform = 'scale(1)';
+            await typeText(projectName, 'Scavi_Capena_2024');
 
-            // 3. Show File
-            fileInfo.classList.add('visible');
+            // 3. Move to Description
+            await moveCursorTo(projectDesc, 800, 300);
 
-            // 4. Move Cursor Away
+            // 4. Click and Type
+            // projectDesc.focus(); // Removed to prevent stealing focus
+            await new Promise(r => setTimeout(r, 200));
+            await typeText(projectDesc, 'Excavation 2024');
+
+            // 5. Move to Icon
+            await moveCursorTo(selectedIcon, 800, 300);
+
+            // 6. Click Icon (already selected)
+            await new Promise(r => setTimeout(r, 200));
+
+            // 7. Move to Create Button
+            await moveCursorTo(createBtn, 800, 300);
+
+            // 8. Click Create
+            createBtn.style.transform = 'scale(0.95)';
+            await new Promise(r => setTimeout(r, 200));
+            createBtn.style.transform = 'scale(1)';
+
+            // 9. Show Success
+            await new Promise(r => setTimeout(r, 300));
+            successMsg.classList.add('visible');
+
+            // 10. Move Away
+            await new Promise(r => setTimeout(r, 1000));
             cursor.style.transform = 'translate(850px, 600px)';
-
-            // 5. Start Progress
-            await new Promise(r => setTimeout(r, 500));
-            progressContainer.classList.add('visible');
-
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 2;
-                if (progress > 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    // Show success
-                    setTimeout(() => {
-                        successMsg.classList.add('visible');
-                    }, 500);
-                }
-                progressBar.style.width = progress + '%';
-                progressText.innerText = progress + '%';
-            }, 30);
         }
 
-        setInterval(runAnimation, 8000);
+        setInterval(runAnimation, 12000);
         setTimeout(runAnimation, 100);
     </script>
 </body>

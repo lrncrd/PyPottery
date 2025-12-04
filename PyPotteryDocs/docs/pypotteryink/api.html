@@ -420,7 +420,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#parameters-2" id="toc-parameters-2" class="nav-link" data-scroll-target="#parameters-2">Parameters</a></li>
   <li><a href="#examples-5" id="toc-examples-5" class="nav-link" data-scroll-target="#examples-5">Examples</a></li>
   </ul></li>
-  <li><a href="#process-image-binarize" id="toc-process-image-binarize" class="nav-link" data-scroll-target="#process-image-binarize">Process Image Binarize</a></li>
+  <li><a href="#process-image-binarize" id="toc-process-image-binarize" class="nav-link" data-scroll-target="#process-image-binarize">Process Image Binarize</a>
+  <ul class="collapse">
+  <li><a href="#parameters-3" id="toc-parameters-3" class="nav-link" data-scroll-target="#parameters-3">Parameters</a></li>
+  </ul></li>
+  <li><a href="#binarize-folder-images" id="toc-binarize-folder-images" class="nav-link" data-scroll-target="#binarize-folder-images">Binarize Folder Images</a>
+  <ul class="collapse">
+  <li><a href="#parameters-4" id="toc-parameters-4" class="nav-link" data-scroll-target="#parameters-4">Parameters</a></li>
+  </ul></li>
+  <li><a href="#enhance-stippling" id="toc-enhance-stippling" class="nav-link" data-scroll-target="#enhance-stippling">Enhance Stippling</a>
+  <ul class="collapse">
+  <li><a href="#parameters-5" id="toc-parameters-5" class="nav-link" data-scroll-target="#parameters-5">Parameters</a></li>
+  <li><a href="#returns-2" id="toc-returns-2" class="nav-link" data-scroll-target="#returns-2">Returns</a></li>
+  </ul></li>
+  <li><a href="#modify-stippling" id="toc-modify-stippling" class="nav-link" data-scroll-target="#modify-stippling">Modify Stippling</a>
+  <ul class="collapse">
+  <li><a href="#parameters-6" id="toc-parameters-6" class="nav-link" data-scroll-target="#parameters-6">Parameters</a></li>
+  <li><a href="#examples-6" id="toc-examples-6" class="nav-link" data-scroll-target="#examples-6">Examples</a></li>
+  </ul></li>
+  <li><a href="#control-stippling" id="toc-control-stippling" class="nav-link" data-scroll-target="#control-stippling">Control Stippling</a>
+  <ul class="collapse">
+  <li><a href="#parameters-7" id="toc-parameters-7" class="nav-link" data-scroll-target="#parameters-7">Parameters</a></li>
+  <li><a href="#examples-7" id="toc-examples-7" class="nav-link" data-scroll-target="#examples-7">Examples</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#preprocessing-module" id="toc-preprocessing-module" class="nav-link" data-scroll-target="#preprocessing-module">Preprocessing Module</a>
+  <ul class="collapse">
+  <li><a href="#overview-2" id="toc-overview-2" class="nav-link" data-scroll-target="#overview-2">Overview</a></li>
+  <li><a href="#dataset-analyzer" id="toc-dataset-analyzer" class="nav-link" data-scroll-target="#dataset-analyzer">Dataset Analyzer</a>
+  <ul class="collapse">
+  <li><a href="#key-methods" id="toc-key-methods" class="nav-link" data-scroll-target="#key-methods">Key Methods</a></li>
+  </ul></li>
+  <li><a href="#process-folder-metrics" id="toc-process-folder-metrics" class="nav-link" data-scroll-target="#process-folder-metrics">Process Folder Metrics</a>
+  <ul class="collapse">
+  <li><a href="#parameters-10" id="toc-parameters-10" class="nav-link" data-scroll-target="#parameters-10">Parameters</a></li>
+  </ul></li>
+  <li><a href="#apply-recommended-adjustments" id="toc-apply-recommended-adjustments" class="nav-link" data-scroll-target="#apply-recommended-adjustments">Apply Recommended Adjustments</a>
+  <ul class="collapse">
+  <li><a href="#parameters-11" id="toc-parameters-11" class="nav-link" data-scroll-target="#parameters-11">Parameters</a></li>
+  <li><a href="#adjustments-applied" id="toc-adjustments-applied" class="nav-link" data-scroll-target="#adjustments-applied">Adjustments Applied</a></li>
+  <li><a href="#examples-10" id="toc-examples-10" class="nav-link" data-scroll-target="#examples-10">Examples</a></li>
+  </ul></li>
+  <li><a href="#check-image-quality" id="toc-check-image-quality" class="nav-link" data-scroll-target="#check-image-quality">Check Image Quality</a>
+  <ul class="collapse">
+  <li><a href="#returns-4" id="toc-returns-4" class="nav-link" data-scroll-target="#returns-4">Returns</a></li>
+  <li><a href="#examples-11" id="toc-examples-11" class="nav-link" data-scroll-target="#examples-11">Examples</a></li>
+  </ul></li>
+  <li><a href="#visualize-metrics-change" id="toc-visualize-metrics-change" class="nav-link" data-scroll-target="#visualize-metrics-change">Visualize Metrics Change</a>
+  <ul class="collapse">
+  <li><a href="#parameters-12" id="toc-parameters-12" class="nav-link" data-scroll-target="#parameters-12">Parameters</a></li>
+  <li><a href="#examples-12" id="toc-examples-12" class="nav-link" data-scroll-target="#examples-12">Examples</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -740,8 +790,418 @@ Value above which pixels are considered white
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    save_path: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> PIL.Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Combined function for binarization and background removal.</p>
+<section id="parameters-3" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-3">Parameters</h3>
+<dl>
+<dt><code>image_path</code></dt>
+<dd>
+Path to input image
+</dd>
+<dt><code>binarize_threshold</code></dt>
+<dd>
+Threshold for black/white conversion
+</dd>
+<dt><code>white_threshold</code></dt>
+<dd>
+Threshold for transparency
+</dd>
+<dt><code>save_path</code></dt>
+<dd>
+Optional output path
+</dd>
+</dl>
+</section>
+</section>
+<section id="binarize-folder-images" class="level2">
+<h2 class="anchored" data-anchor-id="binarize-folder-images">Binarize Folder Images</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binarize_folder_images(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    input_folder: <span class="bu">str</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    binarize_threshold: <span class="bu">int</span> <span class="op">=</span> <span class="dv">127</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    white_threshold: <span class="bu">int</span> <span class="op">=</span> <span class="dv">250</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Batch processes a folder of drawings, applying binarization and background removal.</p>
+<section id="parameters-4" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-4">Parameters</h3>
+<dl>
+<dt><code>input_folder</code></dt>
+<dd>
+Directory containing drawings
+</dd>
+<dt><code>binarize_threshold</code></dt>
+<dd>
+Threshold for binarization
+</dd>
+<dt><code>white_threshold</code></dt>
+<dd>
+Threshold for transparency
+</dd>
+</dl>
+</section>
+</section>
+<section id="enhance-stippling" class="level2">
+<h2 class="anchored" data-anchor-id="enhance-stippling">Enhance Stippling</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> enhance_stippling(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    img: PIL.Image,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    min_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">80</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    connectivity: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Tuple[PIL.Image, PIL.Image]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Isolates and enhances stippling patterns in archaeological drawings.</p>
+<section id="parameters-5" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-5">Parameters</h3>
+<dl>
+<dt><code>img</code></dt>
+<dd>
+Input drawing
+</dd>
+<dt><code>min_size</code></dt>
+<dd>
+Minimum object size to preserve
+</dd>
+<dt><code>connectivity</code></dt>
+<dd>
+Connection parameter for pattern detection
+</dd>
+</dl>
+</section>
+<section id="returns-2" class="level3">
+<h3 class="anchored" data-anchor-id="returns-2">Returns</h3>
+<p>Returns tuple containing: - processed_image: Drawing with enhanced stippling - stippling_pattern: Isolated stippling mask</p>
+</section>
+</section>
+<section id="modify-stippling" class="level2">
+<h2 class="anchored" data-anchor-id="modify-stippling">Modify Stippling</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> modify_stippling(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    processed_img: PIL.Image,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    stippling_pattern: PIL.Image,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    operation: <span class="bu">str</span> <span class="op">=</span> <span class="st">'dilate'</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    intensity: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    opacity: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> PIL.Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Adjusts stippling patterns through morphological operations and intensity modulation.</p>
+<section id="parameters-6" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-6">Parameters</h3>
+<dl>
+<dt><code>processed_img</code></dt>
+<dd>
+Base image without stippling
+</dd>
+<dt><code>stippling_pattern</code></dt>
+<dd>
+Isolated stippling pattern
+</dd>
+<dt><code>operation</code></dt>
+<dd>
+Type of modification (‘dilate’, ‘fade’, or ‘both’)
+</dd>
+<dt><code>intensity</code></dt>
+<dd>
+Morphological modification strength (0.0-1.0)
+</dd>
+<dt><code>opacity</code></dt>
+<dd>
+Stippling opacity factor (0.0-1.0)
+</dd>
+</dl>
+</section>
+<section id="examples-6" class="level3">
+<h3 class="anchored" data-anchor-id="examples-6">Examples</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>enhanced <span class="op">=</span> modify_stippling(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    base_img,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    dots_pattern,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    operation<span class="op">=</span><span class="st">'both'</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    intensity<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.8</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="control-stippling" class="level2">
+<h2 class="anchored" data-anchor-id="control-stippling">Control Stippling</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> control_stippling(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    input_folder: <span class="bu">str</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    min_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">50</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    connectivity: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    operation: <span class="bu">str</span> <span class="op">=</span> <span class="st">'fade'</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    intensity: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    opacity: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Batch processes stippling patterns in a folder of archaeological drawings.</p>
+<section id="parameters-7" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-7">Parameters</h3>
+<dl>
+<dt><code>input_folder</code></dt>
+<dd>
+Directory containing drawings
+</dd>
+<dt><code>min_size</code></dt>
+<dd>
+Minimum object size to preserve
+</dd>
+<dt><code>connectivity</code></dt>
+<dd>
+Pattern detection parameter
+</dd>
+<dt><code>operation</code></dt>
+<dd>
+Modification type (‘dilate’, ‘fade’, ‘both’)
+</dd>
+<dt><code>intensity</code></dt>
+<dd>
+Modification strength
+</dd>
+<dt><code>opacity</code></dt>
+<dd>
+Pattern opacity
+</dd>
+</dl>
+</section>
+<section id="examples-7" class="level3">
+<h3 class="anchored" data-anchor-id="examples-7">Examples</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>control_stippling(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"vessel_drawings/"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    min_size<span class="op">=</span><span class="dv">60</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    operation<span class="op">=</span><span class="st">'both'</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    intensity<span class="op">=</span><span class="fl">0.6</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="preprocessing-module" class="level1">
+<h1>Preprocessing Module</h1>
+<section id="overview-2" class="level2">
+<h2 class="anchored" data-anchor-id="overview-2">Overview</h2>
+<p>The preprocessing module provides tools for analyzing and adjusting archaeological drawings before conversion. It ensures optimal input quality through statistical analysis and targeted adjustments.</p>
+</section>
+<section id="dataset-analyzer" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-analyzer">Dataset Analyzer</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DatasetAnalyzer:</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.metrics <span class="op">=</span> {}</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.distributions <span class="op">=</span> {}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A comprehensive tool for analysing collections of archaeological drawings, establishing statistical baselines for quality control.</p>
+<section id="key-methods" class="level3">
+<h3 class="anchored" data-anchor-id="key-methods">Key Methods</h3>
+<section id="analyze_image" class="level4">
+<h4 class="anchored" data-anchor-id="analyze_image">analyze_image</h4>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_image(<span class="va">self</span>, image: Union[<span class="bu">str</span>, Image.Image]) <span class="op">-&gt;</span> <span class="bu">dict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Extracts key metrics from a single drawing.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li>mean: Average brightness</li>
+<li>std: Standard deviation</li>
+<li>contrast_ratio: Dynamic range measure</li>
+<li>median: Middle intensity value</li>
+<li>dynamic_range: Total intensity range</li>
+<li>entropy: Image information content</li>
+<li>iqr: Inter-quartile range</li>
+<li>non_empty_ratio: Drawing density measure</li>
+</ul>
+</section>
+<section id="analyze_dataset" class="level4">
+<h4 class="anchored" data-anchor-id="analyze_dataset">analyze_dataset</h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_dataset(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    dataset_path: <span class="bu">str</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    file_pattern: <span class="bu">tuple</span> <span class="op">=</span> (<span class="st">'.png'</span>, <span class="st">'.jpg'</span>, <span class="st">'.jpeg'</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">dict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Builds statistical distributions from a collection of drawings.</p>
+</section>
+<section id="visualize_distributions_kde" class="level4">
+<h4 class="anchored" data-anchor-id="visualize_distributions_kde">visualize_distributions_kde</h4>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_distributions_kde(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    metrics_to_plot: Optional[List[<span class="bu">str</span>]] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    save: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Creates KDE plots of metric distributions with statistical annotations.</p>
+</section>
+<section id="save_analysis" class="level4">
+<h4 class="anchored" data-anchor-id="save_analysis">save_analysis</h4>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_analysis(<span class="va">self</span>, path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Saves the current analysis results to a file for later use. This is particularly useful when establishing reference metrics for a specific archaeological context or drawing style.</p>
+<section id="parameters-8" class="level5">
+<h5 class="anchored" data-anchor-id="parameters-8">Parameters</h5>
+<dl>
+<dt><code>path</code></dt>
+<dd>
+File path to save the analysis results
+</dd>
+</dl>
+</section>
+<section id="examples-8" class="level5">
+<h5 class="anchored" data-anchor-id="examples-8">Examples</h5>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> DatasetAnalyzer()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> analyzer.analyze_dataset(<span class="st">"reference_drawings/"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>analyzer.save_analysis(<span class="st">"reference_metrics.npy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="load_analysis" class="level4">
+<h4 class="anchored" data-anchor-id="load_analysis">load_analysis</h4>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="at">@classmethod</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_analysis(cls, path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="st">'DatasetAnalyzer'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Class method that loads previously saved analysis results. This allows reuse of established reference metrics without reanalyzing the dataset.</p>
+<section id="parameters-9" class="level5">
+<h5 class="anchored" data-anchor-id="parameters-9">Parameters</h5>
+<dl>
+<dt><code>path</code></dt>
+<dd>
+Path to previously saved analysis file
+</dd>
+</dl>
+</section>
+<section id="returns-3" class="level5">
+<h5 class="anchored" data-anchor-id="returns-3">Returns</h5>
+<p>Returns a new DatasetAnalyzer instance with loaded analysis results</p>
+</section>
+<section id="examples-9" class="level5">
+<h5 class="anchored" data-anchor-id="examples-9">Examples</h5>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load previously computed statistics</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> DatasetAnalyzer.load_analysis(<span class="st">"reference_metrics.npy"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use loaded stats for quality checks</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>check <span class="op">=</span> check_image_quality(<span class="st">"new_drawing.jpg"</span>, analyzer.distributions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These methods enable efficient reuse of analysis results across multiple processing sessions, particularly valuable when working with established archaeological documentation standards or specific site collections.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="process-folder-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="process-folder-metrics">Process Folder Metrics</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_folder_metrics(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    input_folder: <span class="bu">str</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    model_stats: <span class="bu">dict</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    file_extensions: <span class="bu">tuple</span> <span class="op">=</span> (<span class="st">'.jpg'</span>, <span class="st">'.jpeg'</span>, <span class="st">'.png'</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Batch processes a folder of drawings to align their metrics with reference statistics.</p>
+<section id="parameters-10" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-10">Parameters</h3>
+<dl>
+<dt><code>input_folder</code></dt>
+<dd>
+Directory containing drawings to process
+</dd>
+<dt><code>model_stats</code></dt>
+<dd>
+Reference statistics from DatasetAnalyzer
+</dd>
+<dt><code>file_extensions</code></dt>
+<dd>
+Supported file types
+</dd>
+</dl>
+</section>
+</section>
+<section id="apply-recommended-adjustments" class="level2">
+<h2 class="anchored" data-anchor-id="apply-recommended-adjustments">Apply Recommended Adjustments</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_recommended_adjustments(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    image: Union[<span class="bu">str</span>, Image.Image],</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    model_stats: <span class="bu">dict</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Image.Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Automatically adjusts a drawing based on statistical analysis.</p>
+<section id="parameters-11" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-11">Parameters</h3>
+<dl>
+<dt><code>image</code></dt>
+<dd>
+Drawing to adjust
+</dd>
+<dt><code>model_stats</code></dt>
+<dd>
+Reference statistics
+</dd>
+<dt><code>verbose</code></dt>
+<dd>
+Print adjustment details
+</dd>
+</dl>
+</section>
+<section id="adjustments-applied" class="level3">
+<h3 class="anchored" data-anchor-id="adjustments-applied">Adjustments Applied</h3>
+<ul>
+<li>Contrast normalization</li>
+<li>Brightness alignment</li>
+<li>Standard deviation correction</li>
+<li>Dynamic range optimization</li>
+</ul>
+</section>
+<section id="examples-10" class="level3">
+<h3 class="anchored" data-anchor-id="examples-10">Examples</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>adjusted <span class="op">=</span> apply_recommended_adjustments(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"drawing.jpg"</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    reference_stats,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">True</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="check-image-quality" class="level2">
+<h2 class="anchored" data-anchor-id="check-image-quality">Check Image Quality</h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_image_quality(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    image: Union[<span class="bu">str</span>, Image.Image],</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    model_stats: <span class="bu">dict</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">dict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Evaluates a drawing against reference metrics to identify needed adjustments.</p>
+<section id="returns-4" class="level3">
+<h3 class="anchored" data-anchor-id="returns-4">Returns</h3>
+<p>Returns a dictionary containing:</p>
+<ul>
+<li>metrics: Current image measurements</li>
+<li>recommendations: List of suggested adjustments</li>
+<li>is_compatible: Boolean indicating if adjustments needed</li>
+</ul>
+</section>
+<section id="examples-11" class="level3">
+<h3 class="anchored" data-anchor-id="examples-11">Examples</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>check <span class="op">=</span> check_image_quality(<span class="st">"new_drawing.jpg"</span>, reference_stats)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> check[<span class="st">'is_compatible'</span>]:</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Adjustments needed:"</span>, check[<span class="st">'recommendations'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="visualize-metrics-change" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-metrics-change">Visualize Metrics Change</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_metrics_change(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    original_metrics: <span class="bu">dict</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    adjusted_metrics: <span class="bu">dict</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    model_stats: <span class="bu">dict</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    metrics_to_plot: Optional[List[<span class="bu">str</span>]] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    save: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Creates detailed visualizations comparing original and adjusted metrics against reference distributions.</p>
+<section id="parameters-12" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-12">Parameters</h3>
+<dl>
+<dt><code>original_metrics</code></dt>
+<dd>
+Metrics before adjustment
+</dd>
+<dt><code>adjusted_metrics</code></dt>
+<dd>
+Metrics after adjustment
+</dd>
+<dt><code>model_stats</code></dt>
+<dd>
+Reference statistics
+</dd>
+<dt><code>metrics_to_plot</code></dt>
+<dd>
+Specific metrics to visualize
+</dd>
+<dt><code>save</code></dt>
+<dd>
+Save plot to file
+</dd>
+</dl>
+</section>
+<section id="examples-12" class="level3">
+<h3 class="anchored" data-anchor-id="examples-12">Examples</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>visualize_metrics_change(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    original_metrics,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    adjusted_metrics,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    reference_stats,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    metrics_to_plot<span class="op">=</span>[<span class="st">'contrast_ratio'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>]</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 </section>
 

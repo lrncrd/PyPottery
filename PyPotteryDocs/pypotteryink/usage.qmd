@@ -27,7 +27,7 @@ Additionally, you can toggle **Dark Mode** using the button in the interface.
 
 This tab allows you to analyze your PC's hardware to verify compatibility with PyPotteryInk.
 
-<iframe src="animations/hardware_check.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 The page displays **Recommended Specifications**, indicating the minimum requirements to use the program.
 
@@ -65,7 +65,7 @@ Your hardware is adequate for using PyPotteryInk, but you may encounter some lim
 
 This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.
 
-<iframe src="animations/model_diagnostic.html" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/model_diagnostic.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 The available elements are:
 
@@ -82,7 +82,7 @@ At the end of the process, a gallery will allow you to view the results.
 
 This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.
 
-<iframe src="animations/preprocessing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 There are two options:
 
@@ -97,6 +97,7 @@ Images are uploaded in the same way. A checkbox allows you to use the statistics
 Alternatively, you can use an existing `.npy` file.
 
 PyPotteryInk provides two default `.npy` files:
+
 - `Montale_stats.npy` (Metric measures of the dataset used to train the 6h-MCG model)
 - `Cimino_stats.npy` (Metric measures of the dataset used to train the 6h-MC model)
 
@@ -109,7 +110,7 @@ Click **✨ Apply Preprocessing** to start. A progress bar will indicate the sta
 
 This tab represents the core of the program where you can process a series of images.
 
-<iframe src="animations/batch_processing.html" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+<iframe src="animations/batch_processing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
 
 Parameters like **Select Model**, **Upload Images**, **Patch Size**, and **Overlap** are the same as in the Preprocessing tab.
 

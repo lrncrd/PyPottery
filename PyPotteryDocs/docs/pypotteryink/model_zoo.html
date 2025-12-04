@@ -350,6 +350,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#k" id="toc-k" class="nav-link" data-scroll-target="#k"><strong>10k</strong></a></li>
   <li><a href="#h-mcg" id="toc-h-mcg" class="nav-link" data-scroll-target="#h-mcg"><strong>6h-MCG</strong></a></li>
   <li><a href="#h-mc" id="toc-h-mc" class="nav-link" data-scroll-target="#h-mc"><strong>6h-MC</strong></a></li>
+  <li><a href="#h-paint" id="toc-h-paint" class="nav-link" data-scroll-target="#h-paint"><strong>4h-PAINT</strong></a></li>
+  <li><a href="#h-papergrid" id="toc-h-papergrid" class="nav-link" data-scroll-target="#h-papergrid"><strong>5h-PAPERGRID</strong></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -794,8 +796,501 @@ ul.task-list li input[type="checkbox"] {
 <td>checkpointing_steps</td>
 <td>100</td>
 </tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>600</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./10k.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
 </tbody>
 </table>
+<p><strong>Author</strong>: Lorenzo Cardarelli</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://huggingface.co/lrncrd/PyPotteryInk"><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid figure-img" alt="Models"></a></p>
+<figcaption>Models</figcaption>
+</figure>
+</div>
+<section id="benchmark-2" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark-2">Benchmark</h4>
+<p><img src="images_docs/test_img_MC.jpg" class="img-fluid" width="800"></p>
+</section>
+</section>
+<section id="h-paint" class="level3">
+<h3 class="anchored" data-anchor-id="h-paint"><strong>4h-PAINT</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for painted decoration and historical pottery.</p>
+<ul>
+<li><strong>Training Data</strong>: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy</li>
+<li><strong>Base Model</strong>: 6h-MC</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 400</li>
+<li><strong>Best For</strong>: Historic Age / Painted Pottery (No shadows!)</li>
+</ul>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>4h-PAINT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>400</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./6h-MC.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli, Elisa Pizzuti</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://huggingface.co/lrncrd/PyPotteryInk"><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid figure-img" alt="Models"></a></p>
+<figcaption>Models</figcaption>
+</figure>
+</div>
+<section id="benchmark-3" class="level4">
+<h4 class="anchored" data-anchor-id="benchmark-3">Benchmark</h4>
+<p><img src="images_docs/test_img_PAINT.jpg" class="img-fluid" width="800"></p>
+</section>
+</section>
+<section id="h-papergrid" class="level3">
+<h3 class="anchored" data-anchor-id="h-papergrid"><strong>5h-PAPERGRID</strong></h3>
+<p><strong>Description</strong>: Fine-tuned model specialized for papergrid pottery.</p>
+<ul>
+<li><strong>Training Data</strong>: 15 paired drawings from Middle Bronze Age of Northern Italy</li>
+<li><strong>Base Model</strong>: 6h-MC</li>
+<li><strong>Resolution</strong>: 512×512 pixels</li>
+<li><strong>Training Steps</strong>: 400</li>
+<li><strong>Best For</strong>: Papergrid Pottery (No shadows!)</li>
+</ul>
+<p><strong>Parameters used for training</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>5h-PAPERGRID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>adam_beta1</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>adam_beta2</td>
+<td>0.999</td>
+</tr>
+<tr class="odd">
+<td>adam_epsilon</td>
+<td>0.00000001</td>
+</tr>
+<tr class="even">
+<td>adam_weight_decay</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td>allow_tf32</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>checkpointing_steps</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>dataloader_num_workers</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>enable_xformers_memory_efficient_attention</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>eval_freq</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>gan_disc_type</td>
+<td>“vagan_clip”</td>
+</tr>
+<tr class="odd">
+<td>gan_loss_type</td>
+<td>“multilevel_sigmoid_s”</td>
+</tr>
+<tr class="even">
+<td>gradient_accumulation_steps</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>gradient_checkpointing</td>
+<td>false</td>
+</tr>
+<tr class="even">
+<td>lambda_clipsim</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>lambda_gan</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td>lambda_l2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lambda_lpips</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>learning_rate</td>
+<td>0.00001</td>
+</tr>
+<tr class="odd">
+<td>lora_rank_unet</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>lora_rank_vae</td>
+<td>48</td>
+</tr>
+<tr class="odd">
+<td>lr_num_cycles</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>lr_power</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>lr_scheduler</td>
+<td>“cosine”</td>
+</tr>
+<tr class="even">
+<td>lr_warmup_steps</td>
+<td>200</td>
+</tr>
+<tr class="odd">
+<td>max_grad_norm</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>max_train_steps</td>
+<td>400</td>
+</tr>
+<tr class="odd">
+<td>mixed_precision</td>
+<td>“no”</td>
+</tr>
+<tr class="even">
+<td>num_samples_eval</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>num_training_epochs</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>pretrained_model_name_or_path</td>
+<td>./6h-MC.pkl</td>
+</tr>
+<tr class="odd">
+<td>resolution</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>set_grads_to_none</td>
+<td>false</td>
+</tr>
+<tr class="odd">
+<td>test_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="even">
+<td>track_val_fid</td>
+<td>true</td>
+</tr>
+<tr class="odd">
+<td>train_batch_size</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>train_image_prep</td>
+<td>“resized_crop_512”</td>
+</tr>
+<tr class="odd">
+<td>viz_freq</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author</strong>: Lorenzo Cardarelli, Federico Erbetti</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://huggingface.co/lrncrd/PyPotteryInk"><img src="https://img.shields.io/badge/🤗%20Models-PyPotteryInk-yellow.svg" class="img-fluid figure-img" alt="Models"></a></p>
+<figcaption>Models</figcaption>
+</figure>
+</div>
 
 
 </section>

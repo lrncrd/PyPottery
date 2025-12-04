@@ -1,11 +1,40 @@
 ---
 title: "Version History"
+subtitle: "Development timeline and changes"
 format: html
-toc: true
 ---
 
-## v0.1.0
+## Latest Release
 
-*   Initial release of documentation.
-*   Basic project management and PDF processing.
-*   Integration of CV models for mask extraction.
+### Version 0.2.0 (December 2025)
+
+**Key Features:**
+
+-   Major architectural change: Migrated from Gradio to Flask web framework
+-   Project Management System: Introduced project-based workflow with dedicated workspaces
+-   Modern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX
+-   RESTful API: Full API for programmatic access and future integrations
+-   Enhanced Canvas Editor: Improved annotation tools with better performance
+-   Real-time Progress Tracking: Live updates for long-running operations
+-   Auto-save Everything: Automatic persistence for all user changes
+-   Workflow Status Tracking: Visual indicators for project completion stages
+-   Multi-project Support: Work on multiple datasets simultaneously
+-   Improved Error Handling: Better user feedback and error recovery
+
+## Version History
+
+### Version 0.1.3 (August 2025)
+
+**Key Features:**
+
+-   Minor bug fixes and performance improvements
+
+### Version 0.1.0 (April 2025)
+
+**Key Features:**
+
+-   Initial release of documentation.
+-   Basic project management and PDF processing.
+-   Integration of CV models for mask extraction.
+
+

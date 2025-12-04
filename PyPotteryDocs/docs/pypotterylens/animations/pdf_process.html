@@ -24,7 +24,7 @@
             border-radius: 12px;
             overflow: hidden;
             width: 800px;
-            height: 500px;
+            height: 800px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -34,12 +34,15 @@
         /* Header */
         .header {
             height: 40px;
+            min-height: 40px;
+            max-height: 40px;
             background: #f1f3f4;
             display: flex;
             align-items: center;
             padding: 0 16px;
             gap: 8px;
             border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
         }
 
         .dot {
@@ -99,6 +102,7 @@
             gap: 20px;
             align-items: center;
             justify-content: center;
+            height: 800px;
         }
 
         .upload-area {
@@ -216,7 +220,6 @@
 <body>
 
     <div class="window" id="appWindow">
-        <!-- Header -->
         <div class="header">
             <div class="dot red"></div>
             <div class="dot yellow"></div>
@@ -224,13 +227,12 @@
             <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.0
             </div>
         </div>
-
-        <!-- Tabs -->
         <div class="tabs">
             <div class="tab">Project Manager</div>
             <div class="tab active">PDF Processing</div>
             <div class="tab">Apply Model</div>
             <div class="tab">Review</div>
+            <div class="tab">Post Processing</div>
         </div>
 
         <!-- Content -->

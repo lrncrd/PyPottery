@@ -34,12 +34,15 @@
         /* Header */
         .header {
             height: 40px;
+            min-height: 40px;
+            max-height: 40px;
             background: #f1f3f4;
             display: flex;
             align-items: center;
             padding: 0 16px;
             gap: 8px;
             border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
         }
 
         .dot {
@@ -153,11 +156,11 @@
             background: #10b981;
         }
 
-        /* Canvas Area */
+        /* Canvas Area - Paper Style */
         .canvas-container {
-            width: 400px;
-            height: 300px;
-            background: #f9fafb;
+            width: 450px;
+            height: 320px;
+            background: linear-gradient(135deg, #fdfcfb 0%, #f7f6f4 100%);
             border: 2px solid #e5e7eb;
             border-radius: 8px;
             position: relative;
@@ -165,82 +168,55 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
-        /* Kylix Shape */
-        .kylix-shape {
-            width: 120px;
-            height: 60px;
-            background: #374151;
-            /* Dark grey/black */
-            border-radius: 0 0 60px 60px;
-            /* Bowl shape */
+        .canvas-container::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .page-label {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Pottery Grid */
+        .pottery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
             position: relative;
-            margin: 20px auto;
-            transform: scale(1.5);
+            z-index: 1;
         }
 
-        /* Handles */
-        .kylix-shape::before,
-        .kylix-shape::after {
-            content: '';
-            position: absolute;
-            top: -20px;
-            width: 30px;
-            height: 50px;
-            border: 4px solid #374151;
-            border-bottom: none;
-            border-radius: 20px 20px 0 0;
+        .pottery-item {
+            font-size: 4rem;
+            filter: grayscale(0%) opacity(1);
+            transition: filter 0.8s ease;
+            text-align: center;
+            cursor: pointer;
         }
 
-        .kylix-shape::before {
-            left: -30px;
-            transform: rotate(-20deg);
+        .pottery-item.inactive {
+            filter: grayscale(100%) opacity(0.4);
         }
 
-        .kylix-shape::after {
-            right: -30px;
-            transform: rotate(20deg);
-        }
-
-        /* Foot */
-        .kylix-foot {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 20px;
-            background: #374151;
-            border-radius: 0 0 10px 10px;
-        }
-
-        /* Foot Stem */
-        .kylix-foot::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            width: 20px;
-            height: 10px;
-            background: #374151;
-        }
-
-        .mask-overlay {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            width: 80px;
-            height: 40px;
-            background: rgba(220, 38, 38, 0.4);
-            /* Red mask */
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .mask-overlay.visible {
-            opacity: 1;
+        .pottery-item.active {
+            filter: grayscale(0%) opacity(1);
         }
 
         /* Controls */
@@ -312,10 +288,10 @@
             </div>
         </div>
         <div class="tabs">
-            <div class="tab">Project Manager</div>
-            <div class="tab">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab active">Review</div>
+            <div class="tab">🗂️ Project Manager</div>
+            <div class="tab">📄 PDF Processing</div>
+            <div class="tab">🤖 Apply Model</div>
+            <div class="tab active">📝 Review</div>
         </div>
 
         <div class="content">
@@ -340,9 +316,14 @@
 
             <div class="main-view">
                 <div class="canvas-container" id="canvas">
-                    <div class="kylix-shape">
-                        <div class="kylix-foot"></div>
-                        <div class="mask-overlay" id="mask"></div>
+                    <span class="page-label">Page 2</span>
+                    <div class="pottery-grid">
+                        <div class="pottery-item active" id="pot1">🏺</div>
+                        <div class="pottery-item active" id="pot2">🏺</div>
+                        <div class="pottery-item inactive" id="pot3">🏺</div>
+                        <div class="pottery-item active" id="pot4">🏺</div>
+                        <div class="pottery-item inactive" id="pot5">🏺</div>
+                        <div class="pottery-item active" id="pot6">🏺</div>
                     </div>
                 </div>
                 <div class="controls">
@@ -361,9 +342,10 @@
         const item2 = document.getElementById('item2');
         const dot2 = document.getElementById('dot2');
         const canvas = document.getElementById('canvas');
-        const mask = document.getElementById('mask');
         const saveBtn = document.getElementById('saveBtn');
         const appWindow = document.getElementById('appWindow');
+        const pot3 = document.getElementById('pot3');
+        const pot5 = document.getElementById('pot5');
 
         function moveCursorTo(element, duration = 1000, delay = 0) {
             const rect = element.getBoundingClientRect();
@@ -381,7 +363,20 @@
         }
 
         function reset() {
-            mask.classList.remove('visible');
+            // Reset to initial state: some active, some inactive
+            document.getElementById('pot1').classList.add('active');
+            document.getElementById('pot1').classList.remove('inactive');
+            document.getElementById('pot2').classList.add('active');
+            document.getElementById('pot2').classList.remove('inactive');
+            pot3.classList.add('inactive');
+            pot3.classList.remove('active');
+            document.getElementById('pot4').classList.add('active');
+            document.getElementById('pot4').classList.remove('inactive');
+            pot5.classList.add('inactive');
+            pot5.classList.remove('active');
+            document.getElementById('pot6').classList.add('active');
+            document.getElementById('pot6').classList.remove('inactive');
+
             dot2.classList.remove('green');
             item2.classList.remove('active');
             document.getElementById('item1').classList.add('active');
@@ -397,41 +392,40 @@
             // 2. Click Item 2
             document.getElementById('item1').classList.remove('active');
             item2.classList.add('active');
+            await new Promise(r => setTimeout(r, 300));
 
-            // 3. Move to Canvas (Start Drawing)
-            await moveCursorTo(canvas, 800, 200);
+            // 3. Move to first gray pottery (pot3)
+            await moveCursorTo(pot3, 800, 400);
 
-            // 4. Draw (Move cursor across canvas)
-            cursor.style.transition = 'transform 1s linear';
-            const canvasRect = canvas.getBoundingClientRect();
-            const containerRect = appWindow.getBoundingClientRect();
-            const startX = canvasRect.left - containerRect.left + 150;
-            const startY = canvasRect.top - containerRect.top + 150;
+            // 4. "Draw" on it - activate it
+            await new Promise(r => setTimeout(r, 400));
+            pot3.classList.remove('inactive');
+            pot3.classList.add('active');
 
-            cursor.style.transform = `translate(${startX}px, ${startY}px)`;
+            // 5. Move to second gray pottery (pot5)
+            await moveCursorTo(pot5, 800, 600);
 
-            // Show mask gradually
-            setTimeout(() => {
-                mask.style.transition = 'opacity 1s linear';
-                mask.classList.add('visible');
-            }, 500);
+            // 6. "Draw" on it - activate it
+            await new Promise(r => setTimeout(r, 400));
+            pot5.classList.remove('inactive');
+            pot5.classList.add('active');
 
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(r => setTimeout(r, 500));
 
-            // 5. Move to Save Button
-            await moveCursorTo(saveBtn, 800, 200);
+            // 7. Move to Save Button
+            await moveCursorTo(saveBtn, 800, 400);
 
-            // 6. Click Save
+            // 8. Click Save
             saveBtn.style.transform = 'scale(0.95)';
             await new Promise(r => setTimeout(r, 200));
             saveBtn.style.transform = 'scale(1)';
             dot2.classList.add('green');
 
-            // 7. Move Away
+            // 9. Move Away
             cursor.style.transform = 'translate(850px, 600px)';
         }
 
-        setInterval(runAnimation, 8000);
+        setInterval(runAnimation, 10000);
         setTimeout(runAnimation, 100);
     </script>
 </body>

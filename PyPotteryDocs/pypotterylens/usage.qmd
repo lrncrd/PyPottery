@@ -1,8 +1,17 @@
 ---
-title: "Usage"
+title: "Using PyPotteryLens"
 format: html
 toc: true
 ---
+
+<div style="text-align: center;">
+  <img src="../imgs/LogoLens.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+</div>
+
 
 # GUI Overview
 
@@ -21,17 +30,19 @@ Like other tools in the PyPottery suite, PyPotteryLens uses a project management
 
 You can create a project by entering a name in the text box, along with an optional description and an icon.
 
-Once created, the project will appear in the "Your Projects" list.
+Once created, the project will appear in the "**Your Projects**" list.
 
 Selecting a project will display its name in the status bar.
+
+<iframe src="animations/project_create.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## PDF Document Processing
 
 In this tab, you can upload and process a PDF file, transforming it into a series of images.
 
-<iframe src="animations/pdf_process.html" style="width: 100%; height: 500px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/pdf_process.html" style="width: 100%; height: 900px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
-Clicking on **Upload PDF** will open a dialog window to select the PDF file.
+Clicking on **Upload PDF to current project** will open a dialog window to select the PDF file.
 
 ::: {.callout-important}
 The **Split Scanned** checkbox must be checked **BEFORE** selecting the file if the PDF to be processed has 2 pages side-by-side.
@@ -43,9 +54,12 @@ Once the PDF is processed, you can proceed to the next tab.
 
 In this tab, you can use the Computer Vision (CV) model to extract information.
 
+<iframe src="animations/apply_model.html" scrolling="no" style="width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
 ### GUI Layout
 
 The GUI is divided into two parts:
+
 - **Right Side**: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.
 - **Left Side**: Contains the model parameters.
 
@@ -55,7 +69,7 @@ The GUI is divided into two parts:
 - **Model Parameters**: You can define the confidence threshold for the model as well as some post-processing operations for the masks.
 - **Advanced Options**: Includes the possibility to limit the application to 25 pages for debugging purposes.
 
-Once you click on **Apply Model**, a progress bar will indicate the status of the process.
+Once you click on **🚀 Apply Model to Project**, a progress bar will indicate the status of the process.
 
 ::: {.callout-note}
 To use a different model, place it in the appropriate folder.
@@ -79,16 +93,17 @@ In the list:
 ### Editing Masks
 
 You can modify the masks identified by the model using the buttons below the canvas:
-- **Brush**: To draw new masks.
-- **Eraser**: To delete existing masks.
+- **🖌️ Brush**: To draw new masks.
+- **🧹 Eraser**: To delete existing masks.
+- **🗑️ Clear**: To delete all masks.
 
 New masks will appear in red.
 
 Once an image without masks (white dot) is modified, the indicator will update to a green checkmark.
 
-Changing the image or clicking on **Save Current Mask** will save the changes.
+Changing the image or clicking on **💾 Save Current Mask** will save the changes.
 
-Once you have reviewed the images, you can extract them by clicking on **Extract Cards**.
+Once you have reviewed the images, you can extract them by clicking on **📤 Extract Cards**.
 
 ## Tabular Information
 
@@ -100,8 +115,8 @@ This tab allows you to insert tabular information for the images.
 - **Left**: A file list for navigation.
 - **Right**: A table where you can enter tabular information.
 
-Each record is indicated by an ID visible on the canvas. To add a column, write the name and click **Add Column**.
-Once the information is entered, you can click on **Mark as Reviewed**. The inserted columns are persistent across the project's images.
+Each record is indicated by an ID visible on the canvas. To add a column, write the name and click **➕ Add Column**.
+Once the information is entered, you can click on **👁️ Mark as Reviewed**. The inserted columns are persistent across the project's images.
 
 ## Post Processing
 
@@ -116,7 +131,7 @@ Finally, you can post-process the images to standardize them (e.g., profile on t
 
 ### Workflow
 
-To start post-processing, click on **Process All Images**. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in "Processed Image".
+To start post-processing, click on **🔍 Process All Images**. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in "Processed Image".
 
 You can navigate through the records using the buttons and the file list.
 
@@ -124,7 +139,7 @@ If the model has misclassified a vase, you can manually modify the classificatio
 
 You can also set image transformations to lock specific transformations.
 
-Once post-processing is complete, click on **Export Results** to save the images in a ZIP folder.
+Once post-processing is complete, click on **📦 Export Results** to save the images in a ZIP folder.
 
 An Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.
 
