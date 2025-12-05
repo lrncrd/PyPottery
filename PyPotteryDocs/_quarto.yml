@@ -19,6 +19,7 @@ website:
     contents:
       - index.qmd
       - intro.qmd
+      - suite_installation.qmd
       - requirements.qmd
       - section: "PyPotteryScan"
         contents:

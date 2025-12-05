@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Home – PyPottery</title>
+<title>Suite Installation – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -104,7 +138,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./suite_installation.html">Suite Installation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -131,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -143,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./suite_installation.html" class="sidebar-item-text sidebar-link">
+  <a href="./suite_installation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Suite Installation</span></a>
   </div>
 </li>
@@ -362,18 +396,39 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-traditional-workflow" id="toc-the-traditional-workflow" class="nav-link active" data-scroll-target="#the-traditional-workflow">The Traditional Workflow</a></li>
-  <li><a href="#why-pypottery" id="toc-why-pypottery" class="nav-link" data-scroll-target="#why-pypottery">Why PyPottery?</a></li>
-  <li><a href="#get-started" id="toc-get-started" class="nav-link" data-scroll-target="#get-started">Get Started</a></li>
+  <li><a href="#quick-start" id="toc-quick-start" class="nav-link active" data-scroll-target="#quick-start">Quick Start</a></li>
+  <li><a href="#download" id="toc-download" class="nav-link" data-scroll-target="#download">Download</a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a>
+  <ul class="collapse">
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
+  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux">Linux</a></li>
+  </ul></li>
+  <li><a href="#using-the-launcher" id="toc-using-the-launcher" class="nav-link" data-scroll-target="#using-the-launcher">Using the Launcher</a>
+  <ul class="collapse">
+  <li><a href="#step-1-configure-environment" id="toc-step-1-configure-environment" class="nav-link" data-scroll-target="#step-1-configure-environment">Step 1: Configure Environment</a></li>
+  <li><a href="#step-2-download-apps" id="toc-step-2-download-apps" class="nav-link" data-scroll-target="#step-2-download-apps">Step 2: Download Apps</a></li>
+  <li><a href="#step-3-launch-apps" id="toc-step-3-launch-apps" class="nav-link" data-scroll-target="#step-3-launch-apps">Step 3: Launch Apps</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#windows-windows-protected-your-pc-message" id="toc-windows-windows-protected-your-pc-message" class="nav-link" data-scroll-target="#windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</a></li>
+  <li><a href="#macos-cannot-be-opened-because-it-is-from-an-unidentified-developer" id="toc-macos-cannot-be-opened-because-it-is-from-an-unidentified-developer" class="nav-link" data-scroll-target="#macos-cannot-be-opened-because-it-is-from-an-unidentified-developer">macOS: “Cannot be opened because it is from an unidentified developer”</a></li>
+  <li><a href="#linux-permission-denied" id="toc-linux-permission-denied" class="nav-link" data-scroll-target="#linux-permission-denied">Linux: Permission denied</a></li>
+  <li><a href="#apps-not-downloading" id="toc-apps-not-downloading" class="nav-link" data-scroll-target="#apps-not-downloading">Apps not downloading</a></li>
+  <li><a href="#environment-configuration-fails" id="toc-environment-configuration-fails" class="nav-link" data-scroll-target="#environment-configuration-fails">Environment configuration fails</a></li>
+  </ul></li>
+  <li><a href="#system-requirements" id="toc-system-requirements" class="nav-link" data-scroll-target="#system-requirements">System Requirements</a></li>
+  <li><a href="#alternative-manual-installation" id="toc-alternative-manual-installation" class="nav-link" data-scroll-target="#alternative-manual-installation">Alternative: Manual Installation</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/suite_installation.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Home</h1>
+<h1 class="title">Suite Installation</h1>
 </div>
 
 
@@ -390,197 +445,285 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Hero Section -->
 <div class="hero-section">
-  <h2 class="anchored">🏺 Digitizing Pottery Documentation</h2>
+  <h2 class="anchored">🚀 PyPottery Suite Launcher</h2>
   <p>
-    PyPottery brings the traditional archaeological pottery documentation workflow into the digital age. 
-    Each manual step in the classical process finds its digital counterpart in our suite of specialized tools.
+    The easiest way to get started with PyPottery! Download the pre-packaged launcher 
+    with everything included - no Python installation required.
   </p>
 </div>
-<section id="the-traditional-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="the-traditional-workflow">The Traditional Workflow</h2>
-<p>Archaeological pottery documentation has followed a well-established workflow for decades. From initial scanning of pottery plates to the creation of publication-ready layouts, each step requires specialized skills and significant time investment.</p>
-<p><strong>PyPottery automates and enhances each of these steps</strong>, allowing researchers to focus on interpretation rather than repetitive manual tasks.</p>
-<!-- Workflow Diagram -->
-<div style="margin: 3rem 0; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 20px;">
-  
-  <!-- Header -->
-  <div style="text-align: center; margin-bottom: 2rem;">
-    <h3 style="color: #1f2937; margin-bottom: 0.5rem;" class="anchored">From Manual to Digital</h3>
-    <p style="color: #6b7280; font-size: 0.95rem;">Every traditional step has its PyPottery equivalent</p>
-  </div>
-
-  <!-- Step 1: Pottery Cards -->
-  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <span style="font-size: 2rem;">📋</span>
-        <div>
-          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
-          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Pottery Cards</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        Handwritten pottery cards with drawings, measurements, and descriptions organized in physical archives.
-      </p>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
-      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
-      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
-    </div>
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <img src="imgs/LogoScan.png" alt="PyPotteryScan" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
-        <div>
-          <div style="font-size: 0.8rem; color: #3b82f6; font-weight: 600;">PYPOTTERY SOLUTION</div>
-          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryScan</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        Digitize pottery plates with AI-powered OCR, extracting drawings and text into structured digital formats.
-      </p>
-    </div>
-  </div>
-
-  <!-- Step 2: Tracings / Inking -->
-  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <span style="font-size: 2rem;">✍️</span>
-        <div>
-          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
-          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Tracings / Inking</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        Manual tracing of pottery drawings on transparent paper, inking outlines, and creating clean reproducible illustrations.
-      </p>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
-      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
-      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
-    </div>
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <div style="display: flex; gap: 0.5rem;">
-          <img src="imgs/LogoInk.png" alt="PyPotteryInk" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
-          <img src="imgs/LogoTrace.png" alt="PyPotteryTrace" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
-        </div>
-        <div>
-          <div style="font-size: 0.8rem; color: #8b5cf6; font-weight: 600;">PYPOTTERY SOLUTION</div>
-          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryInk + Trace</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        AI-powered inking and vectorization. Enhance drawings and convert to clean vector formats in seconds.
-      </p>
-    </div>
-  </div>
-
-  <!-- Step 3: Publication Plates -->
-  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <span style="font-size: 2rem;">📐</span>
-        <div>
-          <div style="font-size: 0.8rem; color: #9ca3af; font-weight: 600; text-transform: uppercase;">Traditional Step</div>
-          <div style="font-size: 1.1rem; font-weight: 700; color: #374151;">Publication Plates</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        Manually arranging pottery drawings on plates, ensuring consistent scaling and professional presentation for publication.
-      </p>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; padding: 0 1rem;">
-      <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px;"></div>
-      <div style="width: 0; height: 0; border-left: 12px solid #764ba2; border-top: 8px solid transparent; border-bottom: 8px solid transparent;"></div>
-    </div>
-    <div style="flex: 1; min-width: 250px;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-        <img src="imgs/LogoLayout.png" alt="PyPotteryLayout" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
-        <div>
-          <div style="font-size: 0.8rem; color: #ec4899; font-weight: 600;">PYPOTTERY SOLUTION</div>
-          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #ec4899, #be185d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryLayout</div>
-        </div>
-      </div>
-      <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        Automatic layout generation with consistent scaling and publication-ready exports in PDF and SVG formats.
-      </p>
-    </div>
-  </div>
-
+<section id="quick-start" class="level2">
+<h2 class="anchored" data-anchor-id="quick-start">Quick Start</h2>
+<p>The <strong>PyPottery Suite Launcher</strong> is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-
-<!-- Additional Tool: Lens -->
-<div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; color: white;">
-  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;">
-    <img src="imgs/LogoLens.png" alt="PyPotteryLens" style="width: 60px; height: 60px; object-fit: contain; border-radius: 14px; background: rgba(255,255,255,0.2); padding: 5px;">
-    <div style="flex: 1; min-width: 250px;">
-      <h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;" class="anchored">PyPotteryLens — Extract from Publications</h4>
-      <p style="margin: 0; opacity: 0.9; font-size: 0.95rem;">
-        Already have published PDFs? Extract pottery images directly from existing documents using computer vision, 
-        then process them through the PyPottery pipeline.
-      </p>
-    </div>
-  </div>
+<div class="callout-title-container flex-fill">
+No Technical Knowledge Required
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!</p>
+</div>
 </div>
 </section>
-<section id="why-pypottery" class="level2">
-<h2 class="anchored" data-anchor-id="why-pypottery">Why PyPottery?</h2>
-<div class="software-grid" style="margin-top: 1.5rem;">
-
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
-    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;" class="anchored">Save Time</h4>
-    <p class="card-description">
-      What takes hours manually can be done in minutes. Process hundreds of drawings in batch mode.
-    </p>
-  </div>
-
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
-    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;" class="anchored">Consistent Quality</h4>
-    <p class="card-description">
-      AI models ensure uniform results across your entire corpus. No more variations between different operators.
-    </p>
-  </div>
-
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔄</div>
-    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;" class="anchored">Reproducible</h4>
-    <p class="card-description">
-      Every step is documented and reproducible. Share your workflow parameters with colleagues.
-    </p>
-  </div>
-
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🆓</div>
-    <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;" class="anchored">Open Source</h4>
-    <p class="card-description">
-      Free to use, modify, and extend. Built by archaeologists, for archaeologists.
-    </p>
-  </div>
-
-</div>
+<section id="download" class="level2">
+<h2 class="anchored" data-anchor-id="download">Download</h2>
+<p>Choose the package for your operating system:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Download</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Windows 10/11</strong> (64-bit)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-Windows.zip</a></td>
+<td>~52 MB</td>
+</tr>
+<tr class="even">
+<td><strong>macOS Intel</strong> (x86_64)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-x86_64.zip</a></td>
+<td>~22 MB</td>
+</tr>
+<tr class="odd">
+<td><strong>macOS Apple Silicon</strong> (M1/M2/M3)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-arm64.zip</a></td>
+<td>~22 MB</td>
+</tr>
+<tr class="even">
+<td><strong>Linux</strong> (x86_64)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-linux-x86_64.zip</a></td>
+<td>~128 MB</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="get-started" class="level2">
-<h2 class="anchored" data-anchor-id="get-started">Get Started</h2>
-<p>Ready to transform your pottery documentation workflow?</p>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<section id="windows" class="level3">
+<h3 class="anchored" data-anchor-id="windows">Windows</h3>
 <ol type="1">
-<li><strong>Check the <a href="requirements.html">Requirements</a></strong> to ensure your system is compatible</li>
-<li><strong>Choose your starting point</strong> based on your needs:
-<ul>
-<li>Have physical pottery cards? → Start with <strong>PyPotteryScan</strong></li>
-<li>Have published PDFs? → Start with <strong>PyPotteryLens</strong><br>
-</li>
-<li>Have digital drawings to enhance? → Start with <strong>PyPotteryInk</strong></li>
-</ul></li>
-<li><strong>Follow the tool-specific guides</strong> for detailed instructions</li>
+<li><strong>Download</strong> the Windows package from the link above</li>
+<li><strong>Extract</strong> the ZIP file to a folder of your choice (e.g., <code>C:\PyPottery</code>)</li>
+<li><strong>Run</strong> <code>PyPottery.bat</code> by double-clicking it</li>
 </ol>
-<div style="text-align: center; margin-top: 2rem;">
-  <a href="intro.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1rem; transition: all 0.2s ease;">
-    Explore the Tools →
+<div style="background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #10b981;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+    <span style="font-size: 1.5rem;">💡</span>
+    <strong style="color: #166534;">Tip</strong>
+  </div>
+  <p style="margin: 0; color: #166534;">
+    You can create a desktop shortcut to <code>PyPottery.bat</code> for quick access!
+  </p>
+</div>
+</section>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">macOS</h3>
+<ol type="1">
+<li><p><strong>Download</strong> the appropriate package for your Mac:</p>
+<ul>
+<li><strong>Intel Mac</strong>: <code>macos-x86_64</code> version</li>
+<li><strong>Apple Silicon (M1/M2/M3)</strong>: <code>macos-arm64</code> version</li>
+</ul></li>
+<li><p><strong>Extract</strong> the ZIP file</p></li>
+<li><p><strong>Open Terminal</strong> and navigate to the extracted folder</p></li>
+<li><p><strong>Run the installer</strong> (first time only):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./install.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Launch PyPottery</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./PyPottery.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+First Run on macOS
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.</p>
+</div>
+</div>
+</section>
+<section id="linux" class="level3">
+<h3 class="anchored" data-anchor-id="linux">Linux</h3>
+<ol type="1">
+<li><p><strong>Download</strong> the Linux package</p></li>
+<li><p><strong>Extract</strong> the ZIP file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> PyPottery-Launcher-linux-x86_64-v1.0.0.zip</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> PyPottery-Launcher-linux-x86_64</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Run the installer</strong> (first time only):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x install.sh PyPottery.sh</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./install.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Launch PyPottery</strong>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./PyPottery.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+</section>
+<section id="using-the-launcher" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-launcher">Using the Launcher</h2>
+<p>Once the launcher opens, you’ll see a clean interface with all available PyPottery applications.</p>
+<div style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white;">
+  <h3 style="color: white; margin-top: 0;" class="anchored">🎯 Launcher Features</h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>📥 One-Click Download</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Download apps directly from the launcher</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>🔄 Auto Updates</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Check for and install updates easily</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>⚙️ Environment Setup</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Automatic Python environment configuration</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>🖥️ Hardware Detection</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Detects GPU for optimal performance</p>
+    </div>
+  </div>
+</div>
+<section id="step-1-configure-environment" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-configure-environment">Step 1: Configure Environment</h3>
+<p>The first time you use the launcher, click <strong>“Configure Environment”</strong> to set up the Python environment. This installs all required dependencies.</p>
+<div style="background: #fef3c7; border-radius: 8px; padding: 1rem; margin: 1rem 0; border-left: 4px solid #f59e0b;">
+  <strong style="color: #92400e;">⏱️ First Setup</strong>
+  <p style="margin: 0.5rem 0 0 0; color: #92400e;">
+    Environment configuration may take 5-10 minutes depending on your internet connection. 
+    The progress bar shows the current status.
+  </p>
+</div>
+</section>
+<section id="step-2-download-apps" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-download-apps">Step 2: Download Apps</h3>
+<p>Click the <strong>download button</strong> (⬇️) next to any app to download it. Available apps:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>App</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>PyPotteryScan</strong></td>
+<td>Digitize pottery plates with AI-powered OCR</td>
+</tr>
+<tr class="even">
+<td><strong>PyPotteryInk</strong></td>
+<td>AI-based inking of pottery drawings</td>
+</tr>
+<tr class="odd">
+<td><strong>PyPotteryTrace</strong></td>
+<td>Vectorize pottery profiles</td>
+</tr>
+<tr class="even">
+<td><strong>PyPotteryLayout</strong></td>
+<td>Create publication-ready layouts</td>
+</tr>
+<tr class="odd">
+<td><strong>PyPotteryLens</strong></td>
+<td>Lens distortion correction</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-3-launch-apps" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-launch-apps">Step 3: Launch Apps</h3>
+<p>Once an app is downloaded, click the <strong>“Launch”</strong> button to start it. The app will open in your default web browser.</p>
+<div style="background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #3b82f6;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+    <span style="font-size: 1.5rem;">ℹ️</span>
+    <strong style="color: #1e40af;">How Apps Work</strong>
+  </div>
+  <p style="margin: 0; color: #1e40af;">
+    PyPottery apps run as local web servers. When you click "Launch", a browser window opens 
+    with the app interface. The launcher shows the running status and allows you to stop the app.
+  </p>
+</div>
+</section>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="windows-windows-protected-your-pc-message" class="level3">
+<h3 class="anchored" data-anchor-id="windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</h3>
+<p>This is normal for new applications. Click <strong>“More info”</strong> → <strong>“Run anyway”</strong>.</p>
+</section>
+<section id="macos-cannot-be-opened-because-it-is-from-an-unidentified-developer" class="level3">
+<h3 class="anchored" data-anchor-id="macos-cannot-be-opened-because-it-is-from-an-unidentified-developer">macOS: “Cannot be opened because it is from an unidentified developer”</h3>
+<p>Right-click on the script → <strong>“Open”</strong> → <strong>“Open”</strong> in the dialog.</p>
+</section>
+<section id="linux-permission-denied" class="level3">
+<h3 class="anchored" data-anchor-id="linux-permission-denied">Linux: Permission denied</h3>
+<p>Make sure the scripts are executable:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x install.sh PyPottery.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="apps-not-downloading" class="level3">
+<h3 class="anchored" data-anchor-id="apps-not-downloading">Apps not downloading</h3>
+<p>Check your internet connection and firewall settings. The launcher downloads apps from GitHub.</p>
+</section>
+<section id="environment-configuration-fails" class="level3">
+<h3 class="anchored" data-anchor-id="environment-configuration-fails">Environment configuration fails</h3>
+<p>Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).</p>
+</section>
+</section>
+<section id="system-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="system-requirements">System Requirements</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Minimum</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>RAM</strong></td>
+<td>8 GB</td>
+<td>16 GB</td>
+</tr>
+<tr class="even">
+<td><strong>Storage</strong></td>
+<td>2 GB free</td>
+<td>10 GB free</td>
+</tr>
+<tr class="odd">
+<td><strong>GPU</strong></td>
+<td>Not required</td>
+<td>NVIDIA with CUDA for PyPotteryInk</td>
+</tr>
+<tr class="even">
+<td><strong>Internet</strong></td>
+<td>Required for downloads</td>
+<td>Broadband</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="alternative-manual-installation" class="level2">
+<h2 class="anchored" data-anchor-id="alternative-manual-installation">Alternative: Manual Installation</h2>
+<p>If you prefer to install PyPottery tools manually or need more control, see the individual installation guides:</p>
+<ul>
+<li><a href="./pypotteryscan/installation.html">PyPotteryScan Installation</a></li>
+<li><a href="./pypotteryink/installation.html">PyPotteryInk Installation</a></li>
+<li><a href="./pypotterytrace/installation.html">PyPotteryTrace Installation</a></li>
+<li><a href="./pypotterylayout/installation.html">PyPotteryLayout Installation</a></li>
+<li><a href="./pypotterylens/installation.html">PyPotteryLens Installation</a></li>
+</ul>
+<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px;">
+  <h3 style="margin-bottom: 1rem;" class="anchored">Ready to Start?</h3>
+  <p style="color: #6b7280; margin-bottom: 1.5rem;">Download the launcher and begin digitizing your pottery collection!</p>
+  <a href="https://github.com/lrncrd/PyPottery/releases/latest" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+    📥 Download PyPottery Launcher
   </a>
 </div>
 
@@ -1013,7 +1156,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p>Documentation v0.0.1</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/suite_installation.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

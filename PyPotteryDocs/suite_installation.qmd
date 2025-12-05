@@ -1,0 +1,217 @@
+---
+title: "Suite Installation"
+---
+
+```{=html}
+<div class="hero-section">
+  <h2>🚀 PyPottery Suite Launcher</h2>
+  <p>
+    The easiest way to get started with PyPottery! Download the pre-packaged launcher 
+    with everything included - no Python installation required.
+  </p>
+</div>
+```
+
+## Quick Start
+
+The **PyPottery Suite Launcher** is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.
+
+::: {.callout-tip}
+## No Technical Knowledge Required
+The launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!
+:::
+
+## Download
+
+Choose the package for your operating system:
+
+| Platform | Download | Size |
+|----------|----------|------|
+| **Windows 10/11** (64-bit) | [PyPottery-Launcher-Windows.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~52 MB |
+| **macOS Intel** (x86_64) | [PyPottery-Launcher-macos-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
+| **macOS Apple Silicon** (M1/M2/M3) | [PyPottery-Launcher-macos-arm64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
+| **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
+
+## Installation
+
+### Windows
+
+1. **Download** the Windows package from the link above
+2. **Extract** the ZIP file to a folder of your choice (e.g., `C:\PyPottery`)
+3. **Run** `PyPottery.bat` by double-clicking it
+
+```{=html}
+<div style="background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #10b981;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+    <span style="font-size: 1.5rem;">💡</span>
+    <strong style="color: #166534;">Tip</strong>
+  </div>
+  <p style="margin: 0; color: #166534;">
+    You can create a desktop shortcut to <code>PyPottery.bat</code> for quick access!
+  </p>
+</div>
+```
+
+### macOS
+
+1. **Download** the appropriate package for your Mac:
+   - **Intel Mac**: `macos-x86_64` version
+   - **Apple Silicon (M1/M2/M3)**: `macos-arm64` version
+2. **Extract** the ZIP file
+3. **Open Terminal** and navigate to the extracted folder
+4. **Run the installer** (first time only):
+   ```bash
+   ./install.sh
+   ```
+5. **Launch PyPottery**:
+   ```bash
+   ./PyPottery.sh
+   ```
+
+::: {.callout-note}
+## First Run on macOS
+The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
+:::
+
+### Linux
+
+1. **Download** the Linux package
+2. **Extract** the ZIP file:
+   ```bash
+   unzip PyPottery-Launcher-linux-x86_64-v1.0.0.zip
+   cd PyPottery-Launcher-linux-x86_64
+   ```
+3. **Run the installer** (first time only):
+   ```bash
+   chmod +x install.sh PyPottery.sh
+   ./install.sh
+   ```
+4. **Launch PyPottery**:
+   ```bash
+   ./PyPottery.sh
+   ```
+
+## Using the Launcher
+
+Once the launcher opens, you'll see a clean interface with all available PyPottery applications.
+
+```{=html}
+<div style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white;">
+  <h3 style="color: white; margin-top: 0;">🎯 Launcher Features</h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>📥 One-Click Download</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Download apps directly from the launcher</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>🔄 Auto Updates</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Check for and install updates easily</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>⚙️ Environment Setup</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Automatic Python environment configuration</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
+      <strong>🖥️ Hardware Detection</strong>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Detects GPU for optimal performance</p>
+    </div>
+  </div>
+</div>
+```
+
+### Step 1: Configure Environment
+
+The first time you use the launcher, click **"Configure Environment"** to set up the Python environment. This installs all required dependencies.
+
+```{=html}
+<div style="background: #fef3c7; border-radius: 8px; padding: 1rem; margin: 1rem 0; border-left: 4px solid #f59e0b;">
+  <strong style="color: #92400e;">⏱️ First Setup</strong>
+  <p style="margin: 0.5rem 0 0 0; color: #92400e;">
+    Environment configuration may take 5-10 minutes depending on your internet connection. 
+    The progress bar shows the current status.
+  </p>
+</div>
+```
+
+### Step 2: Download Apps
+
+Click the **download button** (⬇️) next to any app to download it. Available apps:
+
+| App | Description |
+|-----|-------------|
+| **PyPotteryScan** | Digitize pottery plates with AI-powered OCR |
+| **PyPotteryInk** | AI-based inking of pottery drawings |
+| **PyPotteryTrace** | Vectorize pottery profiles |
+| **PyPotteryLayout** | Create publication-ready layouts |
+| **PyPotteryLens** | Lens distortion correction |
+
+### Step 3: Launch Apps
+
+Once an app is downloaded, click the **"Launch"** button to start it. The app will open in your default web browser.
+
+```{=html}
+<div style="background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #3b82f6;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+    <span style="font-size: 1.5rem;">ℹ️</span>
+    <strong style="color: #1e40af;">How Apps Work</strong>
+  </div>
+  <p style="margin: 0; color: #1e40af;">
+    PyPottery apps run as local web servers. When you click "Launch", a browser window opens 
+    with the app interface. The launcher shows the running status and allows you to stop the app.
+  </p>
+</div>
+```
+
+## Troubleshooting
+
+### Windows: "Windows protected your PC" message
+
+This is normal for new applications. Click **"More info"** → **"Run anyway"**.
+
+### macOS: "Cannot be opened because it is from an unidentified developer"
+
+Right-click on the script → **"Open"** → **"Open"** in the dialog.
+
+### Linux: Permission denied
+
+Make sure the scripts are executable:
+```bash
+chmod +x install.sh PyPottery.sh
+```
+
+### Apps not downloading
+
+Check your internet connection and firewall settings. The launcher downloads apps from GitHub.
+
+### Environment configuration fails
+
+Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).
+
+## System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| **RAM** | 8 GB | 16 GB |
+| **Storage** | 2 GB free | 10 GB free |
+| **GPU** | Not required | NVIDIA with CUDA for PyPotteryInk |
+| **Internet** | Required for downloads | Broadband |
+
+## Alternative: Manual Installation
+
+If you prefer to install PyPottery tools manually or need more control, see the individual installation guides:
+
+- [PyPotteryScan Installation](pypotteryscan/installation.qmd)
+- [PyPotteryInk Installation](pypotteryink/installation.qmd)
+- [PyPotteryTrace Installation](pypotterytrace/installation.qmd)
+- [PyPotteryLayout Installation](pypotterylayout/installation.qmd)
+- [PyPotteryLens Installation](pypotterylens/installation.qmd)
+
+```{=html}
+<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px;">
+  <h3 style="margin-bottom: 1rem;">Ready to Start?</h3>
+  <p style="color: #6b7280; margin-bottom: 1.5rem;">Download the launcher and begin digitizing your pottery collection!</p>
+  <a href="https://github.com/lrncrd/PyPottery/releases/latest" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+    📥 Download PyPottery Launcher
+  </a>
+</div>
+```

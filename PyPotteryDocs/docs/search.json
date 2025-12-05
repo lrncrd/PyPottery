@@ -1448,5 +1448,85 @@
       "PyPotteryLayout",
       "Installation"
     ]
+  },
+  {
+    "objectID": "suite_installation.html",
+    "href": "suite_installation.html",
+    "title": "Suite Installation",
+    "section": "",
+    "text": "The easiest way to get started with PyPottery! Download the pre-packaged launcher \n    with everything included - no Python installation required.",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#quick-start",
+    "href": "suite_installation.html#quick-start",
+    "title": "Suite Installation",
+    "section": "Quick Start",
+    "text": "Quick Start\nThe PyPottery Suite Launcher is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.\n\n\n\n\n\n\nNo Technical Knowledge Required\n\n\n\nThe launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#download",
+    "href": "suite_installation.html#download",
+    "title": "Suite Installation",
+    "section": "Download",
+    "text": "Download\nChoose the package for your operating system:\n\n\n\nPlatform\nDownload\nSize\n\n\n\n\nWindows 10/11 (64-bit)\nPyPottery-Launcher-Windows.zip\n~52 MB\n\n\nmacOS Intel (x86_64)\nPyPottery-Launcher-macos-x86_64.zip\n~22 MB\n\n\nmacOS Apple Silicon (M1/M2/M3)\nPyPottery-Launcher-macos-arm64.zip\n~22 MB\n\n\nLinux (x86_64)\nPyPottery-Launcher-linux-x86_64.zip\n~128 MB",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#installation",
+    "href": "suite_installation.html#installation",
+    "title": "Suite Installation",
+    "section": "Installation",
+    "text": "Installation\n\nWindows\n\nDownload the Windows package from the link above\nExtract the ZIP file to a folder of your choice (e.g., C:\\PyPottery)\nRun PyPottery.bat by double-clicking it\n\n\n  \n    💡\n    Tip\n  \n  \n    You can create a desktop shortcut to PyPottery.bat for quick access!\n  \n\n\n\nmacOS\n\nDownload the appropriate package for your Mac:\n\nIntel Mac: macos-x86_64 version\nApple Silicon (M1/M2/M3): macos-arm64 version\n\nExtract the ZIP file\nOpen Terminal and navigate to the extracted folder\nRun the installer (first time only):\n./install.sh\nLaunch PyPottery:\n./PyPottery.sh\n\n\n\n\n\n\n\nFirst Run on macOS\n\n\n\nThe first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.\n\n\n\n\nLinux\n\nDownload the Linux package\nExtract the ZIP file:\nunzip PyPottery-Launcher-linux-x86_64-v1.0.0.zip\ncd PyPottery-Launcher-linux-x86_64\nRun the installer (first time only):\nchmod +x install.sh PyPottery.sh\n./install.sh\nLaunch PyPottery:\n./PyPottery.sh",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#using-the-launcher",
+    "href": "suite_installation.html#using-the-launcher",
+    "title": "Suite Installation",
+    "section": "Using the Launcher",
+    "text": "Using the Launcher\nOnce the launcher opens, you’ll see a clean interface with all available PyPottery applications.\n\n  🎯 Launcher Features\n  \n    \n      📥 One-Click Download\n      Download apps directly from the launcher\n    \n    \n      🔄 Auto Updates\n      Check for and install updates easily\n    \n    \n      ⚙️ Environment Setup\n      Automatic Python environment configuration\n    \n    \n      🖥️ Hardware Detection\n      Detects GPU for optimal performance\n    \n  \n\n\nStep 1: Configure Environment\nThe first time you use the launcher, click “Configure Environment” to set up the Python environment. This installs all required dependencies.\n\n  ⏱️ First Setup\n  \n    Environment configuration may take 5-10 minutes depending on your internet connection. \n    The progress bar shows the current status.\n  \n\n\n\nStep 2: Download Apps\nClick the download button (⬇️) next to any app to download it. Available apps:\n\n\n\nApp\nDescription\n\n\n\n\nPyPotteryScan\nDigitize pottery plates with AI-powered OCR\n\n\nPyPotteryInk\nAI-based inking of pottery drawings\n\n\nPyPotteryTrace\nVectorize pottery profiles\n\n\nPyPotteryLayout\nCreate publication-ready layouts\n\n\nPyPotteryLens\nLens distortion correction\n\n\n\n\n\nStep 3: Launch Apps\nOnce an app is downloaded, click the “Launch” button to start it. The app will open in your default web browser.\n\n  \n    ℹ️\n    How Apps Work\n  \n  \n    PyPottery apps run as local web servers. When you click \"Launch\", a browser window opens \n    with the app interface. The launcher shows the running status and allows you to stop the app.",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#troubleshooting",
+    "href": "suite_installation.html#troubleshooting",
+    "title": "Suite Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nWindows: “Windows protected your PC” message\nThis is normal for new applications. Click “More info” → “Run anyway”.\n\n\nmacOS: “Cannot be opened because it is from an unidentified developer”\nRight-click on the script → “Open” → “Open” in the dialog.\n\n\nLinux: Permission denied\nMake sure the scripts are executable:\nchmod +x install.sh PyPottery.sh\n\n\nApps not downloading\nCheck your internet connection and firewall settings. The launcher downloads apps from GitHub.\n\n\nEnvironment configuration fails\nTry running the launcher as administrator (Windows) or with sudo (Linux/macOS).",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#system-requirements",
+    "href": "suite_installation.html#system-requirements",
+    "title": "Suite Installation",
+    "section": "System Requirements",
+    "text": "System Requirements\n\n\n\nComponent\nMinimum\nRecommended\n\n\n\n\nRAM\n8 GB\n16 GB\n\n\nStorage\n2 GB free\n10 GB free\n\n\nGPU\nNot required\nNVIDIA with CUDA for PyPotteryInk\n\n\nInternet\nRequired for downloads\nBroadband",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#alternative-manual-installation",
+    "href": "suite_installation.html#alternative-manual-installation",
+    "title": "Suite Installation",
+    "section": "Alternative: Manual Installation",
+    "text": "Alternative: Manual Installation\nIf you prefer to install PyPottery tools manually or need more control, see the individual installation guides:\n\nPyPotteryScan Installation\nPyPotteryInk Installation\nPyPotteryTrace Installation\nPyPotteryLayout Installation\nPyPotteryLens Installation\n\n\n  Ready to Start?\n  Download the launcher and begin digitizing your pottery collection!\n  \n    📥 Download PyPottery Launcher",
+    "crumbs": [
+      "Suite Installation"
+    ]
   }
 ]

@@ -157,12 +157,11 @@ def create_release_package():
         shutil.copytree(imgs_src, package_dir / "imgs")
         print("   ✓ Copied images")
     
-    docs_imgs = project_root / "PyPotteryDocs" / "imgs"
-    if docs_imgs.exists():
-        pypottery_docs_dir = package_dir / "PyPotteryDocs" / "imgs"
-        pypottery_docs_dir.mkdir(parents=True, exist_ok=True)
-        for img in docs_imgs.glob("Logo*.png"):
-            shutil.copy2(img, pypottery_docs_dir / img.name)
+    # Copy requirements.txt (needed for environment setup)
+    requirements_src = project_root / "requirements.txt"
+    if requirements_src.exists():
+        shutil.copy2(requirements_src, package_dir / "requirements.txt")
+        print("   ✓ Copied requirements.txt")
     
     # 5. Create launcher batch file
     print("\n📦 Step 5: Creating launcher...")

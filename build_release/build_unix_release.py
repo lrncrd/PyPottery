@@ -120,21 +120,16 @@ def create_unix_release(platform_key: str = None):
         print("   ✓ Copied launcher module")
         
         # Copy requirements.txt
-        shutil.copy2(project_root / "requirements.txt", package_dir / "requirements.txt")
+        requirements_src = project_root / "requirements.txt"
+        if requirements_src.exists():
+            shutil.copy2(requirements_src, package_dir / "requirements.txt")
+            print("   ✓ Copied requirements.txt")
         
         # Copy logo images
         imgs_src = project_root / "imgs"
         if imgs_src.exists():
             shutil.copytree(imgs_src, package_dir / "imgs")
             print("   ✓ Copied logo images")
-        
-        docs_imgs = project_root / "PyPotteryDocs" / "imgs"
-        if docs_imgs.exists():
-            pypottery_docs_dir = package_dir / "PyPotteryDocs" / "imgs"
-            pypottery_docs_dir.mkdir(parents=True, exist_ok=True)
-            for img in docs_imgs.glob("Logo*.png"):
-                shutil.copy2(img, pypottery_docs_dir / img.name)
-            print("   ✓ Copied documentation logos")
         
         # Copy application icon
         icon_src = project_root / "icon_app.ico"
