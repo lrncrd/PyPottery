@@ -11,7 +11,7 @@
             "recommended_ram_gb": 8,
             "requires_gpu": false,
             "icon": "📐",
-            "logo": "PyPotteryDocs/imgs/LogoLayout.png"
+            "logo": "imgs/LogoLayout.png"
         },
         "PyPotteryLens": {
             "name": "PyPottery Lens",
@@ -22,9 +22,9 @@
             "port": 5001,
             "min_ram_gb": 8,
             "recommended_ram_gb": 16,
-            "requires_gpu": true,
+            "requires_gpu": false,
             "icon": "🔍",
-            "logo": "PyPotteryDocs/imgs/LogoLens.png"
+            "logo": "imgs/LogoLens.png"
         },
         "PyPotteryInk": {
             "name": "PyPottery Ink",
@@ -35,9 +35,9 @@
             "port": 5003,
             "min_ram_gb": 8,
             "recommended_ram_gb": 16,
-            "requires_gpu": true,
+            "requires_gpu": false,
             "icon": "🖋️",
-            "logo": "PyPotteryDocs/imgs/LogoInk.png"
+            "logo": "imgs/LogoInk.png"
         }
     },
     "pytorch_index_urls": {

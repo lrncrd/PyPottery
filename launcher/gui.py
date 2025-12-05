@@ -719,6 +719,9 @@ class PyPotteryLauncher(ctk.CTk):
         self.base_path = Path(__file__).parent.parent
         self.requirements_file = self.base_path / "requirements.txt"
         
+        # Set window icon
+        self._set_window_icon()
+        
         # Managers (initialized after hardware detection)
         self.hardware_info: Optional[HardwareInfo] = None
         self.env_manager: Optional[EnvironmentManager] = None
@@ -736,6 +739,21 @@ class PyPotteryLauncher(ctk.CTk):
         
         # Initialize in background
         self.after(100, self._initialize)
+    
+    def _set_window_icon(self):
+        """Set the window icon"""
+        icon_path = self.base_path / "icon_app.ico"
+        if icon_path.exists():
+            try:
+                # For Windows, use iconbitmap
+                if sys.platform == "win32":
+                    self.iconbitmap(str(icon_path))
+                else:
+                    # For macOS/Linux, try to set icon via PhotoImage
+                    # CustomTkinter handles this differently
+                    pass
+            except Exception:
+                pass  # Ignore icon errors
     
     def _start_app_monitoring(self):
         """Start periodic monitoring of running apps"""
