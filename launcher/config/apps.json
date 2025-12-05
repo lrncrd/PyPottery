@@ -1,0 +1,52 @@
+{
+    "apps": {
+        "PyPotteryLayout": {
+            "name": "PyPottery Layout",
+            "description": "Creates archaeological artefacts tables/layouts from images",
+            "repo_owner": "lrncrd",
+            "repo_name": "PyPotteryLayout",
+            "entry_script": "app.py",
+            "port": 5005,
+            "min_ram_gb": 4,
+            "recommended_ram_gb": 8,
+            "requires_gpu": false,
+            "icon": "📐",
+            "logo": "PyPotteryDocs/imgs/LogoLayout.png"
+        },
+        "PyPotteryLens": {
+            "name": "PyPottery Lens",
+            "description": "AI-powered pottery documentation tool with object detection",
+            "repo_owner": "lrncrd",
+            "repo_name": "PyPotteryLens",
+            "entry_script": "app.py",
+            "port": 5001,
+            "min_ram_gb": 8,
+            "recommended_ram_gb": 16,
+            "requires_gpu": true,
+            "icon": "🔍",
+            "logo": "PyPotteryDocs/imgs/LogoLens.png"
+        },
+        "PyPotteryInk": {
+            "name": "PyPottery Ink",
+            "description": "AI-assisted digital inking of pottery drawings",
+            "repo_owner": "lrncrd",
+            "repo_name": "PyPotteryInk",
+            "entry_script": "app.py",
+            "port": 5003,
+            "min_ram_gb": 8,
+            "recommended_ram_gb": 16,
+            "requires_gpu": true,
+            "icon": "🖋️",
+            "logo": "PyPotteryDocs/imgs/LogoInk.png"
+        }
+    },
+    "pytorch_index_urls": {
+        "cu126": "https://download.pytorch.org/whl/cu126",
+        "cu124": "https://download.pytorch.org/whl/cu124",
+        "cu121": "https://download.pytorch.org/whl/cu121",
+        "cu118": "https://download.pytorch.org/whl/cu118",
+        "cpu": "https://download.pytorch.org/whl/cpu",
+        "rocm": "https://download.pytorch.org/whl/rocm6.2"
+    },
+    "github_api_base": "https://api.github.com/repos"
+}

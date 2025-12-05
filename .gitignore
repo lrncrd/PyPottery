@@ -216,3 +216,7 @@ models/
 PyPotteryLayout
 *.xlsx
 *.ipynb
+
+apps/
+BK/
+pypottery_env/
