@@ -1,0 +1,222 @@
+---
+title: "Installation"
+format: html
+toc: true
+---
+
+
+<div style="text-align: center;">
+  <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.3.0
+  </span>
+</div>
+
+## Requirements
+
+### Standalone Executable (Windows)
+- **Operating System**: Windows 10/11
+- **Memory**: 2GB+ RAM recommended
+- **Browser**: Any modern browser (Chrome, Edge, Firefox)
+- **No Python installation required!**
+
+### Running from Source
+- **Python 3.12** installed on your system
+- **Operating System**: Windows/macOS/Linux
+- **Memory**: 2GB+ RAM recommended for large image sets
+
+## Quick Start: Windows Executable
+
+The easiest way to use PyPotteryLayout on Windows is with the standalone executable - **no installation required**!
+
+<div style="text-align: center; margin: 20px 0;">
+  <img src="..\imgs\icon_app.png" style="max-width: 150px; height: auto;">
+</div>
+
+1. Download `PyPotteryLayout.exe` from the [GitHub Releases](https://github.com/lrncrd/PyPotteryLayout/releases)
+2. Double-click to run
+3. Your default browser will open automatically
+4. Upload images, configure layout, and export
+5. Close the browser when finished
+
+::: {.callout-note}
+## 📌 Note
+The executable runs a local web server. All processing happens on your computer - no internet connection required after download.
+:::
+
+::: {.callout-tip}
+## 💡 Output Files Location
+Files are saved next to the `.exe`:
+
+- `uploads/` - Temporary uploaded images
+- `outputs/` - Generated layouts and exports
+- `pypotterylayout.log` - Application logs (for debugging)
+:::
+
+## Automated Installation (From Source)
+
+Automated installation is the quickest and easiest way to get PyPotteryLayout running from source. The provided scripts will:
+
+- ✅ Create a Python virtual environment
+- ✅ Automatically install all dependencies
+- ✅ Start the application
+
+### Windows
+
+Double click on the `PyPotteryLayout_WIN.bat` file.
+
+The script will automatically perform the following steps:
+
+- Check for Python on the system
+- Create the `.venv` virtual environment (if it doesn't exist)
+- Activate the virtual environment
+- Install/upgrade pip
+- Install dependencies from `requirements.txt`
+- Start the Flask server at `http://localhost:5005`
+
+::: {.callout-tip}
+## 💡 Tip
+On first run, dependency installation may take a few minutes. Subsequent runs will be much faster!
+:::
+
+### Linux / macOS
+
+1. Open the **Terminal** in the project directory
+2. Make the script executable (first time only):
+
+```bash
+chmod +x PyPotteryLayout_UNIX.sh
+```
+
+3. Run the script:
+
+```bash
+./PyPotteryLayout_UNIX.sh
+```
+
+The script will automatically:
+
+- Check for Python 3 on the system
+- Create the `.venv` virtual environment (if it doesn't exist)
+- Activate the virtual environment
+- Install/upgrade pip
+- Install dependencies from `requirements.txt`
+- Start the Flask server at `http://127.0.0.1:5005`
+
+::: {.callout-note}
+## 📌 Note
+To stop the server, press `Ctrl+C` in the terminal.
+:::
+
+
+## Manual Installation
+
+If you prefer full control over the installation process, you can follow these manual steps:
+
+### 1. Create a Virtual Environment
+
+It is strongly recommended to use a virtual environment to isolate project dependencies:
+
+::: {.panel-tabset}
+
+#### Windows
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+:::
+
+### 2. Upgrade pip
+
+Upgrade pip to the latest available version:
+
+```bash
+python -m pip install --upgrade pip
+```
+
+### 3. Install Dependencies
+
+Install all required dependencies from the `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+::: {.callout-warning}
+## ⚠️ Warning
+Make sure you are in the project's root directory where the `requirements.txt` file is located.
+:::
+
+### 4. Start the Application
+
+Once installation is complete, start the application with:
+
+```bash
+python app.py
+```
+
+The application will be available at:
+
+::: {.callout-important}
+## 🌐 Application URL
+**http://localhost:5005**
+:::
+
+
+
+## Installation Verification
+
+To verify that everything was installed correctly:
+
+1. The application should start without errors
+2. You should see a confirmation message in the terminal
+3. Opening your browser at `http://localhost:5005` should display the PyPotteryLayout interface
+
+
+## Troubleshooting
+
+### Python not found
+
+If you receive an error indicating that Python is not installed:
+
+- **Windows**: Download Python from [python.org](https://www.python.org/downloads/) and make sure to check "Add Python to PATH" during installation
+- **Linux**: Install Python using your distribution's package manager (e.g., `sudo apt install python3`)
+- **macOS**: Install Python via [Homebrew](https://brew.sh/) with `brew install python3`
+
+### Dependency installation errors
+
+If dependency installation fails:
+
+1. Make sure you have an active internet connection
+2. Try upgrading pip: `python -m pip install --upgrade pip`
+3. Install dependencies one at a time to identify which package is causing issues
+
+### Port 5005 already in use
+
+If port 5005 is already occupied by another application, you can:
+
+1. Close the application using the port
+2. Or modify the port in the `app.py` file
+
+
+## Updating
+
+To update PyPotteryLayout to the latest version:
+
+1. Download the latest version of the code (or new `.exe` for Windows)
+2. Activate the virtual environment (if running from source)
+3. Update dependencies:
+
+```bash
+pip install -r requirements.txt --upgrade
+```

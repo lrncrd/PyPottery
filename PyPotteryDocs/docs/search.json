@@ -1283,5 +1283,170 @@
     "crumbs": [
       "Home"
     ]
+  },
+  {
+    "objectID": "pypotterylayout/usage.html",
+    "href": "pypotterylayout/usage.html",
+    "title": "Using PyPotteryLayout",
+    "section": "",
+    "text": "version 0.3.0 \n\n\nInterface Overview\nPyPotteryLayout provides a streamlined interface for organizing your archaeological drawings into publication plates. The workflow is divided into logical sections:\n\nData Import: Uploading images and metadata.\nLayout Settings: Defining the page structure.\nSorting & Grouping: Organizing the content.\nAnnotations: Adding captions and scales.\nExport: Generating the final output.\n\n\n\n1. Data Import\n\nUpload Images\nYou can upload your pottery drawings by dragging and dropping them into the upload area or by clicking to select files.\n\nSupported Formats: PNG, JPG, JPEG, TIF, TIFF, BMP.\n\n\n\nUpload Metadata (Optional)\nYou can upload an Excel (.xlsx) or CSV (.csv) file containing data about your pottery (e.g., Inventory Number, Type, Chronology).\n\nLinking: The system automatically links metadata to images by matching the filename with the first column of your spreadsheet.\nUsage: This data can be used for Sorting, Grouping, and generating Captions.\n\n\n\n\n\n\n\nMetadata Formatting Requirement\n\n\n\nTo ensure proper matching between your images and the metadata file, the first column of your Excel or CSV file MUST be named ID and must contain the full filename including the extension (e.g., bowl_01.jpg, plate_02.png).\n\n\n\n\n\n\n\n2. Layout Settings\nThis section controls the physical appearance of the plate.\n\n\n\nMode:\n\nGrid: Places images in a structured grid (Rows × Columns). Best for systematic catalogues.\nPuzzle: Uses an algorithm to pack images tightly, minimizing wasted space. Best for varied shapes and sizes.\n\nPage Size: Select standard formats (A4, A3, Letter, etc.) or define custom dimensions.\nScale Factor: Adjusts the size of the images on the plate (e.g., 0.4 for 40% of original size).\nMargins (px): Sets the white space around the edges of the page.\nSpacing (px): Sets the gap between individual images.\nGrid Rows / Columns (Grid Mode only): Defines the structure of the grid.\n\n\n\n3. Sorting & Grouping\nOrganize how images appear on the plates.\n\nPrimary Sort: The main criterion for ordering images.\n\nOptions: Alphabetical, Natural (e.g., 1, 2, 10 instead of 1, 10, 2), Image Size, or any Metadata Field.\n\nSecondary Sort: Used to order images that have the same Primary Sort value.\nPage Break on Primary Change: If enabled, a new group (e.g., a new “Type” or “Context”) will start on a new page or be separated by a divider.\n\nBreak Type:\n\nNew Page: Forces a page break.\nDivider: Draws a horizontal line between groups on the same page.\n\nDivider Thickness/Width: Customizes the appearance of the separator line.\n\n\n\n\n4. Annotations\nAdd necessary information to your plates.\n\nCaptions\n\nAdd Caption: Toggles captions on/off.\nFont Size: Sets the text size.\nPadding: Controls space between image and text.\nMetadata Fields: Select which fields from your uploaded metadata to display in the caption.\nHide Field Names: If checked, shows only the value (e.g., “Bowl”) instead of “Type: Bowl”.\nRemove Extension: Hides the file extension (.jpg) from the filename in the caption.\n\n\n\nScale Bar\n\nAdd Scale Bar: Adds a graphical scale bar to the bottom right of the page.\nScale Bar (cm): The real-world length the bar represents (e.g., 5 cm).\nPixels per cm: Critical Setting. This defines the resolution of your images. Ensure this matches your scanning/digitization resolution to guarantee accurate scaling.\n\n\n\nTable Numbers\n\nAdd Table Number: Adds a plate number (e.g., “Tav. 1”).\nStart Number: The number for the first page.\nPrefix: Text to appear before the number (e.g., “Pl.”, “Tav.”, “Fig.”).\nPosition: Choose where the number appears (Top/Bottom, Left/Center/Right).\n\n\n\n\n5. Export\nGenerate your final plates.\n\n\n\nPreview: Generates a quick preview of the first few pages to check your settings.\nExport Format:\n\nPDF: Standard document format.\nJPG: High-resolution images (zipped if multiple pages).\nSVG: Scalable Vector Graphics.\n\nEditable Text: In SVG mode, captions and numbers remain as editable text objects, allowing for final fine-tuning in vector software (like Adobe Illustrator or Inkscape).\n\n\n\n\n\nInteractive Demo\nExperiment with the layout parameters below to see how they affect the final plate in real-time:",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Using PyPotteryLayout"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/index.html",
+    "href": "pypotterylayout/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 0.3.0\n  \n\n    \n    \n    \n    \n      \n      \n        CPU\nPyPotteryLayout is a specialized tool designed for creating publication-ready pottery plates. It automates the layout process, allowing archaeologists to organize drawings, apply consistent scales, and generate high-quality exports with ease.",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/index.html#key-features",
+    "href": "pypotterylayout/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Smart Import: Seamlessly import images and associated metadata (Excel/CSV) for data-driven layouts.\n📐 Flexible Layouts: Choose between Grid (structured) and Puzzle (optimized packing) modes to best fit your needs.\n🏷️ Automated Annotations: Automatically add captions, scale bars, and table numbers based on your data.\n🔄 Advanced Sorting: Organize your plates with hierarchical sorting and grouping options.\n📤 Multi-format Export: Export to PDF, JPG, or SVG (with editable text and vector elements) for final adjustments.",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/index.html#contributors",
+    "href": "pypotterylayout/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/version_history.html",
+    "href": "pypotterylayout/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/version_history.html#latest-release",
+    "href": "pypotterylayout/version_history.html#latest-release",
+    "title": "Version History",
+    "section": "",
+    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/version_history.html#version-history",
+    "href": "pypotterylayout/version_history.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 0.2.0 (December 2025)\nKey Features:\n\nNew Web Interface: Modern browser-based UI\nStandalone Executable: Windows .exe with no dependencies\nDrag & Drop Upload: Easy image management\nLive Preview: See layout before exporting\nDownload Manager: Get results as ZIP or individual files\nImproved Paths: Files saved next to executable for easy access",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html",
+    "href": "pypotterylayout/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.3.0",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#requirements",
+    "href": "pypotterylayout/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\n\nStandalone Executable (Windows)\n\nOperating System: Windows 10/11\nMemory: 2GB+ RAM recommended\nBrowser: Any modern browser (Chrome, Edge, Firefox)\nNo Python installation required!\n\n\n\nRunning from Source\n\nPython 3.12 installed on your system\nOperating System: Windows/macOS/Linux\nMemory: 2GB+ RAM recommended for large image sets",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#quick-start-windows-executable",
+    "href": "pypotterylayout/installation.html#quick-start-windows-executable",
+    "title": "Installation",
+    "section": "Quick Start: Windows Executable",
+    "text": "Quick Start: Windows Executable\nThe easiest way to use PyPotteryLayout on Windows is with the standalone executable - no installation required!\n\n\n\n\nDownload PyPotteryLayout.exe from the GitHub Releases\nDouble-click to run\nYour default browser will open automatically\nUpload images, configure layout, and export\nClose the browser when finished\n\n\n\n\n\n\n\n📌 Note\n\n\n\nThe executable runs a local web server. All processing happens on your computer - no internet connection required after download.\n\n\n\n\n\n\n\n\n💡 Output Files Location\n\n\n\nFiles are saved next to the .exe:\n\nuploads/ - Temporary uploaded images\noutputs/ - Generated layouts and exports\npypotterylayout.log - Application logs (for debugging)",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#automated-installation-from-source",
+    "href": "pypotterylayout/installation.html#automated-installation-from-source",
+    "title": "Installation",
+    "section": "Automated Installation (From Source)",
+    "text": "Automated Installation (From Source)\nAutomated installation is the quickest and easiest way to get PyPotteryLayout running from source. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLayout_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5005\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLayout_UNIX.sh\n\nRun the script:\n\n./PyPotteryLayout_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5005\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#manual-installation",
+    "href": "pypotterylayout/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5005",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#installation-verification",
+    "href": "pypotterylayout/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5005 should display the PyPotteryLayout interface",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#troubleshooting",
+    "href": "pypotterylayout/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5005 already in use\nIf port 5005 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylayout/installation.html#updating",
+    "href": "pypotterylayout/installation.html#updating",
+    "title": "Installation",
+    "section": "Updating",
+    "text": "Updating\nTo update PyPotteryLayout to the latest version:\n\nDownload the latest version of the code (or new .exe for Windows)\nActivate the virtual environment (if running from source)\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade",
+    "crumbs": [
+      "PyPotteryLayout",
+      "Installation"
+    ]
   }
 ]

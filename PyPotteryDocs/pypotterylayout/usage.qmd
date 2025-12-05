@@ -1,0 +1,115 @@
+---
+title: "Using PyPotteryLayout"
+format: html
+toc: true
+---
+
+<div style="text-align: center;">
+  <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.3.0
+  </span>
+</div>
+
+# Interface Overview
+
+PyPotteryLayout provides a streamlined interface for organizing your archaeological drawings into publication plates. The workflow is divided into logical sections:
+
+1.  **Data Import**: Uploading images and metadata.
+2.  **Layout Settings**: Defining the page structure.
+3.  **Sorting & Grouping**: Organizing the content.
+4.  **Annotations**: Adding captions and scales.
+5.  **Export**: Generating the final output.
+
+# 1. Data Import
+
+### Upload Images
+You can upload your pottery drawings by dragging and dropping them into the upload area or by clicking to select files.
+
+*   **Supported Formats**: PNG, JPG, JPEG, TIF, TIFF, BMP.
+
+### Upload Metadata (Optional)
+You can upload an Excel (`.xlsx`) or CSV (`.csv`) file containing data about your pottery (e.g., Inventory Number, Type, Chronology).
+
+*   **Linking**: The system automatically links metadata to images by matching the **filename** with the first column of your spreadsheet.
+*   **Usage**: This data can be used for **Sorting**, **Grouping**, and generating **Captions**.
+
+::: {.callout-important}
+## Metadata Formatting Requirement
+To ensure proper matching between your images and the metadata file, the **first column** of your Excel or CSV file MUST be named **`ID`** and must contain the **full filename including the extension** (e.g., `bowl_01.jpg`, `plate_02.png`).
+:::
+
+<iframe src="animations/metadata_import.html" scrolling="no" style="width: 100%; height: 380px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+# 2. Layout Settings
+
+This section controls the physical appearance of the plate.
+
+<iframe src="animations/layout_preview.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+*   **Mode**:
+
+    *   **Grid**: Places images in a structured grid (Rows × Columns). Best for systematic catalogues.
+    *   **Puzzle**: Uses an algorithm to pack images tightly, minimizing wasted space. Best for varied shapes and sizes.
+*   **Page Size**: Select standard formats (A4, A3, Letter, etc.) or define custom dimensions.
+*   **Scale Factor**: Adjusts the size of the images on the plate (e.g., `0.4` for 40% of original size).
+*   **Margins (px)**: Sets the white space around the edges of the page.
+*   **Spacing (px)**: Sets the gap between individual images.
+*   **Grid Rows / Columns** (Grid Mode only): Defines the structure of the grid.
+
+# 3. Sorting & Grouping
+
+Organize how images appear on the plates.
+
+*   **Primary Sort**: The main criterion for ordering images.
+    *   Options: Alphabetical, Natural (e.g., 1, 2, 10 instead of 1, 10, 2), Image Size, or any **Metadata Field**.
+*   **Secondary Sort**: Used to order images that have the same Primary Sort value.
+*   **Page Break on Primary Change**: If enabled, a new group (e.g., a new "Type" or "Context") will start on a new page or be separated by a divider.
+    *   **Break Type**:
+        *   **New Page**: Forces a page break.
+        *   **Divider**: Draws a horizontal line between groups on the same page.
+    *   **Divider Thickness/Width**: Customizes the appearance of the separator line.
+
+# 4. Annotations
+
+Add necessary information to your plates.
+
+### Captions
+*   **Add Caption**: Toggles captions on/off.
+*   **Font Size**: Sets the text size.
+*   **Padding**: Controls space between image and text.
+*   **Metadata Fields**: Select which fields from your uploaded metadata to display in the caption.
+*   **Hide Field Names**: If checked, shows only the value (e.g., "Bowl") instead of "Type: Bowl".
+*   **Remove Extension**: Hides the file extension (.jpg) from the filename in the caption.
+
+### Scale Bar
+*   **Add Scale Bar**: Adds a graphical scale bar to the bottom right of the page.
+*   **Scale Bar (cm)**: The real-world length the bar represents (e.g., 5 cm).
+*   **Pixels per cm**: **Critical Setting**. This defines the resolution of your images. Ensure this matches your scanning/digitization resolution to guarantee accurate scaling.
+
+### Table Numbers
+*   **Add Table Number**: Adds a plate number (e.g., "Tav. 1").
+*   **Start Number**: The number for the first page.
+*   **Prefix**: Text to appear before the number (e.g., "Pl.", "Tav.", "Fig.").
+*   **Position**: Choose where the number appears (Top/Bottom, Left/Center/Right).
+
+# 5. Export
+
+Generate your final plates.
+
+<iframe src="animations/layout_export.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+
+*   **Preview**: Generates a quick preview of the first few pages to check your settings.
+
+*   **Export Format**:
+    *   **PDF**: Standard document format.
+    *   **JPG**: High-resolution images (zipped if multiple pages).
+    *   **SVG**: Scalable Vector Graphics.
+        *   **Editable Text**: In SVG mode, captions and numbers remain as editable text objects, allowing for final fine-tuning in vector software (like Adobe Illustrator or Inkscape).
+
+# Interactive Demo
+
+Experiment with the layout parameters below to see how they affect the final plate in real-time:
+
+<iframe src="animations/interactive_demo.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>

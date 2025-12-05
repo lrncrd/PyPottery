@@ -1,0 +1,68 @@
+---
+title: "Introduction"
+format: html
+toc: true
+---
+
+
+```{=html}
+<div style="text-align: center;">
+  <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.3.0
+  </span>
+
+    <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+    
+    <!-- CPU -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 1;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
+        CPU
+      </span>
+    </div>
+  </div>
+</div>
+
+```
+
+<br>
+
+**PyPotteryLayout** is a specialized tool designed for creating publication-ready pottery plates. It automates the layout process, allowing archaeologists to organize drawings, apply consistent scales, and generate high-quality exports with ease.
+
+## Key Features
+
+*   **📂 Smart Import**: Seamlessly import images and associated metadata (Excel/CSV) for data-driven layouts.
+*   **📐 Flexible Layouts**: Choose between **Grid** (structured) and **Puzzle** (optimized packing) modes to best fit your needs.
+*   **🏷️ Automated Annotations**: Automatically add captions, scale bars, and table numbers based on your data.
+*   **🔄 Advanced Sorting**: Organize your plates with hierarchical sorting and grouping options.
+*   **📤 Multi-format Export**: Export to **PDF**, **JPG**, or **SVG** (with editable text and vector elements) for final adjustments.
+
+## Contributors
+```{=html}
+<div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
+  <div style="text-align: center;">
+    <a href="https://github.com/lrncrd" target="_blank">
+      <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Lorenzo Cardarelli</span>
+  </div>
+  <div style="text-align: center;">
+    <a href="https://github.com/enzococca" target="_blank">
+      <img src="https://github.com/enzococca.png" alt="Enzo Cocca" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Enzo Cocca</span>
+  </div>
+    <div style="text-align: center;">
+    <a href="https://github.com/pankus" target="_blank">
+      <img src="https://github.com/pankus.png" alt="Francesco Di Filippo" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Francesco Di Filippo</span>
+  </div>
+  <!-- Add more contributors here following the same pattern -->
+</div>
+```

@@ -1,0 +1,32 @@
+---
+title: "Version History"
+subtitle: "Development timeline and changes"
+format: html
+---
+
+## Latest Release
+
+### Version 0.3.0 (December 2025)
+
+**Key Features:**
+
+-   Improved SVG export
+-   Data handling optimizations
+-   Upgraded preview rendering
+
+## Version History
+
+### Version 0.2.0 (December 2025)
+
+**Key Features:**
+
+-   New Web Interface: Modern browser-based UI
+-   Standalone Executable: Windows .exe with no dependencies
+-   Drag & Drop Upload: Easy image management
+-   Live Preview: See layout before exporting
+-   Download Manager: Get results as ZIP or individual files
+-   Improved Paths: Files saved next to executable for easy access
+
+
+
+
