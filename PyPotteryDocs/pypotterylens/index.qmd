@@ -38,7 +38,7 @@ toc: true
         MPS
       </span>
     </div>
-
+  </div>
 </div>
 
 
@@ -60,7 +60,9 @@ toc: true
 *   **🔄 Post Processing**: Standardize images (orientation, positioning) and export results.
 
 ## Contributors
+
 ```{=html}
+
 <div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
   <div style="text-align: center;">
     <a href="https://github.com/lrncrd" target="_blank">
@@ -85,3 +87,4 @@ toc: true
   </div>
   <!-- Add more contributors here following the same pattern -->
 </div>
+```

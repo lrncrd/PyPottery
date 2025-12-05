@@ -31,7 +31,7 @@ toc: true
 The easiest way to use PyPotteryLayout on Windows is with the standalone executable - **no installation required**!
 
 <div style="text-align: center; margin: 20px 0;">
-  <img src="..\imgs\icon_app.png" style="max-width: 150px; height: auto;">
+  <img src="imgs/icon_app.png" style="max-width: 150px; height: auto;">
 </div>
 
 1. Download `PyPotteryLayout.exe` from the [GitHub Releases](https://github.com/lrncrd/PyPotteryLayout/releases)

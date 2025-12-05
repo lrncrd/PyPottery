@@ -257,7 +257,7 @@
     "href": "pypotterylens/index.html",
     "title": "Introduction",
     "section": "",
-    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\n      \n    \n\n\n\n\n\n\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.\n\n\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.\n\n\n\n\n\n\n&lt;a href=\"https://github.com/lrncrd\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/lrncrd.png\" alt=\"Lorenzo Cardarelli\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Lorenzo Cardarelli&lt;/span&gt;\n\n\n&lt;a href=\"https://github.com/enzococca\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/enzococca.png\" alt=\"Enzo Cocca\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Enzo Cocca&lt;/span&gt;\n\n&lt;div style=\"text-align: center;\"&gt;\n&lt;a href=\"https://github.com/pankus\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/pankus.png\" alt=\"Francesco Di Filippo\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;PanKus&lt;/span&gt;",
+    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
@@ -267,8 +267,8 @@
     "objectID": "pypotterylens/index.html#key-features",
     "href": "pypotterylens/index.html#key-features",
     "title": "Introduction",
-    "section": "",
-    "text": "📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
@@ -278,8 +278,8 @@
     "objectID": "pypotterylens/index.html#contributors",
     "href": "pypotterylens/index.html#contributors",
     "title": "Introduction",
-    "section": "",
-    "text": "&lt;a href=\"https://github.com/lrncrd\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/lrncrd.png\" alt=\"Lorenzo Cardarelli\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Lorenzo Cardarelli&lt;/span&gt;\n\n\n&lt;a href=\"https://github.com/enzococca\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/enzococca.png\" alt=\"Enzo Cocca\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;Enzo Cocca&lt;/span&gt;\n\n&lt;div style=\"text-align: center;\"&gt;\n&lt;a href=\"https://github.com/pankus\" target=\"_blank\"&gt;\n  &lt;img src=\"https://github.com/pankus.png\" alt=\"Francesco Di Filippo\" style=\"border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;\"&gt;\n&lt;/a&gt;\n&lt;br&gt;\n&lt;span style=\"font-size: 0.9em; font-weight: 600; color: #24292e;\"&gt;PanKus&lt;/span&gt;",
+    "section": "Contributors",
+    "text": "Contributors\n\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    PanKus",
     "crumbs": [
       "PyPotteryLens",
       "Introduction"
