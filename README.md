@@ -186,7 +186,5 @@ This project is open source. See individual tool repositories for specific licen
 ---
 
 <p align="center">
-  <strong>Built by archaeologists, for archaeologists</strong>
-  <br>
   <sub>© 2025 Lorenzo Cardarelli</sub>
 </p>

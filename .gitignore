@@ -216,7 +216,7 @@ projects/
 models/
 *.csv
 
-PyPotteryLayout
+
 *.xlsx
 *.ipynb
 
