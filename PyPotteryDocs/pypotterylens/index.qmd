@@ -83,7 +83,7 @@ toc: true
       <img src="https://github.com/pankus.png" alt="Francesco Di Filippo" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
     </a>
     <br>
-    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">PanKus</span>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Francesco Di Filippo</span>
   </div>
   <!-- Add more contributors here following the same pattern -->
 </div>

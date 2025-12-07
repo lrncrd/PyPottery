@@ -26,6 +26,11 @@ toc: true
 - **Operating System**: Windows/macOS/Linux
 - **Memory**: 2GB+ RAM recommended for large image sets
 
+::: {.callout-tip}
+## 🚀 Easier Installation Available!
+We recommend using the [**PyPottery Suite Launcher**](../suite_installation.html) for a simplified installation experience. The launcher handles all dependencies automatically and lets you manage all PyPottery tools from a single interface.
+:::
+
 ## Quick Start: Windows Executable
 
 The easiest way to use PyPotteryLayout on Windows is with the standalone executable - **no installation required**!

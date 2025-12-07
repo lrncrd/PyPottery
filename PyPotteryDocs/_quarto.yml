@@ -13,7 +13,7 @@ website:
         aria-label: GitHub
   sidebar:
     logo: "/logo.png"
-    collapse-level: 0
+    collapse-level: 1
     style: "docked"
     search: true
     contents:
@@ -21,12 +21,12 @@ website:
       - intro.qmd
       - suite_installation.qmd
       - requirements.qmd
-      - section: "PyPotteryScan"
-        contents:
-          - pypotteryscan/index.qmd
-          - pypotteryscan/installation.qmd
-          - pypotteryscan/usage.qmd
-          - pypotteryscan/version_history.qmd
+#      - section: "PyPotteryScan"
+#        contents:
+#          - pypotteryscan/index.qmd
+#          - pypotteryscan/installation.qmd
+#          - pypotteryscan/usage.qmd
+#          - pypotteryscan/version_history.qmd
       - section: "PyPotteryInk"
         contents:
           - pypotteryink/index.qmd
@@ -36,12 +36,12 @@ website:
           - pypotteryink/model_zoo.qmd
           - pypotteryink/api.qmd
           - pypotteryink/version_history.qmd
-      - section: "PyPotteryTrace"
-        contents:
-          - pypotterytrace/index.qmd
-          - pypotterytrace/installation.qmd
-          - pypotterytrace/usage.qmd
-          - pypotterytrace/version_history.qmd
+#      - section: "PyPotteryTrace"
+#        contents:
+#          - pypotterytrace/index.qmd
+#          - pypotterytrace/installation.qmd
+#          - pypotterytrace/usage.qmd
+#          - pypotterytrace/version_history.qmd
       - section: "PyPotteryLayout"
         contents:
           - pypotterylayout/index.qmd
@@ -54,10 +54,11 @@ website:
           - pypotterylens/installation.qmd
           - pypotterylens/usage.qmd
           - pypotterylens/version_history.qmd
+      - contact.qmd
       - acknowledgment.qmd
   page-footer:
     left: "© 2025 Lorenzo Cardarelli"
-    center: "Documentation v0.0.1"
+    center: "PyPotteryDocs v0.0.1"
     right:
       - icon: github
         href: https://github.com/lrncrd/PyPottery
@@ -65,6 +66,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: flatly
     css: styles.css
     toc: true

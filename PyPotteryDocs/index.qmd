@@ -29,7 +29,7 @@ Archaeological pottery documentation has followed a well-established workflow fo
     <p style="color: #6b7280; font-size: 0.95rem;">Every traditional step has its PyPottery equivalent</p>
   </div>
 
-  <!-- Step 1: Pottery Cards -->
+<!--
   <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
     <div style="flex: 1; min-width: 250px;">
       <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
@@ -60,6 +60,7 @@ Archaeological pottery documentation has followed a well-established workflow fo
       </p>
     </div>
   </div>
+-->
 
   <!-- Step 2: Tracings / Inking -->
   <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
@@ -83,15 +84,15 @@ Archaeological pottery documentation has followed a well-established workflow fo
       <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
         <div style="display: flex; gap: 0.5rem;">
           <img src="imgs/LogoInk.png" alt="PyPotteryInk" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
-          <img src="imgs/LogoTrace.png" alt="PyPotteryTrace" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;">
+          <!-- <img src="imgs/LogoTrace.png" alt="PyPotteryTrace" style="width: 50px; height: 50px; object-fit: contain; border-radius: 12px;"> -->
         </div>
         <div>
           <div style="font-size: 0.8rem; color: #8b5cf6; font-weight: 600;">PYPOTTERY SOLUTION</div>
-          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryInk + Trace</div>
+          <div style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PyPotteryInk<!-- + Trace--></div>
         </div>
       </div>
       <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
-        AI-powered inking and vectorization. Enhance drawings and convert to clean vector formats in seconds.
+        AI-powered inking<!-- and vectorization-->. Enhance drawings<!-- and convert to clean vector formats--> in seconds.
       </p>
     </div>
   </div>
@@ -191,7 +192,7 @@ Ready to transform your pottery documentation workflow?
 
 1. **Check the [Requirements](requirements.html)** to ensure your system is compatible
 2. **Choose your starting point** based on your needs:
-   - Have physical pottery cards? → Start with **PyPotteryScan**
+<!--   - Have physical pottery cards? → Start with **PyPotteryScan** -->
    - Have published PDFs? → Start with **PyPotteryLens**  
    - Have digital drawings to enhance? → Start with **PyPotteryInk**
 3. **Follow the tool-specific guides** for detailed instructions
@@ -201,5 +202,24 @@ Ready to transform your pottery documentation workflow?
   <a href="intro.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1rem; transition: all 0.2s ease;">
     Explore the Tools →
   </a>
+</div>
+```
+
+
+```{=html}
+<div style="margin: 3rem 0; padding: 2.5rem; background: linear-gradient(145deg, #fff9e6 0%, #fff3d6 100%); border-radius: 16px; border: 2px solid #fbbf24; text-align: center;">
+  <h3 style="color: #92400e; margin-top: 0; margin-bottom: 1rem;">
+    <span style="font-size: 1.5rem;">☕</span> Support This Project
+  </h3>
+  <p style="color: #78350f; margin-bottom: 2rem; font-size: 1.05rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+    If you find PyPottery useful for your research, consider supporting its development. 
+    Your support helps maintain and improve this open-source tool for the archaeological community!
+  </p>
+  <a href="https://ko-fi.com/lrncrd" target="_blank">
+    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi" style="border: none; height: 36px;">
+  </a>
+  <p style="color: #78350f; margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;">
+    Every contribution, no matter how small, makes a difference! 🙏
+  </p>
 </div>
 ```

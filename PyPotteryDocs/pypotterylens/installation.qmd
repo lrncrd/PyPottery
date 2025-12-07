@@ -19,6 +19,11 @@ Before installing PyPotteryLens, make sure you have:
 
 - **Python 3.12** installed on your system
 
+::: {.callout-tip}
+## 🚀 Easier Installation Available!
+We recommend using the [**PyPottery Suite Launcher**](../suite_installation.html) for a simplified installation experience. The launcher handles all dependencies automatically and lets you manage all PyPottery tools from a single interface.
+:::
+
 ## Automated Installation
 
 Automated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:

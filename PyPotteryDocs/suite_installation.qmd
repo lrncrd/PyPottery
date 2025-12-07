@@ -23,14 +23,26 @@ The launcher handles everything: Python environment, dependencies, and app manag
 
 ## Download
 
-Choose the package for your operating system:
+Download the PyPottery Suite Launcher for your operating system:
 
 | Platform | Download | Size |
 |----------|----------|------|
 | **Windows 10/11** (64-bit) | [PyPottery-Launcher-Windows.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~52 MB |
+
+<!-- COMING SOON: macOS and Linux versions
 | **macOS Intel** (x86_64) | [PyPottery-Launcher-macos-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
 | **macOS Apple Silicon** (M1/M2/M3) | [PyPottery-Launcher-macos-arm64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
 | **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
+-->
+
+### 🍎 macOS & 🐧 Linux - Coming Soon!
+
+```{=html}
+<div style="text-align: center; margin: 2rem 0;">
+  <iframe src="animations/under_construction.html" width="100%" height="500" style="border: none; border-radius: 12px; max-width: 750px;"></iframe>
+  <p style="color: #6b7280; font-size: 1.1rem; margin-top: 1rem;">macOS and Linux versions are coming soon! Check back later.</p>
+</div>
+```
 
 ## Installation
 
@@ -52,6 +64,7 @@ Choose the package for your operating system:
 </div>
 ```
 
+<!-- COMING SOON: macOS Installation Instructions
 ### macOS
 
 1. **Download** the appropriate package for your Mac:
@@ -72,7 +85,9 @@ Choose the package for your operating system:
 ## First Run on macOS
 The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
 :::
+-->
 
+<!-- COMING SOON: Linux Installation Instructions
 ### Linux
 
 1. **Download** the Linux package
@@ -90,6 +105,7 @@ The first time you run the launcher, macOS may ask for permission. Right-click o
    ```bash
    ./PyPottery.sh
    ```
+-->
 
 ## Using the Launcher
 
@@ -139,11 +155,12 @@ Click the **download button** (⬇️) next to any app to download it. Available
 
 | App | Description |
 |-----|-------------|
-| **PyPotteryScan** | Digitize pottery plates with AI-powered OCR |
 | **PyPotteryInk** | AI-based inking of pottery drawings |
-| **PyPotteryTrace** | Vectorize pottery profiles |
 | **PyPotteryLayout** | Create publication-ready layouts |
-| **PyPotteryLens** | Lens distortion correction |
+| **PyPotteryLens** | Data collection from PDF documents |
+
+<!-- | **PyPotteryScan** | Digitize pottery plates with AI-powered OCR | -->
+<!-- | **PyPotteryTrace** | Vectorize pottery profiles | -->
 
 ### Step 3: Launch Apps
 
@@ -168,6 +185,7 @@ Once an app is downloaded, click the **"Launch"** button to start it. The app wi
 
 This is normal for new applications. Click **"More info"** → **"Run anyway"**.
 
+<!-- COMING SOON: macOS and Linux troubleshooting
 ### macOS: "Cannot be opened because it is from an unidentified developer"
 
 Right-click on the script → **"Open"** → **"Open"** in the dialog.
@@ -178,6 +196,7 @@ Make sure the scripts are executable:
 ```bash
 chmod +x install.sh PyPottery.sh
 ```
+-->
 
 ### Apps not downloading
 
@@ -185,24 +204,19 @@ Check your internet connection and firewall settings. The launcher downloads app
 
 ### Environment configuration fails
 
+Try running the launcher as administrator (Windows).
+
+<!-- COMING SOON: add back when macOS/Linux are available
 Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).
-
-## System Requirements
-
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **RAM** | 8 GB | 16 GB |
-| **Storage** | 2 GB free | 10 GB free |
-| **GPU** | Not required | NVIDIA with CUDA for PyPotteryInk |
-| **Internet** | Required for downloads | Broadband |
+-->
 
 ## Alternative: Manual Installation
 
 If you prefer to install PyPottery tools manually or need more control, see the individual installation guides:
 
-- [PyPotteryScan Installation](pypotteryscan/installation.qmd)
+<!-- - [PyPotteryScan Installation](pypotteryscan/installation.qmd) -->
 - [PyPotteryInk Installation](pypotteryink/installation.qmd)
-- [PyPotteryTrace Installation](pypotterytrace/installation.qmd)
+<!-- - [PyPotteryTrace Installation](pypotterytrace/installation.qmd) -->
 - [PyPotteryLayout Installation](pypotterylayout/installation.qmd)
 - [PyPotteryLens Installation](pypotterylens/installation.qmd)
 
@@ -210,8 +224,118 @@ If you prefer to install PyPottery tools manually or need more control, see the 
 <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px;">
   <h3 style="margin-bottom: 1rem;">Ready to Start?</h3>
   <p style="color: #6b7280; margin-bottom: 1.5rem;">Download the launcher and begin digitizing your pottery collection!</p>
-  <a href="https://github.com/lrncrd/PyPottery/releases/latest" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+  <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="download-link" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
     📥 Download PyPottery Launcher
   </a>
 </div>
+
+<!-- Ko-fi Donation Popup Modal -->
+<div id="kofi-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+  <div style="background: white; border-radius: 20px; padding: 2.5rem; max-width: 450px; margin: 1rem; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: modalSlideIn 0.3s ease-out;">
+    
+    <!-- Header -->
+    <div style="font-size: 3rem; margin-bottom: 1rem;">☕</div>
+    <h3 style="margin: 0 0 0.5rem 0; color: #1f2937; font-size: 1.5rem;">Support PyPottery!</h3>
+    <p style="color: #6b7280; margin: 0 0 1.5rem 0; font-size: 0.95rem; line-height: 1.6;">
+      PyPottery is a <strong>free and open-source</strong> project built for the archaeological community. 
+      If you find it useful, please consider supporting its development!
+    </p>
+    
+    <!-- Ko-fi Button -->
+    <a href="https://ko-fi.com/lrncrd" target="_blank" style="display: inline-block; margin-bottom: 1.5rem;">
+      <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi" style="border: none; height: 40px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+    
+    <!-- Divider -->
+    <div style="border-top: 1px solid #e5e7eb; margin: 1rem 0;"></div>
+    
+    <!-- Buttons -->
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <button id="kofi-continue" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'">
+        📥 Continue to Download
+      </button>
+      <button id="kofi-close" style="background: #f3f4f6; color: #6b7280; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 500; cursor: pointer; font-size: 0.95rem; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+        Maybe Later
+      </button>
+    </div>
+    
+    <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;">
+      Every contribution helps keep this project alive! 🙏
+    </p>
+  </div>
+</div>
+
+<style>
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+</style>
+
+<script>
+(function() {
+  // Variables to store the target URL
+  let pendingDownloadUrl = null;
+  
+  // Get the modal elements
+  const modal = document.getElementById('kofi-modal');
+  const continueBtn = document.getElementById('kofi-continue');
+  const closeBtn = document.getElementById('kofi-close');
+  
+  // Function to show modal
+  function showKofiModal(url) {
+    pendingDownloadUrl = url;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Function to hide modal
+  function hideKofiModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  
+  // Continue to download
+  continueBtn.addEventListener('click', function() {
+    hideKofiModal();
+    if (pendingDownloadUrl) {
+      window.open(pendingDownloadUrl, '_blank');
+    }
+  });
+  
+  // Close modal
+  closeBtn.addEventListener('click', function() {
+    hideKofiModal();
+  });
+  
+  // Close on backdrop click
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      hideKofiModal();
+    }
+  });
+  
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      hideKofiModal();
+    }
+  });
+  
+  // Intercept all download links (GitHub releases links)
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a');
+    if (link && link.href && link.href.includes('github.com/lrncrd/PyPottery/releases')) {
+      e.preventDefault();
+      showKofiModal(link.href);
+    }
+  });
+})();
+</script>
 ```
