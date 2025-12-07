@@ -28,10 +28,12 @@ Download the PyPottery Suite Launcher for your operating system:
 | Platform | Download | Size |
 |----------|----------|------|
 | **Windows 10/11** (64-bit) | [PyPottery-Launcher-Windows.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~52 MB |
-
-<!-- COMING SOON: macOS and Linux versions
 | **macOS Intel** (x86_64) | [PyPottery-Launcher-macos-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
 | **macOS Apple Silicon** (M1/M2/M3) | [PyPottery-Launcher-macos-arm64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
+| **Linux** (x86_64) | Coming Soon | Coming Soon |
+
+
+<!--
 | **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
 -->
 
@@ -64,28 +66,25 @@ Download the PyPottery Suite Launcher for your operating system:
 </div>
 ```
 
-<!-- COMING SOON: macOS Installation Instructions
 ### macOS
 
 1. **Download** the appropriate package for your Mac:
    - **Intel Mac**: `macos-x86_64` version
    - **Apple Silicon (M1/M2/M3)**: `macos-arm64` version
 2. **Extract** the ZIP file
-3. **Open Terminal** and navigate to the extracted folder
-4. **Run the installer** (first time only):
-   ```bash
-   ./install.sh
-   ```
-5. **Launch PyPottery**:
-   ```bash
-   ./PyPottery.sh
-   ```
+3. **Double-click** on the `PyPottery Launcher.app` file to launch the app
 
 ::: {.callout-note}
 ## First Run on macOS
 The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
 :::
--->
+
+
+### Linux
+
+::: {.callout-note}
+# Coming Soon
+:::
 
 <!-- COMING SOON: Linux Installation Instructions
 ### Linux
@@ -180,6 +179,10 @@ Once an app is downloaded, click the **"Launch"** button to start it. The app wi
 ```
 
 ## Troubleshooting
+
+### General Troubleshooting during the installation
+
+Remove the `pypottery_env` folder and try again.
 
 ### Windows: "Windows protected your PC" message
 

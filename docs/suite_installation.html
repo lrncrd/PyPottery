@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.36">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0e409008032177e994eff0779726d4b5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aac435ab1d0de50aa205ad21718474a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -306,6 +306,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a>
   <ul class="collapse">
   <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
+  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux">Linux</a></li>
   </ul></li>
   <li><a href="#using-the-launcher" id="toc-using-the-launcher" class="nav-link" data-scroll-target="#using-the-launcher">Using the Launcher</a>
   <ul class="collapse">
@@ -315,6 +317,7 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
   <ul class="collapse">
+  <li><a href="#general-troubleshooting-during-the-installation" id="toc-general-troubleshooting-during-the-installation" class="nav-link" data-scroll-target="#general-troubleshooting-during-the-installation">General Troubleshooting during the installation</a></li>
   <li><a href="#windows-windows-protected-your-pc-message" id="toc-windows-windows-protected-your-pc-message" class="nav-link" data-scroll-target="#windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</a></li>
   <li><a href="#apps-not-downloading" id="toc-apps-not-downloading" class="nav-link" data-scroll-target="#apps-not-downloading">Apps not downloading</a></li>
   <li><a href="#environment-configuration-fails" id="toc-environment-configuration-fails" class="nav-link" data-scroll-target="#environment-configuration-fails">Environment configuration fails</a></li>
@@ -386,11 +389,24 @@ No Technical Knowledge Required
 <td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-Windows.zip</a></td>
 <td>~52 MB</td>
 </tr>
+<tr class="even">
+<td><strong>macOS Intel</strong> (x86_64)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-x86_64.zip</a></td>
+<td>~22 MB</td>
+</tr>
+<tr class="odd">
+<td><strong>macOS Apple Silicon</strong> (M1/M2/M3)</td>
+<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-arm64.zip</a></td>
+<td>~22 MB</td>
+</tr>
+<tr class="even">
+<td><strong>Linux</strong> (x86_64)</td>
+<td>Coming Soon</td>
+<td>Coming Soon</td>
+</tr>
 </tbody>
 </table>
-<!-- COMING SOON: macOS and Linux versions
-| **macOS Intel** (x86_64) | [PyPottery-Launcher-macos-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
-| **macOS Apple Silicon** (M1/M2/M3) | [PyPottery-Launcher-macos-arm64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
+<!--
 | **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
 -->
 <section id="macos-linux---coming-soon" class="level3">
@@ -419,28 +435,47 @@ No Technical Knowledge Required
     You can create a desktop shortcut to <code>PyPottery.bat</code> for quick access!
   </p>
 </div>
-<!-- COMING SOON: macOS Installation Instructions
-### macOS
+</section>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">macOS</h3>
+<ol type="1">
+<li><strong>Download</strong> the appropriate package for your Mac:
+<ul>
+<li><strong>Intel Mac</strong>: <code>macos-x86_64</code> version</li>
+<li><strong>Apple Silicon (M1/M2/M3)</strong>: <code>macos-arm64</code> version</li>
+</ul></li>
+<li><strong>Extract</strong> the ZIP file</li>
+<li><strong>Double-click</strong> on the <code>PyPottery Launcher.app</code> file to launch the app</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+First Run on macOS
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.</p>
+</div>
+</div>
+</section>
+<section id="linux" class="level3">
+<h3 class="anchored" data-anchor-id="linux">Linux</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Coming Soon
+</div>
+</div>
+<div class="callout-body-container callout-body">
 
-1. **Download** the appropriate package for your Mac:
-   - **Intel Mac**: `macos-x86_64` version
-   - **Apple Silicon (M1/M2/M3)**: `macos-arm64` version
-2. **Extract** the ZIP file
-3. **Open Terminal** and navigate to the extracted folder
-4. **Run the installer** (first time only):
-   ```bash
-   ./install.sh
-   ```
-5. **Launch PyPottery**:
-   ```bash
-   ./PyPottery.sh
-   ```
-
-::: {.callout-note}
-## First Run on macOS
-The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
-:::
--->
+</div>
+</div>
 <!-- COMING SOON: Linux Installation Instructions
 ### Linux
 
@@ -542,6 +577,10 @@ The first time you run the launcher, macOS may ask for permission. Right-click o
 </section>
 <section id="troubleshooting" class="level2">
 <h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="general-troubleshooting-during-the-installation" class="level3">
+<h3 class="anchored" data-anchor-id="general-troubleshooting-during-the-installation">General Troubleshooting during the installation</h3>
+<p>Remove the <code>pypottery_env</code> folder and try again.</p>
+</section>
 <section id="windows-windows-protected-your-pc-message" class="level3">
 <h3 class="anchored" data-anchor-id="windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</h3>
 <p>This is normal for new applications. Click <strong>“More info”</strong> → <strong>“Run anyway”</strong>.</p>

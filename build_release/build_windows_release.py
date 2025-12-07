@@ -156,6 +156,16 @@ def create_release_package():
     if imgs_src.exists():
         shutil.copytree(imgs_src, package_dir / "imgs")
         print("   ✓ Copied images")
+
+    # Copy icons
+    icon_src = project_root / "icon_app.ico"
+    if icon_src.exists():
+        shutil.copy2(icon_src, package_dir / "icon_app.ico")
+        
+    icon_png_src = project_root / "icon_app.png"
+    if icon_png_src.exists():
+        shutil.copy2(icon_png_src, package_dir / "icon_app.png")
+    print("   ✓ Copied application icons")
     
     # Copy requirements.txt (needed for environment setup)
     requirements_src = project_root / "requirements.txt"

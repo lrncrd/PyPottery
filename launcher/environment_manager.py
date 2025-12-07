@@ -97,18 +97,24 @@ class EnvironmentManager:
                 return True
         
         try:
-            # Create venv with pip
-            builder = venv.EnvBuilder(
-                system_site_packages=False,
-                clear=False,
-                with_pip=True,
-                upgrade_deps=True
-            )
-            builder.create(str(self.venv_path))
+            # Create venv using subprocess to avoid in-process issues (especially on macOS)
+            # which can cause SIGABRT when ensurepip runs in a threaded GUI context
+            cmd = [sys.executable, "-m", "venv", str(self.venv_path)]
+            
+            if force_recreate:
+                cmd.append("--clear")
+            
+            # Run venv creation as external process
+            # This isolates the process and prevents signal handlers from conflicting
+            subprocess.run(cmd, check=True, capture_output=True)
             
             self._report_progress("venv", "Virtual environment created successfully", 10)
             return True
             
+        except subprocess.CalledProcessError as e:
+            error_msg = e.stderr.decode() if e.stderr else str(e)
+            self._report_progress("venv", f"Failed to create venv: {error_msg}", 0, is_error=True)
+            return False
         except Exception as e:
             self._report_progress("venv", f"Failed to create venv: {e}", 0, is_error=True)
             return False

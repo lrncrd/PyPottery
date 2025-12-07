@@ -23,8 +23,13 @@ from launcher.update_checker import UpdateChecker, UpdateInfo
 
 # Try to import PIL for image loading
 try:
-    from PIL import Image
-    HAS_PIL = True
+    if sys.platform == "darwin":
+        # Disable PIL on macOS to avoid crash with embedded Python
+        # The launcher will fall back to using emojis defined in app config
+        HAS_PIL = False
+    else:
+        from PIL import Image
+        HAS_PIL = True
 except ImportError:
     HAS_PIL = False
 
@@ -57,7 +62,8 @@ class DownloadDialog(ctk.CTkToplevel):
         
         # Make modal
         self.transient(master)
-        self.grab_set()
+        if sys.platform != "darwin":
+            self.grab_set()
         
         # Center on parent
         self.update_idletasks()
@@ -750,8 +756,15 @@ class PyPotteryLauncher(ctk.CTk):
                     self.iconbitmap(str(icon_path))
                 else:
                     # For macOS/Linux, try to set icon via PhotoImage
-                    # CustomTkinter handles this differently
-                    pass
+                    # CustomTkinter handles this differently, we use standard Tk
+                    icon_png = self.base_path / "icon_app.png"
+                    if icon_png.exists():
+                        try:
+                            # Use standard PhotoImage (supports PNG in Tk 8.6+)
+                            img = tk.PhotoImage(file=str(icon_png))
+                            self.wm_iconphoto(True, img)
+                        except Exception:
+                            pass
             except Exception:
                 pass  # Ignore icon errors
     
@@ -1137,13 +1150,8 @@ class PyPotteryLauncher(ctk.CTk):
         
         # Stop all running apps
         if self.app_manager:
-            running = self.app_manager.get_running_apps()
-            if running:
-                if messagebox.askyesno(
-                    "Stop Applications",
-                    f"There are {len(running)} running application(s). Stop them before closing?"
-                ):
-                    self.app_manager.stop_all_apps()
+            # Automatically stop all apps without confirmation
+            self.app_manager.stop_all_apps()
         
         self.destroy()
 
