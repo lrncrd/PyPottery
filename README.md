@@ -17,8 +17,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white" alt="Python 3.12">
-  <img src="https://img.shields.io/badge/License-Open%20Source-green" alt="Open Source">
-  <img src="https://img.shields.io/badge/Platform-Windows-blue?logo=windows" alt="Windows">
+  <img src="https://img.shields.io/badge/License-Apache 2.0-green" alt="Open Source">
+  <img src="https://img.shields.io/badge/Platform-All-purple?" alt="All">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue.svg">
+  <img src="https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-yellow.svg">
 </p>
 
 ---
@@ -72,7 +74,7 @@ Arrange multiple pottery drawings with consistent scaling and professional forma
 - Publication-ready exports
 - SVG export for further editing
 
-**[📖 Documentation](https://lrncrd.github.io/PyPottery/pypotterylayout/)** | **[💾 Repository](https://github.com/lrncrd/PyPotteryLayout)**
+**[📖 Documentation](https://lrncrd.github.io/PyPottery/pypotteryink/)** | **[💾 Repository](https://github.com/lrncrd/PyPotteryLayout)**
 
 <br clear="left"/>
 
@@ -111,13 +113,13 @@ The easiest way to get started! Download the pre-packaged launcher with everythi
 | Platform | Status |
 |----------|--------|
 | **Windows 10/11** (64-bit) | ✅ Available |
-| **macOS** | 🚧 Coming Soon |
+| **macOS** | ✅ Available |
 | **Linux** | 🚧 Coming Soon |
 
 **Installation:**
 1. Download the ZIP file from [Releases](https://github.com/lrncrd/PyPottery/releases/latest)
 2. Extract to a folder of your choice
-3. Run `PyPottery.bat`
+3. See [Installation](https://lrncrd.github.io/PyPottery/suite_installation.html)
 
 ### Option 2: Manual Installation
 
@@ -130,7 +132,7 @@ For advanced users who want more control, each tool can be installed separately.
 - **Python 3.12** (for manual installation)
 - **Operating System:** Windows 10/11 (macOS/Linux coming soon)
 - **RAM:** 8 GB minimum, 16 GB recommended
-- **GPU:** Optional but recommended for PyPotteryInk (NVIDIA CUDA or Apple Silicon)
+- **GPU:** Optional but recommended (NVIDIA CUDA or Apple Silicon)
 
 ---
 
@@ -179,11 +181,7 @@ Your support helps maintain and improve this open-source tool for the archaeolog
 
 ---
 
-## 📜 License
 
-This project is open source. See individual tool repositories for specific license information.
-
----
 
 <p align="center">
   <sub>© 2025 Lorenzo Cardarelli</sub>
