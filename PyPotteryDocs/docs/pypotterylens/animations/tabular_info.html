@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabular Info Animation</title>
+    <style>
+        /* Base Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .window {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 800px;
+            height: 500px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Header */
+        .header {
+            height: 40px;
+            min-height: 40px;
+            max-height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            background: #f9fafb;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            flex: 1;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pottery-canvas {
+            width: 100%;
+            max-width: 200px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fdfcfb 0%, #f7f6f4 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .pottery-canvas::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .pottery-with-id {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .pottery-icon {
+            font-size: 3rem;
+            filter: grayscale(0.2) contrast(1.1);
+        }
+
+        .pottery-id {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #667eea;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .canvas-label {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Table */
+        .table-container {
+            flex: 2;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-control {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        td {
+            color: #374151;
+        }
+
+        .new-col {
+            background: #eff6ff;
+            animation: highlight 1s ease;
+        }
+
+        @keyframes highlight {
+            0% {
+                background: #bfdbfe;
+            }
+
+            100% {
+                background: #eff6ff;
+            }
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.0
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab">🗂️ Project Manager</div>
+            <div class="tab">PDF Processing</div>
+            <div class="tab">Apply Model</div>
+            <div class="tab">Review</div>
+            <div class="tab active">Tabular Info</div>
+            <div class="tab">Post-Processing</div>
+        </div>
+
+        <div class="content">
+            <!-- Image Preview -->
+            <div class="image-preview">
+                <div class="pottery-canvas">
+                    <div class="pottery-with-id">
+                        <div class="pottery-icon">🏺</div>
+                        <div class="pottery-id">#001</div>
+                    </div>
+                    <div class="pottery-with-id">
+                        <div class="pottery-icon">🏺</div>
+                        <div class="pottery-id">#002</div>
+                    </div>
+                </div>
+                <div class="canvas-label">Extracted Items</div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="controls-row">
+                    <input type="text" class="input-control" id="colInput" placeholder="New column name...">
+                    <button class="btn-primary" id="addBtn">➕ Add Column</button>
+                </div>
+
+                <table id="dataTable">
+                    <thead>
+                        <tr id="headerRow">
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Context</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>Plate</td>
+                            <td>US 102</td>
+                        </tr>
+                        <tr>
+                            <td>#002</td>
+                            <td>Bowl</td>
+                            <td>US 102</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const colInput = document.getElementById('colInput');
+        const addBtn = document.getElementById('addBtn');
+        const headerRow = document.getElementById('headerRow');
+        const dataTable = document.getElementById('dataTable');
+        const appWindow = document.getElementById('appWindow');
+
+        function moveCursorTo(element, duration = 1000, delay = 0) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = appWindow.getBoundingClientRect();
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                    cursor.style.transform = `translate(${x}px, ${y}px)`;
+                    setTimeout(resolve, duration);
+                }, delay);
+            });
+        }
+
+        function reset() {
+            colInput.value = '';
+            // Remove extra columns if any
+            const headers = headerRow.querySelectorAll('th');
+            if (headers.length > 3) {
+                headers[3].remove();
+                const rows = dataTable.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    if (row.children.length > 3) row.children[3].remove();
+                });
+            }
+            cursor.style.transform = 'translate(850px, 600px)';
+        }
+
+        async function runAnimation() {
+            reset();
+
+            // 1. Move to Input
+            await moveCursorTo(colInput, 800, 500);
+
+            // 2. Click Input
+            // colInput.focus(); // Removed to prevent stealing focus
+
+            // 3. Type "Period"
+            await new Promise(r => setTimeout(r, 200));
+            colInput.value = 'P';
+            await new Promise(r => setTimeout(r, 100));
+            colInput.value = 'Pe';
+            await new Promise(r => setTimeout(r, 100));
+            colInput.value = 'Per';
+            await new Promise(r => setTimeout(r, 100));
+            colInput.value = 'Peri';
+            await new Promise(r => setTimeout(r, 100));
+            colInput.value = 'Perio';
+            await new Promise(r => setTimeout(r, 100));
+            colInput.value = 'Period';
+
+            // 4. Move to Add Button
+            await moveCursorTo(addBtn, 800, 200);
+
+            // 5. Click Add
+            addBtn.style.transform = 'scale(0.95)';
+            await new Promise(r => setTimeout(r, 200));
+            addBtn.style.transform = 'scale(1)';
+
+            // 6. Add Column Action
+            const th = document.createElement('th');
+            th.innerText = 'Period';
+            th.classList.add('new-col');
+            headerRow.appendChild(th);
+
+            const rows = dataTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const td = document.createElement('td');
+                td.classList.add('new-col');
+                td.innerText = '-'; // Placeholder
+                row.appendChild(td);
+            });
+
+            colInput.value = '';
+
+            // 7. Move Away
+            cursor.style.transform = 'translate(850px, 600px)';
+        }
+
+        setInterval(runAnimation, 8000);
+        setTimeout(runAnimation, 100);
+    </script>
+</body>
+
+</html>

@@ -25,6 +25,12 @@ The launcher handles everything: Python environment, dependencies, and app manag
 
 Download the PyPottery Suite Launcher for your operating system:
 
+```{=html}
+<div style="text-align: center; margin: 1.5rem 0;">
+  <iframe src="animations/github_download.html" width="100%" height="800" style="border: none; border-radius: 8px; max-width: 850px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></iframe>
+</div>
+```
+
 | Platform | Download | Size |
 |----------|----------|------|
 | **Windows 10/11** (64-bit) | [PyPottery-Launcher-Windows.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~52 MB |
@@ -39,12 +45,6 @@ Download the PyPottery Suite Launcher for your operating system:
 
 ### 🍎 macOS & 🐧 Linux - Coming Soon!
 
-```{=html}
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe src="animations/under_construction.html" width="100%" height="500" style="border: none; border-radius: 12px; max-width: 750px;"></iframe>
-  <p style="color: #6b7280; font-size: 1.1rem; margin-top: 1rem;">macOS and Linux versions are coming soon! Check back later.</p>
-</div>
-```
 
 ## Installation
 
@@ -82,9 +82,13 @@ The first time you run the launcher, macOS may ask for permission. Right-click o
 
 ### Linux
 
-::: {.callout-note}
-# Coming Soon
-:::
+
+```{=html}
+<div style="text-align: center; margin: 2rem 0;">
+  <iframe src="animations/under_construction.html" width="100%" height="500" style="border: none; border-radius: 12px; max-width: 750px;"></iframe>
+  <p style="color: #6b7280; font-size: 1.1rem; margin-top: 1rem;">Linux of the installer is coming soon! Check back later.</p>
+</div>
+```
 
 <!-- COMING SOON: Linux Installation Instructions
 ### Linux
@@ -108,7 +112,14 @@ The first time you run the launcher, macOS may ask for permission. Right-click o
 
 ## Using the Launcher
 
+
 Once the launcher opens, you'll see a clean interface with all available PyPottery applications.
+
+```{=html}
+<div style="text-align: center; margin: 2rem 0;">
+  <iframe src="animations/launcher_demo.html" width="100%" height="850" style="border: none; border-radius: 12px; max-width: 950px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"></iframe>
+</div>
+```
 
 ```{=html}
 <div style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white;">

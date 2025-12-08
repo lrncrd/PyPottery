@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Model Animation</title>
+    <style>
+        /* Base Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .window {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 800px;
+            height: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Header */
+        .header {
+            height: 40px;
+            min-height: 40px;
+            max-height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Layout */
+        .content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f9fafb;
+            border-right: 1px solid #e5e7eb;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+        }
+
+        .main-view {
+            flex: 1;
+            padding: 1rem;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Controls */
+        .control-group {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .control-group h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9em;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-text {
+            font-size: 0.8em;
+            color: #6b7280;
+            margin: 0.25rem 0 0 0;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.95rem;
+            transition: transform 0.1s;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .progress-container.visible {
+            opacity: 1;
+        }
+
+        .progress-bar-bg {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            background: #10b981;
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .progress-info {
+            font-size: 0.85rem;
+            color: #4b5563;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fdfcfb 0%, #f7f6f4 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .pottery-sketch {
+            font-size: 3.5rem;
+            filter: grayscale(0.3) contrast(1.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-label {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 0.65rem;
+            color: #9ca3af;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .gallery-item.processing {
+            border-color: #667eea;
+            animation: pulse 1s ease-in-out infinite;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .gallery-item.done {
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .gallery-item.done::after {
+            content: '✓';
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            font-size: 0.9rem;
+            color: #10b981;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.0
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab">🗂️ Project Manager</div>
+            <div class="tab">PDF Processing</div>
+            <div class="tab active">Apply Model</div>
+            <div class="tab">Review</div>
+            <div class="tab">Tabular Info</div>
+            <div class="tab">Post-Processing</div>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <div class="control-group">
+                    <h4>🤖 Model Selection</h4>
+                    <select class="form-control" id="modelSelect">
+                        <option>Select model...</option>
+                        <option>yolo_pottery_v1.pt</option>
+                    </select>
+                    <p class="info-text">Select the YOLO model to apply</p>
+                </div>
+
+                <div class="control-group">
+                    <h4>⚙️ Model Parameters</h4>
+                    <label style="font-size: 0.85rem; color: #374151;">Confidence Threshold</label>
+                    <input type="range" class="form-control" min="0.1" max="1.0" step="0.05" value="0.5"
+                        style="margin-bottom: 0;">
+                    <p class="info-text">Lower values detect more objects</p>
+                </div>
+
+                <button class="btn-primary" id="applyBtn">
+                    🚀 Apply Model to Project
+                </button>
+
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-info" id="progressInfo">Processing images...</div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-view">
+                <div class="gallery">
+                    <div class="gallery-item" id="img1">
+                        <span class="page-label">P.1</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                    <div class="gallery-item" id="img2">
+                        <span class="page-label">P.2</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                    <div class="gallery-item" id="img3">
+                        <span class="page-label">P.3</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                    <div class="gallery-item" id="img4">
+                        <span class="page-label">P.4</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                    <div class="gallery-item" id="img5">
+                        <span class="page-label">P.5</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                    <div class="gallery-item" id="img6">
+                        <span class="page-label">P.6</span>
+                        <div class="pottery-sketch">🏺</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const modelSelect = document.getElementById('modelSelect');
+        const applyBtn = document.getElementById('applyBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressInfo = document.getElementById('progressInfo');
+        const appWindow = document.getElementById('appWindow');
+        const images = [
+            document.getElementById('img1'),
+            document.getElementById('img2'),
+            document.getElementById('img3'),
+            document.getElementById('img4'),
+            document.getElementById('img5'),
+            document.getElementById('img6')
+        ];
+
+        function moveCursorTo(element, duration = 1000, delay = 0) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = appWindow.getBoundingClientRect();
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                    cursor.style.transform = `translate(${x}px, ${y}px)`;
+                    setTimeout(resolve, duration);
+                }, delay);
+            });
+        }
+
+        function reset() {
+            progressContainer.classList.remove('visible');
+            progressBar.style.width = '0%';
+            modelSelect.selectedIndex = 0;
+            applyBtn.style.transform = 'scale(1)';
+            images.forEach(img => {
+                img.classList.remove('processing', 'done');
+            });
+            cursor.style.transform = 'translate(850px, 600px)';
+        }
+
+        async function runAnimation() {
+            reset();
+
+            // 1. Move to Model Select
+            await moveCursorTo(modelSelect, 800, 500);
+
+            // 2. Select Model
+            modelSelect.selectedIndex = 1;
+            await new Promise(r => setTimeout(r, 300));
+
+            // 3. Move to Apply Button
+            await moveCursorTo(applyBtn, 800, 300);
+
+            // 4. Click Apply
+            applyBtn.style.transform = 'scale(0.95)';
+            await new Promise(r => setTimeout(r, 200));
+            applyBtn.style.transform = 'scale(1)';
+
+            // 5. Show Progress
+            await new Promise(r => setTimeout(r, 300));
+            progressContainer.classList.add('visible');
+
+            // 6. Move Cursor Away
+            cursor.style.transform = 'translate(850px, 600px)';
+
+            // 7. Process Images
+            let progress = 0;
+            for (let i = 0; i < images.length; i++) {
+                images[i].classList.add('processing');
+
+                // Simulate processing time
+                await new Promise(r => setTimeout(r, 400));
+
+                images[i].classList.remove('processing');
+                images[i].classList.add('done');
+
+                progress = Math.round(((i + 1) / images.length) * 100);
+                progressBar.style.width = progress + '%';
+                progressInfo.textContent = `Processing images... ${i + 1}/${images.length}`;
+            }
+
+            // 8. Complete
+            await new Promise(r => setTimeout(r, 500));
+            progressInfo.textContent = '✅ Model applied successfully!';
+        }
+
+        setInterval(runAnimation, 10000);
+        setTimeout(runAnimation, 100);
+    </script>
+</body>
+
+</html>

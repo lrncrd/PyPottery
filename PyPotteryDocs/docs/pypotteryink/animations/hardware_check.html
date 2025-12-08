@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPotteryInk - Hardware Check Simulation</title>
+
+    <style>
+        /* Simulation Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .container {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            /* Standard app border radius */
+            overflow: hidden;
+            width: 900px;
+            height: 650px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* App Header */
+        .app-header {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .app-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1.1em;
+        }
+
+        .version-badge {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 30px;
+            overflow: hidden;
+            background: #fff;
+            /* height determined by flex:1 and container */
+        }
+
+        h2 {
+            font-size: 1.3em;
+            margin: 0 0 10px 0;
+            color: #1f2937;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        /* Recommended Specs Box */
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .info-box h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.9em;
+            color: #1e40af;
+        }
+
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #1f2937;
+            font-size: 0.85em;
+        }
+
+        .info-box li {
+            margin-bottom: 3px;
+        }
+
+        /* Action Button */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1em;
+            transition: transform 0.1s;
+        }
+
+        .btn-primary.clicked {
+            transform: scale(0.95);
+        }
+
+        /* Report Container */
+        .report-container {
+            margin-top: 25px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9fafb;
+            display: none;
+            /* Hidden initially */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .report-container.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .report-score {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9em;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            color: #6b7280;
+        }
+
+        .spec-val {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            /* Standard macOS pointer size */
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.0.0
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <div class="tab active">⚙️ Hardware Check</div>
+            <div class="tab">🔍 Model Diagnostics</div>
+            <div class="tab">📊 Preprocessing</div>
+            <div class="tab">🎨 Batch Processing</div>
+        </div>
+
+        <!-- Content -->
+        <div class="main-content">
+            <h2 style="margin-bottom: 15px;">🖥️ System Requirements Check</h2>
+
+            <div class="info-box">
+                <h3>Recommended Specifications:</h3>
+                <ul>
+                    <li><strong>GPU:</strong> NVIDIA with at least 8GB VRAM (minimum 4GB)</li>
+                    <li><strong>CPU:</strong> 4+ modern cores (Intel i5/AMD Ryzen 5 or better)</li>
+                    <li><strong>RAM:</strong> 16GB (minimum 8GB)</li>
+                    <li><strong>Storage:</strong> Fast SSD (NVMe recommended)</li>
+                </ul>
+            </div>
+
+            <button id="check-btn" class="btn-primary">
+                <span>🔍</span> Check Hardware
+            </button>
+
+            <div id="report" class="report-container">
+                <div class="report-header">
+                    <h3 style="margin:0; color:#1f2937;">Hardware Report</h3>
+                    <span class="report-score">Score: 78/100</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">GPU</span>
+                    <span class="spec-val">Apple Metal (MPS)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">CPU</span>
+                    <span class="spec-val">Apple M3 (8 Cores)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">RAM</span>
+                    <span class="spec-val">16.0 GB</span>
+                </div>
+                <div
+                    style="margin-top: 15px; font-size: 0.9em; color: #059669; background: #d1fae5; padding: 10px; border-radius: 6px;">
+                    ✅ Your hardware is adequate for using PyPotteryInk.
+                </div>
+            </div>
+        </div>
+
+        <div id="cursor" class="cursor"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('cursor');
+            const btn = document.getElementById('check-btn');
+            const report = document.getElementById('report');
+
+            // Helper to move cursor
+            function moveCursorTo(element, duration = 1000, delay = 0) {
+                const rect = element.getBoundingClientRect();
+                const containerRect = document.querySelector('.container').getBoundingClientRect();
+
+                const x = rect.left - containerRect.left + rect.width / 2;
+                const y = rect.top - containerRect.top + rect.height / 2;
+
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                        cursor.style.transform = `translate(${x}px, ${y}px)`;
+                        setTimeout(resolve, duration);
+                    }, delay);
+                });
+            }
+
+            async function runAnimation() {
+                // 1. Move to button
+                await moveCursorTo(btn, 1200, 500);
+
+                // 2. Click
+                btn.classList.add('clicked');
+                cursor.style.transform += ' scale(0.9)';
+                await new Promise(r => setTimeout(r, 150));
+
+                btn.classList.remove('clicked');
+                cursor.style.transform = cursor.style.transform.replace(' scale(0.9)', '');
+
+                // 3. Loading
+                btn.innerHTML = '<span>⏳</span> Checking...';
+                btn.style.opacity = '0.8';
+
+                // Move cursor away
+                cursor.style.transform = `translate(800px, 600px)`;
+
+                // 4. Show Report
+                await new Promise(r => setTimeout(r, 1500));
+                btn.innerHTML = '<span>✅</span> Check Complete';
+                btn.style.background = '#10b981';
+                btn.style.opacity = '1';
+
+                report.classList.add('visible');
+
+                // Loop after 3 seconds
+                setTimeout(() => {
+                    report.classList.remove('visible');
+                    btn.innerHTML = '<span>🔍</span> Check Hardware';
+                    btn.style.background = '';
+                    btn.style.opacity = '1';
+                    runAnimation();
+                }, 3000);
+            }
+
+            runAnimation();
+        });
+    </script>
+</body>
+
+</html>

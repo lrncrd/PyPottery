@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPotteryInk - Batch Processing Simulation</title>
+
+    <style>
+        /* Simulation Styles */
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .container {
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 900px;
+            height: 800px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* App Header */
+        .app-header {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .app-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1.1em;
+        }
+
+        .version-badge {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            padding: 10px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #6b7280;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            gap: 30px;
+            overflow: hidden;
+        }
+
+        /* Left Panel: Controls */
+        .controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+            padding-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #1f2937;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area.active {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .upload-icon {
+            font-size: 1.5em;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
+
+        .upload-text {
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            transition: transform 0.1s;
+        }
+
+        .btn-success.clicked {
+            transform: scale(0.95);
+        }
+
+        /* Right Panel: Visualization */
+        .visualization {
+            flex: 1.2;
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #10b981;
+            width: 0%;
+            transition: width 0.3s linear;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 8px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 29px;
+            /* Standard macOS pointer size */
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.0.0
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <div class="tab">⚙️ Hardware Check</div>
+            <div class="tab">🔍 Model Diagnostics</div>
+            <div class="tab">📊 Preprocessing</div>
+            <div class="tab active">🎨 Batch Processing</div>
+        </div>
+
+        <!-- Content -->
+        <div class="main-content">
+            <div class="controls">
+                <h2 style="margin-bottom: 10px;">🎨 Batch Image Processing</h2>
+
+                <div class="form-group">
+                    <label class="form-label">Select Model:</label>
+                    <select id="model-select" class="form-control">
+                        <option>Select Model...</option>
+                        <option>6h-MCG Model</option>
+                        <option>10k Model</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Upload Images:</label>
+                    <div id="upload-area" class="upload-area">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Click to Upload</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Output Directory:</label>
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" value="./enhanced_pottery" class="form-control">
+                        <button
+                            style="padding:5px 10px; border:1px solid #d1d5db; background:#f9fafb; border-radius:6px; cursor:pointer;">📁</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label class="form-label">Patch Size:</label>
+                        <input type="number" value="512" class="form-control">
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label">Overlap:</label>
+                        <input type="number" value="64" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label class="form-label">Contrast Scale:</label>
+                        <input type="number" value="1.0" class="form-control">
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label">Scale Factor:</label>
+                        <input type="number" value="1" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:0.9em; display:flex; align-items:center; gap:8px;">
+                        <input type="checkbox" checked> Use FP16 (CUDA)
+                    </label>
+                </div>
+
+                <button id="run-btn" class="btn-success">Start Processing</button>
+            </div>
+
+            <div class="visualization">
+                <div class="progress-section">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 0.8em; margin-bottom: 5px; color: #6b7280;">
+                        <span>Overall Progress</span>
+                        <span id="percent-text">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="gallery-grid" id="gallery">
+                    <!-- Items injected -->
+                </div>
+            </div>
+        </div>
+
+        <div id="cursor" class="cursor"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('cursor');
+            const modelSelect = document.getElementById('model-select');
+            const uploadArea = document.getElementById('upload-area');
+            const runBtn = document.getElementById('run-btn');
+            const progressFill = document.getElementById('progress-fill');
+            const percentText = document.getElementById('percent-text');
+            const gallery = document.getElementById('gallery');
+
+            // Helper to move cursor
+            function moveCursorTo(element, duration = 1000, delay = 0) {
+                const rect = element.getBoundingClientRect();
+                const containerRect = document.querySelector('.container').getBoundingClientRect();
+
+                const x = rect.left - containerRect.left + rect.width / 2;
+                const y = rect.top - containerRect.top + rect.height / 2;
+
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                        cursor.style.transform = `translate(${x}px, ${y}px)`;
+                        setTimeout(resolve, duration);
+                    }, delay);
+                });
+            }
+
+            function addGalleryItem(index) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `<div style="text-align:center"><div style="font-size:2em">🏺</div><div style="font-size:0.8em; color:#9ca3af; margin-top:5px">Img ${index}</div></div>`;
+                gallery.appendChild(item);
+                // Trigger reflow
+                void item.offsetWidth;
+                item.classList.add('visible');
+            }
+
+            async function runAnimation() {
+                // 1. Select Model
+                await moveCursorTo(modelSelect, 1000, 500);
+                modelSelect.value = '6h-MCG Model';
+                modelSelect.style.borderColor = '#667eea';
+
+                // 2. Upload
+                await moveCursorTo(uploadArea, 1000, 200);
+                uploadArea.classList.add('active');
+                uploadArea.innerHTML = '<div class="upload-text" style="color:#10b981; font-weight:bold;">4 Images Selected</div>';
+
+                // 3. Start
+                await moveCursorTo(runBtn, 1000, 200);
+                runBtn.classList.add('clicked');
+                await new Promise(r => setTimeout(r, 150));
+                runBtn.classList.remove('clicked');
+                runBtn.innerText = 'Processing...';
+
+                // Move cursor away
+                cursor.style.transform = `translate(850px, 600px)`;
+
+                // 4. Progress Loop
+                const total = 4;
+                for (let i = 1; i <= total; i++) {
+                    const progress = (i / total) * 100;
+                    progressFill.style.width = `${progress}%`;
+                    percentText.innerText = `${Math.round(progress)}%`;
+
+                    await new Promise(r => setTimeout(r, 800)); // Processing time per image
+                    addGalleryItem(i);
+                }
+
+                runBtn.innerText = 'Batch Complete';
+
+                // Loop after 2 seconds
+                setTimeout(() => {
+                    // Reset state
+                    modelSelect.value = 'Select Model...';
+                    modelSelect.style.borderColor = '#d1d5db';
+                    uploadArea.classList.remove('active');
+                    uploadArea.innerHTML = '<div class="upload-icon">📁</div><div class="upload-text">Click to Upload</div>';
+                    runBtn.innerText = 'Start Processing';
+                    runBtn.classList.remove('clicked');
+                    runBtn.disabled = false;
+                    progressFill.style.width = '0%';
+                    percentText.innerText = '0%';
+                    gallery.innerHTML = '';
+                    setTimeout(runAnimation, 100);
+                }, 2000);
+            }
+
+            runAnimation();
+        });
+    </script>
+</body>
+
+</html>

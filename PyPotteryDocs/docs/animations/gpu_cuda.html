@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU CUDA Icon Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .gpu-container {
+            width: 300px;
+            height: auto;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gpu-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Enhanced Fan Animation with glow */
+        .fan {
+            transform-origin: 0px 0px;
+            animation: spin 3s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.5));
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* LED Power Indicator */
+        .led-indicator {
+            animation: led-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes led-pulse {
+
+            0%,
+            100% {
+                fill: #10b981;
+                filter: drop-shadow(0 0 3px #10b981);
+            }
+
+            50% {
+                fill: #34d399;
+                filter: drop-shadow(0 0 8px #34d399);
+            }
+        }
+
+        /* Power connector glow */
+        .power-connector {
+            animation: power-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes power-glow {
+
+            0%,
+            100% {
+                fill: #f59e0b;
+            }
+
+            50% {
+                fill: #fbbf24;
+            }
+        }
+
+        /* NVIDIA brand badge pulse */
+        .nvidia-badge {
+            animation: badge-pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes badge-pulse {
+
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="gpu-container">
+        <svg viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bracket (Left) -->
+            <path d="M40 20 L40 230" stroke="#9ca3af" stroke-width="8" stroke-linecap="round" />
+            <path d="M40 20 L20 20" stroke="#9ca3af" stroke-width="8" stroke-linecap="round" />
+
+            <!-- Main Body (Shroud) -->
+            <rect x="50" y="40" width="340" height="170" rx="10" fill="white" stroke="#374151" stroke-width="6" />
+
+            <!-- Decorative Stripe / Brand Bar -->
+            <rect x="50" y="80" width="340" height="90" fill="#eff6ff" opacity="0.5" />
+
+            <!-- NVIDIA Logo/Text Area -->
+            <g class="nvidia-badge">
+                <rect x="70" y="55" width="80" height="18" rx="9" fill="#76b900" />
+                <text x="110" y="68" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white"
+                    text-anchor="middle">NVIDIA</text>
+            </g>
+
+            <!-- LED Power Indicator -->
+            <circle cx="370" cy="60" r="6" class="led-indicator" />
+
+            <!-- Decorative Vents on Right -->
+            <rect x="360" y="100" width="15" height="6" rx="2" fill="#374151" />
+            <rect x="360" y="115" width="15" height="6" rx="2" fill="#374151" />
+            <rect x="360" y="130" width="15" height="6" rx="2" fill="#374151" />
+            <rect x="360" y="145" width="15" height="6" rx="2" fill="#374151" />
+
+            <!-- PCIe Connector (Bottom) with glow -->
+            <path d="M100 210 L100 230 L280 230 L280 210" class="power-connector" stroke="#374151" stroke-width="4" />
+            <line x1="120" y1="210" x2="120" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="140" y1="210" x2="140" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="160" y1="210" x2="160" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="180" y1="210" x2="180" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="200" y1="210" x2="200" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="220" y1="210" x2="220" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="240" y1="210" x2="240" y2="230" stroke="#374151" stroke-width="2" />
+            <line x1="260" y1="210" x2="260" y2="230" stroke="#374151" stroke-width="2" />
+
+            <!-- Fan 1 (Left) -->
+            <g transform="translate(135, 125)">
+                <circle cx="0" cy="0" r="55" stroke="#374151" stroke-width="4" fill="white" />
+                <circle cx="0" cy="0" r="52" fill="rgba(37, 99, 235, 0.05)" />
+                <g class="fan">
+                    <circle cx="0" cy="0" r="10" fill="#374151" />
+                    <path d="M0 0 L0 -45 A45 45 0 0 1 25 -35 Z" fill="#2563eb" />
+                    <path d="M0 0 L25 -35 A45 45 0 0 1 42 -15 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L42 -15 A45 45 0 0 1 42 15 Z" fill="#2563eb" />
+                    <path d="M0 0 L42 15 A45 45 0 0 1 25 35 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L25 35 A45 45 0 0 1 0 45 Z" fill="#2563eb" />
+                    <path d="M0 0 L0 45 A45 45 0 0 1 -25 35 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L-25 35 A45 45 0 0 1 -42 15 Z" fill="#2563eb" />
+                    <path d="M0 0 L-42 15 A45 45 0 0 1 -42 -15 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L-42 -15 A45 45 0 0 1 -25 -35 Z" fill="#2563eb" />
+                    <path d="M0 0 L-25 -35 A45 45 0 0 1 0 -45 Z" fill="#1d4ed8" />
+                </g>
+            </g>
+
+            <!-- Fan 2 (Right) -->
+            <g transform="translate(285, 125)">
+                <circle cx="0" cy="0" r="55" stroke="#374151" stroke-width="4" fill="white" />
+                <circle cx="0" cy="0" r="52" fill="rgba(37, 99, 235, 0.05)" />
+                <g class="fan" style="animation-delay: -1.5s;">
+                    <circle cx="0" cy="0" r="10" fill="#374151" />
+                    <path d="M0 0 L0 -45 A45 45 0 0 1 25 -35 Z" fill="#2563eb" />
+                    <path d="M0 0 L25 -35 A45 45 0 0 1 42 -15 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L42 -15 A45 45 0 0 1 42 15 Z" fill="#2563eb" />
+                    <path d="M0 0 L42 15 A45 45 0 0 1 25 35 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L25 35 A45 45 0 0 1 0 45 Z" fill="#2563eb" />
+                    <path d="M0 0 L0 45 A45 45 0 0 1 -25 35 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L-25 35 A45 45 0 0 1 -42 15 Z" fill="#2563eb" />
+                    <path d="M0 0 L-42 15 A45 45 0 0 1 -42 -15 Z" fill="#1d4ed8" />
+                    <path d="M0 0 L-42 -15 A45 45 0 0 1 -25 -35 Z" fill="#2563eb" />
+                    <path d="M0 0 L-25 -35 A45 45 0 0 1 0 -45 Z" fill="#1d4ed8" />
+                </g>
+            </g>
+
+        </svg>
+    </div>
+
+    <script>
+        const container = document.querySelector('.gpu-container');
+        const fans = document.querySelectorAll('.fan');
+
+        container.addEventListener('click', () => {
+            fans.forEach(fan => {
+                fan.style.animationDuration = '0.3s';
+                setTimeout(() => {
+                    fan.style.animationDuration = '3s';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>

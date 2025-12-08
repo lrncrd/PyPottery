@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Export Animation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .window {
+            background: #f5f5f5;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 900px;
+            height: 580px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* macOS-style Header */
+        .header {
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .header-title {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .settings-panel {
+            width: 280px;
+            padding: 15px;
+            background: #fff;
+            border-right: 1px solid #dee2e6;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .settings-panel h6 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .settings-panel h6 i {
+            color: #667eea;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 0.85rem;
+            padding: 6px 10px;
+        }
+
+        .preview-area {
+            flex: 1;
+            background: linear-gradient(145deg, #e8ecef 0%, #d1d8de 100%);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .preview-paper {
+            position: relative;
+            background: white;
+            border-radius: 2px;
+            width: 320px;
+            height: 450px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.08), 0 10px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-content: flex-start;
+        }
+
+        .preview-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent #d1d8de transparent transparent;
+            z-index: 10;
+        }
+
+        .pottery-img {
+            background: #bdc3c7;
+            border-radius: 3px;
+            width: calc(33.33% - 6px);
+            height: 60px;
+        }
+
+        .btn {
+            border-radius: 6px;
+        }
+
+        .btn-success {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 29px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50px, -50px);
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 350px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-overlay.visible .modal-box {
+            transform: translateY(0);
+        }
+
+        .progress {
+            height: 25px;
+            border-radius: 6px;
+            background: #e9ecef;
+        }
+
+        .progress-bar {
+            border-radius: 6px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="window" id="appWindow">
+        <!-- macOS Header -->
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <span class="header-title">PyPotteryLayout v0.3.0</span>
+        </div>
+
+        <div class="main-content">
+            <div class="settings-panel">
+                <div>
+                    <h6><i class="bi bi-download"></i> Export</h6>
+                    <label for="exportFormat" class="form-label">Export Format</label>
+                    <select class="form-select" id="formatSelect">
+                        <option value="PDF">PDF</option>
+                        <option value="SVG">SVG</option>
+                        <option value="JPG">JPG</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">File Preview</label>
+                    <div class="p-2 bg-light border rounded text-muted small">Plate_Ceramics_2024</div>
+                </div>
+                <button class="btn btn-success w-100 mt-auto" id="generateBtn"><i class="bi bi-play-circle"></i>
+                    Generate Layout</button>
+            </div>
+
+            <div class="preview-area">
+                <div class="preview-paper">
+                    <div class="pottery-img"></div>
+                    <div class="pottery-img"></div>
+                    <div class="pottery-img"></div>
+                    <div class="pottery-img"></div>
+                    <div class="pottery-img"></div>
+                    <div class="pottery-img"></div>
+                </div>
+            </div>
+
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal-box">
+                    <div id="processingState">
+                        <h5 style="margin-bottom:15px;"><i class="bi bi-hourglass-split"></i> Processing...</h5>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressFill"
+                                style="width: 0%"></div>
+                        </div>
+                        <div class="mt-2 text-muted small">Generating SVG vectors...</div>
+                    </div>
+                    <div id="successState" style="display: none;">
+                        <div class="alert-success">
+                            <h6><i class="bi bi-check-circle"></i> Layout Generated!</h6>
+                            <p class="mb-1 small">File: <strong>layout_20241205.svg</strong></p>
+                            <p class="mb-0 small">Pages: <strong>1</strong></p>
+                        </div>
+                        <a href="#" class="btn btn-success"><i class="bi bi-download"></i> Download File</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const formatSelect = document.getElementById('formatSelect');
+        const generateBtn = document.getElementById('generateBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const progressFill = document.getElementById('progressFill');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        const appWindow = document.getElementById('appWindow');
+
+        function moveCursorTo(element, duration = 1000, delay = 0) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = appWindow.getBoundingClientRect();
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+                    cursor.style.transform = `translate(${x}px, ${y}px)`;
+                    setTimeout(resolve, duration);
+                }, delay);
+            });
+        }
+
+        async function runAnimation() {
+            formatSelect.value = 'PDF';
+            modalOverlay.classList.remove('visible');
+            processingState.style.display = 'block';
+            successState.style.display = 'none';
+            progressFill.style.width = '0%';
+
+            await moveCursorTo(formatSelect, 800, 500);
+            await new Promise(r => setTimeout(r, 300));
+            formatSelect.value = 'SVG';
+
+            await moveCursorTo(generateBtn, 800, 300);
+            generateBtn.style.transform = 'scale(0.95)';
+            await new Promise(r => setTimeout(r, 150));
+            generateBtn.style.transform = 'scale(1)';
+
+            modalOverlay.classList.add('visible');
+            for (let i = 0; i <= 100; i += 5) {
+                progressFill.style.width = i + '%';
+                await new Promise(r => setTimeout(r, 40));
+            }
+
+            await new Promise(r => setTimeout(r, 200));
+            processingState.style.display = 'none';
+            successState.style.display = 'block';
+
+            cursor.style.transform = 'translate(950px, 650px)';
+        }
+
+        setInterval(runAnimation, 10000);
+        setTimeout(runAnimation, 100);
+    </script>
+</body>
+
+</html>
