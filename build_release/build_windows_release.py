@@ -180,12 +180,8 @@ def create_release_package():
     launcher_bat.write_text(r'''@echo off
 title PyPottery Suite Launcher
 cd /d "%~dp0"
-python\python.exe -c "import sys; sys.path.insert(0, '.'); from launcher.gui import main; main()"
-if errorlevel 1 (
-    echo.
-    echo An error occurred. Press any key to exit...
-    pause > nul
-)
+REM Use pythonw.exe for windowless GUI launch, START so this window closes immediately
+start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launcher.gui import main; main()"
 ''', encoding='utf-8')
     print("   ✓ Created PyPottery.bat")
     
@@ -212,7 +208,7 @@ if errorlevel 1 (
     # 6. Create zip
     print("\n📦 Step 6: Creating distribution package...")
     
-    zip_name = "PyPottery-Launcher-Windows-v1.0.0"
+    zip_name = "PyPottery-Launcher-Windows-v1.0.1"
     zip_path = release_dir / f"{zip_name}.zip"
     
     if zip_path.exists():

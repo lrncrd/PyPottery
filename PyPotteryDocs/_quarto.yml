@@ -54,6 +54,7 @@ website:
           - pypotterylens/installation.qmd
           - pypotterylens/usage.qmd
           - pypotterylens/version_history.qmd
+      - suite_version.qmd
       - contact.qmd
       - acknowledgment.qmd
   page-footer:

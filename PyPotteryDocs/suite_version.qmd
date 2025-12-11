@@ -1,0 +1,20 @@
+---
+title: "Version History"
+subtitle: "Development timeline and changes"
+format: html
+---
+
+## Latest Release
+
+### Version 1.0.1 (11/12/2025)
+
+- Minor bug fixes:
+    - Fixed issue with PyPotteryLens not starting
+    - Reduced update checker cache duration to 2 hours
+
+
+## Version History
+
+### Version 1.0.0 (December 2025)
+
+- Initial release

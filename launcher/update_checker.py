@@ -45,7 +45,7 @@ class UpdateChecker:
     """
     
     GITHUB_API_BASE = "https://api.github.com/repos"
-    CACHE_DURATION_HOURS = 6  # How long to cache release info
+    CACHE_DURATION_HOURS = 2  # How long to cache release info
     
     def __init__(self, cache_dir: Optional[Path] = None):
         self.cache_dir = cache_dir or Path.home() / ".pypottery" / "cache"

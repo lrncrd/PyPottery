@@ -695,7 +695,7 @@ class PyPotteryLauncher(ctk.CTk):
     """Main launcher application window"""
     
     APP_NAME = "PyPottery Suite Launcher"
-    VERSION = "1.0.0"
+    VERSION = "1.0.1"
     
     # Color palette
     GRADIENT_START = "#667eea"

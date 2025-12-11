@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white" alt="Python 3.12">
   <img src="https://img.shields.io/badge/License-Apache 2.0-green" alt="Open Source">
   <img src="https://img.shields.io/badge/Platform-All-purple?" alt="All">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue.svg">
+  <img src="https://img.shields.io/badge/version-1.0.1-blue.svg">
   <img src="https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-yellow.svg">
 </p>
 

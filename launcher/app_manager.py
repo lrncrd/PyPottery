@@ -401,22 +401,26 @@ class AppManager:
         try:
             if self.is_windows:
                 # Windows: use CREATE_NEW_CONSOLE for separate window
+                # Don't pipe stdout/stderr when using CREATE_NEW_CONSOLE - the console handles I/O
+                # This prevents buffer blocking during long operations like model downloads
                 process = subprocess.Popen(
                     [str(self.python_executable), str(script_path)],
                     cwd=str(app_path),
                     env=env,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
+                    stdout=None,  # Let the console window handle output
+                    stderr=None,
                     creationflags=subprocess.CREATE_NEW_CONSOLE
                 )
             else:
                 # Unix: detach from terminal
+                # Don't pipe stdout/stderr - prevents buffer blocking during long operations
+                # Use DEVNULL or let the terminal handle output naturally
                 process = subprocess.Popen(
                     [str(self.python_executable), str(script_path)],
                     cwd=str(app_path),
                     env=env,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
                     start_new_session=True
                 )
             

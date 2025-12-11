@@ -43,8 +43,6 @@ Download the PyPottery Suite Launcher for your operating system:
 | **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
 -->
 
-### 🍎 macOS & 🐧 Linux - Coming Soon!
-
 
 ## Installation
 
@@ -79,6 +77,10 @@ Download the PyPottery Suite Launcher for your operating system:
 The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
 :::
 
+::: {.callout-warning}
+## Don't run on Download
+Download folder doesn't allow running the app. Move it to a different location (e.g, Desktop or Applications).
+:::
 
 ### Linux
 

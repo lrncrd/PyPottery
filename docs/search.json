@@ -40,228 +40,284 @@
     ]
   },
   {
-    "objectID": "suite_installation.html",
-    "href": "suite_installation.html",
-    "title": "Suite Installation",
+    "objectID": "suite_version.html",
+    "href": "suite_version.html",
+    "title": "Version History",
     "section": "",
-    "text": "The easiest way to get started with PyPottery! Download the pre-packaged launcher \n    with everything included - no Python installation required.",
+    "text": "Minor bug fixes:\n\nFixed issue with PyPotteryLens not starting\nReduced update checker cache duration to 2 hours",
     "crumbs": [
-      "Suite Installation"
+      "Version History"
     ]
   },
   {
-    "objectID": "suite_installation.html#quick-start",
-    "href": "suite_installation.html#quick-start",
-    "title": "Suite Installation",
-    "section": "Quick Start",
-    "text": "Quick Start\nThe PyPottery Suite Launcher is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.\n\n\n\n\n\n\nNo Technical Knowledge Required\n\n\n\nThe launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!",
+    "objectID": "suite_version.html#latest-release",
+    "href": "suite_version.html#latest-release",
+    "title": "Version History",
+    "section": "",
+    "text": "Minor bug fixes:\n\nFixed issue with PyPotteryLens not starting\nReduced update checker cache duration to 2 hours",
     "crumbs": [
-      "Suite Installation"
+      "Version History"
     ]
   },
   {
-    "objectID": "suite_installation.html#download",
-    "href": "suite_installation.html#download",
-    "title": "Suite Installation",
-    "section": "Download",
-    "text": "Download\nDownload the PyPottery Suite Launcher for your operating system:\n\n  \n\n\n\n\nPlatform\nDownload\nSize\n\n\n\n\nWindows 10/11 (64-bit)\nPyPottery-Launcher-Windows.zip\n~52 MB\n\n\nmacOS Intel (x86_64)\nPyPottery-Launcher-macos-x86_64.zip\n~22 MB\n\n\nmacOS Apple Silicon (M1/M2/M3)\nPyPottery-Launcher-macos-arm64.zip\n~22 MB\n\n\nLinux (x86_64)\nComing Soon\nComing Soon\n\n\n\n\n\n🍎 macOS & 🐧 Linux - Coming Soon!",
+    "objectID": "suite_version.html#version-history",
+    "href": "suite_version.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 1.0.0 (December 2025)\n\nInitial release",
     "crumbs": [
-      "Suite Installation"
+      "Version History"
     ]
   },
   {
-    "objectID": "suite_installation.html#installation",
-    "href": "suite_installation.html#installation",
-    "title": "Suite Installation",
-    "section": "Installation",
-    "text": "Installation\n\nWindows\n\nDownload the Windows package from the link above\nExtract the ZIP file to a folder of your choice (e.g., C:\\PyPottery)\nRun PyPottery.bat by double-clicking it\n\n\n  \n    💡\n    Tip\n  \n  \n    You can create a desktop shortcut to PyPottery.bat for quick access!\n  \n\n\n\nmacOS\n\nDownload the appropriate package for your Mac:\n\nIntel Mac: macos-x86_64 version\nApple Silicon (M1/M2/M3): macos-arm64 version\n\nExtract the ZIP file\nDouble-click on the PyPottery Launcher.app file to launch the app\n\n\n\n\n\n\n\nFirst Run on macOS\n\n\n\nThe first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.\n\n\n\n\nLinux\n\n  \n  Linux of the installer is coming soon! Check back later.",
+    "objectID": "requirements.html",
+    "href": "requirements.html",
+    "title": "Requirements",
+    "section": "",
+    "text": "All PyPottery tools are designed to work independently, yet they share a unified set of dependencies. \n    This modular approach means you only need to install once and can use any combination of tools seamlessly.",
     "crumbs": [
-      "Suite Installation"
+      "Requirements"
     ]
   },
   {
-    "objectID": "suite_installation.html#using-the-launcher",
-    "href": "suite_installation.html#using-the-launcher",
-    "title": "Suite Installation",
-    "section": "Using the Launcher",
-    "text": "Using the Launcher\nOnce the launcher opens, you’ll see a clean interface with all available PyPottery applications.\n\n  \n\n\n  🎯 Launcher Features\n  \n    \n      📥 One-Click Download\n      Download apps directly from the launcher\n    \n    \n      🔄 Auto Updates\n      Check for and install updates easily\n    \n    \n      ⚙️ Environment Setup\n      Automatic Python environment configuration\n    \n    \n      🖥️ Hardware Detection\n      Detects GPU for optimal performance\n    \n  \n\n\nStep 1: Configure Environment\nThe first time you use the launcher, click “Configure Environment” to set up the Python environment. This installs all required dependencies.\n\n  ⏱️ First Setup\n  \n    Environment configuration may take 5-10 minutes depending on your internet connection. \n    The progress bar shows the current status.\n  \n\n\n\nStep 2: Download Apps\nClick the download button (⬇️) next to any app to download it. Available apps:\n\n\n\nApp\nDescription\n\n\n\n\nPyPotteryInk\nAI-based inking of pottery drawings\n\n\nPyPotteryLayout\nCreate publication-ready layouts\n\n\nPyPotteryLens\nData collection from PDF documents\n\n\n\n\n\n\n\nStep 3: Launch Apps\nOnce an app is downloaded, click the “Launch” button to start it. The app will open in your default web browser.\n\n  \n    ℹ️\n    How Apps Work\n  \n  \n    PyPottery apps run as local web servers. When you click \"Launch\", a browser window opens \n    with the app interface. The launcher shows the running status and allows you to stop the app.",
+    "objectID": "requirements.html#core-technologies",
+    "href": "requirements.html#core-technologies",
+    "title": "Requirements",
+    "section": "Core Technologies",
+    "text": "Core Technologies\nThe PyPottery ecosystem is built on these foundational technologies:\n\n\n  \n  \n    \n      🔥\n      \n        PyTorch\n        v2.9.0+cu126\n      \n    \n    \n      The deep learning framework powering all AI capabilities. Includes CUDA 12.6 support for GPU acceleration.\n    \n    \n      Neural network training & inference\n      GPU-accelerated tensor operations\n      TorchVision for image processing\n    \n  \n\n  \n  \n    \n      🤗\n      \n        Transformers\n        v4.57.1\n      \n    \n    \n      Hugging Face's library for state-of-the-art NLP and vision models. Powers OCR and text understanding.\n    \n    \n      Pre-trained model access\n      Text recognition (OCR)\n      Few-shot learning capabilities\n    \n  \n\n  \n  \n    \n      👁️\n      \n        OpenCV\n        v4.12.0\n      \n    \n    \n      Computer vision library for image processing, manipulation, and analysis tasks.\n    \n    \n      Image reading & writing\n      Morphological operations\n      Contour detection & analysis\n    \n  \n\n  \n  \n    \n      🎯\n      \n        Ultralytics YOLO\n        v8.3.223\n      \n    \n    \n      State-of-the-art object detection framework for identifying pottery drawings in documents.\n    \n    \n      Real-time object detection\n      Instance segmentation\n      Custom model training\n    \n  \n\n  \n  \n    \n      ✂️\n      \n        SAM2\n        v1.1.0\n      \n    \n    \n      Meta's Segment Anything Model for precise image segmentation and mask generation.\n    \n    \n      Zero-shot segmentation\n      Interactive mask editing\n      High-quality boundaries\n    \n  \n\n  \n  \n    \n      🎨\n      \n        Diffusers\n        v0.35.2\n      \n    \n    \n      Hugging Face's diffusion models library for image enhancement and restoration.\n    \n    \n      Image super-resolution\n      Drawing enhancement\n      Noise reduction",
     "crumbs": [
-      "Suite Installation"
+      "Requirements"
     ]
   },
   {
-    "objectID": "suite_installation.html#troubleshooting",
-    "href": "suite_installation.html#troubleshooting",
-    "title": "Suite Installation",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nGeneral Troubleshooting during the installation\nRemove the pypottery_env folder and try again.\n\n\nWindows: “Windows protected your PC” message\nThis is normal for new applications. Click “More info” → “Run anyway”.\n\n\n\nApps not downloading\nCheck your internet connection and firewall settings. The launcher downloads apps from GitHub.\n\n\nEnvironment configuration fails\nTry running the launcher as administrator (Windows).",
+    "objectID": "requirements.html#data-processing",
+    "href": "requirements.html#data-processing",
+    "title": "Requirements",
+    "section": "Data Processing",
+    "text": "Data Processing\n\n\n  \n  \n    \n      🐼\n      \n        Pandas\n        v2.3.3\n      \n    \n    \n      Powerful data manipulation and analysis library for structured data handling.\n    \n    \n      DataFrame operations\n      Data cleaning & transformation\n      Excel/CSV export\n    \n  \n\n  \n  \n    \n      ⚡\n      \n        Polars\n        v1.35.1\n      \n    \n    \n      Lightning-fast DataFrame library for high-performance data processing.\n    \n    \n      Parallel processing\n      Memory efficient\n      Lazy evaluation\n    \n  \n\n  \n  \n    \n      📄\n      \n        PyMuPDF\n        v1.26.5\n      \n    \n    \n      High-performance PDF processing library for extracting images and text from documents.\n    \n    \n      PDF page rendering\n      Image extraction\n      Text extraction",
     "crumbs": [
-      "Suite Installation"
+      "Requirements"
     ]
   },
   {
-    "objectID": "suite_installation.html#alternative-manual-installation",
-    "href": "suite_installation.html#alternative-manual-installation",
-    "title": "Suite Installation",
-    "section": "Alternative: Manual Installation",
-    "text": "Alternative: Manual Installation\nIf you prefer to install PyPottery tools manually or need more control, see the individual installation guides:\n\n\nPyPotteryInk Installation \nPyPotteryLayout Installation\nPyPotteryLens Installation\n\n\n  Ready to Start?\n  Download the launcher and begin digitizing your pottery collection!\n  \n    📥 Download PyPottery Launcher\n  \n\n\n\n\n  \n    \n    \n    ☕\n    Support PyPottery!\n    \n      PyPottery is a free and open-source project built for the archaeological community. \n      If you find it useful, please consider supporting its development!\n    \n    \n    \n    \n      \n    \n    \n    \n    \n    \n    \n    \n      \n        📥 Continue to Download\n      \n      \n        Maybe Later\n      \n    \n    \n    \n      Every contribution helps keep this project alive! 🙏",
+    "objectID": "requirements.html#visualization-export",
+    "href": "requirements.html#visualization-export",
+    "title": "Requirements",
+    "section": "Visualization & Export",
+    "text": "Visualization & Export\n\n\n  \n  \n    \n      📊\n      \n        Matplotlib\n        v3.10.7\n      \n    \n    \n      Comprehensive plotting library for creating static, animated, and interactive visualizations.\n    \n    \n      Publication-quality figures\n      Image display & annotation\n      Customizable layouts\n    \n  \n\n  \n  \n    \n      📑\n      \n        ReportLab\n        v4.4.4\n      \n    \n    \n      PDF generation toolkit for creating professional publication layouts and plates.\n    \n    \n      PDF document creation\n      Vector graphics support\n      Layout automation\n    \n  \n\n  \n  \n    \n      ✏️\n      \n        SVGWrite\n        v1.4.3\n      \n    \n    \n      SVG generation library for creating scalable vector graphics from traced drawings.\n    \n    \n      Vector output generation\n      Path manipulation\n      Scalable exports",
     "crumbs": [
-      "Suite Installation"
+      "Requirements"
     ]
   },
   {
-    "objectID": "pypotteryscan/installation.html",
-    "href": "pypotteryscan/installation.html",
-    "title": "Installation",
+    "objectID": "requirements.html#system-requirements",
+    "href": "requirements.html#system-requirements",
+    "title": "Requirements",
+    "section": "System Requirements",
+    "text": "System Requirements\n\n\n\n\n\n\nHardware Recommendations\n\n\n\n\nGPU: NVIDIA GPU with CUDA 12.6 support (8GB+ VRAM recommended)\nRAM: 16GB minimum, 32GB recommended for large batch processing\n\nStorage: SSD recommended for faster model loading\n\n\n\n\n\n\n\n\n\nPython Version\n\n\n\nPyPottery requires Python 3.12. We recommend using a virtual environment to manage dependencies.\n\n\n\n  📥 Quick Installation\nSee Suite Installation",
+    "crumbs": [
+      "Requirements"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/usage.html",
+    "href": "pypotteryscan/usage.html",
+    "title": "Using PyPotteryScan",
     "section": "",
     "text": "version 0.2.0"
   },
   {
-    "objectID": "pypotteryscan/installation.html#requirements",
-    "href": "pypotteryscan/installation.html#requirements",
-    "title": "Installation",
-    "section": "Requirements",
-    "text": "Requirements\nBefore installing PyPotteryScan, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support"
+    "objectID": "pypotteryscan/usage.html#creating-a-new-project",
+    "href": "pypotteryscan/usage.html#creating-a-new-project",
+    "title": "Using PyPotteryScan",
+    "section": "Creating a New Project",
+    "text": "Creating a New Project\n\nClick the “New Project” button.\nEnter a name for your project.\n(Optional) Add a description.\nClick “Create”. You can create a new project by clicking on ➕ New Project or ➕ Create First Project if you don’t have any projects yet (Figure 1)\n\n\n\n\n\n\n\nFigure 1\n\n\n\nOnce the project is created and information such as name and description is added, the program moves to the Load tab where you can select the folder containing the images to process (Figure 2).\n\n\n\n\n\n\nFigure 2\n\n\n\nA loading screen will show the progress of the image import (Figure 3).\n\n\n\n\n\n\nFigure 3\n\n\n\nThe imported images will be visible in the Load tab (Figure 4).\n\n\n\n\n\n\nFigure 4\n\n\n\nClicking on Start Annotation → will start the scanning process and take you to the Annotate tab.\n\nProject Structure\nFor reference, PyPotteryScan projects are stored in the projects directory with the following structure:\nproject_id/\n├── original_images/    # Source scans\n├── thumbnails/         # Cached thumbnails\n├── annotations/        # JSON annotation files\n├── cropped_drawings/   # Intermediate crops\n├── cleaned_drawings/   # Cleaned images\n├── ocr_results/        # OCR JSON data\n├── exports/            # Export history\n├── fewshot_examples/   # Saved training examples\n└── project.json        # Project metadata"
   },
   {
-    "objectID": "pypotteryscan/installation.html#automated-installation",
-    "href": "pypotteryscan/installation.html#automated-installation",
-    "title": "Installation",
-    "section": "Automated Installation",
-    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryScan_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5002\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryScan_UNIX.sh\n\nRun the script:\n\n./PyPotteryScan_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5002\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal."
+    "objectID": "pypotteryscan/usage.html#gui-elements",
+    "href": "pypotteryscan/usage.html#gui-elements",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nThe tab is dominated by the canvas where the plates are visualized. Above it, the number of plates and navigation buttons are indicated (Figure 5). The + Drawing button allows you to create a new annotation, while the Clear button deletes all annotations created on the plate.\nOn the right, there are text boxes indicating information related to the plate such as name (filename), a free field for context, and notes. The 💾 Save Metadata button allows you to save the inserted information.\nBelow, there are summary boxes for the created annotations.\nThe Finish & Process OCR → button allows you to save the annotations and proceed to the Process OCR tab.\n\n\n\n\n\n\nFigure 5"
   },
   {
-    "objectID": "pypotteryscan/installation.html#manual-installation",
-    "href": "pypotteryscan/installation.html#manual-installation",
-    "title": "Installation",
-    "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5002"
+    "objectID": "pypotteryscan/usage.html#creating-annotations",
+    "href": "pypotteryscan/usage.html#creating-annotations",
+    "title": "Using PyPotteryScan",
+    "section": "Creating Annotations",
+    "text": "Creating Annotations\nTo create a new annotation, click on the + Drawing button. A window will alert the user to select a rectangular area on the plate (Figure 6).\nAnnotations are of two types: “Drawing” and “Text”. The first is used to select areas with drawings, the second to select areas with text.\nOnce the selection is complete, the selected area will be highlighted and added to the list of annotations.\n\n\n\n\n\n\nFigure 6\n\n\n\nInside Drawings, it is possible to add text. A window will alert the user to insert the text associated with the drawing.\nTo delete a text annotation, you can click on the ❌ button next to the annotation in the list (Figure 7).\n\n\n\n\n\n\nFigure 7\n\n\n\nTo add a new image annotation, click again on the + Drawing button and repeat the process.\nIt is possible to add multiple text annotations for each drawing by clicking again on the + Text button inside the drawing annotation (Figure 8).\n\n\n\n\n\n\nFigure 8\n\n\n\nClicking on Finish & Process OCR → will save the annotations and move to the Process OCR tab."
   },
   {
-    "objectID": "pypotteryscan/installation.html#installation-verification",
-    "href": "pypotteryscan/installation.html#installation-verification",
-    "title": "Installation",
-    "section": "Installation Verification",
-    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5002 should display the PyPotteryScan interface"
+    "objectID": "pypotteryscan/usage.html#gui-elements-1",
+    "href": "pypotteryscan/usage.html#gui-elements-1",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nIn the center of the tab is the canvas with the extracted image. Above are the navigation buttons and the total number of drawings. On the right are some commands for cleaning the image (Figure 11).\nImmediately above the canvas are text boxes showing information related to the drawing, and a slider for the eraser size.\nBelow the canvas is a gallery showing all images.\n\n\n\n\n\n\nFigure 11"
   },
   {
-    "objectID": "pypotteryscan/installation.html#troubleshooting",
-    "href": "pypotteryscan/installation.html#troubleshooting",
-    "title": "Installation",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5002 already in use\nIf port 5002 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file"
+    "objectID": "pypotteryscan/usage.html#cleaning-tools",
+    "href": "pypotteryscan/usage.html#cleaning-tools",
+    "title": "Using PyPotteryScan",
+    "section": "Cleaning Tools",
+    "text": "Cleaning Tools\nTo clean an image, an eraser is available which can be adjusted in size via the slider above the canvas. In the example, the number 1 present in the image has been removed (Figure 12).\n\n\n\n\n\n\nFigure 12\n\n\n\nClick on the navigation button, as well as on ✓ Mark as Clean, or click on the preview in the gallery to save the cleaned image and move to the next drawing.\nA green checkmark will indicate that the image has been manually reviewed (Figure 13).\n\n\n\n\n\n\nFigure 13\n\n\n\nClick on Continue to Review Texts → to save the cleaned images and proceed to the Review Texts tab.\n\n\n\n\n\n\nImportant\n\n\n\nAt this stage, eraser can’t show a brush preview on hover. The feature will be added in future releases."
   },
   {
-    "objectID": "pypotteryscan/installation.html#updating",
-    "href": "pypotteryscan/installation.html#updating",
-    "title": "Installation",
-    "section": "Updating",
-    "text": "Updating\nTo update PyPotteryScan to the latest version:\n\nDownload the latest version of the code\nActivate the virtual environment\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade"
+    "objectID": "pypotteryscan/usage.html#review-texts",
+    "href": "pypotteryscan/usage.html#review-texts",
+    "title": "Using PyPotteryScan",
+    "section": "Review Texts",
+    "text": "Review Texts\nThis tab allows you to review and correct the text extracted via OCR (Figure 14).\n\n\n\n\n\n\n\n\nFigure 14\n\n\n\nThe interface is extremely simple: a series of bipartite records where on the left we find the image of the text area and on the right the extracted text in an editable text box. Just write inside the box to correct the text.\nTo see the image better, you can hover the mouse over the image to enlarge it; clicking on the image will open a modal window with the enlarged image {Figure 15}.\n\n\n\n\n\n\nFigure 15\n\n\n\nClick on Continue to Export → to save changes and proceed to the Export tab."
   },
   {
-    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
-    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
-    "title": "Version History",
-    "section": "v0.2.0 (Initial Release) - (December 2025)",
-    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan."
+    "objectID": "pypotteryscan/usage.html#exported-folder-structure",
+    "href": "pypotteryscan/usage.html#exported-folder-structure",
+    "title": "Using PyPotteryScan",
+    "section": "Exported Folder Structure",
+    "text": "Exported Folder Structure\nInside the exported folder, you will find the following structure:\n[Selected Folder]/\n├── images/                                 # Folder containing cropped drawings\n│   ├── {prefix}_001.jpg                    # Individual drawing images\n│   ├── {prefix}_002.jpg\n│   └── ...\n├── {prefix}_data_{timestamp}.xlsx          # Excel file with Metadata and OCR results\n└── {prefix}_ml_training_{timestamp}.xlsx   # Excel file with Bounding Box data for ML\nThe Data Excel contains:\n\nfilename: Name of the cropped image file\noriginal_image: Source plate filename\ndrawing_number: ID of the drawing\ntable_name, context, notes: Metadata\nocr_result: Raw OCR text\nocr_corrected: Manually corrected text\n\nThe ML Training Excel contains bounding box coordinates for vessels and text areas, useful for training machine learning models."
   },
   {
-    "objectID": "pypotterylens/installation.html",
-    "href": "pypotterylens/installation.html",
-    "title": "Installation",
+    "objectID": "pypotteryscan/usage.html#gui-elements-2",
+    "href": "pypotteryscan/usage.html#gui-elements-2",
+    "title": "Using PyPotteryScan",
+    "section": "GUI Elements",
+    "text": "GUI Elements\nOn the left of the tab are Available fields representing the fields that can be identified in the text. The + Add Field button allows you to add a new custom field (Figure 17).\nOn the right are a series of commands that allow you to configure the parser.\n\n\n\n\n\n\nFigure 17\n\n\n\nThe 📂 Select Files button allows you to select the .xlsx file exported from the Export tab. The model will look for an “ocr_corrected” column.\nThe content of the “ocr_corrected” column will be displayed in the text box. By selecting the text, you can associate the available fields (Figure 18).\n\n\n\n\n\n\nFigure 18\n\n\n\nClicking on ➕ Add Example will allow you to add an example of association between text and fields (Figure 19).\n\n\n\n\n\n\nFigure 19\n\n\n\nClicking on 🚀 Run Parsing will start the parsing process. A progress bar will show the advancement of the process. Once processing is finished, a dialog window will allow you to save the exported file in .xlsx format (Figure 20).\n\n\n\n\n\n\nFigure 20"
+  },
+  {
+    "objectID": "pypotteryscan/usage.html#load-a-project",
+    "href": "pypotteryscan/usage.html#load-a-project",
+    "title": "Using PyPotteryScan",
+    "section": "Load a Project",
+    "text": "Load a Project\nIf you want to load an existing project, you can do so from the initial screen by clicking on 📂 Load Project (Figure 21).\n\n\n\n\n\n\nFigure 21\n\n\n\nEach project will be listed as a card, with information such as name, description, creation date, and last modification date, as well as the number of uploaded images and created annotations, along with a progress bar indicating the project’s completion status.\nThe 🗑️ (trash can) icon next to each project allows you to delete the selected project.\n\n\n\n\n\n\nCaution\n\n\n\nCaution: Deleting a project is irreversible and will permanently remove all associated data.\n\n\nOpening a project allows you to resume work exactly where it was left off. Even if the Load tab is opened, you will be able to navigate between other tabs to complete the workflow (Figure 22).\n\n\n\n\n\n\nFigure 22\n\n\n\nThe Load table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the Annotate tab on that specific image."
+  },
+  {
+    "objectID": "pypotteryscan/index.html",
+    "href": "pypotteryscan/index.html",
+    "title": "Introduction",
     "section": "",
-    "text": "version 0.1.0",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
+    "text": "version 0.2.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU (Not Supported)\n      \n    \n\n    \n    \n      \n      \n        CUDA (Supported)\n      \n    \n\n    \n    \n      \n      \n        MPS (Coming Soon)\nPyPotteryScan is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data."
   },
   {
-    "objectID": "pypotterylens/installation.html#requirements",
-    "href": "pypotterylens/installation.html#requirements",
-    "title": "Installation",
-    "section": "Requirements",
-    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\n\n\n\n\n\n\n\n🚀 Easier Installation Available!\n\n\n\nWe recommend using the PyPottery Suite Launcher for a simplified installation experience. The launcher handles all dependencies automatically and lets you manage all PyPottery tools from a single interface.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
+    "objectID": "pypotteryscan/index.html#key-features",
+    "href": "pypotteryscan/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n✏️ Annotation & OCR: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.\n🧹 Image Cleaning: Integrated tools to clean and refine extracted drawing images.\n📝 Data Review & Parsing: Verify OCR results and use the Few-Shot Parser (LLM) to structure free text into data fields.\n📦 Structured Export: Export everything into organized folders with Excel reports for easy analysis."
   },
   {
-    "objectID": "pypotterylens/installation.html#automated-installation",
-    "href": "pypotterylens/installation.html#automated-installation",
-    "title": "Installation",
-    "section": "Automated Installation",
-    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLens_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLens_UNIX.sh\n\nRun the script:\n\n./PyPotteryLens_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
+    "objectID": "pypotteryscan/index.html#contributors",
+    "href": "pypotteryscan/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli"
   },
   {
-    "objectID": "pypotterylens/installation.html#manual-installation",
-    "href": "pypotterylens/installation.html#manual-installation",
-    "title": "Installation",
-    "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#installation-verification",
-    "href": "pypotterylens/installation.html#installation-verification",
-    "title": "Installation",
-    "section": "Installation Verification",
-    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at the indicated URL should display the PyPotteryLens interface",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/installation.html#troubleshooting",
-    "href": "pypotterylens/installation.html#troubleshooting",
-    "title": "Installation",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues",
-    "crumbs": [
-      "PyPotteryLens",
-      "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/version_history.html",
-    "href": "pypotterylens/version_history.html",
-    "title": "Version History",
+    "objectID": "pypotterylens/usage.html",
+    "href": "pypotterylens/usage.html",
+    "title": "Using PyPotteryLens",
     "section": "",
-    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
+    "text": "version 0.2.0",
     "crumbs": [
       "PyPotteryLens",
-      "Version History"
+      "Using PyPotteryLens"
     ]
   },
   {
-    "objectID": "pypotterylens/version_history.html#latest-release",
-    "href": "pypotterylens/version_history.html#latest-release",
-    "title": "Version History",
+    "objectID": "pypotterylens/usage.html#project-manager",
+    "href": "pypotterylens/usage.html#project-manager",
+    "title": "Using PyPotteryLens",
+    "section": "Project Manager",
+    "text": "Project Manager\nLike other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#pdf-document-processing",
+    "href": "pypotterylens/usage.html#pdf-document-processing",
+    "title": "Using PyPotteryLens",
+    "section": "PDF Document Processing",
+    "text": "PDF Document Processing\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF to current project will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n \n\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#apply-model",
+    "href": "pypotterylens/usage.html#apply-model",
+    "title": "Using PyPotteryLens",
+    "section": "Apply Model",
+    "text": "Apply Model\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\n\nGUI Layout\nThe GUI is divided into two parts:\n\nRight Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.\nLeft Side: Contains the model parameters.\n\n\n\nParameters\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters:\n\nConfidence: The confidence threshold for the model.\nKernel size: The size of the kernel for the post-processing operations.\nIterations: The number of iterations for the post-processing operations.\n\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\n\n\n\n\n\n\nNote\n\n\n\nThe results of applying different Kernel size and Iterations are shown. \n\n\nOnce you click on 🚀 Apply Model to Project, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#review-annotations",
+    "href": "pypotterylens/usage.html#review-annotations",
+    "title": "Using PyPotteryLens",
+    "section": "Review Annotations",
+    "text": "Review Annotations\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list:\n\nGreen Checkmark (✔️): Images where the model has identified vases.\nWhite Dot (•): Images where the model has not recognized any vases.\n\n\nEditing Masks\nYou can modify the masks identified by the model using the buttons below the canvas:\n\n🖌️ Brush: To draw new masks.\n🧹 Eraser: To delete existing masks.\n🗑️ Clear: To delete all masks.\n\nNew masks will appear in transparent red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on 💾 Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on 📤 Extract Cards.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#tabular-information",
+    "href": "pypotterylens/usage.html#tabular-information",
+    "title": "Using PyPotteryLens",
+    "section": "Tabular Information",
+    "text": "Tabular Information\nThis tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click ➕ Add Column. Once the information is entered, you can click on 👁️ Mark as Reviewed. The inserted columns are persistent across the project’s images.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#post-processing",
+    "href": "pypotterylens/usage.html#post-processing",
+    "title": "Using PyPotteryLens",
+    "section": "Post Processing",
+    "text": "Post Processing\nFinally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\nGUI Layout\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\nWorkflow\nTo start post-processing, click on 🔍 Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on 📦 Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/index.html",
+    "href": "pypotterylens/index.html",
+    "title": "Introduction",
     "section": "",
-    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
+    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.",
     "crumbs": [
       "PyPotteryLens",
-      "Version History"
+      "Introduction"
     ]
   },
   {
-    "objectID": "pypotterylens/version_history.html#version-history",
-    "href": "pypotterylens/version_history.html#version-history",
-    "title": "Version History",
-    "section": "Version History",
-    "text": "Version History\n\nVersion 0.1.3 (August 2025)\nKey Features:\n\nMinor bug fixes and performance improvements\n\n\n\nVersion 0.1.0 (April 2025)\nKey Features:\n\nInitial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "objectID": "pypotterylens/index.html#key-features",
+    "href": "pypotterylens/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
     "crumbs": [
       "PyPotteryLens",
-      "Version History"
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/index.html#contributors",
+    "href": "pypotterylens/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
+    "crumbs": [
+      "PyPotteryLens",
+      "Introduction"
     ]
   },
   {
@@ -309,13 +365,14 @@
     ]
   },
   {
-    "objectID": "intro.html",
-    "href": "intro.html",
-    "title": "PyPottery",
+    "objectID": "pypotteryink/usage.html",
+    "href": "pypotteryink/usage.html",
+    "title": "Using PyPotteryInk",
     "section": "",
-    "text": "🏺 A Complete Toolkit for Digital Pottery Analysis\n  \n    PyPottery is a collection of specialized software tools designed for archaeologists and researchers \n    working with pottery documentation. From scanning and digitizing plates to AI-powered image enhancement \n    and layout generation, we've got you covered.\n  \n\n\n\n\n\n\n\n  \n  \n    \n      \n      \n        PyPotteryInk\n        v2.0.0\n      \n    \n    \n      A specialized tool for inking pottery drawings. It enables diagnostic analysis, preprocessing, and batch processing of archaeological illustrations.\n    \n    \n      Image Inking in few seconds\n      All hardware compatibility\n      Preprocessing, batch processing and model diagnostic\n      Pretrained models available\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    \n      \n      \n        PyPotteryLens\n        v0.2.0\n      \n    \n    \n      Extract and process pottery images from PDF documents. Apply computer vision models to identify drawings and structure data for analysis.\n    \n    \n      PDF to image conversion\n      Computer vision model application\n      Annotation review & editing\n      Standardized image export\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n\n\n  \n  \n    \n      \n      \n        PyPotteryLayout\n      \n    \n    \n      Create publication-ready pottery plate layouts automatically. Arrange multiple drawings with consistent scaling and professional formatting.\n    \n    \n      Automatic layout generation\n      Consistent scaling system\n      Publication-ready exports\n      SVG export for further editing\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n\n\n\n\n  📦 Open Source on GitHub\n  \n    All PyPottery tools are open source and available on GitHub. Contributions are welcome!\n  \n  \n    \n    View on GitHub",
+    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files:\n\nMontale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model)\nCimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\n\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
     "crumbs": [
-      "PyPottery"
+      "PyPotteryInk",
+      "Using PyPotteryInk"
     ]
   },
   {
@@ -393,206 +450,6 @@
     "crumbs": [
       "PyPotteryInk",
       "Installation"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/model_zoo.html",
-    "href": "pypotteryink/model_zoo.html",
-    "title": "PyPotteryInk Model Zoo",
-    "section": "",
-    "text": "version 2.0.0",
-    "crumbs": [
-      "PyPotteryInk",
-      "PyPotteryInk Model Zoo"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/model_zoo.html#overview",
-    "href": "pypotteryink/model_zoo.html#overview",
-    "title": "PyPotteryInk Model Zoo",
-    "section": "Overview",
-    "text": "Overview\nThis page lists the available pre-trained models for PyPotteryInk. Each model is show specific pros and cons. You can use these models directly or fine-tune them for your specific needs.",
-    "crumbs": [
-      "PyPotteryInk",
-      "PyPotteryInk Model Zoo"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/model_zoo.html#benchmark-image",
-    "href": "pypotteryink/model_zoo.html#benchmark-image",
-    "title": "PyPotteryInk Model Zoo",
-    "section": "Benchmark image",
-    "text": "Benchmark image\nThe benchmark image contains a variety of images and styles for testing each model. It can be used to quickly assess the quality of the output. As the library will be used for a variety of different styles and morphologies, new images will be added to the benchmark images.",
-    "crumbs": [
-      "PyPotteryInk",
-      "PyPotteryInk Model Zoo"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/model_zoo.html#available-models",
-    "href": "pypotteryink/model_zoo.html#available-models",
-    "title": "PyPotteryInk Model Zoo",
-    "section": "Available Models",
-    "text": "Available Models\n\n10k\nDescription: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.\n\nTraining Data: 492 paired drawings\nResolution: 512×512 pixels\nTraining Steps: 10,000\nBest For: General purpose archaeological drawing inking, starting point for fine-tuning\n\nParameters used for training:\n\n\n\nParameter\n10k\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n500\n\n\ndataloader_num_workers\n0\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n1\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n5\n\n\nlambda_gan\n0.5\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n5\n\n\nlearning_rate\n0.000005\n\n\nlora_rank_unet\n8\n\n\nlora_rank_vae\n4\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n500\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n10,000\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n“stabilityai/sd-turbo”\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n2\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n25\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MCG\nDescription: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.\n\nTraining Data: 9 paired drawings from Monte Croce Guardia\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Middle Bronze Age / Recent Bronze Age pottery\n\nParameters used for training:\n\n\n\nParameter\n6h-MCG\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n128\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MC\nDescription: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.\n\nTraining Data: 15 paired drawings from Monte Cimino\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Recent Bronze Age pottery / Final Bronze Age / Historic Age\n\nParameters used for training:\n\n\n\nParameter\n6h-MC\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n4h-PAINT\nDescription: Fine-tuned model specialized for painted decoration and historical pottery.\n\nTraining Data: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Historic Age / Painted Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n4h-PAINT\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Elisa Pizzuti\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n5h-PAPERGRID\nDescription: Fine-tuned model specialized for papergrid pottery.\n\nTraining Data: 15 paired drawings from Middle Bronze Age of Northern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Papergrid Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n5h-PAPERGRID\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Federico Erbetti\n\n\n\nModels",
-    "crumbs": [
-      "PyPotteryInk",
-      "PyPotteryInk Model Zoo"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html",
-    "href": "pypotteryink/index.html",
-    "title": "Introduction",
-    "section": "",
-    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html#key-features",
-    "href": "pypotteryink/index.html#key-features",
-    "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/index.html#contributors",
-    "href": "pypotteryink/index.html#contributors",
-    "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
-    "crumbs": [
-      "PyPotteryInk",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "requirements.html",
-    "href": "requirements.html",
-    "title": "Requirements",
-    "section": "",
-    "text": "All PyPottery tools are designed to work independently, yet they share a unified set of dependencies. \n    This modular approach means you only need to install once and can use any combination of tools seamlessly.",
-    "crumbs": [
-      "Requirements"
-    ]
-  },
-  {
-    "objectID": "requirements.html#core-technologies",
-    "href": "requirements.html#core-technologies",
-    "title": "Requirements",
-    "section": "Core Technologies",
-    "text": "Core Technologies\nThe PyPottery ecosystem is built on these foundational technologies:\n\n\n  \n  \n    \n      🔥\n      \n        PyTorch\n        v2.9.0+cu126\n      \n    \n    \n      The deep learning framework powering all AI capabilities. Includes CUDA 12.6 support for GPU acceleration.\n    \n    \n      Neural network training & inference\n      GPU-accelerated tensor operations\n      TorchVision for image processing\n    \n  \n\n  \n  \n    \n      🤗\n      \n        Transformers\n        v4.57.1\n      \n    \n    \n      Hugging Face's library for state-of-the-art NLP and vision models. Powers OCR and text understanding.\n    \n    \n      Pre-trained model access\n      Text recognition (OCR)\n      Few-shot learning capabilities\n    \n  \n\n  \n  \n    \n      👁️\n      \n        OpenCV\n        v4.12.0\n      \n    \n    \n      Computer vision library for image processing, manipulation, and analysis tasks.\n    \n    \n      Image reading & writing\n      Morphological operations\n      Contour detection & analysis\n    \n  \n\n  \n  \n    \n      🎯\n      \n        Ultralytics YOLO\n        v8.3.223\n      \n    \n    \n      State-of-the-art object detection framework for identifying pottery drawings in documents.\n    \n    \n      Real-time object detection\n      Instance segmentation\n      Custom model training\n    \n  \n\n  \n  \n    \n      ✂️\n      \n        SAM2\n        v1.1.0\n      \n    \n    \n      Meta's Segment Anything Model for precise image segmentation and mask generation.\n    \n    \n      Zero-shot segmentation\n      Interactive mask editing\n      High-quality boundaries\n    \n  \n\n  \n  \n    \n      🎨\n      \n        Diffusers\n        v0.35.2\n      \n    \n    \n      Hugging Face's diffusion models library for image enhancement and restoration.\n    \n    \n      Image super-resolution\n      Drawing enhancement\n      Noise reduction",
-    "crumbs": [
-      "Requirements"
-    ]
-  },
-  {
-    "objectID": "requirements.html#data-processing",
-    "href": "requirements.html#data-processing",
-    "title": "Requirements",
-    "section": "Data Processing",
-    "text": "Data Processing\n\n\n  \n  \n    \n      🐼\n      \n        Pandas\n        v2.3.3\n      \n    \n    \n      Powerful data manipulation and analysis library for structured data handling.\n    \n    \n      DataFrame operations\n      Data cleaning & transformation\n      Excel/CSV export\n    \n  \n\n  \n  \n    \n      ⚡\n      \n        Polars\n        v1.35.1\n      \n    \n    \n      Lightning-fast DataFrame library for high-performance data processing.\n    \n    \n      Parallel processing\n      Memory efficient\n      Lazy evaluation\n    \n  \n\n  \n  \n    \n      📄\n      \n        PyMuPDF\n        v1.26.5\n      \n    \n    \n      High-performance PDF processing library for extracting images and text from documents.\n    \n    \n      PDF page rendering\n      Image extraction\n      Text extraction",
-    "crumbs": [
-      "Requirements"
-    ]
-  },
-  {
-    "objectID": "requirements.html#visualization-export",
-    "href": "requirements.html#visualization-export",
-    "title": "Requirements",
-    "section": "Visualization & Export",
-    "text": "Visualization & Export\n\n\n  \n  \n    \n      📊\n      \n        Matplotlib\n        v3.10.7\n      \n    \n    \n      Comprehensive plotting library for creating static, animated, and interactive visualizations.\n    \n    \n      Publication-quality figures\n      Image display & annotation\n      Customizable layouts\n    \n  \n\n  \n  \n    \n      📑\n      \n        ReportLab\n        v4.4.4\n      \n    \n    \n      PDF generation toolkit for creating professional publication layouts and plates.\n    \n    \n      PDF document creation\n      Vector graphics support\n      Layout automation\n    \n  \n\n  \n  \n    \n      ✏️\n      \n        SVGWrite\n        v1.4.3\n      \n    \n    \n      SVG generation library for creating scalable vector graphics from traced drawings.\n    \n    \n      Vector output generation\n      Path manipulation\n      Scalable exports",
-    "crumbs": [
-      "Requirements"
-    ]
-  },
-  {
-    "objectID": "requirements.html#system-requirements",
-    "href": "requirements.html#system-requirements",
-    "title": "Requirements",
-    "section": "System Requirements",
-    "text": "System Requirements\n\n\n\n\n\n\nHardware Recommendations\n\n\n\n\nGPU: NVIDIA GPU with CUDA 12.6 support (8GB+ VRAM recommended)\nRAM: 16GB minimum, 32GB recommended for large batch processing\n\nStorage: SSD recommended for faster model loading\n\n\n\n\n\n\n\n\n\nPython Version\n\n\n\nPyPottery requires Python 3.12. We recommend using a virtual environment to manage dependencies.\n\n\n\n  📥 Quick Installation\nSee Suite Installation",
-    "crumbs": [
-      "Requirements"
-    ]
-  },
-  {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
-    "section": "",
-    "text": "Get in touch for support, collaboration, or to discuss how PyPottery can be optimized for your archaeological research needs.",
-    "crumbs": [
-      "Contact"
-    ]
-  },
-  {
-    "objectID": "contact.html#general-support",
-    "href": "contact.html#general-support",
-    "title": "Contact",
-    "section": "General Support",
-    "text": "General Support\nFor general questions, bug reports, or feature requests, you can:\n\n\n  \n    📚\n    Check Documentation\n    \n      Review the comprehensive documentation for common solutions and detailed guides.\n    \n    \n      Browse Docs →\n    \n  \n\n  \n    🐛\n    Report Issues\n    \n      Submit bug reports or check existing issues on the GitHub repository.\n    \n    \n      View Issues →\n    \n  \n\n  \n    💡\n    Request Features\n    \n      Suggest new features or improvements through GitHub's issue tracker.\n    \n    \n      Submit Request →",
-    "crumbs": [
-      "Contact"
-    ]
-  },
-  {
-    "objectID": "contact.html#get-in-touch",
-    "href": "contact.html#get-in-touch",
-    "title": "Contact",
-    "section": "Get in Touch",
-    "text": "Get in Touch\n\n  Let's enhance your archaeological documentation\n  \n    I'm happy to discuss how PyPottery can be optimized for your needs\n  \n  \n    📧\n    lorenzo.cardarelli@uniroma1.it",
-    "crumbs": [
-      "Contact"
-    ]
-  },
-  {
-    "objectID": "contact.html#support-this-project",
-    "href": "contact.html#support-this-project",
-    "title": "Contact",
-    "section": "☕ Support This Project",
-    "text": "☕ Support This Project\n\n  \n    ☕ Support This Project\n  \n  \n    If you find PyPottery useful for your research, consider supporting its development. \n    Your support helps maintain and improve this open-source tool for the archaeological community!\n  \n  \n    \n  \n  \n    Every contribution, no matter how small, makes a difference! 🙏\n  \n\n\n\n  🌟 Open Source & Community Driven\n  \n    PyPottery is an open-source project built by archaeologists, for archaeologists. \n    All tools are freely available under open-source licenses, and contributions from the community are always welcome!\n  \n  \n    \n    View on GitHub",
-    "crumbs": [
-      "Contact"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html",
-    "href": "pypotteryink/version_history.html",
-    "title": "Version History",
-    "section": "",
-    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html#latest-release",
-    "href": "pypotteryink/version_history.html#latest-release",
-    "title": "Version History",
-    "section": "",
-    "text": "🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
-    ]
-  },
-  {
-    "objectID": "pypotteryink/version_history.html#version-history",
-    "href": "pypotteryink/version_history.html#version-history",
-    "title": "Version History",
-    "section": "Version History",
-    "text": "Version History\n\nVersion 1.0.0 (September 2025)\n🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nMulti-GPU Support: Added support for Apple Silicon (M1/M2/M3) GPUs via Metal Performance Shaders\nGradio Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking\n\nAutomated Installation: One-click installation scripts for all platforms\nImproved Compatibility: Fixed compatibility issues with newest packages\nStatistics Visualization: New detailed statistics analysis with:\n\nSummary tables showing all key metrics\nInteractive distribution plots\nHistogram and KDE visualizations\nBox plots for metric overview\n\nAdvanced Export Options (Experimental):\n\nElement extraction: Automatically identify and extract individual pottery elements\nSVG export: Convert processed images to scalable vector graphics for publication\n\n\nwith contributions from Francesco di Filippo and Enzo Cocca\n\n\nVersion 0.0.3 (July 2025)\nUpdate to the PyPotteryInk package, with a few improvements\nKey Features:\n\n📌 Added new model 6h-MC model as default 📌\nAdded a test_imgto visualize the performance of each model\nReworking of the test.py module: now it test the library on the test_img\nAdded downscaling options in process_single_image and process_folder\n\nModels:\n\nFine-tuned example for Monte Cimino assemblage (6h-MC)\nFine-tuned model for historical and painted pottery (4h-PAINT)\n\n\n\nVersion 0.0.2 (April 2025)\nA little update to the PyPotteryInk package, with a few bug fixes and improvements.\nKey Features:\n\nAdded an AI disclosure reminder when running the process_folder function\nAdded a Google Colab notebook for easy testing of the package\nFixed some errors in the documentation\n\n\n\nVersion 0.0.1 (January 2025)\nInitial public release of PyPotteryInk.\nKey Features:\n\nImage-to-image translation using pix2pix-turbo architecture\nAdaptive patch-based processing for high-resolution drawings\nComprehensive preprocessing and postprocessing tools\nWeb documentation\n\nModels:\n\nBase model trained on 500 protohistoric pottery drawings (10k)\nFine-tuned example for Monte Croce Guardia assemblage (6h-MCG)",
-    "crumbs": [
-      "PyPotteryInk",
-      "Version History"
     ]
   },
   {
@@ -813,6 +670,56 @@
     "crumbs": [
       "PyPotteryInk",
       "API Documentation"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "PyPottery",
+    "section": "",
+    "text": "🏺 A Complete Toolkit for Digital Pottery Analysis\n  \n    PyPottery is a collection of specialized software tools designed for archaeologists and researchers \n    working with pottery documentation. From scanning and digitizing plates to AI-powered image enhancement \n    and layout generation, we've got you covered.\n  \n\n\n\n\n\n\n\n  \n  \n    \n      \n      \n        PyPotteryInk\n        v2.0.0\n      \n    \n    \n      A specialized tool for inking pottery drawings. It enables diagnostic analysis, preprocessing, and batch processing of archaeological illustrations.\n    \n    \n      Image Inking in few seconds\n      All hardware compatibility\n      Preprocessing, batch processing and model diagnostic\n      Pretrained models available\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n  \n  \n    \n      \n      \n        PyPotteryLens\n        v0.2.0\n      \n    \n    \n      Extract and process pottery images from PDF documents. Apply computer vision models to identify drawings and structure data for analysis.\n    \n    \n      PDF to image conversion\n      Computer vision model application\n      Annotation review & editing\n      Standardized image export\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n\n\n  \n  \n    \n      \n      \n        PyPotteryLayout\n      \n    \n    \n      Create publication-ready pottery plate layouts automatically. Arrange multiple drawings with consistent scaling and professional formatting.\n    \n    \n      Automatic layout generation\n      Consistent scaling system\n      Publication-ready exports\n      SVG export for further editing\n    \n    \n      Learn More →\n      \n        \n      \n    \n  \n\n\n\n\n\n  📦 Open Source on GitHub\n  \n    All PyPottery tools are open source and available on GitHub. Contributions are welcome!\n  \n  \n    \n    View on GitHub",
+    "crumbs": [
+      "PyPottery"
+    ]
+  },
+  {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
+    "section": "",
+    "text": "Get in touch for support, collaboration, or to discuss how PyPottery can be optimized for your archaeological research needs.",
+    "crumbs": [
+      "Contact"
+    ]
+  },
+  {
+    "objectID": "contact.html#general-support",
+    "href": "contact.html#general-support",
+    "title": "Contact",
+    "section": "General Support",
+    "text": "General Support\nFor general questions, bug reports, or feature requests, you can:\n\n\n  \n    📚\n    Check Documentation\n    \n      Review the comprehensive documentation for common solutions and detailed guides.\n    \n    \n      Browse Docs →\n    \n  \n\n  \n    🐛\n    Report Issues\n    \n      Submit bug reports or check existing issues on the GitHub repository.\n    \n    \n      View Issues →\n    \n  \n\n  \n    💡\n    Request Features\n    \n      Suggest new features or improvements through GitHub's issue tracker.\n    \n    \n      Submit Request →",
+    "crumbs": [
+      "Contact"
+    ]
+  },
+  {
+    "objectID": "contact.html#get-in-touch",
+    "href": "contact.html#get-in-touch",
+    "title": "Contact",
+    "section": "Get in Touch",
+    "text": "Get in Touch\n\n  Let's enhance your archaeological documentation\n  \n    I'm happy to discuss how PyPottery can be optimized for your needs\n  \n  \n    📧\n    lorenzo.cardarelli@uniroma1.it",
+    "crumbs": [
+      "Contact"
+    ]
+  },
+  {
+    "objectID": "contact.html#support-this-project",
+    "href": "contact.html#support-this-project",
+    "title": "Contact",
+    "section": "☕ Support This Project",
+    "text": "☕ Support This Project\n\n  \n    ☕ Support This Project\n  \n  \n    If you find PyPottery useful for your research, consider supporting its development. \n    Your support helps maintain and improve this open-source tool for the archaeological community!\n  \n  \n    \n  \n  \n    Every contribution, no matter how small, makes a difference! 🙏\n  \n\n\n\n  🌟 Open Source & Community Driven\n  \n    PyPottery is an open-source project built by archaeologists, for archaeologists. \n    All tools are freely available under open-source licenses, and contributions from the community are always welcome!\n  \n  \n    \n    View on GitHub",
+    "crumbs": [
+      "Contact"
     ]
   },
   {
@@ -1102,46 +1009,112 @@
     ]
   },
   {
-    "objectID": "pypotteryink/usage.html",
-    "href": "pypotteryink/usage.html",
-    "title": "Using PyPotteryInk",
+    "objectID": "pypotteryink/index.html",
+    "href": "pypotteryink/index.html",
+    "title": "Introduction",
     "section": "",
-    "text": "version 2.0.0 \n\n\nInterface Overview\nThe PyPotteryInk interface is divided into four main tabs:\n\nHardware Check\nModel Diagnostic\nPreprocessing\nBatch Processing\n\nAdditionally, you can toggle Dark Mode using the button in the interface.\n\n\nHardware Check\nThis tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.\n\n\nThe page displays Recommended Specifications, indicating the minimum requirements to use the program.\nClicking on 🔍 Check Hardware will display your machine’s specifications along with a performance score.\nHere is an example of a hardware check result on a MacBook Air M3:\n\n\n\n\n\n\n🟠 Recommendation Level: RECOMMENDED\n\n\n\n\n🖥️ Hardware Specifications\n\nGPU: Apple Metal Performance Shaders (MPS)\nCPU: arm (8 cores)\nRAM: 16.0 GB\nDisk speed: Read: 5931.6 MB/s | Write: 233.8 MB/s\n\n\n\n📊 Hardware Score: 78/100 (78.0%)\n\n\n💡 Recommendations\n\n✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon\n✅ 16GB or more RAM - Ideal for large image batches\n⚠️ Processor with 4+ cores\n⚠️ Decent disk but could be improved with an NVMe SSD\n✅ macOS system - Good compatibility\n💡 If using a laptop, ensure it’s well ventilated and connected to power\n💡 Consider using a cooling pad for laptops to avoid thermal throttling\n\n\n\n✅ Conclusion\nYour hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.\n💡 If you’re using a laptop, ensure it’s well ventilated and connected to power during processing\n\n\n\n\n\nModel Diagnostic\nThis tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.\n\n\nThe available elements are:\n\nSelect Model: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.\nPatch Size: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.\nUpload Images: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.\nOverlap: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.\nContrast Test Values: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.\n\nClicking on 🚀 Run Diagnostic will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.\n\n\nPreprocessing\nThis tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.\n\n\nThere are two options:\n\nStep 1: Calculate Statistics\nYou can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The Save Statistics As text box allows you to decide the path and name of the .npy file. Click 📊 Calculate Statistics to perform the calculation.\n\n\nStep 2: Apply Preprocessing\nThis step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing .npy file.\nPyPotteryInk provides two default .npy files:\n\nMontale_stats.npy (Metric measures of the dataset used to train the 6h-MCG model)\nCimino_stats.npy (Metric measures of the dataset used to train the 6h-MC model)\n\nIn short, these metrics can be used to make your images resemble those used to train the model.\nThe Output Directory text box allows you to indicate where the modified images will be saved. Click ✨ Apply Preprocessing to start. A progress bar will indicate the status.\n\n\n\nBatch Processing\nThis tab represents the core of the program where you can process a series of images.\n\n\nParameters like Select Model, Upload Images, Patch Size, and Overlap are the same as in the Preprocessing tab.\nNew parameters include:\n\nOutput Directory: Allows you to indicate where to save the results.\nContrast Scale: Allows you to indicate the contrast value to apply to the batch.\nScale Factor: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.\nUse FP16: Allows you to apply the model using half-precision (requires CUDA).\n\nClicking on 🚀 Start Processing will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery.",
+    "text": "version 2.0.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.",
     "crumbs": [
       "PyPotteryInk",
-      "Using PyPotteryInk"
+      "Introduction"
     ]
   },
   {
-    "objectID": "pypotterylayout/version_history.html",
-    "href": "pypotterylayout/version_history.html",
+    "objectID": "pypotteryink/index.html#key-features",
+    "href": "pypotteryink/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n⚙️ Hardware Check: Analyze your system capabilities to ensure optimal performance.\n🔍 Model Diagnostic: Test models on single images to fine-tune parameters before batch processing.\n📊 Preprocessing: Calculate and apply statistical adjustments to standardize your images.\n🎨 Batch Processing: Process large sets of images with advanced AI models for enhancement and restoration.",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/index.html#contributors",
+    "href": "pypotteryink/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
+    "crumbs": [
+      "PyPotteryInk",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/model_zoo.html",
+    "href": "pypotteryink/model_zoo.html",
+    "title": "PyPotteryInk Model Zoo",
+    "section": "",
+    "text": "version 2.0.0",
+    "crumbs": [
+      "PyPotteryInk",
+      "PyPotteryInk Model Zoo"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/model_zoo.html#overview",
+    "href": "pypotteryink/model_zoo.html#overview",
+    "title": "PyPotteryInk Model Zoo",
+    "section": "Overview",
+    "text": "Overview\nThis page lists the available pre-trained models for PyPotteryInk. Each model is show specific pros and cons. You can use these models directly or fine-tune them for your specific needs.",
+    "crumbs": [
+      "PyPotteryInk",
+      "PyPotteryInk Model Zoo"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/model_zoo.html#benchmark-image",
+    "href": "pypotteryink/model_zoo.html#benchmark-image",
+    "title": "PyPotteryInk Model Zoo",
+    "section": "Benchmark image",
+    "text": "Benchmark image\nThe benchmark image contains a variety of images and styles for testing each model. It can be used to quickly assess the quality of the output. As the library will be used for a variety of different styles and morphologies, new images will be added to the benchmark images.",
+    "crumbs": [
+      "PyPotteryInk",
+      "PyPotteryInk Model Zoo"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/model_zoo.html#available-models",
+    "href": "pypotteryink/model_zoo.html#available-models",
+    "title": "PyPotteryInk Model Zoo",
+    "section": "Available Models",
+    "text": "Available Models\n\n10k\nDescription: The base model trained on a diverse dataset of 492 archaeological drawings from multiple contexts including Casinalbo, Montale, Monte Croce Guardia, and Monte Cimino sites.\n\nTraining Data: 492 paired drawings\nResolution: 512×512 pixels\nTraining Steps: 10,000\nBest For: General purpose archaeological drawing inking, starting point for fine-tuning\n\nParameters used for training:\n\n\n\nParameter\n10k\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n500\n\n\ndataloader_num_workers\n0\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n1\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n5\n\n\nlambda_gan\n0.5\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n5\n\n\nlearning_rate\n0.000005\n\n\nlora_rank_unet\n8\n\n\nlora_rank_vae\n4\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n500\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n10,000\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n“stabilityai/sd-turbo”\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n2\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n25\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MCG\nDescription: Fine-tuned model specialized for Monte Croce Guardia style pottery drawings. Optimized for high-detail preservation and consistent stippling patterns.\n\nTraining Data: 9 paired drawings from Monte Croce Guardia\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Middle Bronze Age / Recent Bronze Age pottery\n\nParameters used for training:\n\n\n\nParameter\n6h-MCG\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n128\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“constant”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n6h-MC\nDescription: Fine-tuned model specialized for Monte Cimino style pottery drawings. Optimized for high-detail preservation and engraved decoration.\n\nTraining Data: 15 paired drawings from Monte Cimino\nBase Model: 10k Base Model\nResolution: 512×512 pixels\nTraining Steps: 600\nBest For: Recent Bronze Age pottery / Final Bronze Age / Historic Age\n\nParameters used for training:\n\n\n\nParameter\n6h-MC\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n600\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./10k.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n4h-PAINT\nDescription: Fine-tuned model specialized for painted decoration and historical pottery.\n\nTraining Data: 15 paired drawings from Late Bronze Age / Early Iron Age of Southern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Historic Age / Painted Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n4h-PAINT\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Elisa Pizzuti\n\n\n\nModels\n\n\n\nBenchmark\n\n\n\n\n5h-PAPERGRID\nDescription: Fine-tuned model specialized for papergrid pottery.\n\nTraining Data: 15 paired drawings from Middle Bronze Age of Northern Italy\nBase Model: 6h-MC\nResolution: 512×512 pixels\nTraining Steps: 400\nBest For: Papergrid Pottery (No shadows!)\n\nParameters used for training:\n\n\n\nParameter\n5h-PAPERGRID\n\n\n\n\nadam_beta1\n0.9\n\n\nadam_beta2\n0.999\n\n\nadam_epsilon\n0.00000001\n\n\nadam_weight_decay\n0.01\n\n\nallow_tf32\nfalse\n\n\ncheckpointing_steps\n100\n\n\ndataloader_num_workers\n4\n\n\nenable_xformers_memory_efficient_attention\ntrue\n\n\neval_freq\n100\n\n\ngan_disc_type\n“vagan_clip”\n\n\ngan_loss_type\n“multilevel_sigmoid_s”\n\n\ngradient_accumulation_steps\n4\n\n\ngradient_checkpointing\nfalse\n\n\nlambda_clipsim\n3\n\n\nlambda_gan\n0.9\n\n\nlambda_l2\n1\n\n\nlambda_lpips\n10\n\n\nlearning_rate\n0.00001\n\n\nlora_rank_unet\n256\n\n\nlora_rank_vae\n48\n\n\nlr_num_cycles\n1\n\n\nlr_power\n1\n\n\nlr_scheduler\n“cosine”\n\n\nlr_warmup_steps\n200\n\n\nmax_grad_norm\n1\n\n\nmax_train_steps\n400\n\n\nmixed_precision\n“no”\n\n\nnum_samples_eval\n100\n\n\nnum_training_epochs\n1\n\n\npretrained_model_name_or_path\n./6h-MC.pkl\n\n\nresolution\n512\n\n\nset_grads_to_none\nfalse\n\n\ntest_image_prep\n“resized_crop_512”\n\n\ntrack_val_fid\ntrue\n\n\ntrain_batch_size\n1\n\n\ntrain_image_prep\n“resized_crop_512”\n\n\nviz_freq\n50\n\n\n\nAuthor: Lorenzo Cardarelli, Federico Erbetti\n\n\n\nModels",
+    "crumbs": [
+      "PyPotteryInk",
+      "PyPotteryInk Model Zoo"
+    ]
+  },
+  {
+    "objectID": "pypotteryink/version_history.html",
+    "href": "pypotteryink/version_history.html",
     "title": "Version History",
     "section": "",
-    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
+    "text": "Diffusion model downloaded in local directory (models)",
     "crumbs": [
-      "PyPotteryLayout",
+      "PyPotteryInk",
       "Version History"
     ]
   },
   {
-    "objectID": "pypotterylayout/version_history.html#latest-release",
-    "href": "pypotterylayout/version_history.html#latest-release",
+    "objectID": "pypotteryink/version_history.html#latest-release",
+    "href": "pypotteryink/version_history.html#latest-release",
     "title": "Version History",
     "section": "",
-    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
+    "text": "Diffusion model downloaded in local directory (models)",
     "crumbs": [
-      "PyPotteryLayout",
+      "PyPotteryInk",
       "Version History"
     ]
   },
   {
-    "objectID": "pypotterylayout/version_history.html#version-history",
-    "href": "pypotterylayout/version_history.html#version-history",
+    "objectID": "pypotteryink/version_history.html#version-history",
+    "href": "pypotteryink/version_history.html#version-history",
     "title": "Version History",
     "section": "Version History",
-    "text": "Version History\n\nVersion 0.2.0 (December 2025)\nKey Features:\n\nNew Web Interface: Modern browser-based UI\nStandalone Executable: Windows .exe with no dependencies\nDrag & Drop Upload: Easy image management\nLive Preview: See layout before exporting\nDownload Manager: Get results as ZIP or individual files\nImproved Paths: Files saved next to executable for easy access",
+    "text": "Version History\n\nVersion 2.0.0 (December 2025)\n🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nFlask Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking\n\n\n\n\nVersion 1.0.0 (September 2025)\n🚀 A PyPotteryInk major release 🚀\nKey Features:\n\nMulti-GPU Support: Added support for Apple Silicon (M1/M2/M3) GPUs via Metal Performance Shaders\nGradio Web Interface: New user-friendly web interface with multiple tabs:\n\nHardware Check: Verify system compatibility\nModel Diagnostics: Preview processing with different settings\nPreprocessing: Analyze and optimize images before processing\nBatch Processing: Process multiple images with progress tracking\n\nAutomated Installation: One-click installation scripts for all platforms\nImproved Compatibility: Fixed compatibility issues with newest packages\nStatistics Visualization: New detailed statistics analysis with:\n\nSummary tables showing all key metrics\nInteractive distribution plots\nHistogram and KDE visualizations\nBox plots for metric overview\n\nAdvanced Export Options (Experimental):\n\nElement extraction: Automatically identify and extract individual pottery elements\nSVG export: Convert processed images to scalable vector graphics for publication\n\n\nwith contributions from Francesco di Filippo and Enzo Cocca\n\n\nVersion 0.0.3 (July 2025)\nUpdate to the PyPotteryInk package, with a few improvements\nKey Features:\n\n📌 Added new model 6h-MC model as default 📌\nAdded a test_imgto visualize the performance of each model\nReworking of the test.py module: now it test the library on the test_img\nAdded downscaling options in process_single_image and process_folder\n\nModels:\n\nFine-tuned example for Monte Cimino assemblage (6h-MC)\nFine-tuned model for historical and painted pottery (4h-PAINT)\n\n\n\nVersion 0.0.2 (April 2025)\nA little update to the PyPotteryInk package, with a few bug fixes and improvements.\nKey Features:\n\nAdded an AI disclosure reminder when running the process_folder function\nAdded a Google Colab notebook for easy testing of the package\nFixed some errors in the documentation\n\n\n\nVersion 0.0.1 (January 2025)\nInitial public release of PyPotteryInk.\nKey Features:\n\nImage-to-image translation using pix2pix-turbo architecture\nAdaptive patch-based processing for high-resolution drawings\nComprehensive preprocessing and postprocessing tools\nWeb documentation\n\nModels:\n\nBase model trained on 500 protohistoric pottery drawings (10k)\nFine-tuned example for Monte Croce Guardia assemblage (6h-MCG)",
     "crumbs": [
-      "PyPotteryLayout",
+      "PyPotteryInk",
       "Version History"
     ]
   },
@@ -1234,204 +1207,261 @@
     ]
   },
   {
-    "objectID": "pypotterylens/index.html",
-    "href": "pypotterylens/index.html",
-    "title": "Introduction",
+    "objectID": "pypotterylayout/version_history.html",
+    "href": "pypotterylayout/version_history.html",
+    "title": "Version History",
     "section": "",
-    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryLens is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.",
+    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
     "crumbs": [
-      "PyPotteryLens",
-      "Introduction"
+      "PyPotteryLayout",
+      "Version History"
     ]
   },
   {
-    "objectID": "pypotterylens/index.html#key-features",
-    "href": "pypotterylens/index.html#key-features",
-    "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n📄 PDF Processing: Convert PDF documents into processable images.\n🤖 Apply Model: Use Computer Vision models to extract information and masks from images.\n✏️ Review Annotations: Review and modify the masks identified by the model.\n📊 Tabular Information: Associate tabular data with identified elements.\n🔄 Post Processing: Standardize images (orientation, positioning) and export results.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/index.html#contributors",
-    "href": "pypotterylens/index.html#contributors",
-    "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli\n  \n  \n    \n      \n    \n    \n    Enzo Cocca\n  \n    \n    \n      \n    \n    \n    Francesco Di Filippo",
-    "crumbs": [
-      "PyPotteryLens",
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/usage.html",
-    "href": "pypotterylens/usage.html",
-    "title": "Using PyPotteryLens",
+    "objectID": "pypotterylayout/version_history.html#latest-release",
+    "href": "pypotterylayout/version_history.html#latest-release",
+    "title": "Version History",
     "section": "",
-    "text": "version 0.2.0",
+    "text": "Key Features:\n\nImproved SVG export\nData handling optimizations\nUpgraded preview rendering",
     "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
+      "PyPotteryLayout",
+      "Version History"
     ]
   },
   {
-    "objectID": "pypotterylens/usage.html#project-manager",
-    "href": "pypotterylens/usage.html#project-manager",
-    "title": "Using PyPotteryLens",
-    "section": "Project Manager",
-    "text": "Project Manager\nLike other tools in the PyPottery suite, PyPotteryLens uses a project management system.\nYou can create a project by entering a name in the text box, along with an optional description and an icon.\nOnce created, the project will appear in the “Your Projects” list.\nSelecting a project will display its name in the status bar.",
+    "objectID": "pypotterylayout/version_history.html#version-history",
+    "href": "pypotterylayout/version_history.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 0.2.0 (December 2025)\nKey Features:\n\nNew Web Interface: Modern browser-based UI\nStandalone Executable: Windows .exe with no dependencies\nDrag & Drop Upload: Easy image management\nLive Preview: See layout before exporting\nDownload Manager: Get results as ZIP or individual files\nImproved Paths: Files saved next to executable for easy access",
     "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
+      "PyPotteryLayout",
+      "Version History"
     ]
   },
   {
-    "objectID": "pypotterylens/usage.html#pdf-document-processing",
-    "href": "pypotterylens/usage.html#pdf-document-processing",
-    "title": "Using PyPotteryLens",
-    "section": "PDF Document Processing",
-    "text": "PDF Document Processing\nIn this tab, you can upload and process a PDF file, transforming it into a series of images.\n\n\nClicking on Upload PDF to current project will open a dialog window to select the PDF file.\n\n\n\n\n\n\nImportant\n\n\n\nThe Split Scanned checkbox must be checked BEFORE selecting the file if the PDF to be processed has 2 pages side-by-side.\n\n \n\n\n\nOnce the PDF is processed, you can proceed to the next tab.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/usage.html#apply-model",
-    "href": "pypotterylens/usage.html#apply-model",
-    "title": "Using PyPotteryLens",
-    "section": "Apply Model",
-    "text": "Apply Model\nIn this tab, you can use the Computer Vision (CV) model to extract information.\n\n\n\nGUI Layout\nThe GUI is divided into two parts:\n\nRight Side: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.\nLeft Side: Contains the model parameters.\n\n\n\nParameters\n\nModel Selection: Allows you to select the model to apply.\nModel Parameters: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters:\n\nConfidence: The confidence threshold for the model.\nKernel size: The size of the kernel for the post-processing operations.\nIterations: The number of iterations for the post-processing operations.\n\nAdvanced Options: Includes the possibility to limit the application to 25 pages for debugging purposes.\n\n\n\n\n\n\n\nNote\n\n\n\nThe results of applying different Kernel size and Iterations are shown. \n\n\nOnce you click on 🚀 Apply Model to Project, a progress bar will indicate the status of the process.\n\n\n\n\n\n\nNote\n\n\n\nTo use a different model, place it in the appropriate folder.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/usage.html#review-annotations",
-    "href": "pypotterylens/usage.html#review-annotations",
-    "title": "Using PyPotteryLens",
-    "section": "Review Annotations",
-    "text": "Review Annotations\nIn this tab, you can review and modify the model’s annotations.\n\n\n\nLeft: A list of files indicating the pages.\nRight: A canvas showing the image.\n\nYou can navigate between images by selecting the name or using the buttons below the image.\nIn the list:\n\nGreen Checkmark (✔️): Images where the model has identified vases.\nWhite Dot (•): Images where the model has not recognized any vases.\n\n\nEditing Masks\nYou can modify the masks identified by the model using the buttons below the canvas:\n\n🖌️ Brush: To draw new masks.\n🧹 Eraser: To delete existing masks.\n🗑️ Clear: To delete all masks.\n\nNew masks will appear in transparent red.\nOnce an image without masks (white dot) is modified, the indicator will update to a green checkmark.\nChanging the image or clicking on 💾 Save Current Mask will save the changes.\nOnce you have reviewed the images, you can extract them by clicking on 📤 Extract Cards.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/usage.html#tabular-information",
-    "href": "pypotterylens/usage.html#tabular-information",
-    "title": "Using PyPotteryLens",
-    "section": "Tabular Information",
-    "text": "Tabular Information\nThis tab allows you to insert tabular information for the images.\n\n\n\nCenter: A canvas displaying the image where each identified element is associated with a bounding box and an ID.\nLeft: A file list for navigation.\nRight: A table where you can enter tabular information.\n\nEach record is indicated by an ID visible on the canvas. To add a column, write the name and click ➕ Add Column. Once the information is entered, you can click on 👁️ Mark as Reviewed. The inserted columns are persistent across the project’s images.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
-    ]
-  },
-  {
-    "objectID": "pypotterylens/usage.html#post-processing",
-    "href": "pypotterylens/usage.html#post-processing",
-    "title": "Using PyPotteryLens",
-    "section": "Post Processing",
-    "text": "Post Processing\nFinally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).\n\n\n\nGUI Layout\n\nLeft: List of images, processing options, and navigation buttons.\nRight: A double canvas (initially only the left one is active).\n\n\n\nWorkflow\nTo start post-processing, click on 🔍 Process All Images. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in “Processed Image”.\nYou can navigate through the records using the buttons and the file list.\nIf the model has misclassified a vase, you can manually modify the classification.\nYou can also set image transformations to lock specific transformations.\nOnce post-processing is complete, click on 📦 Export Results to save the images in a ZIP folder.\nAn Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.",
-    "crumbs": [
-      "PyPotteryLens",
-      "Using PyPotteryLens"
-    ]
-  },
-  {
-    "objectID": "pypotteryscan/index.html",
-    "href": "pypotteryscan/index.html",
-    "title": "Introduction",
+    "objectID": "pypotterylens/installation.html",
+    "href": "pypotterylens/installation.html",
+    "title": "Installation",
     "section": "",
-    "text": "version 0.2.0\n  \n\n  \n    \n    \n    \n      \n      \n        CPU (Not Supported)\n      \n    \n\n    \n    \n      \n      \n        CUDA (Supported)\n      \n    \n\n    \n    \n      \n      \n        MPS (Coming Soon)\nPyPotteryScan is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data."
+    "text": "version 0.1.0",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
   },
   {
-    "objectID": "pypotteryscan/index.html#key-features",
-    "href": "pypotteryscan/index.html#key-features",
-    "title": "Introduction",
-    "section": "Key Features",
-    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n✏️ Annotation & OCR: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.\n🧹 Image Cleaning: Integrated tools to clean and refine extracted drawing images.\n📝 Data Review & Parsing: Verify OCR results and use the Few-Shot Parser (LLM) to structure free text into data fields.\n📦 Structured Export: Export everything into organized folders with Excel reports for easy analysis."
+    "objectID": "pypotterylens/installation.html#requirements",
+    "href": "pypotterylens/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryLens, make sure you have:\n\nPython 3.12 installed on your system\n\n\n\n\n\n\n\n🚀 Easier Installation Available!\n\n\n\nWe recommend using the PyPottery Suite Launcher for a simplified installation experience. The launcher handles all dependencies automatically and lets you manage all PyPottery tools from a single interface.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
   },
   {
-    "objectID": "pypotteryscan/index.html#contributors",
-    "href": "pypotteryscan/index.html#contributors",
-    "title": "Introduction",
-    "section": "Contributors",
-    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli"
+    "objectID": "pypotterylens/installation.html#automated-installation",
+    "href": "pypotterylens/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryLens running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryLens_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryLens_UNIX.sh\n\nRun the script:\n\n./PyPotteryLens_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
   },
   {
-    "objectID": "pypotteryscan/usage.html",
-    "href": "pypotteryscan/usage.html",
-    "title": "Using PyPotteryScan",
+    "objectID": "pypotterylens/installation.html#manual-installation",
+    "href": "pypotterylens/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#installation-verification",
+    "href": "pypotterylens/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at the indicated URL should display the PyPotteryLens interface",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/installation.html#troubleshooting",
+    "href": "pypotterylens/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues",
+    "crumbs": [
+      "PyPotteryLens",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html",
+    "href": "pypotterylens/version_history.html",
+    "title": "Version History",
+    "section": "",
+    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#latest-release",
+    "href": "pypotterylens/version_history.html#latest-release",
+    "title": "Version History",
+    "section": "",
+    "text": "Key Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/version_history.html#version-history",
+    "href": "pypotterylens/version_history.html#version-history",
+    "title": "Version History",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 0.1.3 (August 2025)\nKey Features:\n\nMinor bug fixes and performance improvements\n\n\n\nVersion 0.1.0 (April 2025)\nKey Features:\n\nInitial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "crumbs": [
+      "PyPotteryLens",
+      "Version History"
+    ]
+  },
+  {
+    "objectID": "pypotteryscan/installation.html",
+    "href": "pypotteryscan/installation.html",
+    "title": "Installation",
     "section": "",
     "text": "version 0.2.0"
   },
   {
-    "objectID": "pypotteryscan/usage.html#creating-a-new-project",
-    "href": "pypotteryscan/usage.html#creating-a-new-project",
-    "title": "Using PyPotteryScan",
-    "section": "Creating a New Project",
-    "text": "Creating a New Project\n\nClick the “New Project” button.\nEnter a name for your project.\n(Optional) Add a description.\nClick “Create”. You can create a new project by clicking on ➕ New Project or ➕ Create First Project if you don’t have any projects yet (Figure 1)\n\n\n\n\n\n\n\nFigure 1\n\n\n\nOnce the project is created and information such as name and description is added, the program moves to the Load tab where you can select the folder containing the images to process (Figure 2).\n\n\n\n\n\n\nFigure 2\n\n\n\nA loading screen will show the progress of the image import (Figure 3).\n\n\n\n\n\n\nFigure 3\n\n\n\nThe imported images will be visible in the Load tab (Figure 4).\n\n\n\n\n\n\nFigure 4\n\n\n\nClicking on Start Annotation → will start the scanning process and take you to the Annotate tab.\n\nProject Structure\nFor reference, PyPotteryScan projects are stored in the projects directory with the following structure:\nproject_id/\n├── original_images/    # Source scans\n├── thumbnails/         # Cached thumbnails\n├── annotations/        # JSON annotation files\n├── cropped_drawings/   # Intermediate crops\n├── cleaned_drawings/   # Cleaned images\n├── ocr_results/        # OCR JSON data\n├── exports/            # Export history\n├── fewshot_examples/   # Saved training examples\n└── project.json        # Project metadata"
+    "objectID": "pypotteryscan/installation.html#requirements",
+    "href": "pypotteryscan/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryScan, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support"
   },
   {
-    "objectID": "pypotteryscan/usage.html#gui-elements",
-    "href": "pypotteryscan/usage.html#gui-elements",
-    "title": "Using PyPotteryScan",
-    "section": "GUI Elements",
-    "text": "GUI Elements\nThe tab is dominated by the canvas where the plates are visualized. Above it, the number of plates and navigation buttons are indicated (Figure 5). The + Drawing button allows you to create a new annotation, while the Clear button deletes all annotations created on the plate.\nOn the right, there are text boxes indicating information related to the plate such as name (filename), a free field for context, and notes. The 💾 Save Metadata button allows you to save the inserted information.\nBelow, there are summary boxes for the created annotations.\nThe Finish & Process OCR → button allows you to save the annotations and proceed to the Process OCR tab.\n\n\n\n\n\n\nFigure 5"
+    "objectID": "pypotteryscan/installation.html#automated-installation",
+    "href": "pypotteryscan/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryScan running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryScan_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://localhost:5002\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryScan_UNIX.sh\n\nRun the script:\n\n./PyPotteryScan_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server at http://127.0.0.1:5002\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal."
   },
   {
-    "objectID": "pypotteryscan/usage.html#creating-annotations",
-    "href": "pypotteryscan/usage.html#creating-annotations",
-    "title": "Using PyPotteryScan",
-    "section": "Creating Annotations",
-    "text": "Creating Annotations\nTo create a new annotation, click on the + Drawing button. A window will alert the user to select a rectangular area on the plate (Figure 6).\nAnnotations are of two types: “Drawing” and “Text”. The first is used to select areas with drawings, the second to select areas with text.\nOnce the selection is complete, the selected area will be highlighted and added to the list of annotations.\n\n\n\n\n\n\nFigure 6\n\n\n\nInside Drawings, it is possible to add text. A window will alert the user to insert the text associated with the drawing.\nTo delete a text annotation, you can click on the ❌ button next to the annotation in the list (Figure 7).\n\n\n\n\n\n\nFigure 7\n\n\n\nTo add a new image annotation, click again on the + Drawing button and repeat the process.\nIt is possible to add multiple text annotations for each drawing by clicking again on the + Text button inside the drawing annotation (Figure 8).\n\n\n\n\n\n\nFigure 8\n\n\n\nClicking on Finish & Process OCR → will save the annotations and move to the Process OCR tab."
+    "objectID": "pypotteryscan/installation.html#manual-installation",
+    "href": "pypotteryscan/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py\nThe application will be available at:\n\n\n\n\n\n\n🌐 Application URL\n\n\n\nhttp://localhost:5002"
   },
   {
-    "objectID": "pypotteryscan/usage.html#gui-elements-1",
-    "href": "pypotteryscan/usage.html#gui-elements-1",
-    "title": "Using PyPotteryScan",
-    "section": "GUI Elements",
-    "text": "GUI Elements\nIn the center of the tab is the canvas with the extracted image. Above are the navigation buttons and the total number of drawings. On the right are some commands for cleaning the image (Figure 11).\nImmediately above the canvas are text boxes showing information related to the drawing, and a slider for the eraser size.\nBelow the canvas is a gallery showing all images.\n\n\n\n\n\n\nFigure 11"
+    "objectID": "pypotteryscan/installation.html#installation-verification",
+    "href": "pypotteryscan/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5002 should display the PyPotteryScan interface"
   },
   {
-    "objectID": "pypotteryscan/usage.html#cleaning-tools",
-    "href": "pypotteryscan/usage.html#cleaning-tools",
-    "title": "Using PyPotteryScan",
-    "section": "Cleaning Tools",
-    "text": "Cleaning Tools\nTo clean an image, an eraser is available which can be adjusted in size via the slider above the canvas. In the example, the number 1 present in the image has been removed (Figure 12).\n\n\n\n\n\n\nFigure 12\n\n\n\nClick on the navigation button, as well as on ✓ Mark as Clean, or click on the preview in the gallery to save the cleaned image and move to the next drawing.\nA green checkmark will indicate that the image has been manually reviewed (Figure 13).\n\n\n\n\n\n\nFigure 13\n\n\n\nClick on Continue to Review Texts → to save the cleaned images and proceed to the Review Texts tab.\n\n\n\n\n\n\nImportant\n\n\n\nAt this stage, eraser can’t show a brush preview on hover. The feature will be added in future releases."
+    "objectID": "pypotteryscan/installation.html#troubleshooting",
+    "href": "pypotteryscan/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues\n\n\n\nPort 5002 already in use\nIf port 5002 is already occupied by another application, you can:\n\nClose the application using the port\nOr modify the port in the app.py file"
   },
   {
-    "objectID": "pypotteryscan/usage.html#review-texts",
-    "href": "pypotteryscan/usage.html#review-texts",
-    "title": "Using PyPotteryScan",
-    "section": "Review Texts",
-    "text": "Review Texts\nThis tab allows you to review and correct the text extracted via OCR (Figure 14).\n\n\n\n\n\n\n\n\nFigure 14\n\n\n\nThe interface is extremely simple: a series of bipartite records where on the left we find the image of the text area and on the right the extracted text in an editable text box. Just write inside the box to correct the text.\nTo see the image better, you can hover the mouse over the image to enlarge it; clicking on the image will open a modal window with the enlarged image {Figure 15}.\n\n\n\n\n\n\nFigure 15\n\n\n\nClick on Continue to Export → to save changes and proceed to the Export tab."
+    "objectID": "pypotteryscan/installation.html#updating",
+    "href": "pypotteryscan/installation.html#updating",
+    "title": "Installation",
+    "section": "Updating",
+    "text": "Updating\nTo update PyPotteryScan to the latest version:\n\nDownload the latest version of the code\nActivate the virtual environment\nUpdate dependencies:\n\npip install -r requirements.txt --upgrade"
   },
   {
-    "objectID": "pypotteryscan/usage.html#exported-folder-structure",
-    "href": "pypotteryscan/usage.html#exported-folder-structure",
-    "title": "Using PyPotteryScan",
-    "section": "Exported Folder Structure",
-    "text": "Exported Folder Structure\nInside the exported folder, you will find the following structure:\n[Selected Folder]/\n├── images/                                 # Folder containing cropped drawings\n│   ├── {prefix}_001.jpg                    # Individual drawing images\n│   ├── {prefix}_002.jpg\n│   └── ...\n├── {prefix}_data_{timestamp}.xlsx          # Excel file with Metadata and OCR results\n└── {prefix}_ml_training_{timestamp}.xlsx   # Excel file with Bounding Box data for ML\nThe Data Excel contains:\n\nfilename: Name of the cropped image file\noriginal_image: Source plate filename\ndrawing_number: ID of the drawing\ntable_name, context, notes: Metadata\nocr_result: Raw OCR text\nocr_corrected: Manually corrected text\n\nThe ML Training Excel contains bounding box coordinates for vessels and text areas, useful for training machine learning models."
+    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "title": "Version History",
+    "section": "v0.2.0 (Initial Release) - (December 2025)",
+    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan."
   },
   {
-    "objectID": "pypotteryscan/usage.html#gui-elements-2",
-    "href": "pypotteryscan/usage.html#gui-elements-2",
-    "title": "Using PyPotteryScan",
-    "section": "GUI Elements",
-    "text": "GUI Elements\nOn the left of the tab are Available fields representing the fields that can be identified in the text. The + Add Field button allows you to add a new custom field (Figure 17).\nOn the right are a series of commands that allow you to configure the parser.\n\n\n\n\n\n\nFigure 17\n\n\n\nThe 📂 Select Files button allows you to select the .xlsx file exported from the Export tab. The model will look for an “ocr_corrected” column.\nThe content of the “ocr_corrected” column will be displayed in the text box. By selecting the text, you can associate the available fields (Figure 18).\n\n\n\n\n\n\nFigure 18\n\n\n\nClicking on ➕ Add Example will allow you to add an example of association between text and fields (Figure 19).\n\n\n\n\n\n\nFigure 19\n\n\n\nClicking on 🚀 Run Parsing will start the parsing process. A progress bar will show the advancement of the process. Once processing is finished, a dialog window will allow you to save the exported file in .xlsx format (Figure 20).\n\n\n\n\n\n\nFigure 20"
+    "objectID": "suite_installation.html",
+    "href": "suite_installation.html",
+    "title": "Suite Installation",
+    "section": "",
+    "text": "The easiest way to get started with PyPottery! Download the pre-packaged launcher \n    with everything included - no Python installation required.",
+    "crumbs": [
+      "Suite Installation"
+    ]
   },
   {
-    "objectID": "pypotteryscan/usage.html#load-a-project",
-    "href": "pypotteryscan/usage.html#load-a-project",
-    "title": "Using PyPotteryScan",
-    "section": "Load a Project",
-    "text": "Load a Project\nIf you want to load an existing project, you can do so from the initial screen by clicking on 📂 Load Project (Figure 21).\n\n\n\n\n\n\nFigure 21\n\n\n\nEach project will be listed as a card, with information such as name, description, creation date, and last modification date, as well as the number of uploaded images and created annotations, along with a progress bar indicating the project’s completion status.\nThe 🗑️ (trash can) icon next to each project allows you to delete the selected project.\n\n\n\n\n\n\nCaution\n\n\n\nCaution: Deleting a project is irreversible and will permanently remove all associated data.\n\n\nOpening a project allows you to resume work exactly where it was left off. Even if the Load tab is opened, you will be able to navigate between other tabs to complete the workflow (Figure 22).\n\n\n\n\n\n\nFigure 22\n\n\n\nThe Load table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the Annotate tab on that specific image."
+    "objectID": "suite_installation.html#quick-start",
+    "href": "suite_installation.html#quick-start",
+    "title": "Suite Installation",
+    "section": "Quick Start",
+    "text": "Quick Start\nThe PyPottery Suite Launcher is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.\n\n\n\n\n\n\nNo Technical Knowledge Required\n\n\n\nThe launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#download",
+    "href": "suite_installation.html#download",
+    "title": "Suite Installation",
+    "section": "Download",
+    "text": "Download\nDownload the PyPottery Suite Launcher for your operating system:\n\n  \n\n\n\n\nPlatform\nDownload\nSize\n\n\n\n\nWindows 10/11 (64-bit)\nPyPottery-Launcher-Windows.zip\n~52 MB\n\n\nmacOS Intel (x86_64)\nPyPottery-Launcher-macos-x86_64.zip\n~22 MB\n\n\nmacOS Apple Silicon (M1/M2/M3)\nPyPottery-Launcher-macos-arm64.zip\n~22 MB\n\n\nLinux (x86_64)\nComing Soon\nComing Soon",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#installation",
+    "href": "suite_installation.html#installation",
+    "title": "Suite Installation",
+    "section": "Installation",
+    "text": "Installation\n\nWindows\n\nDownload the Windows package from the link above\nExtract the ZIP file to a folder of your choice (e.g., C:\\PyPottery)\nRun PyPottery.bat by double-clicking it\n\n\n  \n    💡\n    Tip\n  \n  \n    You can create a desktop shortcut to PyPottery.bat for quick access!\n  \n\n\n\nmacOS\n\nDownload the appropriate package for your Mac:\n\nIntel Mac: macos-x86_64 version\nApple Silicon (M1/M2/M3): macos-arm64 version\n\nExtract the ZIP file\nDouble-click on the PyPottery Launcher.app file to launch the app\n\n\n\n\n\n\n\nFirst Run on macOS\n\n\n\nThe first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.\n\n\n\n\n\n\n\n\nDon’t run on Download\n\n\n\nDownload folder doesn’t allow running the app. Move it to a different location (e.g, Desktop or Applications).\n\n\n\n\nLinux\n\n  \n  Linux of the installer is coming soon! Check back later.",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#using-the-launcher",
+    "href": "suite_installation.html#using-the-launcher",
+    "title": "Suite Installation",
+    "section": "Using the Launcher",
+    "text": "Using the Launcher\nOnce the launcher opens, you’ll see a clean interface with all available PyPottery applications.\n\n  \n\n\n  🎯 Launcher Features\n  \n    \n      📥 One-Click Download\n      Download apps directly from the launcher\n    \n    \n      🔄 Auto Updates\n      Check for and install updates easily\n    \n    \n      ⚙️ Environment Setup\n      Automatic Python environment configuration\n    \n    \n      🖥️ Hardware Detection\n      Detects GPU for optimal performance\n    \n  \n\n\nStep 1: Configure Environment\nThe first time you use the launcher, click “Configure Environment” to set up the Python environment. This installs all required dependencies.\n\n  ⏱️ First Setup\n  \n    Environment configuration may take 5-10 minutes depending on your internet connection. \n    The progress bar shows the current status.\n  \n\n\n\nStep 2: Download Apps\nClick the download button (⬇️) next to any app to download it. Available apps:\n\n\n\nApp\nDescription\n\n\n\n\nPyPotteryInk\nAI-based inking of pottery drawings\n\n\nPyPotteryLayout\nCreate publication-ready layouts\n\n\nPyPotteryLens\nData collection from PDF documents\n\n\n\n\n\n\n\nStep 3: Launch Apps\nOnce an app is downloaded, click the “Launch” button to start it. The app will open in your default web browser.\n\n  \n    ℹ️\n    How Apps Work\n  \n  \n    PyPottery apps run as local web servers. When you click \"Launch\", a browser window opens \n    with the app interface. The launcher shows the running status and allows you to stop the app.",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#troubleshooting",
+    "href": "suite_installation.html#troubleshooting",
+    "title": "Suite Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nGeneral Troubleshooting during the installation\nRemove the pypottery_env folder and try again.\n\n\nWindows: “Windows protected your PC” message\nThis is normal for new applications. Click “More info” → “Run anyway”.\n\n\n\nApps not downloading\nCheck your internet connection and firewall settings. The launcher downloads apps from GitHub.\n\n\nEnvironment configuration fails\nTry running the launcher as administrator (Windows).",
+    "crumbs": [
+      "Suite Installation"
+    ]
+  },
+  {
+    "objectID": "suite_installation.html#alternative-manual-installation",
+    "href": "suite_installation.html#alternative-manual-installation",
+    "title": "Suite Installation",
+    "section": "Alternative: Manual Installation",
+    "text": "Alternative: Manual Installation\nIf you prefer to install PyPottery tools manually or need more control, see the individual installation guides:\n\n\nPyPotteryInk Installation \nPyPotteryLayout Installation\nPyPotteryLens Installation\n\n\n  Ready to Start?\n  Download the launcher and begin digitizing your pottery collection!\n  \n    📥 Download PyPottery Launcher\n  \n\n\n\n\n  \n    \n    \n    ☕\n    Support PyPottery!\n    \n      PyPottery is a free and open-source project built for the archaeological community. \n      If you find it useful, please consider supporting its development!\n    \n    \n    \n    \n      \n    \n    \n    \n    \n    \n    \n    \n      \n        📥 Continue to Download\n      \n      \n        Maybe Later\n      \n    \n    \n    \n      Every contribution helps keep this project alive! 🙏",
+    "crumbs": [
+      "Suite Installation"
+    ]
   }
 ]
