@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPotteryTrace Interactive - Segmentation Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: opacity 0.5s ease;
+        }
+
+        .splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        .splash-logo {
+            max-width: 180px;
+            height: auto;
+            margin: 0 auto 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.85;
+            }
+        }
+
+        .splash-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .splash-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .splash-message {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .splash-progress {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 30px;
+        }
+
+        .splash-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Info Modal Styles */
+        .info-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 10000;
+            /* Higher than other layers */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .info-modal-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        }
+
+        .info-modal-overlay.active .info-modal-content {
+            transform: scale(1);
+        }
+
+        .info-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .info-modal-close:hover {
+            color: #333;
+        }
+
+        .info-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 10px;
+        }
+
+        .info-version {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .info-author {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        .info-github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .info-github-link:hover {
+            background: #333;
+            color: white;
+        }
+
+        .info-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-left: 10px;
+        }
+
+        .info-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Model Download Overlay Styles */
+        .model-download-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .model-download-overlay.active {
+            display: flex;
+        }
+
+        .download-content {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            padding: 40px;
+            color: #1f2937;
+        }
+
+        .download-spinner {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        .download-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .download-message {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #6b7280;
+        }
+
+        .download-progress {
+            width: 100%;
+            margin: 20px auto;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+        }
+
+        .download-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+            min-width: 35px;
+        }
+
+        .download-stats {
+            margin-top: 15px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .download-error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #991b1b;
+        }
+
+        .download-error button {
+            margin-top: 10px;
+        }
+
+        /* Pixel Header Animation Styles */
+        #pixel-help-btn #pixel-face-idle-header {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+
+        #pixel-help-btn #pixel-face-awake-header {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+
+        #pixel-help-btn:hover #pixel-face-idle-header {
+            opacity: 0 !important;
+            visibility: hidden;
+            transition-delay: 0s;
+        }
+
+        #pixel-help-btn:hover #pixel-face-awake-header {
+            opacity: 1 !important;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        #pixel-help-btn svg {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
+        }
+
+        #pixel-help-btn:hover svg {
+            transform: scale(1.1) rotate(-5deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <img src="{{ url_for('static', filename='LogoTrace.png') }}" alt="PyPotteryTrace Logo" class="splash-logo">
+            <div class="splash-spinner"></div>
+            <h1 class="splash-title">PyPotteryTrace</h1>
+            <p class="splash-message" id="splash-message">Initializing application...</p>
+
+            <div class="splash-progress">
+                <div class="splash-progress-bar" id="splash-progress-bar" style="width: 0%">
+                    <span id="splash-progress-text">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="info-modal-overlay">
+        <div class="info-modal-content">
+            <button class="info-modal-close" id="info-modal-close">&times;</button>
+            <img src="{{ url_for('static', filename='LogoTrace.png') }}" alt="PyPotteryTrace Logo" class="info-logo">
+            <h2 class="info-title">PyPotteryTrace</h2>
+            <span class="info-version">v0.2.0</span>
+            <p class="info-author">Created by <strong>Lorenzo Cardarelli</strong></p>
+
+            <a href="https://github.com/lrncrd/PyPotteryTrace" target="_blank" class="info-github-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                View on GitHub
+            </a>
+        </div>
+    </div>
+
+    <!-- Model Download Overlay -->
+    <div id="model-download-overlay" class="model-download-overlay">
+        <div class="download-content">
+            <div class="download-spinner"></div>
+            <h1 class="download-title">Downloading Model</h1>
+            <p class="download-message" id="download-message">Preparing download...</p>
+
+            <div class="download-progress">
+                <div class="download-progress-bar" id="download-progress-bar" style="width: 0%">
+                    <span id="download-progress-text">0%</span>
+                </div>
+            </div>
+
+            <div class="download-stats" id="download-stats">
+                <span id="download-size">0 MB / 0 MB</span> •
+                <span id="download-speed">0 MB/s</span>
+            </div>
+
+            <div class="download-error" id="download-error" style="display: none;">
+                <strong>⚠️ Download Error</strong>
+                <p id="download-error-message"></p>
+                <button class="btn btn-secondary" onclick="closeDownloadOverlay()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="main-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-section">
+                <img src="{{ url_for('static', filename='LogoTrace.png') }}" alt="PyPotteryTrace Logo" class="logo">
+                <div>
+                    <h1 style="margin: 0;">PyPotteryTrace</h1>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                        <span class="version-badge">v0.2.0</span>
+                        <p style="margin: 0; font-size: 0.85rem; opacity: 0.9; font-weight: 400;">
+                            AI-powered application for semantic segmentation and vectorization of archaeological pottery
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Right Section -->
+            <div class="header-right-section">
+                <!-- Pixel Help Assistant in Header -->
+                <a href="https://pypottery.readthedocs.io/en/latest/" target="_blank" id="pixel-help-btn"
+                    class="pixel-help-header">
+                    <div class="pixel-speech-bubble-header">Need help?</div>
+                    <svg width="50" height="50" viewBox="30 45 180 140">
+                        <g id="pixel-monitor-header">
+                            <rect x="40" y="50" width="160" height="130" rx="15" ry="15" fill="#d0d0d0" stroke="#444"
+                                stroke-width="3" />
+                            <rect x="55" y="65" width="130" height="90" rx="5" ry="5" fill="#a0a0a0" stroke="#444"
+                                stroke-width="2" />
+                            <rect id="pixel-screen-header" x="60" y="70" width="120" height="80" rx="2" ry="2"
+                                fill="#111" />
+                            <g id="pixel-face-idle-header" transform="translate(120, 115)">
+                                <text x="0" y="5" text-anchor="middle" font-family="monospace" font-size="24"
+                                    fill="#0f0" font-weight="bold">Zzz...</text>
+                            </g>
+                            <g id="pixel-face-awake-header" class="pixel-face-awake-header"
+                                transform="translate(120, 115)">
+                                <rect x="-30" y="-15" width="10" height="12" rx="2" fill="#0f0" />
+                                <rect x="20" y="-15" width="10" height="12" rx="2" fill="#0f0" />
+                                <path d="M-15,10 Q0,25 15,10" stroke="#0f0" stroke-width="4" fill="none"
+                                    stroke-linecap="round" />
+                            </g>
+                            <circle cx="180" cy="165" r="3" fill="#e74c3c" stroke="#c0392b" stroke-width="1" />
+                        </g>
+                    </svg>
+                </a>
+
+                <!-- Info Button -->
+                <button id="info-btn" class="info-btn" title="About PyPotteryTrace">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Project Info Bar -->
+        <div id="project-info-bar" class="project-info-bar" style="display: none;">
+            <div class="project-info-content">
+                <span class="project-icon" id="project-icon">🏺</span>
+                <span class="project-label">Current Project:</span>
+                <span id="current-project-name" class="project-name">No project selected</span>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="projects-tab">
+                <span class="tab-icon">📂</span>
+                <span class="tab-label">Projects</span>
+            </button>
+            <button class="tab-button" data-tab="model-tab">
+                <span class="tab-icon">⚙️</span>
+                <span class="tab-label">Setup</span>
+            </button>
+            <button class="tab-button" data-tab="segmentation-tab" id="segmentation-tab-btn" disabled>
+                <span class="tab-icon">✂️</span>
+                <span class="tab-label">Segmentation</span>
+            </button>
+            <button class="tab-button" data-tab="svg-editor-tab" id="svg-editor-tab-btn" disabled>
+                <span class="tab-icon">✏️</span>
+                <span class="tab-label">SVG Editor</span>
+            </button>
+            <button class="tab-button" data-tab="postprocess-tab" id="postprocess-tab-btn">
+                <span class="tab-icon">🎨</span>
+                <span class="tab-label">Post-Processing</span>
+            </button>
+        </div>
+
+        <!-- Tab 0: Projects -->
+        <div class="tab-content active" id="projects-tab">
+            <div class="projects-page">
+                <!-- Top Bar -->
+                <div class="projects-top-bar">
+                    <div class="top-bar-left">
+                        <h2>📁 Projects</h2>
+                        <p>Manage your pottery analysis projects</p>
+                    </div>
+                    <div class="top-bar-right">
+                        <button class="btn btn-secondary" id="refresh-projects-btn">
+                            🔄 Refresh
+                        </button>
+                        <button class="btn btn-primary" id="new-project-btn">
+                            ➕ New Project
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="projects-main">
+                    <div id="projects-list" class="projects-grid">
+                        <div class="loading-message">Loading projects...</div>
+                    </div>
+                </div>
+
+                <!-- Create Project Modal (Hidden by default) -->
+                <div id="create-project-modal" class="project-modal" style="display: none;">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-dialog">
+                        <div class="modal-header">
+                            <h3>Create New Project</h3>
+                            <button class="modal-close" id="close-create-modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="new-project-name">Project Name *</label>
+                                <input type="text" id="new-project-name" class="form-control"
+                                    placeholder="e.g., Pompeii_Pottery_2024" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new-project-description">Description</label>
+                                <textarea id="new-project-description" class="form-control" rows="3"
+                                    placeholder="Brief description of your project..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Choose an Icon</label>
+                                <div id="icon-selector" class="icon-selector">
+                                    <button class="icon-option active" data-icon="icon1">
+                                        <img src="{{ url_for('static', filename='imgs/icons/1.png') }}" alt="Icon 1">
+                                    </button>
+                                    <button class="icon-option" data-icon="icon2">
+                                        <img src="{{ url_for('static', filename='imgs/icons/2.png') }}" alt="Icon 2">
+                                    </button>
+                                    <button class="icon-option" data-icon="icon3">
+                                        <img src="{{ url_for('static', filename='imgs/icons/3.png') }}" alt="Icon 3">
+                                    </button>
+                                    <button class="icon-option" data-icon="icon4">
+                                        <img src="{{ url_for('static', filename='imgs/icons/4.png') }}" alt="Icon 4">
+                                    </button>
+                                    <button class="icon-option" data-icon="icon5">
+                                        <img src="{{ url_for('static', filename='imgs/icons/5.png') }}" alt="Icon 5">
+                                    </button>
+                                    <button class="icon-option" data-icon="icon6">
+                                        <img src="{{ url_for('static', filename='imgs/icons/6.png') }}" alt="Icon 6">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="cancel-create-btn">Cancel</button>
+                            <button class="btn btn-primary" id="create-project-btn">Create Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 1: Setup -->
+        <div class="tab-content" id="model-tab">
+            <div class="setup-container">
+                <div class="setup-header">
+                    <h2>📁 Setup - Project Images and Model</h2>
+                    <p>View your project images and configure the segmentation model</p>
+                </div>
+
+                <div class="setup-panels">
+                    <!-- Panel 1: Project Images Gallery -->
+                    <div class="setup-panel" style="flex: 2;">
+                        <h3>🖼️ Project Images</h3>
+                        <div id="folder-info" class="folder-info">
+                            <p id="no-project-message" style="color: #888; text-align: center; padding: 20px;">
+                                📂 No project loaded. Use the <strong>Project Manager</strong> button to create or open
+                                a project.
+                            </p>
+                            <div id="project-images-info" style="display: none;">
+                                <p><strong>Project:</strong> <span id="folder-name"></span></p>
+                                <p><strong>Images:</strong> <span id="images-count">0</span></p>
+                            </div>
+                            <div id="images-preview" class="images-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Model Selection -->
+                    <div class="setup-panel" style="flex: 1;">
+                        <h3>🤖 Select SAM2 Model</h3>
+                        <div class="model-selection-compact">
+                            <div class="model-option">
+                                <input type="radio" id="model-tiny" name="model" value="tiny">
+                                <label for="model-tiny">
+                                    <strong>⚡ Tiny</strong>
+                                    <span class="model-desc">~40MB - Very Fast - Good accuracy</span>
+                                </label>
+                            </div>
+                            <div class="model-option">
+                                <input type="radio" id="model-small" name="model" value="small" checked>
+                                <label for="model-small">
+                                    <strong>⭐ Small (Recommended)</strong>
+                                    <span class="model-desc">~180MB - Fast - Very Good accuracy</span>
+                                </label>
+                            </div>
+                            <div class="model-option">
+                                <input type="radio" id="model-base" name="model" value="base">
+                                <label for="model-base">
+                                    <strong>🎯 Base+</strong>
+                                    <span class="model-desc">~230MB - Medium - Excellent accuracy</span>
+                                </label>
+                            </div>
+                            <div class="model-option">
+                                <input type="radio" id="model-large" name="model" value="large">
+                                <label for="model-large">
+                                    <strong>🚀 Large</strong>
+                                    <span class="model-desc">~900MB - Slow - Best accuracy</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Button removed: processing is triggered automatically or from other controls -->
+
+                <div class="model-status" id="model-loading-status" style="display: none;">
+                    <div class="spinner"></div>
+                    <p id="model-status-message">Loading model...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Segmentation -->
+        <div class="tab-content" id="segmentation-tab">
+            <div class="main-content">
+                <!-- Left Sidebar - Tools & Controls -->
+                <aside class="sidebar left-sidebar">
+                    <div class="panel">
+                        <h2>📁 Current Image</h2>
+                        <div id="image-info" class="image-info">
+                            <p><strong>File:</strong> <span id="filename">No image loaded</span></p>
+                            <p><strong>Image:</strong> <span id="current-image-number">-</span> / <span
+                                    id="total-images">-</span></p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>🎯 Segmentation Mode</h2>
+                        <div class="mode-selector">
+                            <button class="mode-btn active" data-mode="point" id="point-mode-btn">
+                                <span class="mode-icon">👆</span>
+                                <span>Point Mode</span>
+                                <span class="mode-desc">Click to segment</span>
+                            </button>
+                            <button class="mode-btn" data-mode="box" id="box-mode-btn">
+                                <span class="mode-icon">▭</span>
+                                <span>Box Mode</span>
+                                <span class="mode-desc">Draw bounding box</span>
+                            </button>
+                            <button class="mode-btn" data-mode="polygon" id="polygon-mode-btn">
+                                <span class="mode-icon">⬡</span>
+                                <span>Manual Polygon</span>
+                                <span class="mode-desc">Draw mask manually</span>
+                            </button>
+                            <button class="mode-btn" data-mode="rotation" id="rotation-mode-btn">
+                                <span class="mode-icon">⊕</span>
+                                <span>Rotation Center</span>
+                                <span class="mode-desc">Set mirror axis</span>
+                            </button>
+                        </div>
+
+                        <div class="point-controls" id="point-controls">
+                            <label>
+                                <input type="radio" name="point-label" value="1" checked>
+                                <span class="positive">➕ Positive</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="point-label" value="0">
+                                <span class="negative">➖ Negative</span>
+                            </label>
+                        </div>
+
+                        <div class="polygon-controls" id="polygon-controls" style="display: none;">
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 8px;">
+                                <span id="polygon-mode-instructions">
+                                    Click to add vertices. Double-click or press Enter to close polygon.
+                                </span><br>
+                                <span id="polygon-points-counter">Points: 0</span>
+                            </p>
+                            <div id="polygon-draw-controls">
+                                <button id="undo-polygon-point-btn" class="btn btn-secondary btn-small"
+                                    style="margin-bottom: 8px;" disabled>
+                                    <span>↩️</span> Undo Point
+                                </button>
+                                <button id="close-polygon-btn" class="btn btn-secondary btn-small"
+                                    style="margin-bottom: 8px;" disabled>
+                                    <span>✓</span> Close Polygon
+                                </button>
+                                <button id="clear-polygon-btn" class="btn btn-secondary btn-small" disabled>
+                                    <span>✗</span> Clear All
+                                </button>
+                            </div>
+                            <div id="polygon-edit-controls" style="display: none;">
+                                <p style="font-size: 0.8rem; color: #666; margin: 4px 0;">
+                                    <strong>Edit mode:</strong> Drag vertices to move. Click edge to add point.
+                                    Right-click vertex to delete.
+                                </p>
+                                <div class="form-group" style="margin: 8px 0;">
+                                    <label for="simplify-slider" style="font-size: 0.85rem;">Simplification: <span
+                                            id="simplify-value">15</span></label>
+                                    <input type="range" id="simplify-slider" min="1" max="30" step="1" value="15"
+                                        style="width: 100%;">
+                                    <small style="color: #888;">Higher = fewer vertices (min 3)</small>
+                                </div>
+                                <button id="apply-simplify-btn" class="btn btn-secondary btn-small">
+                                    <span>📐</span> Apply Simplification
+                                </button>
+                                <button id="finish-edit-btn" class="btn btn-primary btn-small">
+                                    <span>✓</span> Done Editing
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>🏷️ Category</h2>
+                        <select id="category-select" class="category-select">
+                            <option value="Profile">🏺 Profile</option>
+                            <option value="Application">🎯 Application</option>
+                            <option value="Handle">🪢 Handle</option>
+                            <option value="Prospectus">👁️ Prospectus</option>
+                            <option value="Decoration">🎨 Decoration</option>
+                            <option value="Running_Element">🏃 Running element</option>
+                            <option value="Detail">📌 Detail</option>
+                        </select>
+
+                        <div class="form-group">
+                            <label for="element-name">Element Name:</label>
+                            <input type="text" id="element-name" placeholder="e.g., Main Profile" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="vectorize-checkbox" checked>
+                                Enable vectorization (SVG)
+                            </label>
+                            <small style="color: #666; display: block; margin-top: 4px;">
+                                Uncheck to export as PNG with transparent background
+                            </small>
+                        </div>
+
+                        <button id="edit-mask-btn" class="btn btn-secondary" disabled style="margin-bottom: 8px;">
+                            <span>✏️</span> Edit Mask
+                        </button>
+
+                        <button id="add-segment-btn" class="btn btn-primary" disabled style="margin-bottom: 8px;">
+                            <span>✓</span> Add Segment
+                        </button>
+
+                        <button id="clear-preview-btn" class="btn btn-secondary" disabled>
+                            <span>✗</span> Clear Preview
+                        </button>
+                    </div>
+
+                    <div class="panel">
+                        <h2>⚙️ Settings</h2>
+                        <div class="form-group">
+                            <label>Simplification: <span id="epsilon-value">1.5</span></label>
+                            <input type="range" id="epsilon-slider" min="0.5" max="5" step="0.1" value="1.5"
+                                class="slider">
+                        </div>
+                        <div class="form-group">
+                            <label>Smoothing: <span id="smoothing-value">0.3</span></label>
+                            <input type="range" id="smoothing-slider" min="0" max="1" step="0.1" value="0.3"
+                                class="slider">
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center - Canvas Area -->
+                <main class="canvas-area">
+                    <div class="canvas-container" id="canvas-container">
+                        <canvas id="main-canvas"></canvas>
+                        <div id="canvas-message" class="canvas-message">
+                            <span class="message-icon">📷</span>
+                            <p>Clicca su un'immagine nella galleria per iniziare la segmentazione</p>
+                        </div>
+                    </div>
+
+                    <div class="canvas-toolbar">
+                        <button id="zoom-in-btn" class="toolbar-btn" title="Zoom In">
+                            <span>🔍+</span>
+                        </button>
+                        <button id="zoom-out-btn" class="toolbar-btn" title="Zoom Out">
+                            <span>🔍-</span>
+                        </button>
+                        <button id="reset-view-btn" class="toolbar-btn" title="Reset View">
+                            <span>⟲</span>
+                        </button>
+                        <div class="toolbar-divider"></div>
+                        <button id="undo-btn" class="toolbar-btn" title="Undo" disabled>
+                            <span>↶</span>
+                        </button>
+                    </div>
+
+                    <!-- Image Navigation Grid -->
+                    <div class="image-grid-panel">
+                        <h3>📁 Project Images (<span id="grid-image-count">0</span>)</h3>
+                        <div id="image-navigation-grid" class="image-navigation-grid">
+                            <p class="empty-message">No images in project</p>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Right Sidebar - Segments List -->
+                <aside class="sidebar right-sidebar">
+                    <div class="panel">
+                        <h2>📋 Segments</h2>
+                        <div id="rotation-center-info" class="rotation-info" style="display: none;">
+                            <p>⊕ Rotation Center: <span id="rotation-coords"></span></p>
+                            <button id="clear-rotation-btn" class="btn btn-secondary btn-small"
+                                style="margin-top: 5px;">
+                                <span>✗</span> Clear Rotation Center
+                            </button>
+                        </div>
+                        <div id="segments-list" class="segments-list">
+                            <p class="empty-message">No segments yet</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>📤 Export</h2>
+                        <button id="export-btn" class="btn btn-success btn-large" disabled>
+                            <span>🎨</span> Generate SVG
+                        </button>
+                        <p style="font-size: 0.9em; color: #666; margin-top: 8px;">
+                            Generate SVG and switch to "SVG Editor" tab to modify it before saving
+                        </p>
+                        <p id="ml-export-notice"
+                            style="font-size: 0.85em; color: #10b981; margin-top: 4px; display: none;">
+                            🤖 ML training data will be automatically exported
+                        </p>
+
+                        <button id="debug-export-btn" class="btn btn-secondary" disabled style="margin-top: 10px;">
+                            <span>🔧</span> DEBUG: Export Masks as PNG
+                        </button>
+
+                        <div id="export-status" class="export-status" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <p id="status-text">Processing...</p>
+                        </div>
+                    </div>
+
+
+                </aside>
+            </div>
+        </div>
+
+        <!-- Tab 3: SVG Editor -->
+        <div class="tab-content" id="svg-editor-tab">
+            <div class="main-content">
+                <!-- Left Sidebar - Tools & Info -->
+                <aside class="sidebar left-sidebar">
+                    <div class="panel">
+                        <h2>🎨 SVG Editor</h2>
+                        <p style="font-size: 0.875rem; color: #666; margin-bottom: 1rem;">
+                            View and edit the exported SVG. You can select and delete individual points.
+                        </p>
+                    </div>
+
+                    <div class="panel">
+                        <h2>🔧 Tools</h2>
+                        <div class="mode-selector">
+                            <button class="mode-btn active" data-svg-mode="view" id="svg-view-mode-btn">
+                                <span class="mode-icon">👁️</span>
+                                <span>View Mode</span>
+                                <span class="mode-desc">Pan & zoom</span>
+                            </button>
+                            <button class="mode-btn" data-svg-mode="select" id="svg-select-mode-btn">
+                                <span class="mode-icon">👆</span>
+                                <span>Select Mode</span>
+                                <span class="mode-desc">Select points</span>
+                            </button>
+                            <button class="mode-btn" data-svg-mode="add" id="svg-add-mode-btn">
+                                <span class="mode-icon">➕</span>
+                                <span>Add Point</span>
+                                <span class="mode-desc">Click on path to add point</span>
+                            </button>
+                            <button class="mode-btn" data-svg-mode="delete" id="svg-delete-mode-btn">
+                                <span class="mode-icon">🗑️</span>
+                                <span>Delete Mode</span>
+                                <span class="mode-desc">Click to delete points</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>⚙️ Settings</h2>
+                        <div class="form-group">
+                            <label>Point Size: <span id="svg-point-size-value">8</span>px</label>
+                            <input type="range" id="svg-point-size-slider" min="4" max="16" step="1" value="8"
+                                class="slider">
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="svg-show-points" checked>
+                                Show Path Points
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="svg-show-labels" checked>
+                                Show Point Labels
+                            </label>
+                        </div>
+
+                        <div
+                            style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-size: 0.8rem;">
+                            <strong style="display: block; margin-bottom: 8px;">Point Types:</strong>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span
+                                    style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #2563eb;"></span>
+                                <span>Path Points</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span
+                                    style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #9333ea;"></span>
+                                <span>Control Points (Curves)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span
+                                    style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></span>
+                                <span>Hovered</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span
+                                    style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></span>
+                                <span>Selected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>📊 Selection Info</h2>
+                        <div id="svg-selection-info" style="font-size: 0.875rem;">
+                            <p>No point selected</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>💡 Shortcuts</h2>
+                        <div style="font-size: 0.8rem; line-height: 1.6; color: #666;">
+                            <p><strong>Mode View:</strong></p>
+                            <p>• Drag (empty area): Pan view<br>
+                                • Scroll: Zoom<br>
+                                • <span style="color: #10b981; font-weight: bold;">Click on Image: Move Image
+                                    🆕</span><br>
+                                • Shift + Drag: Force pan (ignore images)</p>
+
+                            <p style="margin-top: 8px;"><strong>Mode Select:</strong></p>
+                            <p>• Click: Select Point<br>
+                                • Shift + Click: Multi-select<br>
+                                • Ctrl + Drag: Move Point</p>
+
+                            <p style="margin-top: 8px;"><strong>Mode Add Point:</strong></p>
+                            <p>• Click on path: Add new point at position</p>
+
+                            <p style="margin-top: 8px;"><strong>Mode Delete:</strong></p>
+                            <p>• Click: Delete Point</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center - SVG Canvas -->
+                <main class="canvas-area">
+                    <div class="canvas-container" id="svg-canvas-container">
+                        <canvas id="svg-canvas"></canvas>
+                        <div id="svg-canvas-message" class="canvas-message">
+                            <span class="message-icon">📄</span>
+                            <p>Export an SVG from the Segmentation tab to begin</p>
+                        </div>
+                    </div>
+
+                    <div class="canvas-toolbar">
+                        <button id="svg-zoom-in-btn" class="toolbar-btn" title="Zoom In">
+                            <span>🔍+</span>
+                        </button>
+                        <button id="svg-zoom-out-btn" class="toolbar-btn" title="Zoom Out">
+                            <span>🔍-</span>
+                        </button>
+                        <button id="svg-reset-view-btn" class="toolbar-btn" title="Reset View">
+                            <span>⟲</span>
+                        </button>
+                        <div class="toolbar-divider"></div>
+                        <button id="svg-undo-btn" class="toolbar-btn" title="Undo" disabled>
+                            <span>↶</span>
+                        </button>
+                    </div>
+                </main>
+
+                <!-- Right Sidebar - Layers & Export -->
+                <aside class="sidebar right-sidebar">
+                    <div class="panel">
+                        <h2>📋 Layers</h2>
+                        <button id="svg-add-image-btn" class="btn btn-secondary btn-small"
+                            style="width: 100%; margin-bottom: 10px;">
+                            <span>📷</span> Add Current Image
+                        </button>
+                        <div id="svg-layers-list" class="segments-list">
+                            <p class="empty-message">No layers loaded</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>📤 Export</h2>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>
+                                <input type="checkbox" id="svg-bg-checkbox">
+                                Include background in SVG
+                            </label>
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">
+                                Include the original image as background in the exported SVG
+                            </p>
+                        </div>
+                        <button id="svg-save-btn" class="btn btn-success btn-large" disabled>
+                            <span>💾</span> Save Modified SVG
+                        </button>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">
+                            Save the modified SVG and download the complete package
+                        </p>
+                        <button id="svg-download-zip-btn" class="btn btn-secondary" disabled style="margin-top: 10px;">
+                            <span>📦</span> Download Complete ZIP
+                        </button>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">
+                            Download all files (SVG + PNG) without modifications
+                        </p>
+                    </div>
+
+                    <div class="panel stats-panel">
+                        <h3>📊 Statistics</h3>
+                        <div class="stat-row">
+                            <span>Total Paths:</span>
+                            <span id="svg-stat-paths">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Total Points:</span>
+                            <span id="svg-stat-points">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Selected Points:</span>
+                            <span id="svg-stat-selected">0</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- Tab 4: Post-Processing -->
+        <div class="tab-content" id="postprocess-tab">
+            <div class="postprocess-container">
+                <header class="postprocess-header">
+                    <h2>🎨 Post-Processing - Batch Export Vectorized Data</h2>
+                    <p>Export all vectorized files from your output folder in different formats</p>
+                </header>
+
+                <div class="postprocess-panels">
+                    <!-- Left Panel: Project Info & Preview -->
+                    <div class="postprocess-left">
+                        <div class="panel">
+                            <h3>📂 Current Project</h3>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">
+                                Export vectorized files from the current project
+                            </p>
+
+                            <div id="postprocess-project-info"
+                                style="display: none; background: #eff6ff; border: 1px solid #3b82f6; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <h4 style="margin: 0 0 10px 0; color: #1e40af;">📁 <span
+                                        id="postprocess-project-name">Project Name</span></h4>
+                                <p style="margin: 5px 0; color: #475569; font-size: 0.85rem;">
+                                    <strong>Vectorized folder:</strong><br>
+                                    <span id="postprocess-folder-path"
+                                        style="font-family: monospace; font-size: 0.8rem; word-break: break-all;"></span>
+                                </p>
+                            </div>
+
+                            <div id="postprocess-no-project"
+                                style="background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; text-align: center;">
+                                <p style="margin: 0; color: #92400e; font-size: 0.9rem;">
+                                    ⚠️ <strong>No project loaded</strong><br>
+                                    Please load a project from the Projects tab first
+                                </p>
+                            </div>
+
+                            <div id="postprocess-folder-info" style="display: none; margin-top: 20px;">
+                                <div
+                                    style="background: #f0fdf4; border: 1px solid #86efac; padding: 15px; border-radius: 8px;">
+                                    <h4 style="margin: 0 0 10px 0; color: #15803d;">✓ Files Loaded</h4>
+                                    <p style="margin: 5px 0;"><strong>SVG Files:</strong> <span
+                                            id="postprocess-svg-count">0</span></p>
+                                    <p style="margin: 5px 0;"><strong>PNG Files:</strong> <span
+                                            id="postprocess-png-count">0</span></p>
+                                </div>
+
+                                <div id="postprocess-categories" style="margin-top: 20px;">
+                                    <h4>📋 Categories Found:</h4>
+                                    <div id="postprocess-categories-list" style="margin-top: 10px;">
+                                        <!-- Categories will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Export Options -->
+                    <div class="postprocess-right">
+                        <div class="panel">
+                            <h3>⚙️ Export Settings</h3>
+
+                            <div class="form-group">
+                                <h4 style="margin-bottom: 10px;">📄 Output Format</h4>
+
+                                <div
+                                    style="background: #d1fae5; border: 1px solid #10b981; padding: 10px; border-radius: 6px; margin-bottom: 12px;">
+                                    <p style="margin: 0; color: #065f46; font-size: 0.85rem;">
+                                        ✨ <strong>Smart Conversion:</strong> SVG files are converted to PNG/JPG directly
+                                        in your browser!
+                                        High quality, no server dependencies required.
+                                    </p>
+                                </div>
+
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-format-svg" checked>
+                                    <strong>SVG</strong> - Vector format (editable)
+                                </label>
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-format-png" checked>
+                                    <strong>PNG</strong> - Raster with transparency
+                                </label>
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-format-jpg">
+                                    <strong>JPG</strong> - Compressed raster
+                                </label>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;" id="postprocess-raster-settings">
+                                <h4 style="margin-bottom: 10px;">🖼️ Raster Settings (PNG/JPG)</h4>
+                                <label style="display: block; margin-bottom: 10px;">
+                                    Resolution (DPI):
+                                    <select id="postprocess-dpi" style="width: 100%; padding: 8px; margin-top: 5px;">
+                                        <option value="72">72 DPI (Screen)</option>
+                                        <option value="150">150 DPI (Standard)</option>
+                                        <option value="300" selected>300 DPI (Print Quality)</option>
+                                        <option value="600">600 DPI (High Quality)</option>
+                                    </select>
+                                </label>
+
+                                <label style="display: block; margin-bottom: 10px;">
+                                    <input type="checkbox" id="postprocess-transparent-bg" checked>
+                                    Transparent background (PNG only)
+                                </label>
+
+                                <div id="postprocess-bg-color-group" style="display: none; margin-top: 10px;">
+                                    <label>
+                                        Background color:
+                                        <input type="color" id="postprocess-bg-color" value="#ffffff"
+                                            style="margin-left: 10px;">
+                                    </label>
+                                </div>
+
+                                <label style="display: block; margin-top: 10px;">
+                                    JPG Quality:
+                                    <input type="range" id="postprocess-jpg-quality" min="60" max="100" value="90"
+                                        style="width: 100%;">
+                                    <span id="postprocess-jpg-quality-value">90</span>%
+                                </label>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <h4 style="margin-bottom: 10px;">� Stroke Width Settings</h4>
+                                <p style="color: #666; font-size: 0.85rem; margin-bottom: 10px;">
+                                    Customize stroke widths for different element types (in pixels)
+                                </p>
+
+                                <div
+                                    style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.9rem;">Main Elements:</h5>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Profile / Prospectus:</span>
+                                        <input type="number" id="postprocess-stroke-profile" min="0.5" max="5"
+                                            step="0.1" value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Application:</span>
+                                        <input type="number" id="postprocess-stroke-application" min="0.5" max="5"
+                                            step="0.1" value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Handle:</span>
+                                        <input type="number" id="postprocess-stroke-handle" min="0.5" max="5" step="0.1"
+                                            value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Decoration:</span>
+                                        <input type="number" id="postprocess-stroke-decoration" min="0.3" max="3"
+                                            step="0.1" value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Running element:</span>
+                                        <input type="number" id="postprocess-stroke-runningelement" min="0.5" max="5"
+                                            step="0.1" value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>Detail:</span>
+                                        <input type="number" id="postprocess-stroke-detail" min="0.3" max="3" step="0.1"
+                                            value="1.0" style="width: 70px; padding: 4px;">
+                                    </label>
+                                </div>
+
+                                <div style="background: #f8f9fa; padding: 12px; border-radius: 6px;">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.9rem;">Construction Lines:</h5>
+                                    <label
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span>Symmetry Line:</span>
+                                        <input type="number" id="postprocess-stroke-symmetry" min="0.1" max="2"
+                                            step="0.1" value="0.5" style="width: 70px; padding: 4px;">
+                                    </label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>Diameter:</span>
+                                        <input type="number" id="postprocess-stroke-diameter" min="0.1" max="2"
+                                            step="0.1" value="0.5" style="width: 70px; padding: 4px;">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <h4 style="margin-bottom: 10px;">🔧 Vectorization Parameters (Main Elements Only)</h4>
+                                <p style="color: #666; font-size: 0.85rem; margin-bottom: 10px;">
+                                    Adjust path simplification and smoothing for Profile, Application, Handle,
+                                    Decoration, Running element, Detail
+                                </p>
+
+                                <div style="background: #f8f9fa; padding: 12px; border-radius: 6px;">
+                                    <label style="display: block; margin-bottom: 12px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <span>Simplification (Epsilon):</span>
+                                            <span id="postprocess-epsilon-value" style="font-weight: bold;">0</span>
+                                        </div>
+                                        <input type="range" id="postprocess-epsilon" min="0" max="5" step="0.1"
+                                            value="0" style="width: 100%;">
+                                        <small style="color: #666;">0 = no changes, Higher = simpler paths</small>
+                                    </label>
+
+                                    <label style="display: block;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                            <span>Smoothing:</span>
+                                            <span id="postprocess-smoothing-value" style="font-weight: bold;">0</span>
+                                        </div>
+                                        <input type="range" id="postprocess-smoothing" min="0" max="1" step="0.1"
+                                            value="0" style="width: 100%;">
+                                        <small style="color: #666;">0 = no smoothing, 1 = maximum smoothing</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <h4 style="margin-bottom: 10px;">�🏷️ Category Filter</h4>
+                                <p style="color: #666; font-size: 0.85rem; margin-bottom: 10px;">
+                                    Select which layer categories to include in the export. Unselected layers will be
+                                    removed from SVG files.
+                                </p>
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-select-all-categories" checked>
+                                    <strong>Select All</strong>
+                                </label>
+                                <div id="postprocess-category-filters" style="margin-top: 10px; padding-left: 10px;">
+                                    <!-- Category checkboxes will be populated here -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <h4 style="margin-bottom: 10px;">📦 Archive Options</h4>
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-create-zip" checked>
+                                    Create ZIP archive
+                                </label>
+                                <label style="display: block; margin-bottom: 8px;">
+                                    <input type="checkbox" id="postprocess-organize-by-category">
+                                    Organize files by category in subfolders
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <h3>🚀 Export</h3>
+                            <button id="postprocess-export-btn" class="btn btn-success btn-large" disabled>
+                                <span>📤</span> Export Files
+                            </button>
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">
+                                Process and export all selected files
+                            </p>
+
+                            <div id="postprocess-progress" style="display: none; margin-top: 20px;">
+                                <div style="background: #f3f4f6; border-radius: 8px; overflow: hidden; height: 30px;">
+                                    <div id="postprocess-progress-bar"
+                                        style="background: linear-gradient(90deg, #10b981, #3b82f6); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.85rem;">
+                                    </div>
+                                </div>
+                                <p id="postprocess-progress-text"
+                                    style="margin-top: 8px; font-size: 0.9rem; color: #666; text-align: center;">
+                                </p>
+                            </div>
+
+                            <div id="postprocess-result" style="display: none; margin-top: 20px;">
+                                <!-- Export results will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="modal-content help-modal-content">
+            <span class="close">&times;</span>
+            <h2 class="help-title">📖 PyPotteryTrace - User Guide</h2>
+
+            <div class="help-tabs">
+                <button class="help-tab-btn active" data-help-tab="projects">Projects</button>
+                <button class="help-tab-btn" data-help-tab="setup">Setup</button>
+                <button class="help-tab-btn" data-help-tab="segmentation">Segmentation</button>
+                <button class="help-tab-btn" data-help-tab="editor">SVG Editor</button>
+                <button class="help-tab-btn" data-help-tab="postprocess">Post-Processing</button>
+                <button class="help-tab-btn" data-help-tab="shortcuts">Shortcuts</button>
+            </div>
+
+            <div class="help-tab-content active" data-help-content="projects">
+                <h3>📁 Project Management</h3>
+                <div class="help-step">
+                    <span class="help-step-number">1</span>
+                    <div class="help-step-content">
+                        <h4>Create New Project</h4>
+                        <p>Click "➕ New Project" to create a new pottery analysis project. Give it a name and
+                            description, then choose an icon.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">2</span>
+                    <div class="help-step-content">
+                        <h4>Load Existing Project</h4>
+                        <p>Click on any project card to load it. The project name will appear in the header.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">3</span>
+                    <div class="help-step-content">
+                        <h4>Project Organization</h4>
+                        <p>Each project maintains its own images, segmentations, and vectorized outputs. Files are
+                            automatically organized in the project folder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-tab-content" data-help-content="setup">
+                <h3>⚙️ Setup</h3>
+                <div class="help-step">
+                    <span class="help-step-number">1</span>
+                    <div class="help-step-content">
+                        <h4>Create or Open a Project</h4>
+                        <p>Use the Project Manager to create a new project or open an existing one. When creating a new
+                            project, you can upload your pottery images directly. Supported formats: PNG, JPG, JPEG,
+                            TIFF, BMP.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">2</span>
+                    <div class="help-step-content">
+                        <h4>Choose SAM2 Model</h4>
+                        <p>Select model size based on your needs:</p>
+                        <ul>
+                            <li><strong>Tiny:</strong> Fastest, good for quick tests</li>
+                            <li><strong>Small:</strong> Recommended for most cases (best balance)</li>
+                            <li><strong>Base+:</strong> Better accuracy, slower</li>
+                            <li><strong>Large:</strong> Best quality, requires more resources</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Help step about Start Processing removed because the Start button was removed -->
+            </div>
+
+            <div class="help-tab-content" data-help-content="segmentation">
+                <h3>✂️ Segmentation Workflow</h3>
+                <div class="help-step">
+                    <span class="help-step-number">1</span>
+                    <div class="help-step-content">
+                        <h4>Choose Segmentation Mode</h4>
+                        <p><strong>Point Mode:</strong> Click to add positive (➕) or negative (➖) points. SAM2 will
+                            segment the object based on your clicks.</p>
+                        <p><strong>Box Mode:</strong> Draw a bounding box around the entire object for automatic
+                            segmentation.</p>
+                        <p><strong>Polygon Mode:</strong> Manually draw a polygon mask by clicking vertices.
+                            Double-click to close the polygon. Press Escape to cancel or remove the last point.</p>
+                        <p><strong>Edit Mask:</strong> After creating a mask with SAM (point/box mode), click "Edit
+                            Mask" to convert it to an editable polygon. You can then drag vertices, click edges to add
+                            new vertices, or right-click to delete vertices.</p>
+                        <p><strong>Rotation Center:</strong> Set the symmetry axis for profile mirroring.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">2</span>
+                    <div class="help-step-content">
+                        <h4>Assign Category</h4>
+                        <p>Select the appropriate category for the segmented element:</p>
+                        <ul>
+                            <li><strong>Profile:</strong> Main vessel profile (auto-mirrored if rotation center is set)
+                            </li>
+                            <li><strong>Application:</strong> Applied decorations, stamps</li>
+                            <li><strong>Handle:</strong> Vessel handles</li>
+                            <li><strong>Prospectus:</strong> Front/side views</li>
+                            <li><strong>Decoration:</strong> Painted or incised decorations</li>
+                            <li><strong>Running element:</strong> Running elements</li>
+                            <li><strong>Detail:</strong> Close-up details</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">3</span>
+                    <div class="help-step-content">
+                        <h4>Vectorization Option</h4>
+                        <p>Check "Enable vectorization" to export as SVG (vector). Uncheck to export as PNG with
+                            transparent background.</p>
+                        <p><em>Note: Some categories default to PNG export (Decoration, Handle, Application).</em></p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">4</span>
+                    <div class="help-step-content">
+                        <h4>Export</h4>
+                        <p>Click "Generate SVG" to create the vectorized output and switch to SVG Editor for refinement.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-tab-content" data-help-content="editor">
+                <h3>✏️ SVG Editor</h3>
+                <div class="help-step">
+                    <span class="help-step-number">1</span>
+                    <div class="help-step-content">
+                        <h4>View Mode</h4>
+                        <p>Pan and zoom to navigate the SVG. Click and drag on images to reposition them.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">2</span>
+                    <div class="help-step-content">
+                        <h4>Select Mode</h4>
+                        <p>Click to select individual path points. Hold Shift for multi-selection. Hold Ctrl while
+                            dragging to move points.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">3</span>
+                    <div class="help-step-content">
+                        <h4>Add Point Mode</h4>
+                        <p>Click on any path to add a new point at that position. Useful for adding detail to simplified
+                            paths.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">4</span>
+                    <div class="help-step-content">
+                        <h4>Delete Mode</h4>
+                        <p>Click on points to remove them. Use this to simplify overly complex paths.</p>
+                    </div>
+                </div>
+                <div class="help-step">
+                    <span class="help-step-number">5</span>
+                    <div class="help-step-content">
+                        <h4>Layer Management</h4>
+                        <p>Toggle layer visibility, add PNG images, and organize your composition. Use "Add PNG Image"
+                            to import reference photos or decorations.</p>
+                    </div>
+                    <div class="shortcuts-section">
+                        <h4>🎯 Segmentation Tab</h4>
+                        <div class="shortcut-row">
+                            <kbd>P</kbd>
+                            <span>Point Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>B</kbd>
+                            <span>Box Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>M</kbd>
+                            <span>Manual Polygon Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>R</kbd>
+                            <span>Rotation Center Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Esc</kbd>
+                            <span>Cancel Polygon / Undo Last Point</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+                            <span>Undo Last Action</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>+</kbd> / <kbd>-</kbd>
+                            <span>Zoom In / Out</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Mouse Wheel</kbd>
+                            <span>Zoom</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Drag</kbd>
+                            <span>Pan Canvas</span>
+                        </div>
+                    </div>
+
+                    <div class="shortcuts-section">
+                        <h4>✏️ SVG Editor</h4>
+                        <div class="shortcut-row">
+                            <kbd>V</kbd>
+                            <span>View Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>S</kbd>
+                            <span>Select Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>A</kbd>
+                            <span>Add Point Mode</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>D</kbd> / <kbd>Delete</kbd>
+                            <span>Delete Mode / Delete Selected</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Shift</kbd> + <kbd>Click</kbd>
+                            <span>Multi-select Points</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Ctrl</kbd> + <kbd>Drag</kbd>
+                            <span>Move Selected Point</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Shift</kbd> + <kbd>Drag</kbd>
+                            <span>Force Pan (ignore images)</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+                            <span>Undo</span>
+                        </div>
+                    </div>
+
+                    <div class="shortcuts-section">
+                        <h4>🔄 Navigation</h4>
+                        <div class="shortcut-row">
+                            <kbd>←</kbd> / <kbd>→</kbd>
+                            <span>Previous / Next Image</span>
+                        </div>
+                        <div class="shortcut-row">
+                            <kbd>Esc</kbd>
+                            <span>Close Modal / Cancel Action</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay (for image uploads) -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-overlay-content">
+                <div class="loading-overlay-spinner"></div>
+                <h3 class="loading-overlay-title" id="loading-overlay-title">Loading Images...</h3>
+                <p class="loading-overlay-message" id="loading-overlay-message">Please wait while we process your images
+                </p>
+                <div class="loading-overlay-progress">
+                    <div class="loading-overlay-progress-bar" id="loading-overlay-progress-bar"></div>
+                </div>
+                <p class="loading-overlay-progress-text" id="loading-overlay-progress-text">0 / 0 images loaded</p>
+            </div>
+        </div>
+
+        <style>
+            /* Header Right Section */
+            .header-right-section {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-left: auto;
+            }
+        </style>
+
+        <style>
+            /* Pixel Help Assistant Header Styles */
+            .pixel-help-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                position: relative;
+            }
+
+            .pixel-help-header:hover {
+                transform: scale(1.1);
+            }
+
+            .pixel-speech-bubble-header {
+                background: #fff;
+                color: #000;
+                padding: 6px 10px;
+                border-radius: 8px;
+                border: 2px solid #444;
+                font-weight: bold;
+                font-size: 11px;
+                font-family: 'Courier New', monospace;
+                opacity: 0;
+                transform: translateX(10px);
+                transition: all 0.3s ease;
+                white-space: nowrap;
+                box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            }
+
+            .pixel-help-header:hover .pixel-speech-bubble-header {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            #pixel-face-idle-header {
+                animation: pixel-breathe-header 4s infinite ease-in-out;
+            }
+
+            .pixel-face-awake-header {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .pixel-help-header:hover #pixel-face-idle-header {
+                opacity: 0;
+            }
+
+            .pixel-help-header:hover .pixel-face-awake-header {
+                opacity: 1;
+            }
+
+            .pixel-help-header:hover #pixel-screen-header {
+                fill: #002200;
+            }
+
+            @keyframes pixel-breathe-header {
+
+                0%,
+                100% {
+                    opacity: 0.7;
+                }
+
+                50% {
+                    opacity: 0.4;
+                }
+            }
+        </style>
+
+        <!-- Scripts -->
+        <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/projects.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/image-grid.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/canvas.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/segmentation.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/svg-editor.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/batch-export.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/postprocess.js') }}"></script>
+
+        <!-- Model Download Handler -->
+        <script>
+            // Global variable to store currently selected model
+            let currentSelectedModel = 'small';  // Default
+
+            // Close download overlay
+            function closeDownloadOverlay() {
+                const overlay = document.getElementById('model-download-overlay');
+                overlay.classList.remove('active');
+            }
+
+            // Show download overlay
+            function showDownloadOverlay(modelSize) {
+                const overlay = document.getElementById('model-download-overlay');
+                const message = document.getElementById('download-message');
+                const errorDiv = document.getElementById('download-error');
+                const spinner = document.querySelector('.download-spinner');
+                const stats = document.getElementById('download-stats');
+                const progressDiv = document.querySelector('.download-progress');
+                const progressBar = document.getElementById('download-progress-bar');
+
+                // Reset UI to initial state
+                message.textContent = `Checking ${modelSize} model...`;
+                errorDiv.style.display = 'none';
+                spinner.style.display = 'block';
+                stats.style.display = 'block';
+                progressDiv.style.display = 'block';
+                progressBar.style.width = '0%';
+                document.getElementById('download-progress-text').textContent = '0%';
+                document.getElementById('download-size').textContent = '0 MB / 0 MB';
+                document.getElementById('download-speed').textContent = '';
+
+                overlay.classList.add('active');
+            }
+
+            // Update download progress
+            function updateDownloadProgress(progress, downloadedMB, totalMB, speed) {
+                const progressBar = document.getElementById('download-progress-bar');
+                const progressText = document.getElementById('download-progress-text');
+                const sizeText = document.getElementById('download-size');
+                const speedText = document.getElementById('download-speed');
+                const message = document.getElementById('download-message');
+
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+                sizeText.textContent = `${downloadedMB} MB / ${totalMB} MB`;
+                if (speed !== undefined && speed > 0) {
+                    speedText.textContent = `• ${speed} MB/s`;
+                }
+                // Only change message to "Downloading..." if we're actually downloading (not at 100%)
+                if (progress < 100) {
+                    message.textContent = 'Downloading model...';
+                }
+            }
+
+            // Show download error
+            function showDownloadError(errorMsg) {
+                const errorDiv = document.getElementById('download-error');
+                const errorMessage = document.getElementById('download-error-message');
+                const spinner = document.querySelector('.download-spinner');
+                const stats = document.getElementById('download-stats');
+                const progress = document.getElementById('download-progress');
+
+                errorMessage.textContent = errorMsg;
+                errorDiv.style.display = 'block';
+                spinner.style.display = 'none';
+                stats.style.display = 'none';
+                progress.style.display = 'none';
+            }
+
+            // Check and download model if needed
+            async function checkAndDownloadModel(modelSize) {
+                showDownloadOverlay(modelSize);
+
+                try {
+                    // First, check if model exists
+                    const checkResponse = await fetch('/api/check_model', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ model_size: modelSize })
+                    });
+
+                    const checkData = await checkResponse.json();
+
+                    if (!checkResponse.ok) {
+                        throw new Error(checkData.error || 'Failed to check model');
+                    }
+
+                    // If model exists, load it immediately
+                    if (checkData.exists) {
+                        console.log(`Model ${modelSize} already exists, loading...`);
+                        document.getElementById('download-message').textContent = 'Model found! Loading...';
+                        updateDownloadProgress(100, checkData.size_mb, checkData.size_mb, 0);
+
+                        // Small delay to show the message
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        closeDownloadOverlay();
+                        currentSelectedModel = modelSize;
+                        return;
+                    }
+
+                    // Model doesn't exist, start download with SSE
+                    console.log(`Model ${modelSize} not found, downloading...`);
+                    document.getElementById('download-message').textContent = 'Starting download...';
+
+                    // Create EventSource for Server-Sent Events
+                    const eventSource = new EventSource(`/api/download_model?model_size=${modelSize}`);
+
+                    eventSource.onmessage = function (event) {
+                        const data = JSON.parse(event.data);
+
+                        if (data.status === 'downloading') {
+                            updateDownloadProgress(
+                                data.progress,
+                                data.downloaded_mb,
+                                data.total_mb,
+                                data.speed_mbps
+                            );
+                        } else if (data.status === 'complete') {
+                            updateDownloadProgress(100, data.total_mb || checkData.size_mb, data.total_mb || checkData.size_mb, 0);
+                            document.getElementById('download-message').textContent = 'Download complete! Model ready.';
+
+                            eventSource.close();
+
+                            // Close overlay after short delay
+                            setTimeout(() => {
+                                closeDownloadOverlay();
+                                currentSelectedModel = modelSize;
+                            }, 1000);
+                        } else if (data.status === 'error') {
+                            eventSource.close();
+                            showDownloadError(data.error || 'Unknown error occurred during download');
+
+                            // Revert to previous model selection
+                            const previousRadio = document.querySelector(`input[name="model"][value="${currentSelectedModel}"]`);
+                            if (previousRadio) {
+                                previousRadio.checked = true;
+                            }
+                        }
+                    };
+
+                    eventSource.onerror = function (error) {
+                        console.error('EventSource error:', error);
+                        eventSource.close();
+                        showDownloadError('Network error: Could not connect to server');
+
+                        // Revert to previous model selection
+                        const previousRadio = document.querySelector(`input[name="model"][value="${currentSelectedModel}"]`);
+                        if (previousRadio) {
+                            previousRadio.checked = true;
+                        }
+                    };
+
+                } catch (error) {
+                    console.error('Error checking/downloading model:', error);
+                    showDownloadError(error.message);
+
+                    // Revert to previous model selection
+                    const previousRadio = document.querySelector(`input[name="model"][value="${currentSelectedModel}"]`);
+                    if (previousRadio) {
+                        previousRadio.checked = true;
+                    }
+                }
+            }
+
+
+            // Info Modal Logic
+            const infoBtn = document.getElementById('info-btn');
+            const infoModal = document.getElementById('info-modal');
+            const infoClose = document.getElementById('info-modal-close');
+
+            function openInfoModal() {
+                infoModal.style.display = 'flex';
+                // Trigger reflow
+                infoModal.offsetHeight;
+                infoModal.classList.add('active');
+            }
+
+            function closeInfoModal() {
+                infoModal.classList.remove('active');
+                setTimeout(() => {
+                    infoModal.style.display = 'none';
+                }, 300);
+            }
+
+            if (infoBtn) infoBtn.addEventListener('click', openInfoModal);
+            if (infoClose) infoClose.addEventListener('click', closeInfoModal);
+            if (infoModal) {
+                infoModal.addEventListener('click', (e) => {
+                    if (e.target === infoModal) closeInfoModal();
+                });
+            }
+
+            // Initialize model selection handlers when document loads
+            document.addEventListener('DOMContentLoaded', function () {
+                const modelRadios = document.querySelectorAll('input[name="model"]');
+
+                modelRadios.forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        const selectedModel = this.value;
+                        console.log(`Model selected: ${selectedModel}`);
+                        checkAndDownloadModel(selectedModel);
+                    });
+                });
+
+                // Set initial model based on checked radio
+                const checkedRadio = document.querySelector('input[name="model"]:checked');
+                if (checkedRadio) {
+                    currentSelectedModel = checkedRadio.value;
+                }
+            });
+        </script>
+
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+
+</body>
+
+</html>

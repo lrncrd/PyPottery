@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Usage (GUI) – PyPottery</title>
+<title>Using PyPotteryTrace – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Usage (GUI)</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Using PyPotteryTrace</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -299,15 +299,52 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#interface-overview" id="toc-interface-overview" class="nav-link active" data-scroll-target="#interface-overview">Interface Overview</a></li>
+  <li><a href="#project-management" id="toc-project-management" class="nav-link" data-scroll-target="#project-management">📂 Project Management</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-new-project" id="toc-creating-a-new-project" class="nav-link" data-scroll-target="#creating-a-new-project">Creating a New Project</a></li>
+  <li><a href="#loading-a-project" id="toc-loading-a-project" class="nav-link" data-scroll-target="#loading-a-project">Loading a Project</a></li>
+  </ul></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">⚙️ Setup</a>
+  <ul class="collapse">
+  <li><a href="#project-images" id="toc-project-images" class="nav-link" data-scroll-target="#project-images">Project Images</a></li>
+  <li><a href="#select-sam2-model" id="toc-select-sam2-model" class="nav-link" data-scroll-target="#select-sam2-model">Select SAM2 Model</a></li>
+  </ul></li>
+  <li><a href="#segmentation" id="toc-segmentation" class="nav-link" data-scroll-target="#segmentation">✂️ Segmentation</a>
+  <ul class="collapse">
+  <li><a href="#gui-overview" id="toc-gui-overview" class="nav-link" data-scroll-target="#gui-overview">GUI Overview</a>
+  <ul class="collapse">
+  <li><a href="#left-sidebar-tools-controls" id="toc-left-sidebar-tools-controls" class="nav-link" data-scroll-target="#left-sidebar-tools-controls">👈 Left Sidebar: Tools &amp; Controls</a></li>
+  <li><a href="#central-canvas" id="toc-central-canvas" class="nav-link" data-scroll-target="#central-canvas">🖼️ Central Canvas</a></li>
+  <li><a href="#right-sidebar-segments-export" id="toc-right-sidebar-segments-export" class="nav-link" data-scroll-target="#right-sidebar-segments-export">👉 Right Sidebar: Segments &amp; Export</a></li>
+  </ul></li>
+  <li><a href="#basic-example" id="toc-basic-example" class="nav-link" data-scroll-target="#basic-example">Basic Example</a></li>
+  <li><a href="#manual-segmentation" id="toc-manual-segmentation" class="nav-link" data-scroll-target="#manual-segmentation">Manual Segmentation</a></li>
+  </ul></li>
+  <li><a href="#svg-editor" id="toc-svg-editor" class="nav-link" data-scroll-target="#svg-editor">✏️ SVG Editor</a>
+  <ul class="collapse">
+  <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
+  <li><a href="#layers-export" id="toc-layers-export" class="nav-link" data-scroll-target="#layers-export">Layers &amp; Export</a></li>
+  <li><a href="#a-basic-example" id="toc-a-basic-example" class="nav-link" data-scroll-target="#a-basic-example">A Basic Example</a></li>
+  </ul></li>
+  <li><a href="#post-processing" id="toc-post-processing" class="nav-link" data-scroll-target="#post-processing">🎨 Post-Processing</a>
+  <ul class="collapse">
+  <li><a href="#export-settings" id="toc-export-settings" class="nav-link" data-scroll-target="#export-settings">Export Settings</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Usage (GUI)</h1>
+<h1 class="title">Using PyPotteryTrace</h1>
 </div>
 
 
@@ -324,10 +361,447 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;">
+<div style="text-align: center;">
+<p><img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 0.2.0 </span></p>
+</div>
+<section id="interface-overview" class="level1">
+<h1>Interface Overview</h1>
+<p>The PyPotteryTrace interface is designed to guide you through the process of segmenting and vectorizing pottery drawings. It is divided into five main sections, accessible via tabs at the top of the application:</p>
+<ul>
+<li><strong>📂 Projects</strong></li>
+<li><strong>⚙️ Setup</strong></li>
+<li><strong>✂️ Segmentation</strong></li>
+<li><strong>✏️ SVG Editor</strong></li>
+<li><strong>🎨 Post-Processing</strong></li>
+</ul>
+<p>Clicking on each tab takes you to a specific section of the application. Each tab is designed for a specific task in the workflow. While you can navigate freely, the intended workflow progresses from left to right.</p>
+</section>
+<section id="project-management" class="level1">
+<h1>📂 Project Management</h1>
+<p>Like other <code>PyPottery</code> modules, <code>PyPotteryTrace</code> uses a project-based workflow. A project is a self-contained environment that stores your images, segmentations, and exported files.</p>
+<p>The <strong>Projects</strong> tab allows you to manage your work.</p>
+<section id="creating-a-new-project" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-new-project">Creating a New Project</h2>
+<ol type="1">
+<li>Click the <strong>➕ New Project</strong> button.</li>
+<li>In the dialog that appears, enter a <strong>Project Name</strong> (required).</li>
+<li>(Optional) Add a description and choose an icon for your project.</li>
+<li>Click <strong>Create Project</strong>.</li>
+<li>You will then be prompted to select the images you wish to import into the project.</li>
+</ol>
+<iframe src="animations/create_project.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
 </iframe>
+</section>
+<section id="loading-a-project" class="level2">
+<h2 class="anchored" data-anchor-id="loading-a-project">Loading a Project</h2>
+<p>Existing projects are displayed as cards in the main view. Each card shows the project name, description, and icon.</p>
+<ul>
+<li>Click on a <strong>Project Card</strong> to open it.</li>
+<li>Click <strong>🔄 Refresh</strong> to update the list if you’ve made changes externally.</li>
+</ul>
+</section>
+</section>
+<section id="setup" class="level1">
+<h1>⚙️ Setup</h1>
+<p>After creating or loading a project, the <strong>Setup</strong> tab allows you to review your images and configure the AI model.</p>
+<iframe src="animations/setup.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<section id="project-images" class="level2">
+<h2 class="anchored" data-anchor-id="project-images">Project Images</h2>
+<p>The left panel displays a gallery of all images imported into the current project. You can verify that all your scans have been loaded correctly.</p>
+</section>
+<section id="select-sam2-model" class="level2">
+<h2 class="anchored" data-anchor-id="select-sam2-model">Select SAM2 Model</h2>
+<p>The core of PyPotteryTrace is the Segment Anything Model 2 (SAM2). You can choose between different versions of the model depending on your hardware and accuracy needs:</p>
+<ul>
+<li><strong>⚡ Tiny</strong> (~40MB): Very fast, good for older computers or quick checks.</li>
+<li><strong>⭐ Small</strong> (~180MB): <strong>Recommended.</strong> The best balance between speed and accuracy for most users.</li>
+<li><strong>🎯 Base+</strong> (~230MB): Higher accuracy but slower.</li>
+<li><strong>🚀 Large</strong> (~900MB): Best possible accuracy, but requires significant memory and processing time.</li>
+</ul>
+<p>Once a model is selected, the application will download (if necessary) and load it into memory.</p>
+</section>
+</section>
+<section id="segmentation" class="level1">
+<h1>✂️ Segmentation</h1>
+<p>The <strong>Segmentation</strong> tab is where the magic happens. Here you define the shapes of your pottery using AI assistance.</p>
+<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<section id="gui-overview" class="level2">
+<h2 class="anchored" data-anchor-id="gui-overview">GUI Overview</h2>
+<p>The interface consists of a central canvas flanked by two sidebars.</p>
+<section id="left-sidebar-tools-controls" class="level3">
+<h3 class="anchored" data-anchor-id="left-sidebar-tools-controls">👈 Left Sidebar: Tools &amp; Controls</h3>
+<p><strong>Target Selection &amp; Information</strong> - Displays the current filename and image count.</p>
+<p><strong>🎯 Segmentation Mode</strong> Choose how you want to interact with the image:</p>
+<ul>
+<li><strong>👆 Point Mode (Default)</strong>: Click on the object you want to segment.
+<ul>
+<li><strong>➕ Positive</strong>: Click to ADD to the mask (Green points).</li>
+<li><strong>➖ Negative</strong>: Click to REMOVE from the mask (Red points).</li>
+</ul></li>
+</ul>
+<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<ul>
+<li><strong>▭ Box Mode</strong>: Click and drag to draw a box around the object.</li>
+</ul>
+<iframe src="animations/segmentation_box.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<ul>
+<li><strong>⬡ Manual Polygon</strong>: Manually click points to define the exact shape if AI fails.</li>
+</ul>
+<iframe src="animations/segmentation_manual.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<p>.</p>
+<p><strong>🏷️ Category</strong> Assign a semantic label to your segmentation. This determines how lines are drawn in the final export.</p>
+<ul>
+<li><strong>🏺 Profile</strong>: The main vessel profile.</li>
+<li><strong>🎯 Application</strong>: Applied decorations over the profile.</li>
+<li><strong>🪢 Handle</strong>: Handles or lugs.</li>
+<li><strong>👁️ Prospectus</strong>: Frontal view.</li>
+<li><strong>🎨 Decoration</strong>: Surface painting or incision.</li>
+<li><strong>🏃 Running element</strong>: Continuous patterns over the profile (see example).</li>
+<li><strong>📌 Detail</strong>: Specific areas of interest.</li>
+</ul>
+<p><strong>Vectorization Settings</strong></p>
+<ul>
+<li><strong>Enable vectorization (SVG)</strong>: Check this to convert the AI mask into editable vector paths. Uncheck to export as a simple transparent PNG images.</li>
+<li><strong>✏️ Edit Mask</strong>: Convert an AI-generated mask into a manual polygon for fine-tuning.</li>
+</ul>
+</section>
+<section id="central-canvas" class="level3">
+<h3 class="anchored" data-anchor-id="central-canvas">🖼️ Central Canvas</h3>
+<ul>
+<li><p><strong>Interactive Area</strong>: Click or drag on the image to perform segmentation.</p></li>
+<li><p><strong>Toolbar</strong>:</p>
+<ul>
+<li><strong>🔍+ / 🔍-</strong>: Zoom in and out.</li>
+<li><strong>⟲ Reset View</strong>: Fit image to screen.</li>
+<li><strong>↶ Undo</strong>: Undo the last action.</li>
+</ul></li>
+</ul>
+</section>
+<section id="right-sidebar-segments-export" class="level3">
+<h3 class="anchored" data-anchor-id="right-sidebar-segments-export">👉 Right Sidebar: Segments &amp; Export</h3>
+<ul>
+<li><p><strong>📋 Segments</strong>: Lists all created masks for the current image. You can remove unwanted segments here.</p></li>
+<li><p><strong>📤 Export</strong>:</p>
+<ul>
+<li><strong>🎨 Generate SVG</strong>: Converts your segmentations into a vector file and moves you to the SVG Editor.</li>
+<li><strong>🔧 DEBUG Export</strong>: Quick export for testing purposes.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="basic-example" class="level2">
+<h2 class="anchored" data-anchor-id="basic-example">Basic Example</h2>
+<p>Let’s start with a basic example.</p>
+<p>The vessel for this example is straightforward: it has no decorations, handles, or applied elements.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\1.png" class="img-fluid figure-img"></p>
+<figcaption>A simple pottery vessel with no decorations.</figcaption>
+</figure>
+</div>
+<p>First, we segment the <strong>profile</strong>. A single click with the mouse on a point along the profile is sufficient to create the mask.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Refine with Multiple Clicks
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the initial mask isn’t perfect, you don’t have to start over! You can click multiple times on different parts of the profile to tell the AI to include those areas.</p>
+<p>Also, you can use the <strong>➕ Positive</strong> and <strong>➖ Negative</strong> buttons to refine the mask. In other words, the positive button will add the selected area to the mask, while the negative button will remove it.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\2.png" class="img-fluid figure-img"></p>
+<figcaption>Defining the vessel profile with a single click.</figcaption>
+</figure>
+</div>
+<p>We can scroll down the left sidebar to the <strong>🏷️ Category</strong> tab. Here we confirm the label as <strong>🏺 Profile</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\3.png" class="img-fluid figure-img"></p>
+<figcaption>Selecting the Profile category.</figcaption>
+</figure>
+</div>
+<p>The profile will turn <strong>red</strong>, and the segmented layer will appear in the <strong>📋 Segments</strong> list on the right sidebar.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Mistake?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the generated mask is completely wrong, you can delete it by clicking the <strong>Trash Icon 🗑️</strong> next to the segment in the list.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\4.png" class="img-fluid figure-img"></p>
+<figcaption>The profile is highlighted in red.</figcaption>
+</figure>
+</div>
+<p>Now, let’s segment the <strong>prospectus</strong> (frontal view). First, switch the category to <strong>👁️ Prospectus</strong> in the <strong>🏷️ Category</strong> tab.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\5.png" class="img-fluid figure-img"></p>
+<figcaption>Switching to the Prospectus category.</figcaption>
+</figure>
+</div>
+<p>For this shape, we can use the <strong>▭ Box Mode</strong> to segment the prospectus efficiently.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\6.png" class="img-fluid figure-img"></p>
+<figcaption>Using Box Mode to select the main body.</figcaption>
+</figure>
+</div>
+<p>The prospectus mask will be highlighted in <strong>green</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\7.png" class="img-fluid figure-img"></p>
+<figcaption>The prospectus area is highlighted.</figcaption>
+</figure>
+</div>
+<p>Clicking on <strong>➕ Add Segment</strong> confirms the selection. The prospectus will turn <strong>blue</strong> and appear in the right sidebar list.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\8.png" class="img-fluid figure-img"></p>
+<figcaption>The prospectus segment is added to the list.</figcaption>
+</figure>
+</div>
+<p>Next, click on <strong>⨁ Rotational Center</strong> to define the vessel’s axis of rotation.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\9.png" class="img-fluid figure-img"></p>
+<figcaption>Setting the rotational center.</figcaption>
+</figure>
+</div>
+<p>Finally, click on <strong>🎨 Generate SVG</strong> to create the vector file and proceed to the editor.</p>
+</section>
+<section id="manual-segmentation" class="level2">
+<h2 class="anchored" data-anchor-id="manual-segmentation">Manual Segmentation</h2>
+<p>Let’s try with this vessel that has a handle:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\10.png" class="img-fluid figure-img"></p>
+<figcaption>The original image of a vessel with a handle.</figcaption>
+</figure>
+</div>
+<p>We attempt to segment the profile by placing 3 positive points along the profile and 2 negative points to exclude the handle area.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\11.png" class="img-fluid figure-img"></p>
+<figcaption>Attempting to segment the profile using Point Mode.</figcaption>
+</figure>
+</div>
+<p>We also insert the rotational center using <strong>⨁ Rotational Center</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\12.png" class="img-fluid figure-img"></p>
+<figcaption>Defining the rotational center.</figcaption>
+</figure>
+</div>
+<p>Let’s try to generate the SVG by clicking <strong>🎨 Generate SVG</strong>!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\13.png" class="img-fluid figure-img"></p>
+<figcaption>The result of the automatic segmentation is incorrect.</figcaption>
+</figure>
+</div>
+<p>This is certainly not the result we expected, something is wrong!</p>
+<p>At this point, we can go back to the <strong>✂️ Segmentation</strong> tab and try to segment the profile more accurately. Sometimes this works, but other times it is necessary to manually edit the profile.</p>
+<p>After deleting the incorrect segment, we recreate the mask for the profile, but in this case, we must click on <strong>✏️ Edit Mask</strong> to modify the mask manually.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Create a Manual Mask
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can also create a manual mask from scratch by clicking on <strong>⬡ Manual Polygon</strong>. You need to place at least 3 points. When you finish, click on <strong>Close Polygon</strong> to create the mask.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\14.png" class="img-fluid figure-img"></p>
+<figcaption>Activating Edit Mask mode to manually refine the shape.</figcaption>
+</figure>
+</div>
+<p>Control points have appeared that were not present in the original mask. I can manually modify these points to create an accurate version of the profile.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to Edit Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Move Point</strong>: Click and drag a point to move it.</li>
+<li><strong>Add Point</strong>: Click on an empty space on the line to create a new keypoint.</li>
+<li><strong>Delete Point</strong>: Right-click on a point to remove it.</li>
+</ul>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\15.png" class="img-fluid figure-img"></p>
+<figcaption>Adjusting the control points to fit the profile.</figcaption>
+</figure>
+</div>
+<p>As you may have noticed, the manual mask is a simplification of the AI mask. It is possible to modify this simplification by adjusting the <strong>Simplification</strong> parameter and clicking <strong>Apply Simplification</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\16.png" class="img-fluid figure-img"></p>
+<figcaption>Applying simplification to the polyline.</figcaption>
+</figure>
+</div>
+<p>Once satisfied with my manual modification, I can click on <strong>✅ Done Editing</strong> and then on <strong>➕ Add Segment</strong> to add the mask manually. In fact, on the right sidebar, a badge indicates that our mask has been manually modified.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\17.png" class="img-fluid figure-img"></p>
+<figcaption>Completing the manual edit.</figcaption>
+</figure>
+</div>
+<p>Now let’s create the handle mask using <strong>⬡ Manual Polygon</strong>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\18.png" class="img-fluid figure-img"></p>
+<figcaption>Segmenting the handle separately.</figcaption>
+</figure>
+</div>
+<p>After clicking on <strong>➕ Add Segment</strong>, the handle mask will appear in the segment list, and we are ready to generate the SVG.</p>
+</section>
+</section>
+<section id="svg-editor" class="level1">
+<h1>✏️ SVG Editor</h1>
+<p>The <strong>SVG Editor</strong> allows you to refine the vector paths created in the previous step.</p>
+<iframe src="animations/svg_editor.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<section id="tools" class="level2">
+<h2 class="anchored" data-anchor-id="tools">Tools</h2>
+<ul>
+<li><strong>👁️ View Mode</strong>: Pan and zoom around the SVG. Drag images to reposition them.</li>
+<li><strong>👆 Select Mode</strong>: Click points to select them. Shift+Click for multiple. Ctrl+Drag to move them.</li>
+<li><strong>➕ Add Point</strong>: Click anywhere on a path to insert a new control point.</li>
+<li><strong>🗑️ Delete Mode</strong>: Click points to remove them.</li>
+</ul>
+</section>
+<section id="layers-export" class="level2">
+<h2 class="anchored" data-anchor-id="layers-export">Layers &amp; Export</h2>
+<ul>
+<li><strong>📋 Layers</strong>: Manage the different parts of your drawing. You can add the original image as a background layer for reference using <strong>📷 Add Current Image</strong>.</li>
+<li><strong>💾 Save Modified SVG</strong>: Save your changes.</li>
+</ul>
+</section>
+<section id="a-basic-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-basic-example">A Basic Example</h2>
+<p>Continuing with our simple vessel example, let’s see how to use the <strong>✏️ SVG Editor</strong> to modify the drawing.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\19.png" class="img-fluid figure-img"></p>
+<figcaption>Editing the SVG.</figcaption>
+</figure>
+</div>
+<p>In <strong>👁️ View Mode</strong>, we can pan and zoom around the SVG using the middle mouse button or the scroll wheel.</p>
+<p>If we have defined raster masks (like the prospectus we made earlier), we can move them with the left mouse button. In this case, I moved the prospectus outside the drawing area.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\20.png" class="img-fluid figure-img"></p>
+<figcaption>Moving the raster mask.</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Managing Layers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To manage the various raster masks, you can use the <strong>📋 Layers</strong> panel. Uncheck a raster layer to hide it. You can also adjust its opacity using the slider.</p>
+</div>
+</div>
+<p>However, while viewing the SVG, you might fear that the vectorization is inaccurate. Fortunately, you can click <strong>📷 Add Current Image</strong> to overlay the original image in the background as a reference.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs\21.png" class="img-fluid figure-img"></p>
+<figcaption>Adding the current image as reference.</figcaption>
+</figure>
+</div>
+<p>Everything seems correct. I can remove the reference image from the layer list using the <strong>Trash Icon 🗑️</strong>.</p>
+<p>To modify a point, switch to <strong>👆 Select Mode</strong> and click on it.</p>
+<p><strong>Select Mode Controls:</strong></p>
+<ul>
+<li><strong>Click</strong>: Select a single point.</li>
+<li><strong>Shift + Click</strong>: Select multiple points.</li>
+<li><strong>Ctrl + Drag</strong>: Move the selected point(s).</li>
+</ul>
+<p>The <strong>➕ Add Point</strong> mode allows you to click anywhere on a path to insert a new control point.</p>
+<p>Conversely, the <strong>🗑️ Delete Mode</strong> allows you to click on any point to remove it.</p>
+<p>Once you have finished your edits, click <strong>💾 Save Modified SVG</strong> to save your changes.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hiding Elements
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you uncheck an element in the layers panel, it will <strong>not</strong> be included in the final export. This is particularly useful, for example, when a vessel does not have a preserved rim and thus no diameter line. The system creates the line by default, but you can simply uncheck it to remove it from the final SVG.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="post-processing" class="level1">
+<h1>🎨 Post-Processing</h1>
+<p>The <strong>Post-Processing</strong> tab is for batch exporting your work in publication-ready formats.</p>
+<iframe src="animations/post_processing.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;">
+</iframe>
+<section id="export-settings" class="level2">
+<h2 class="anchored" data-anchor-id="export-settings">Export Settings</h2>
+<p><strong>📄 Output Format</strong></p>
+<ul>
+<li><strong>SVG</strong>: Editable vector files.</li>
+<li><strong>PNG</strong>: High-quality raster images with transparency.</li>
+<li><strong>JPG</strong>: Compressed images.</li>
+</ul>
+<p><strong>🖼️ Raster Settings</strong></p>
+<ul>
+<li><strong>DPI</strong>: Set the resolution (72 for screen, 300 for print, 600 for high quality).</li>
+<li><strong>Quality</strong>: Adjust JPG compression.</li>
+</ul>
+<p><strong>🖊️ Stroke Width Settings</strong> Customize the line thickness (in pixels) for each category to match your publication standards (e.g., thicker lines for Profiles, thinner for Details).</p>
+<p><strong>📦 Archive Options</strong></p>
+<ul>
+<li><strong>Create ZIP archive</strong>: Bundles all files into a single download.</li>
+<li><strong>Organize by category</strong>: Creates subfolders for Profiles, Handles, etc.</li>
+</ul>
+<p>Click <strong>📤 Export Files</strong> to process all vectorized data in your project and download the results.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -755,7 +1229,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p>PyPotteryDocs v0.0.1</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

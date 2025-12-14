@@ -1,5 +1,70 @@
 ---
 title: "Introduction"
+format: html
+toc: true
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+
+```{=html}
+<div style="text-align: center;">
+  <img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+  
+  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+    
+    <!-- CPU -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        CPU
+      </span>
+    </div>
+
+    <!-- CUDA (Active)-->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
+        CUDA
+      </span>
+    </div>
+
+    <!-- MPS -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        MPS
+      </span>
+    </div>
+  </div>
+</div>
+```
+
+<br>
+
+**PyPotteryTrace** is an advanced tool designed to digitize archaeological drawings by converting raster images into editable vector graphics (SVG). It uses the **Segment Anything Model 2 (SAM2)** to identify and extract pottery profiles, handles, and decorations with high precision.
+
+
+## Key Features
+
+*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
+*   **🤖 AI Segmentation**: Uses SAM2 to automatically identify vessel shapes from user prompts.
+*   **✂️ Interactive Tools**: Refine masks using Point, Box, and Manual modes.
+*   **✏️ Vector Editor**: Integrated SVG editor to fine-tune curves and control points.
+*   **🎨 Batch Export**: Export publication-ready SVGs, PNGs, and JPGs with customizable styles.
+
+## Contributors
+
+```{=html}
+<div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
+  <div style="text-align: center;">
+    <a href="https://github.com/lrncrd" target="_blank">
+      <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Lorenzo Cardarelli</span>
+  </div>
+</div>
+```

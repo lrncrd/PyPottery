@@ -1463,5 +1463,152 @@
     "crumbs": [
       "Suite Installation"
     ]
+  },
+  {
+    "objectID": "pypotterytrace/usage.html",
+    "href": "pypotterytrace/usage.html",
+    "title": "Using PyPotteryTrace",
+    "section": "",
+    "text": "version 0.2.0"
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#creating-a-new-project",
+    "href": "pypotterytrace/usage.html#creating-a-new-project",
+    "title": "Using PyPotteryTrace",
+    "section": "Creating a New Project",
+    "text": "Creating a New Project\n\nClick the ➕ New Project button.\nIn the dialog that appears, enter a Project Name (required).\n(Optional) Add a description and choose an icon for your project.\nClick Create Project.\nYou will then be prompted to select the images you wish to import into the project."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#loading-a-project",
+    "href": "pypotterytrace/usage.html#loading-a-project",
+    "title": "Using PyPotteryTrace",
+    "section": "Loading a Project",
+    "text": "Loading a Project\nExisting projects are displayed as cards in the main view. Each card shows the project name, description, and icon.\n\nClick on a Project Card to open it.\nClick 🔄 Refresh to update the list if you’ve made changes externally."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#project-images",
+    "href": "pypotterytrace/usage.html#project-images",
+    "title": "Using PyPotteryTrace",
+    "section": "Project Images",
+    "text": "Project Images\nThe left panel displays a gallery of all images imported into the current project. You can verify that all your scans have been loaded correctly."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#select-sam2-model",
+    "href": "pypotterytrace/usage.html#select-sam2-model",
+    "title": "Using PyPotteryTrace",
+    "section": "Select SAM2 Model",
+    "text": "Select SAM2 Model\nThe core of PyPotteryTrace is the Segment Anything Model 2 (SAM2). You can choose between different versions of the model depending on your hardware and accuracy needs:\n\n⚡ Tiny (~40MB): Very fast, good for older computers or quick checks.\n⭐ Small (~180MB): Recommended. The best balance between speed and accuracy for most users.\n🎯 Base+ (~230MB): Higher accuracy but slower.\n🚀 Large (~900MB): Best possible accuracy, but requires significant memory and processing time.\n\nOnce a model is selected, the application will download (if necessary) and load it into memory."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#gui-overview",
+    "href": "pypotterytrace/usage.html#gui-overview",
+    "title": "Using PyPotteryTrace",
+    "section": "GUI Overview",
+    "text": "GUI Overview\nThe interface consists of a central canvas flanked by two sidebars.\n\n👈 Left Sidebar: Tools & Controls\nTarget Selection & Information - Displays the current filename and image count.\n🎯 Segmentation Mode Choose how you want to interact with the image:\n\n👆 Point Mode (Default): Click on the object you want to segment.\n\n➕ Positive: Click to ADD to the mask (Green points).\n➖ Negative: Click to REMOVE from the mask (Red points).\n\n\n\n\n\n▭ Box Mode: Click and drag to draw a box around the object.\n\n\n\n\n⬡ Manual Polygon: Manually click points to define the exact shape if AI fails.\n\n\n\n.\n🏷️ Category Assign a semantic label to your segmentation. This determines how lines are drawn in the final export.\n\n🏺 Profile: The main vessel profile.\n🎯 Application: Applied decorations over the profile.\n🪢 Handle: Handles or lugs.\n👁️ Prospectus: Frontal view.\n🎨 Decoration: Surface painting or incision.\n🏃 Running element: Continuous patterns over the profile (see example).\n📌 Detail: Specific areas of interest.\n\nVectorization Settings\n\nEnable vectorization (SVG): Check this to convert the AI mask into editable vector paths. Uncheck to export as a simple transparent PNG images.\n✏️ Edit Mask: Convert an AI-generated mask into a manual polygon for fine-tuning.\n\n\n\n🖼️ Central Canvas\n\nInteractive Area: Click or drag on the image to perform segmentation.\nToolbar:\n\n🔍+ / 🔍-: Zoom in and out.\n⟲ Reset View: Fit image to screen.\n↶ Undo: Undo the last action.\n\n\n\n\n👉 Right Sidebar: Segments & Export\n\n📋 Segments: Lists all created masks for the current image. You can remove unwanted segments here.\n📤 Export:\n\n🎨 Generate SVG: Converts your segmentations into a vector file and moves you to the SVG Editor.\n🔧 DEBUG Export: Quick export for testing purposes."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#tools",
+    "href": "pypotterytrace/usage.html#tools",
+    "title": "Using PyPotteryTrace",
+    "section": "Tools",
+    "text": "Tools\n\n👁️ View Mode: Pan and zoom around the SVG. Drag images to reposition them.\n👆 Select Mode: Click points to select them. Shift+Click for multiple. Ctrl+Drag to move them.\n➕ Add Point: Click anywhere on a path to insert a new control point.\n🗑️ Delete Mode: Click points to remove them."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#layers-export",
+    "href": "pypotterytrace/usage.html#layers-export",
+    "title": "Using PyPotteryTrace",
+    "section": "Layers & Export",
+    "text": "Layers & Export\n\n📋 Layers: Manage the different parts of your drawing. You can add the original image as a background layer for reference using 📷 Add Current Image.\n💾 Save Modified SVG: Save your changes."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#export-settings",
+    "href": "pypotterytrace/usage.html#export-settings",
+    "title": "Using PyPotteryTrace",
+    "section": "Export Settings",
+    "text": "Export Settings\n📄 Output Format\n\nSVG: Editable vector files.\nPNG: High-quality raster images with transparency.\nJPG: Compressed images.\n\n🖼️ Raster Settings\n\nDPI: Set the resolution (72 for screen, 300 for print, 600 for high quality).\nQuality: Adjust JPG compression.\n\n🖊️ Stroke Width Settings Customize the line thickness (in pixels) for each category to match your publication standards (e.g., thicker lines for Profiles, thinner for Details).\n📦 Archive Options\n\nCreate ZIP archive: Bundles all files into a single download.\nOrganize by category: Creates subfolders for Profiles, Handles, etc.\n\nClick 📤 Export Files to process all vectorized data in your project and download the results."
+  },
+  {
+    "objectID": "pypotterytrace/index.html",
+    "href": "pypotterytrace/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "version 0.2.0\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryTrace is an advanced tool designed to digitize archaeological drawings by converting raster images into editable vector graphics (SVG). It uses the Segment Anything Model 2 (SAM2) to identify and extract pottery profiles, handles, and decorations with high precision."
+  },
+  {
+    "objectID": "pypotterytrace/index.html#key-features",
+    "href": "pypotterytrace/index.html#key-features",
+    "title": "Introduction",
+    "section": "Key Features",
+    "text": "Key Features\n\n📂 Project Management: Organize your work in portable, self-contained project folders.\n🤖 AI Segmentation: Uses SAM2 to automatically identify vessel shapes from user prompts.\n✂️ Interactive Tools: Refine masks using Point, Box, and Manual modes.\n✏️ Vector Editor: Integrated SVG editor to fine-tune curves and control points.\n🎨 Batch Export: Export publication-ready SVGs, PNGs, and JPGs with customizable styles."
+  },
+  {
+    "objectID": "pypotterytrace/index.html#contributors",
+    "href": "pypotterytrace/index.html#contributors",
+    "title": "Introduction",
+    "section": "Contributors",
+    "text": "Contributors\n\n  \n    \n      \n    \n    \n    Lorenzo Cardarelli"
+  },
+  {
+    "objectID": "pypotterytrace/installation.html",
+    "href": "pypotterytrace/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "version 0.2.0"
+  },
+  {
+    "objectID": "pypotterytrace/installation.html#requirements",
+    "href": "pypotterytrace/installation.html#requirements",
+    "title": "Installation",
+    "section": "Requirements",
+    "text": "Requirements\nBefore installing PyPotteryTrace, make sure you have:\n\nPython 3.12 installed on your system\nA NVIDIA GPU with CUDA support\n\n\n\n\n\n\n\n🚀 Easier Installation Available!\n\n\n\nWe recommend using the PyPottery Suite Launcher for a simplified installation experience. The launcher handles all dependencies automatically and lets you manage all PyPottery tools from a single interface."
+  },
+  {
+    "objectID": "pypotterytrace/installation.html#automated-installation",
+    "href": "pypotterytrace/installation.html#automated-installation",
+    "title": "Installation",
+    "section": "Automated Installation",
+    "text": "Automated Installation\nAutomated installation is the quickest and easiest way to get PyPotteryTrace running. The provided scripts will:\n\n✅ Create a Python virtual environment\n✅ Automatically install all dependencies\n✅ Start the application\n\n\nWindows\nDouble click on the PyPotteryTrace_WIN.bat file.\nThe script will automatically perform the following steps:\n\nCheck for Python on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n💡 Tip\n\n\n\nOn first run, dependency installation may take a few minutes. Subsequent runs will be much faster!\n\n\n\n\nLinux / macOS\n\nOpen the Terminal in the project directory\nMake the script executable (first time only):\n\nchmod +x PyPotteryTrace_UNIX.sh\n\nRun the script:\n\n./PyPotteryTrace_UNIX.sh\nThe script will automatically:\n\nCheck for Python 3 on the system\nCreate the .venv virtual environment (if it doesn’t exist)\nActivate the virtual environment\nInstall/upgrade pip\nInstall dependencies from requirements.txt\nStart the Flask server\n\n\n\n\n\n\n\n📌 Note\n\n\n\nTo stop the server, press Ctrl+C in the terminal."
+  },
+  {
+    "objectID": "pypotterytrace/installation.html#manual-installation",
+    "href": "pypotterytrace/installation.html#manual-installation",
+    "title": "Installation",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer full control over the installation process, you can follow these manual steps:\n\n1. Create a Virtual Environment\nIt is strongly recommended to use a virtual environment to isolate project dependencies:\n\nWindowsLinux / macOS\n\n\npython -m venv .venv\n.venv\\Scripts\\activate\n\n\npython3 -m venv .venv\nsource .venv/bin/activate\n\n\n\n\n\n2. Upgrade pip\nUpgrade pip to the latest available version:\npython -m pip install --upgrade pip\n\n\n3. Install Dependencies\nInstall all required dependencies from the requirements.txt file:\npip install -r requirements.txt\n\n\n\n\n\n\n⚠️ Warning\n\n\n\nMake sure you are in the project’s root directory where the requirements.txt file is located.\n\n\n\n\n4. Start the Application\nOnce installation is complete, start the application with:\npython app.py"
+  },
+  {
+    "objectID": "pypotterytrace/installation.html#installation-verification",
+    "href": "pypotterytrace/installation.html#installation-verification",
+    "title": "Installation",
+    "section": "Installation Verification",
+    "text": "Installation Verification\nTo verify that everything was installed correctly:\n\nThe application should start without errors\nYou should see a confirmation message in the terminal\nOpening your browser at http://localhost:5004 (default port for Trace) should display the PyPotteryTrace interface"
+  },
+  {
+    "objectID": "pypotterytrace/installation.html#troubleshooting",
+    "href": "pypotterytrace/installation.html#troubleshooting",
+    "title": "Installation",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nPython not found\nIf you receive an error indicating that Python is not installed:\n\nWindows: Download Python from python.org and make sure to check “Add Python to PATH” during installation\nLinux: Install Python using your distribution’s package manager (e.g., sudo apt install python3)\nmacOS: Install Python via Homebrew with brew install python3\n\n\n\nDependency installation errors\nIf dependency installation fails:\n\nMake sure you have an active internet connection\nTry upgrading pip: python -m pip install --upgrade pip\nInstall dependencies one at a time to identify which package is causing issues"
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#basic-example",
+    "href": "pypotterytrace/usage.html#basic-example",
+    "title": "Using PyPotteryTrace",
+    "section": "Basic Example",
+    "text": "Basic Example\nLet’s start with a basic example.\nThe vessel for this example is straightforward: it has no decorations, handles, or applied elements.\n\n\n\nA simple pottery vessel with no decorations.\n\n\nFirst, we segment the profile. A single click with the mouse on a point along the profile is sufficient to create the mask.\n\n\n\n\n\n\nRefine with Multiple Clicks\n\n\n\nIf the initial mask isn’t perfect, you don’t have to start over! You can click multiple times on different parts of the profile to tell the AI to include those areas.\nAlso, you can use the ➕ Positive and ➖ Negative buttons to refine the mask. In other words, the positive button will add the selected area to the mask, while the negative button will remove it.\n\n\n\n\n\nDefining the vessel profile with a single click.\n\n\nWe can scroll down the left sidebar to the 🏷️ Category tab. Here we confirm the label as 🏺 Profile.\n\n\n\nSelecting the Profile category.\n\n\nThe profile will turn red, and the segmented layer will appear in the 📋 Segments list on the right sidebar.\n\n\n\n\n\n\nMistake?\n\n\n\nIf the generated mask is completely wrong, you can delete it by clicking the Trash Icon 🗑️ next to the segment in the list.\n\n\n\n\n\nThe profile is highlighted in red.\n\n\nNow, let’s segment the prospectus (frontal view). First, switch the category to 👁️ Prospectus in the 🏷️ Category tab.\n\n\n\nSwitching to the Prospectus category.\n\n\nFor this shape, we can use the ▭ Box Mode to segment the prospectus efficiently.\n\n\n\nUsing Box Mode to select the main body.\n\n\nThe prospectus mask will be highlighted in green.\n\n\n\nThe prospectus area is highlighted.\n\n\nClicking on ➕ Add Segment confirms the selection. The prospectus will turn blue and appear in the right sidebar list.\n\n\n\nThe prospectus segment is added to the list.\n\n\nNext, click on ⨁ Rotational Center to define the vessel’s axis of rotation.\n\n\n\nSetting the rotational center.\n\n\nFinally, click on 🎨 Generate SVG to create the vector file and proceed to the editor."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#manual-segmentation",
+    "href": "pypotterytrace/usage.html#manual-segmentation",
+    "title": "Using PyPotteryTrace",
+    "section": "Manual Segmentation",
+    "text": "Manual Segmentation\nLet’s try with this vessel that has a handle:\n\n\n\nThe original image of a vessel with a handle.\n\n\nWe attempt to segment the profile by placing 3 positive points along the profile and 2 negative points to exclude the handle area.\n\n\n\nAttempting to segment the profile using Point Mode.\n\n\nWe also insert the rotational center using ⨁ Rotational Center.\n\n\n\nDefining the rotational center.\n\n\nLet’s try to generate the SVG by clicking 🎨 Generate SVG!\n\n\n\nThe result of the automatic segmentation is incorrect.\n\n\nThis is certainly not the result we expected, something is wrong!\nAt this point, we can go back to the ✂️ Segmentation tab and try to segment the profile more accurately. Sometimes this works, but other times it is necessary to manually edit the profile.\nAfter deleting the incorrect segment, we recreate the mask for the profile, but in this case, we must click on ✏️ Edit Mask to modify the mask manually.\n\n\n\n\n\n\nCreate a Manual Mask\n\n\n\nYou can also create a manual mask from scratch by clicking on ⬡ Manual Polygon. You need to place at least 3 points. When you finish, click on Close Polygon to create the mask.\n\n\n\n\n\nActivating Edit Mask mode to manually refine the shape.\n\n\nControl points have appeared that were not present in the original mask. I can manually modify these points to create an accurate version of the profile.\n\n\n\n\n\n\nHow to Edit Points\n\n\n\n\nMove Point: Click and drag a point to move it.\nAdd Point: Click on an empty space on the line to create a new keypoint.\nDelete Point: Right-click on a point to remove it.\n\n\n\n\n\n\nAdjusting the control points to fit the profile.\n\n\nAs you may have noticed, the manual mask is a simplification of the AI mask. It is possible to modify this simplification by adjusting the Simplification parameter and clicking Apply Simplification.\n\n\n\nApplying simplification to the polyline.\n\n\nOnce satisfied with my manual modification, I can click on ✅ Done Editing and then on ➕ Add Segment to add the mask manually. In fact, on the right sidebar, a badge indicates that our mask has been manually modified.\n\n\n\nCompleting the manual edit.\n\n\nNow let’s create the handle mask using ⬡ Manual Polygon:\n\n\n\nSegmenting the handle separately.\n\n\nAfter clicking on ➕ Add Segment, the handle mask will appear in the segment list, and we are ready to generate the SVG."
+  },
+  {
+    "objectID": "pypotterytrace/usage.html#a-basic-example",
+    "href": "pypotterytrace/usage.html#a-basic-example",
+    "title": "Using PyPotteryTrace",
+    "section": "A Basic Example",
+    "text": "A Basic Example\nContinuing with our simple vessel example, let’s see how to use the ✏️ SVG Editor to modify the drawing.\n\n\n\nEditing the SVG.\n\n\nIn 👁️ View Mode, we can pan and zoom around the SVG using the middle mouse button or the scroll wheel.\nIf we have defined raster masks (like the prospectus we made earlier), we can move them with the left mouse button. In this case, I moved the prospectus outside the drawing area.\n\n\n\nMoving the raster mask.\n\n\n\n\n\n\n\n\nManaging Layers\n\n\n\nTo manage the various raster masks, you can use the 📋 Layers panel. Uncheck a raster layer to hide it. You can also adjust its opacity using the slider.\n\n\nHowever, while viewing the SVG, you might fear that the vectorization is inaccurate. Fortunately, you can click 📷 Add Current Image to overlay the original image in the background as a reference.\n\n\n\nAdding the current image as reference.\n\n\nEverything seems correct. I can remove the reference image from the layer list using the Trash Icon 🗑️.\nTo modify a point, switch to 👆 Select Mode and click on it.\nSelect Mode Controls:\n\nClick: Select a single point.\nShift + Click: Select multiple points.\nCtrl + Drag: Move the selected point(s).\n\nThe ➕ Add Point mode allows you to click anywhere on a path to insert a new control point.\nConversely, the 🗑️ Delete Mode allows you to click on any point to remove it.\nOnce you have finished your edits, click 💾 Save Modified SVG to save your changes.\n\n\n\n\n\n\nHiding Elements\n\n\n\nIf you uncheck an element in the layers panel, it will not be included in the final export. This is particularly useful, for example, when a vessel does not have a preserved rim and thus no diameter line. The system creates the line by default, but you can simply uncheck it to remove it from the final SVG."
   }
 ]

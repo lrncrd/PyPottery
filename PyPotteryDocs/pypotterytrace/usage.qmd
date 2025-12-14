@@ -1,5 +1,338 @@
 ---
-title: "Usage (GUI)"
+title: "Using PyPotteryTrace"
+format: html
+toc: true
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+<div style="text-align: center;">
+  <img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+</div>
+
+# Interface Overview
+
+The PyPotteryTrace interface is designed to guide you through the process of segmenting and vectorizing pottery drawings. It is divided into five main sections, accessible via tabs at the top of the application:
+
+- **📂 Projects**
+- **⚙️ Setup**
+- **✂️ Segmentation**
+- **✏️ SVG Editor**
+- **🎨 Post-Processing**
+
+Clicking on each tab takes you to a specific section of the application. Each tab is designed for a specific task in the workflow. While you can navigate freely, the intended workflow progresses from left to right.
+
+# 📂 Project Management
+
+Like other `PyPottery` modules, `PyPotteryTrace` uses a project-based workflow. A project is a self-contained environment that stores your images, segmentations, and exported files.
+
+The **Projects** tab allows you to manage your work.
+
+## Creating a New Project
+
+1. Click the **➕ New Project** button.
+2. In the dialog that appears, enter a **Project Name** (required).
+3. (Optional) Add a description and choose an icon for your project.
+4. Click **Create Project**.
+5. You will then be prompted to select the images you wish to import into the project.
+
+<iframe src="animations/create_project.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## Loading a Project
+
+Existing projects are displayed as cards in the main view. Each card shows the project name, description, and icon.
+
+- Click on a **Project Card** to open it.
+- Click **🔄 Refresh** to update the list if you've made changes externally.
+
+# ⚙️ Setup
+
+After creating or loading a project, the **Setup** tab allows you to review your images and configure the AI model.
+
+<iframe src="animations/setup.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## Project Images
+The left panel displays a gallery of all images imported into the current project. You can verify that all your scans have been loaded correctly.
+
+## Select SAM2 Model
+The core of PyPotteryTrace is the Segment Anything Model 2 (SAM2). You can choose between different versions of the model depending on your hardware and accuracy needs:
+
+- **⚡ Tiny** (~40MB): Very fast, good for older computers or quick checks.
+- **⭐ Small** (~180MB): **Recommended.** The best balance between speed and accuracy for most users.
+- **🎯 Base+** (~230MB): Higher accuracy but slower.
+- **🚀 Large** (~900MB): Best possible accuracy, but requires significant memory and processing time.
+
+Once a model is selected, the application will download (if necessary) and load it into memory.
+
+# ✂️ Segmentation
+
+The **Segmentation** tab is where the magic happens. Here you define the shapes of your pottery using AI assistance.
+
+<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## GUI Overview
+
+The interface consists of a central canvas flanked by two sidebars.
+
+### 👈 Left Sidebar: Tools & Controls
+
+**Target Selection & Information**
+- Displays the current filename and image count.
+
+**🎯 Segmentation Mode**
+Choose how you want to interact with the image:
+
+- **👆 Point Mode (Default)**: Click on the object you want to segment.
+    - **➕ Positive**: Click to ADD to the mask (Green points).
+    - **➖ Negative**: Click to REMOVE from the mask (Red points).
+
+<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+- **▭ Box Mode**: Click and drag to draw a box around the object.
+
+<iframe src="animations/segmentation_box.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+- **⬡ Manual Polygon**: Manually click points to define the exact shape if AI fails.
+
+<iframe src="animations/segmentation_manual.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>.
+
+**🏷️ Category**
+Assign a semantic label to your segmentation. This determines how lines are drawn in the final export.
+
+- **🏺 Profile**: The main vessel profile.
+- **🎯 Application**: Applied decorations over the profile.
+- **🪢 Handle**: Handles or lugs.
+- **👁️ Prospectus**: Frontal view.
+- **🎨 Decoration**: Surface painting or incision.
+- **🏃 Running element**: Continuous patterns over the profile (see example).
+- **📌 Detail**: Specific areas of interest.
+
+**Vectorization Settings**
+
+- **Enable vectorization (SVG)**: Check this to convert the AI mask into editable vector paths. Uncheck to export as a simple transparent PNG images.
+- **✏️ Edit Mask**: Convert an AI-generated mask into a manual polygon for fine-tuning.
+
+### 🖼️ Central Canvas
+
+- **Interactive Area**: Click or drag on the image to perform segmentation.
+- **Toolbar**:
+
+    - **🔍+ / 🔍-**: Zoom in and out.
+    - **⟲ Reset View**: Fit image to screen.
+    - **↶ Undo**: Undo the last action.
+
+### 👉 Right Sidebar: Segments & Export
+
+- **📋 Segments**: Lists all created masks for the current image. You can remove unwanted segments here.
+- **📤 Export**:
+
+    - **🎨 Generate SVG**: Converts your segmentations into a vector file and moves you to the SVG Editor.
+    - **🔧 DEBUG Export**: Quick export for testing purposes.
+
+
+
+
+## Basic Example
+
+Let's start with a basic example.
+
+The vessel for this example is straightforward: it has no decorations, handles, or applied elements.
+
+![A simple pottery vessel with no decorations.](imgs\1.png)
+
+First, we segment the **profile**. A single click with the mouse on a point along the profile is sufficient to create the mask.
+
+::: {.callout-tip}
+## Refine with Multiple Clicks
+If the initial mask isn't perfect, you don't have to start over! You can click multiple times on different parts of the profile to tell the AI to include those areas.
+
+Also, you can use the **➕ Positive** and **➖ Negative** buttons to refine the mask. In other words, the positive button will add the selected area to the mask, while the negative button will remove it.
+
+:::
+
+![Defining the vessel profile with a single click.](imgs\2.png)
+
+We can scroll down the left sidebar to the **🏷️ Category** tab. Here we confirm the label as **🏺 Profile**.
+
+![Selecting the Profile category.](imgs\3.png)
+
+The profile will turn **red**, and the segmented layer will appear in the **📋 Segments** list on the right sidebar.
+
+::: {.callout-note}
+## Mistake?
+If the generated mask is completely wrong, you can delete it by clicking the **Trash Icon 🗑️** next to the segment in the list.
+:::
+
+![The profile is highlighted in red.](imgs\4.png)
+
+Now, let's segment the **prospectus** (frontal view). First, switch the category to **👁️ Prospectus** in the **🏷️ Category** tab.
+
+![Switching to the Prospectus category.](imgs\5.png)
+
+For this shape, we can use the **▭ Box Mode** to segment the prospectus efficiently.
+
+![Using Box Mode to select the main body.](imgs\6.png)
+
+The prospectus mask will be highlighted in **green**.
+
+![The prospectus area is highlighted.](imgs\7.png)
+
+Clicking on **➕ Add Segment** confirms the selection. The prospectus will turn **blue** and appear in the right sidebar list.
+
+![The prospectus segment is added to the list.](imgs\8.png)
+
+Next, click on **⨁ Rotational Center** to define the vessel's axis of rotation.
+
+![Setting the rotational center.](imgs\9.png)
+
+Finally, click on **🎨 Generate SVG** to create the vector file and proceed to the editor.
+
+## Manual Segmentation
+
+Let's try with this vessel that has a handle:
+
+![The original image of a vessel with a handle.](imgs\10.png)
+
+We attempt to segment the profile by placing 3 positive points along the profile and 2 negative points to exclude the handle area.
+
+![Attempting to segment the profile using Point Mode.](imgs\11.png)
+
+We also insert the rotational center using **⨁ Rotational Center**.
+
+![Defining the rotational center.](imgs\12.png)
+
+Let's try to generate the SVG by clicking **🎨 Generate SVG**!
+
+![The result of the automatic segmentation is incorrect.](imgs\13.png)
+
+This is certainly not the result we expected, something is wrong!
+
+At this point, we can go back to the **✂️ Segmentation** tab and try to segment the profile more accurately. Sometimes this works, but other times it is necessary to manually edit the profile.
+
+After deleting the incorrect segment, we recreate the mask for the profile, but in this case, we must click on **✏️ Edit Mask** to modify the mask manually.
+
+:::{.callout-tip}
+## Create a Manual Mask
+
+You can also create a manual mask from scratch by clicking on **⬡ Manual Polygon**.
+You need to place at least 3 points. When you finish, click on **Close Polygon** to create the mask.
+:::
+
+![Activating Edit Mask mode to manually refine the shape.](imgs\14.png)
+
+Control points have appeared that were not present in the original mask. I can manually modify these points to create an accurate version of the profile.
+
+:::{.callout-tip}
+## How to Edit Points
+- **Move Point**: Click and drag a point to move it.
+- **Add Point**: Click on an empty space on the line to create a new keypoint.
+- **Delete Point**: Right-click on a point to remove it.
+:::
+
+![Adjusting the control points to fit the profile.](imgs\15.png)
+
+As you may have noticed, the manual mask is a simplification of the AI mask. It is possible to modify this simplification by adjusting the **Simplification** parameter and clicking **Apply Simplification**.
+
+![Applying simplification to the polyline.](imgs\16.png)
+
+Once satisfied with my manual modification, I can click on **✅ Done Editing** and then on **➕ Add Segment** to add the mask manually. In fact, on the right sidebar, a badge indicates that our mask has been manually modified.
+
+![Completing the manual edit.](imgs\17.png)
+
+Now let's create the handle mask using **⬡ Manual Polygon**:
+
+![Segmenting the handle separately.](imgs\18.png)
+
+After clicking on **➕ Add Segment**, the handle mask will appear in the segment list, and we are ready to generate the SVG.
+
+
+# ✏️ SVG Editor
+
+The **SVG Editor** allows you to refine the vector paths created in the previous step.
+
+<iframe src="animations/svg_editor.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## Tools
+- **👁️ View Mode**: Pan and zoom around the SVG. Drag images to reposition them.
+- **👆 Select Mode**: Click points to select them. Shift+Click for multiple. Ctrl+Drag to move them.
+- **➕ Add Point**: Click anywhere on a path to insert a new control point.
+- **🗑️ Delete Mode**: Click points to remove them.
+
+## Layers & Export
+- **📋 Layers**: Manage the different parts of your drawing. You can add the original image as a background layer for reference using **📷 Add Current Image**.
+- **💾 Save Modified SVG**: Save your changes.
+
+
+## A Basic Example
+
+Continuing with our simple vessel example, let's see how to use the **✏️ SVG Editor** to modify the drawing.
+
+![Editing the SVG.](imgs\19.png)
+
+In **👁️ View Mode**, we can pan and zoom around the SVG using the middle mouse button or the scroll wheel.
+
+If we have defined raster masks (like the prospectus we made earlier), we can move them with the left mouse button. In this case, I moved the prospectus outside the drawing area.
+
+![Moving the raster mask.](imgs\20.png)
+
+:::{.callout-tip}
+## Managing Layers
+To manage the various raster masks, you can use the **📋 Layers** panel. Uncheck a raster layer to hide it. You can also adjust its opacity using the slider.
+:::
+
+However, while viewing the SVG, you might fear that the vectorization is inaccurate. Fortunately, you can click **📷 Add Current Image** to overlay the original image in the background as a reference.
+
+![Adding the current image as reference.](imgs\21.png)
+
+Everything seems correct. I can remove the reference image from the layer list using the **Trash Icon 🗑️**.
+
+To modify a point, switch to **👆 Select Mode** and click on it.
+
+**Select Mode Controls:**
+
+- **Click**: Select a single point.
+- **Shift + Click**: Select multiple points.
+- **Ctrl + Drag**: Move the selected point(s).
+
+The **➕ Add Point** mode allows you to click anywhere on a path to insert a new control point.
+
+Conversely, the **🗑️ Delete Mode** allows you to click on any point to remove it.
+
+Once you have finished your edits, click **💾 Save Modified SVG** to save your changes.
+
+:::{.callout-tip}
+## Hiding Elements
+If you uncheck an element in the layers panel, it will **not** be included in the final export. This is particularly useful, for example, when a vessel does not have a preserved rim and thus no diameter line. The system creates the line by default, but you can simply uncheck it to remove it from the final SVG.
+:::
+
+
+# 🎨 Post-Processing
+
+The **Post-Processing** tab is for batch exporting your work in publication-ready formats.
+
+<iframe src="animations/post_processing.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+
+## Export Settings
+
+**📄 Output Format**
+
+- **SVG**: Editable vector files.
+- **PNG**: High-quality raster images with transparency.
+- **JPG**: Compressed images.
+
+**🖼️ Raster Settings**
+
+- **DPI**: Set the resolution (72 for screen, 300 for print, 600 for high quality).
+- **Quality**: Adjust JPG compression.
+
+**🖊️ Stroke Width Settings**
+Customize the line thickness (in pixels) for each category to match your publication standards (e.g., thicker lines for Profiles, thinner for Details).
+
+**📦 Archive Options**
+
+- **Create ZIP archive**: Bundles all files into a single download.
+- **Organize by category**: Creates subfolders for Profiles, Handles, etc.
+
+Click **📤 Export Files** to process all vectorized data in your project and download the results.

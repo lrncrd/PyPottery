@@ -299,8 +299,15 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#key-features" id="toc-key-features" class="nav-link active" data-scroll-target="#key-features">Key Features</a></li>
+  <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors">Contributors</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -324,10 +331,66 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;">
-</iframe>
+<div style="text-align: center;">
+  <img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
+  <br>
+  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+    version 0.2.0
+  </span>
+  
+  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+    
+    <!-- CPU -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        CPU
+      </span>
+    </div>
+
+    <!-- CUDA (Active)-->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
+        CUDA
+      </span>
+    </div>
+
+    <!-- MPS -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        MPS
+      </span>
+    </div>
+  </div>
+</div>
+<p><br></p>
+<p><strong>PyPotteryTrace</strong> is an advanced tool designed to digitize archaeological drawings by converting raster images into editable vector graphics (SVG). It uses the <strong>Segment Anything Model 2 (SAM2)</strong> to identify and extract pottery profiles, handles, and decorations with high precision.</p>
+<section id="key-features" class="level2">
+<h2 class="anchored" data-anchor-id="key-features">Key Features</h2>
+<ul>
+<li><strong>📂 Project Management</strong>: Organize your work in portable, self-contained project folders.</li>
+<li><strong>🤖 AI Segmentation</strong>: Uses SAM2 to automatically identify vessel shapes from user prompts.</li>
+<li><strong>✂️ Interactive Tools</strong>: Refine masks using Point, Box, and Manual modes.</li>
+<li><strong>✏️ Vector Editor</strong>: Integrated SVG editor to fine-tune curves and control points.</li>
+<li><strong>🎨 Batch Export</strong>: Export publication-ready SVGs, PNGs, and JPGs with customizable styles.</li>
+</ul>
+</section>
+<section id="contributors" class="level2">
+<h2 class="anchored" data-anchor-id="contributors">Contributors</h2>
+<div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
+  <div style="text-align: center;">
+    <a href="https://github.com/lrncrd" target="_blank">
+      <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
+    </a>
+    <br>
+    <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Lorenzo Cardarelli</span>
+  </div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -755,7 +818,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p>PyPotteryDocs v0.0.1</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

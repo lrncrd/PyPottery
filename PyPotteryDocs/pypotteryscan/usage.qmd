@@ -14,7 +14,7 @@ toc: true
 
 # Interface Overview
 
-The PyPotteryScan interface is divided into three main sections:
+The PyPotteryScan interface is divided into eight main sections:
 
 - Projects
 - Load
