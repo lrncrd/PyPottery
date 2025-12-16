@@ -12,6 +12,17 @@ from datetime import datetime, timedelta
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 import threading
+import ssl
+
+
+# Fix SSL certificate issues on macOS
+def _create_ssl_context():
+    """Create SSL context with proper certificate handling for macOS"""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
 
 
 @dataclass
@@ -95,7 +106,8 @@ class UpdateChecker:
         
         try:
             request = Request(url, headers=headers)
-            with urlopen(request, timeout=15) as response:
+            ssl_ctx = _create_ssl_context()
+            with urlopen(request, timeout=15, context=ssl_ctx) as response:
                 return json.loads(response.read().decode())
         except HTTPError as e:
             if e.code == 404:

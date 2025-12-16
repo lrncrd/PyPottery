@@ -19,6 +19,18 @@ from typing import Optional, Callable, Dict, List, Tuple
 from dataclasses import dataclass
 from urllib.request import urlopen, Request
 from urllib.error import URLError
+import ssl
+
+# Fix SSL certificate issues on macOS
+def _create_ssl_context():
+    """Create SSL context with proper certificate handling for macOS"""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        # Fallback: try system certificates
+        ctx = ssl.create_default_context()
+        return ctx
 
 
 @dataclass
@@ -208,8 +220,10 @@ class AppManager:
             temp_zip = self.base_path / f"temp_{app_id}.zip"
             response = None
             
+            ssl_ctx = _create_ssl_context()
+
             try:
-                response = urlopen(request, timeout=120)
+                response = urlopen(request, timeout=120, context=ssl_ctx)
             except URLError as e:
                 if hasattr(e, 'code') and e.code == 404 and version:
                     # Try alternate version format
@@ -217,20 +231,20 @@ class AppManager:
                         alt_version = version[1:]  # Remove 'v'
                     else:
                         alt_version = f"v{version}"  # Add 'v'
-                    
+
                     alt_url = f"https://github.com/{app.repo_owner}/{app.repo_name}/archive/refs/tags/{alt_version}.zip"
                     self._report_status(app_id, f"Trying alternate tag format...")
                     alt_request = Request(alt_url, headers={"User-Agent": "PyPottery-Launcher"})
-                    
+
                     try:
-                        response = urlopen(alt_request, timeout=120)
+                        response = urlopen(alt_request, timeout=120, context=ssl_ctx)
                         version = alt_version  # Update version for saving
                     except URLError:
                         # If both fail, try main branch as fallback
                         self._report_status(app_id, f"Tag not found, downloading main branch...")
                         main_url = f"https://github.com/{app.repo_owner}/{app.repo_name}/archive/refs/heads/main.zip"
                         main_request = Request(main_url, headers={"User-Agent": "PyPottery-Launcher"})
-                        response = urlopen(main_request, timeout=120)
+                        response = urlopen(main_request, timeout=120, context=ssl_ctx)
                         version = "main"
                 else:
                     raise
