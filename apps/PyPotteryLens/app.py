@@ -643,78 +643,21 @@ def extract_project_masks(project_id):
 def extract_project_metadata(project_id):
     """Extract metadata (captions, figure numbers, pottery IDs) from project"""
     try:
-        # Verify project exists
         project_metadata = project_manager.get_project(project_id)
         if not project_metadata:
             return jsonify({'error': 'Project not found', 'success': False}), 404
 
-        # Get project path
         project_path = project_manager.get_project_path(project_id)
-
-        # Create metadata extractor
         config = MetadataExtractionConfig(project_path=project_path)
         extractor = MetadataExtractor(config)
 
-        # Initialize progress
-        update_operation_progress('metadata_extraction', 0, 100, 'Starting metadata extraction...')
-
-        # Process project
         result = extractor.process_project(project_id, project_manager)
 
-        clear_operation_progress()
-
-        # Update project workflow status
-        project_manager.update_workflow_status(project_id, {
-            'metadata_extracted': True
-        })
-
-        return jsonify({
-            'message': result,
-            'success': True
-        })
+        return jsonify({'message': result, 'success': True})
 
     except Exception as e:
-        clear_operation_progress()
         import traceback
         traceback.print_exc()
-        return jsonify({'error': str(e), 'success': False}), 500
-
-
-@app.route('/api/projects/<project_id>/metadata/status', methods=['GET'])
-def get_metadata_status(project_id):
-    """Get metadata extraction status for a project"""
-    try:
-        project_metadata = project_manager.get_project(project_id)
-        if not project_metadata:
-            return jsonify({'error': 'Project not found', 'success': False}), 404
-
-        cards_path = project_manager.get_project_path(project_id, 'cards')
-        mask_info_path = cards_path / 'mask_info.csv' if cards_path else None
-
-        if not mask_info_path or not mask_info_path.exists():
-            return jsonify({
-                'has_metadata': False,
-                'total_cards': 0,
-                'cards_with_metadata': 0,
-                'success': True
-            })
-
-        df = pd.read_csv(mask_info_path)
-
-        has_metadata_columns = all(col in df.columns for col in ['caption_text', 'figure_num', 'pottery_id'])
-
-        cards_with_metadata = 0
-        if has_metadata_columns:
-            cards_with_metadata = len(df[df['caption_text'].notna() & (df['caption_text'] != '')])
-
-        return jsonify({
-            'has_metadata': has_metadata_columns,
-            'total_cards': len(df),
-            'cards_with_metadata': cards_with_metadata,
-            'success': True
-        })
-
-    except Exception as e:
         return jsonify({'error': str(e), 'success': False}), 500
 
 
@@ -2196,8 +2139,23 @@ def export_project_results(project_id):
         if not cards_path or not cards_path.exists():
             return jsonify({'error': 'No cards folder found', 'success': False}), 404
         
-        # Auto-merge: check if combined CSV exists in project root
+        # Auto-merge: check if combined CSV exists in project root, or use mask_info.csv from cards
         combined_csv_path = project_path / f"{project_id}_mask_info.csv"
+        cards_mask_info_path = cards_path / 'mask_info.csv'
+
+        # Prefer cards/mask_info.csv if it has metadata columns (page_num, figure_num, pottery_id)
+        # This ensures metadata extraction results are used even if user didn't export tabular CSV
+        if cards_mask_info_path.exists():
+            try:
+                cards_df = pd.read_csv(cards_mask_info_path)
+                has_metadata = any(col in cards_df.columns for col in ['page_num', 'figure_num', 'pottery_id'])
+                if has_metadata:
+                    print(f"Using cards/mask_info.csv with metadata columns: {list(cards_df.columns)}")
+                    # Copy to project root for consistency
+                    cards_df.to_csv(combined_csv_path, index=False)
+            except Exception as e:
+                print(f"Warning: Could not check cards/mask_info.csv: {e}")
+
         if combined_csv_path.exists():
             print(f"Found combined CSV, merging with classifications...")
             try:
@@ -2300,150 +2258,126 @@ def export_project_results(project_id):
             # Get all card images sorted
             card_images = sorted([f for f in export_folder.iterdir() if f.suffix.lower() in ['.png', '.jpg', '.jpeg']])
             print(f"Found {len(card_images)} card images to export")
-
-            # Load mask_info.csv for metadata (page_num, figure_num, pottery_id)
-            mask_info_df = None
-            mask_info_path = cards_path / 'mask_info.csv'
-            if mask_info_path.exists():
-                mask_info_df = pd.read_csv(mask_info_path)
-                print(f"Loaded mask_info.csv with columns: {list(mask_info_df.columns)}")
-
-            # Helper function to get metadata for an image
-            def get_card_metadata(img_file):
-                """Get metadata for a card image from mask_info.csv"""
-                result = {
-                    'page_num': None,
-                    'figure_num': '',
-                    'pottery_id': '',
-                    'caption_text': ''
-                }
-                if mask_info_df is None:
-                    return result
-
-                img_base = img_file.stem
-                for col in ['mask_file', 'filename', 'file']:
-                    if col in mask_info_df.columns:
-                        mask = mask_info_df[col].astype(str).str.replace('.png', '').str.replace('.jpg', '') == img_base
-                        if mask.any():
-                            row = mask_info_df[mask].iloc[0]
-                            result['page_num'] = row.get('page_num', None)
-                            result['figure_num'] = str(row.get('figure_num', '')).strip()
-                            result['pottery_id'] = str(row.get('pottery_id', '')).strip()
-                            result['caption_text'] = str(row.get('caption_text', '')).strip()
-                            break
-                return result
-
-            # Helper to sanitize folder/file names
-            def sanitize_name(name):
-                """Remove invalid characters from folder/file names"""
-                import re
-                # Replace invalid chars with underscore
-                name = re.sub(r'[<>:"/\\|?*]', '_', str(name))
-                # Remove leading/trailing spaces and dots
-                name = name.strip(' .')
-                return name if name else 'unknown'
-
-            # Prepare final metadata with new IDs and organize by subfolder
+            
+            # Prepare final metadata with new IDs
             final_metadata = []
-            image_assignments = []  # List of (img_file, subfolder, new_filename, row_data)
-
-            # Counter for fallback numbering per subfolder
-            subfolder_counters = {}
-
-            for img_file in card_images:
-                card_meta = get_card_metadata(img_file)
-
-                # Determine subfolder based on figure_num or page_num
-                subfolder = ""
-                if card_meta['figure_num']:
-                    # Use figure/table number (e.g., "Fig_1", "Tav_II")
-                    subfolder = sanitize_name(card_meta['figure_num'].replace('.', '').replace(' ', '_'))
-                elif card_meta['page_num'] is not None and card_meta['page_num'] != '' and card_meta['page_num'] != -1:
-                    # Use page number
-                    subfolder = f"page_{card_meta['page_num']}"
-                else:
-                    subfolder = "uncategorized"
-
-                # Determine filename based on pottery_id
-                if card_meta['pottery_id']:
-                    # Use pottery ID - handle multiple IDs (take first one)
-                    pottery_ids = card_meta['pottery_id'].split(',')
-                    first_id = sanitize_name(pottery_ids[0].strip())
-                    new_filename = f"{acronym}_n{first_id}{img_file.suffix}"
-                else:
-                    # Fallback to counter per subfolder
-                    if subfolder not in subfolder_counters:
-                        subfolder_counters[subfolder] = 0
-                    subfolder_counters[subfolder] += 1
-                    new_filename = f"{acronym}_{subfolder_counters[subfolder]}{img_file.suffix}"
-
-                # Build row data for metadata
-                row_data = {'id': f"{subfolder}/{new_filename}"}
-
-                # Try to find matching row in metadata_df
+            
+            for idx, img_file in enumerate(card_images, 1):
+                new_id_with_ext = f"{acronym}_{idx}{img_file.suffix}"  # Include extension
+                
+                # Initialize row with id
+                row_data = {'id': new_id_with_ext}
+                
+                # Try to find matching row in metadata
+                matched = False
                 if metadata_df is not None:
+                    # Try different column names for matching
                     for col in ['mask_file', 'filename', 'Filename', 'file']:
                         if col in metadata_df.columns:
-                            img_base = img_file.stem
-                            mask = metadata_df[col].astype(str).str.replace('.png', '').str.replace('.jpg', '').str.replace('.jpeg', '') == img_base
+                            # Normalize both sides for comparison (remove extensions)
+                            img_base = img_file.stem  # filename without extension
+                            
+                            # Try exact match first
+                            mask = metadata_df[col] == img_file.name
+                            if not mask.any():
+                                # Try without extension
+                                mask = metadata_df[col].str.replace('.png', '').str.replace('.jpg', '').str.replace('.jpeg', '') == img_base
+                            
                             if mask.any():
                                 row = metadata_df[mask].iloc[0]
+                                
+                                # Copy all columns except unwanted ones
                                 exclude_cols = ['mask_file', 'filename', 'Filename', 'filename_base', 'file', 'ID', 'id']
                                 for metadata_col in metadata_df.columns:
                                     if metadata_col not in exclude_cols:
                                         row_data[metadata_col] = row[metadata_col]
+                                
+                                matched = True
+                                print(f"Matched {img_file.name} via column '{col}'")
                                 break
-
+                
                 # Ensure 'type' is present from classifications if available
                 if classifications_df is not None and 'type' not in row_data:
+                    # Try to match with classifications
                     img_base = img_file.stem
                     for col in ['filename', 'Filename']:
                         if col in classifications_df.columns:
-                            mask = classifications_df[col].astype(str).str.replace('.png', '').str.replace('.jpg', '').str.replace('.jpeg', '') == img_base
+                            mask = classifications_df[col].str.replace('.png', '').str.replace('.jpg', '').str.replace('.jpeg', '') == img_base
                             if mask.any():
                                 class_row = classifications_df[mask].iloc[0]
                                 if 'type' in class_row:
                                     row_data['type'] = class_row['type']
+                                    print(f"Added type '{class_row['type']}' for {img_file.name}")
                                 break
-
-                # Add subfolder info to metadata
-                row_data['subfolder'] = subfolder
-
+                
                 final_metadata.append(row_data)
-                image_assignments.append((img_file, subfolder, new_filename, row_data))
-
+            
             # Create final metadata DataFrame
             final_df = pd.DataFrame(final_metadata)
-
-            # Reorder columns: id first, subfolder, then type (if present), then others alphabetically
-            cols = ['id', 'subfolder']
+            
+            # Reorder columns: id first, then type (if present), then others alphabetically
+            cols = ['id']
             if 'type' in final_df.columns:
                 cols.append('type')
-            if 'page_num' in final_df.columns:
-                cols.append('page_num')
-            if 'figure_num' in final_df.columns:
-                cols.append('figure_num')
-            if 'pottery_id' in final_df.columns:
-                cols.append('pottery_id')
             # Add remaining columns alphabetically
             remaining = sorted([col for col in final_df.columns if col not in cols])
             cols.extend(remaining)
-            final_df = final_df[[c for c in cols if c in final_df.columns]]
-
+            final_df = final_df[cols]
+            
             # Save metadata to temp file
             metadata_temp_path = Path(temp_dir) / f"{acronym}_metadata.csv"
             final_df.to_csv(metadata_temp_path, index=False)
             print(f"Created final metadata with {len(final_df)} rows and columns: {list(final_df.columns)}")
-
-            # Create ZIP with subfolders
+            
+            # Create ZIP with subfolders organized by figure_num/page_num
             with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-                # Add images organized in subfolders
-                for img_file, subfolder, new_filename, _ in image_assignments:
-                    archive_path = f"{subfolder}/{new_filename}"
-                    zipf.write(img_file, archive_path)
-                    print(f"Added {img_file.name} as {archive_path}")
+                # Add images with new names, organized by figure/page
+                for idx, img_file in enumerate(card_images, 1):
+                    # Get metadata for this image to determine folder and name
+                    subfolder = ""
+                    pottery_id_suffix = ""
 
-                # Add metadata at root level
+                    if not final_metadata[idx-1] is None:
+                        row = final_metadata[idx-1]
+
+                        # Determine subfolder from figure_num or page_num
+                        figure_num = row.get('figure_num', '')
+                        page_num = row.get('page_num', '')
+
+                        if figure_num and str(figure_num).strip():
+                            # Sanitize figure_num for folder name
+                            subfolder = str(figure_num).strip().replace(' ', '_').replace('/', '-').replace('\\', '-')
+                        elif page_num and str(page_num).strip() and str(page_num) != '-1':
+                            subfolder = f"page_{page_num}"
+
+                        # Add pottery_id to filename if available
+                        pottery_id = row.get('pottery_id', '')
+                        if pottery_id and str(pottery_id).strip():
+                            # Clean pottery_id for filename
+                            pottery_id_clean = str(pottery_id).strip().replace(', ', '_').replace(' ', '').replace('/', '-')
+                            pottery_id_suffix = f"_{pottery_id_clean}"
+
+                    # Build new filename
+                    new_name = f"{acronym}_{idx}{pottery_id_suffix}{img_file.suffix}"
+
+                    # Build path with subfolder
+                    if subfolder:
+                        zip_path_in_archive = f"{subfolder}/{new_name}"
+                    else:
+                        zip_path_in_archive = new_name
+
+                    zipf.write(img_file, zip_path_in_archive)
+                    print(f"Added {img_file.name} as {zip_path_in_archive}")
+
+                    # Update final_df with the new organized path
+                    final_df.loc[idx-1, 'id'] = new_name
+                    if subfolder:
+                        final_df.loc[idx-1, 'folder'] = subfolder
+
+                # Re-save metadata with updated paths
+                final_df.to_csv(metadata_temp_path, index=False)
+
+                # Add metadata
                 zipf.write(metadata_temp_path, f"{acronym}_metadata.csv")
                 print(f"Added metadata CSV")
         

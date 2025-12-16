@@ -57,9 +57,42 @@ function setupTabularListeners() {
     
     // Mark as reviewed
     document.getElementById('tabular-mark-reviewed-btn')?.addEventListener('click', markAsReviewed);
-    
+
+    // Extract metadata from PDF
+    document.getElementById('extract-metadata-btn')?.addEventListener('click', extractMetadata);
+
     // Setup magnifying glass zoom on hover
     setupMagnifyingGlass();
+}
+
+async function extractMetadata() {
+    if (!tabularState.currentProject || !tabularState.currentProject.project_id) {
+        window.PyPotteryUtils.showStatus('tabular-status', 'No project selected', 'error');
+        return;
+    }
+    const btn = document.getElementById('extract-metadata-btn');
+    const originalText = btn.innerHTML;
+    try {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Extracting...';
+        window.PyPotteryUtils.showStatus('tabular-status', 'Extracting metadata from PDF (may take a while for OCR)...', 'info');
+        const response = await window.PyPotteryUtils.apiRequest(
+            `/api/projects/${tabularState.currentProject.project_id}/metadata/extract`,
+            { method: 'POST' }
+        );
+        if (response.success) {
+            window.PyPotteryUtils.showStatus('tabular-status', response.message || 'Metadata extracted!', 'success');
+            await loadTabularData();
+        } else {
+            window.PyPotteryUtils.showStatus('tabular-status', response.error || 'Failed to extract metadata', 'error');
+        }
+    } catch (error) {
+        console.error('Error extracting metadata:', error);
+        window.PyPotteryUtils.showStatus('tabular-status', `Error: ${error.message}`, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
 }
 
 async function loadProjectCards() {

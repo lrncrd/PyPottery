@@ -71,13 +71,14 @@ class TabularConfig:
 @dataclass
 class MetadataExtractionConfig:
     """Configuration for metadata extraction from PDF pages"""
-    project_path: Path           # Project root path
-    search_radius_ratio: float = 0.15  # Ratio of image height to search for captions
-    ocr_languages: List[str] = None    # Languages for OCR (default: ['en', 'it'])
+    project_path: Path
+    search_radius_ratio: float = 0.25  # Increased from 0.15 to search wider area
+    ocr_languages: List[str] = None
 
     def __post_init__(self):
         if self.ocr_languages is None:
-            self.ocr_languages = ['en', 'it']
+            # Lingue per pubblicazioni archeologiche
+            self.ocr_languages = ['en', 'it', 'fr', 'de', 'es']  # Inglese, Italiano, Francese, Tedesco, Spagnolo
 
 class PDFProcessor:
     """Handles PDF to image conversion using PyMuPDF"""
@@ -674,37 +675,67 @@ class MaskExtractor:
 
 
 class MetadataExtractor:
-    """
-    Extracts metadata from PDF pages including:
-    - Caption text (full text near pottery bounding boxes)
-    - Figure/Table numbers (Fig. 1, Tav. II, Plate III, etc.)
-    - Pottery IDs (n. 123, Cat. 45, no. 67, etc.)
-    - Page numbers
-    """
+    """Extracts metadata from PDF pages (captions, figure numbers, pottery IDs)"""
 
     def __init__(self, config: MetadataExtractionConfig):
         self.config = config
-        self._ocr_reader = None  # Lazy initialization
+        self._ocr_reader = None
         import re
         self.re = re
-
-        # Regex patterns for figure/table numbers
+        # Pattern per figure/tavole/planches - MULTILINGUE
         self.figure_patterns = [
-            r'(?:Fig\.|Figure|Figura)\s*(\d+[a-zA-Z]?)',
-            r'(?:Tav\.|Tavola|Plate)\s*([IVXLCDM]+|\d+)',
-            r'(?:Tab\.|Table|Tabella)\s*(\d+[a-zA-Z]?)',
+            # Francese
+            r'[Cc]hapitre\s*\d+\s*,?\s*figure\s*\d+',  # Chapitre 6 figure 8
+            r'[Cc]hapitre\s*\d+\s*,?\s*fig\.?\s*\d+',  # chapitre 6 fig. 5
+            r'[Cc]hapitre\s*\d+\s*,?\s*tableau\s*\d+', # Chapitre 6 tableau 1
+            r'[Pp]lanche[s]?\s*[IVXLCDM\d]+[a-zA-Z]?', # Planche XVI, Planche 5
+            r'[Pp]l\.?\s*[IVXLCDM\d]+[a-zA-Z]?',       # Pl. XVI, Pl 5
+            r'[Ff]igure\s*\d+[a-zA-Z]?',               # figure 8
+            r'[Tt]ableau\s*\d+[a-zA-Z]?',              # tableau 1
+            # Inglese
+            r'[Ff]ig\.?\s*\d+[a-zA-Z]?',               # Fig. 1, Fig 2a
+            r'[Pp]late\s*[IVXLCDM\d]+[a-zA-Z]?',       # Plate XVI, Plate 5
+            r'[Tt]able\s*\d+[a-zA-Z]?',                # Table 1
+            # Italiano
+            r'[Ff]igura\s*\d+[a-zA-Z]?',               # Figura 1
+            r'[Tt]av\.?\s*[IVXLCDM\d]+[a-zA-Z]?',      # Tav. II, Tav 5
+            r'[Tt]avola\s*[IVXLCDM\d]+[a-zA-Z]?',      # Tavola II
+            r'[Tt]abella\s*\d+[a-zA-Z]?',              # Tabella 1
+            # Tedesco
+            r'[Aa]bb\.?\s*\d+[a-zA-Z]?',               # Abb. 1, Abb 2
+            r'[Aa]bbildung\s*\d+[a-zA-Z]?',            # Abbildung 1
+            r'[Tt]af\.?\s*[IVXLCDM\d]+[a-zA-Z]?',      # Taf. II, Taf 5
+            r'[Tt]afel\s*[IVXLCDM\d]+[a-zA-Z]?',       # Tafel II
+            # Spagnolo
+            r'[Ll]ám\.?\s*[IVXLCDM\d]+[a-zA-Z]?',      # Lám. II, Lam 5
+            r'[Ll]ámina\s*[IVXLCDM\d]+[a-zA-Z]?',      # Lámina II
+            r'[Pp]lancha\s*[IVXLCDM\d]+[a-zA-Z]?',     # Plancha II
+            # Portoghese
+            r'[Pp]rancha\s*[IVXLCDM\d]+[a-zA-Z]?',     # Prancha II
+            r'[Ee]stampa\s*[IVXLCDM\d]+[a-zA-Z]?',     # Estampa II
         ]
-
-        # Regex patterns for pottery IDs
+        # Pattern per ID ceramica - MOLTO FLESSIBILI
         self.pottery_id_patterns = [
-            r'(?:n\.|no\.|nr\.)\s*(\d+)',
-            r'(?:Cat\.|Catalogue)\s*(\d+[a-zA-Z]?)',
-            r'(?:Inv\.|Inventory)\s*(\d+[a-zA-Z\-]*)',
+            # Codici con trattino e spazi opzionali: GJ-05, M5 - 1, GRO - 12, ABC-123
+            r'\b([A-Z]{1,4}\d{0,2})\s*[-–—]\s*(\d{1,3})\b',  # M5 - 1, GRO - 12, A - 5
+            r'\b([A-Z]{2,5})\s*[-–—]\s*(\d{1,3})\b',          # GRO - 1, ABCD - 12
+            r'\b([A-Z]{2,4}\d{1,2})\b',                        # GJ05, M5, ABC12 (senza trattino)
+            r'\b([A-Z]{2,4}-\d{1,3}[a-z]?)\b',                # GJ-05, JM-01a
+            # Codici comuni
+            r'\b(GP|AGJ|VBC|GJ|JM|PJ|BM|GRO|TSG|DSP)\b',      # Codici noti
+            # Numerazione classica
+            r'(?:n[°\.\s]|no\.?\s*|nr\.?\s*)(\d+)',           # n° 123, n. 45
+            r'(?:Cat\.?\s*|Catalogue\s*|Katalog\s*)(\d+[a-zA-Z]?)',  # Cat. 67
+            r'(?:Inv\.?\s*|Inventory\s*|Inventar\s*)(\d+[a-zA-Z\-]*)', # Inv. 89
+            r'\((\d{1,3})\)',                                  # (1), (12)
+            # Numeri con lettere: 1a, 2b, 12c
+            r'\b(\d{1,3}[a-z])\b',                             # 1a, 2b, 12c
         ]
+        # Pattern per numeri isolati (applicato solo a testo corto)
+        self.standalone_number_pattern = r'^(\d{1,3}[a-z]?)$'
 
     @property
     def ocr_reader(self):
-        """Lazy initialization of OCR reader"""
         if self._ocr_reader is None:
             import easyocr
             self._ocr_reader = easyocr.Reader(
@@ -714,162 +745,137 @@ class MetadataExtractor:
         return self._ocr_reader
 
     def detect_pdf_type(self, pdf_path: Path) -> str:
-        """
-        Detect if PDF is native (selectable text) or scanned
-        Returns: 'native' or 'scanned'
-        """
         doc = fitz.open(str(pdf_path))
         total_text_length = 0
-
-        for page_num in range(min(5, len(doc))):  # Check first 5 pages
+        num_pages = len(doc)
+        pages_to_check = min(5, num_pages)
+        for page_num in range(pages_to_check):
             page = doc[page_num]
             text = page.get_text()
             total_text_length += len(text.strip())
-
         doc.close()
-
-        # If average text per page is very low, likely scanned
-        avg_text = total_text_length / max(1, min(5, len(doc)))
+        avg_text = total_text_length / max(1, pages_to_check)
         return 'native' if avg_text > 100 else 'scanned'
 
-    def extract_text_native(self, pdf_path: Path, page_num: int) -> list:
-        """
-        Extract text blocks from native PDF using PyMuPDF
-        Returns list of dicts with 'text', 'bbox', 'block_no'
-        """
-        doc = fitz.open(str(pdf_path))
-
+    def extract_text_native_from_doc(self, doc, page_num: int, scale_factor: float = 300/72) -> list:
         if page_num >= len(doc):
-            doc.close()
             return []
-
         page = doc[page_num]
-
-        # Get text blocks with layout preservation
-        blocks = page.get_text("dict", flags=fitz.TEXT_PRESERVE_WHITESPACE)["blocks"]
-
+        try:
+            blocks = page.get_text("dict", flags=fitz.TEXT_PRESERVE_WHITESPACE)["blocks"]
+        except Exception as e:
+            print(f"Error getting text from page {page_num}: {e}")
+            return []
         text_blocks = []
         for block in blocks:
-            if block.get("type") == 0:  # Text block
+            if block.get("type") == 0:
                 bbox = block["bbox"]
+                scaled_bbox = (bbox[0] * scale_factor, bbox[1] * scale_factor,
+                               bbox[2] * scale_factor, bbox[3] * scale_factor)
                 lines_text = []
                 for line in block.get("lines", []):
                     for span in line.get("spans", []):
                         lines_text.append(span.get("text", ""))
-
-                text_blocks.append({
-                    "text": " ".join(lines_text),
-                    "bbox": bbox,  # (x0, y0, x1, y1)
-                    "block_no": block.get("number", 0)
-                })
-
-        doc.close()
+                text_blocks.append({"text": " ".join(lines_text), "bbox": scaled_bbox})
         return text_blocks
 
     def extract_text_ocr(self, image_path: Path) -> list:
-        """
-        Extract text from image using OCR
-        Returns list of dicts with 'text', 'bbox'
-        """
         result = self.ocr_reader.readtext(str(image_path))
-
         text_blocks = []
         for detection in result:
-            bbox_points = detection[0]  # [[x1,y1], [x2,y1], [x2,y2], [x1,y2]]
-            text = detection[1]
-            confidence = detection[2]
-
-            if confidence > 0.3:  # Filter low confidence
-                # Convert to (x0, y0, x1, y1) format
+            bbox_points, text, confidence = detection[0], detection[1], detection[2]
+            if confidence > 0.3:
                 x_coords = [p[0] for p in bbox_points]
                 y_coords = [p[1] for p in bbox_points]
                 bbox = (min(x_coords), min(y_coords), max(x_coords), max(y_coords))
-
-                text_blocks.append({
-                    "text": text,
-                    "bbox": bbox,
-                    "confidence": confidence
-                })
-
+                text_blocks.append({"text": text, "bbox": bbox, "confidence": confidence})
         return text_blocks
 
-    def find_caption_for_bbox(self, pottery_bbox: tuple, text_blocks: list,
-                              image_height: int) -> dict:
-        """
-        Find caption text near a pottery bounding box
-
-        Args:
-            pottery_bbox: (x0, y0, x1, y1) of the pottery card
-            text_blocks: list of text blocks from page
-            image_height: height of the page image
-
-        Returns:
-            dict with 'caption_text', 'figure_num', 'pottery_ids'
-        """
+    def find_caption_for_bbox(self, pottery_bbox: tuple, text_blocks: list, image_height: int, image_width: int = None) -> dict:
         px0, py0, px1, py1 = pottery_bbox
-
         search_radius = image_height * self.config.search_radius_ratio
-
-        # Find text blocks near the pottery bbox
         nearby_texts = []
+        inside_texts = []  # Text inside or very close to the bbox (pottery labels)
+
         for block in text_blocks:
             bx0, by0, bx1, by1 = block["bbox"]
+            block_center_x = (bx0 + bx1) / 2
+            block_center_y = (by0 + by1) / 2
 
-            # Check if text is below or beside the pottery
-            # Priority: below > right > left > above
+            # Check if text is INSIDE or very close to the pottery bbox (for IDs on pottery)
+            margin = 20  # pixels margin
+            if (bx0 >= px0 - margin and bx1 <= px1 + margin and
+                by0 >= py0 - margin and by1 <= py1 + margin):
+                inside_texts.append({**block, "position": "inside", "distance": 0})
+                continue
 
-            # Below the pottery (most common caption position)
+            # Check BELOW the pottery
             if by0 >= py1 and by0 <= py1 + search_radius:
-                if bx0 < px1 and bx1 > px0:  # Horizontal overlap
-                    nearby_texts.append({
-                        **block,
-                        "position": "below",
-                        "distance": by0 - py1
-                    })
+                if bx0 < px1 + search_radius and bx1 > px0 - search_radius:
+                    nearby_texts.append({**block, "position": "below", "distance": by0 - py1})
 
-            # Right of the pottery
+            # Check ABOVE the pottery
+            elif by1 <= py0 and by1 >= py0 - search_radius:
+                if bx0 < px1 + search_radius and bx1 > px0 - search_radius:
+                    nearby_texts.append({**block, "position": "above", "distance": py0 - by1})
+
+            # Check RIGHT of the pottery
             elif bx0 >= px1 and bx0 <= px1 + search_radius:
-                if by0 < py1 and by1 > py0:  # Vertical overlap
-                    nearby_texts.append({
-                        **block,
-                        "position": "right",
-                        "distance": bx0 - px1
-                    })
+                if by0 < py1 + search_radius and by1 > py0 - search_radius:
+                    nearby_texts.append({**block, "position": "right", "distance": bx0 - px1})
 
-            # Left of the pottery
+            # Check LEFT of the pottery
             elif bx1 <= px0 and bx1 >= px0 - search_radius:
-                if by0 < py1 and by1 > py0:  # Vertical overlap
-                    nearby_texts.append({
-                        **block,
-                        "position": "left",
-                        "distance": px0 - bx1
-                    })
+                if by0 < py1 + search_radius and by1 > py0 - search_radius:
+                    nearby_texts.append({**block, "position": "left", "distance": px0 - bx1})
 
-        # Sort by position priority and distance
-        position_priority = {"below": 0, "right": 1, "left": 2, "above": 3}
-        nearby_texts.sort(key=lambda x: (position_priority.get(x["position"], 4), x["distance"]))
+        # Priority: inside > below > above > right > left
+        position_priority = {"inside": 0, "below": 1, "above": 2, "right": 3, "left": 4}
+        nearby_texts.sort(key=lambda x: (position_priority.get(x["position"], 5), x["distance"]))
 
-        # Combine nearby texts into caption
-        caption_parts = []
-        for text_block in nearby_texts[:3]:  # Take up to 3 nearest blocks
-            caption_parts.append(text_block["text"])
-
+        # Combine texts
+        all_texts = inside_texts + nearby_texts
+        caption_parts = [t["text"] for t in all_texts[:5]]  # Get more text blocks
         caption_text = " ".join(caption_parts).strip()
 
-        # Extract figure/table numbers
+        # Also extract IDs from inside texts separately (pottery labels)
+        # Check each inside text block individually for standalone numbers
+        all_ids = []
+        for inside_block in inside_texts:
+            block_text = inside_block["text"].strip()
+            # Check for standalone number (pottery label)
+            if len(block_text) <= 5:
+                standalone_match = self.re.match(self.standalone_number_pattern, block_text)
+                if standalone_match:
+                    all_ids.append(standalone_match.group(1))
+            # Also check for other ID patterns
+            block_ids = self._extract_pottery_ids(block_text)
+            if block_ids:
+                all_ids.extend(block_ids.split(", "))
+
+        inside_text = " ".join([t["text"] for t in inside_texts])
+
+        # Extract figure number from caption
         figure_num = self._extract_figure_number(caption_text)
 
-        # Extract pottery IDs
-        pottery_ids = self._extract_pottery_ids(caption_text)
+        # Extract pottery IDs from caption as well
+        pottery_ids_caption = self._extract_pottery_ids(caption_text)
+        if pottery_ids_caption:
+            all_ids.extend(pottery_ids_caption.split(", "))
 
-        return {
-            "caption_text": caption_text,
-            "figure_num": figure_num,
-            "pottery_ids": pottery_ids
-        }
+        # Remove duplicates preserving order
+        unique_ids = list(dict.fromkeys(all_ids))
+        pottery_ids = ", ".join(unique_ids) if unique_ids else ""
+
+        # Debug output
+        if inside_texts:
+            print(f"      Inside texts found: {[t['text'] for t in inside_texts]}")
+        if pottery_ids:
+            print(f"      Extracted IDs: {pottery_ids}")
+
+        return {"caption_text": caption_text, "figure_num": figure_num, "pottery_ids": pottery_ids}
 
     def _extract_figure_number(self, text: str) -> str:
-        """Extract figure/table number from text"""
         for pattern in self.figure_patterns:
             match = self.re.search(pattern, text, self.re.IGNORECASE)
             if match:
@@ -877,30 +883,46 @@ class MetadataExtractor:
         return ""
 
     def _extract_pottery_ids(self, text: str) -> str:
-        """Extract pottery IDs from text"""
         ids = []
         for pattern in self.pottery_id_patterns:
             matches = self.re.findall(pattern, text, self.re.IGNORECASE)
-            ids.extend(matches)
-        return ", ".join(ids) if ids else ""
+            for match in matches:
+                if isinstance(match, tuple):
+                    # Pattern con gruppi multipli (es. "M5" + "1" -> "M5-1")
+                    combined = "-".join(str(m) for m in match if m)
+                    if combined:
+                        ids.append(combined.upper())
+                else:
+                    # Pattern con singolo gruppo
+                    if match:
+                        ids.append(str(match).upper())
+
+        # Check for standalone numbers (only if text is short, like a label)
+        if len(text.strip()) <= 6:
+            standalone_match = self.re.match(self.standalone_number_pattern, text.strip())
+            if standalone_match:
+                ids.append(standalone_match.group(1))
+
+        # Remove duplicates preserving order
+        seen = set()
+        unique_ids = []
+        for id_val in ids:
+            if id_val not in seen:
+                seen.add(id_val)
+                unique_ids.append(id_val)
+
+        return ", ".join(unique_ids) if unique_ids else ""
+
+    def extract_figure_from_page(self, text_blocks: list) -> str:
+        """Extract figure/table number from entire page text"""
+        full_text = " ".join([block["text"] for block in text_blocks])
+        return self._extract_figure_number(full_text)
 
     def extract_page_number_from_filename(self, filename: str) -> int:
-        """Extract page number from filename like 'project_page_5.jpg'"""
         match = self.re.search(r'page_(\d+)', filename)
         return int(match.group(1)) if match else -1
 
     def process_project(self, project_id: str, project_manager) -> str:
-        """
-        Process all cards in a project and extract metadata
-
-        Args:
-            project_id: Project identifier
-            project_manager: ProjectManager instance
-
-        Returns:
-            Status message
-        """
-        # Get project paths
         cards_path = project_manager.get_project_path(project_id, 'cards')
         images_path = project_manager.get_project_path(project_id, 'images')
         pdf_source_path = project_manager.get_project_path(project_id, 'pdf_source')
@@ -908,98 +930,100 @@ class MetadataExtractor:
         if not cards_path or not cards_path.exists():
             return "No cards folder found"
 
-        # Load mask_info.csv
         mask_info_path = cards_path / 'mask_info.csv'
         annots_path = cards_path / 'mask_info_annots.csv'
 
         if not mask_info_path.exists() or not annots_path.exists():
-            return "Mask info files not found. Please extract cards first."
+            return "Mask info files not found. Extract cards first."
 
         df_info = pd.read_csv(mask_info_path)
         df_annots = pd.read_csv(annots_path)
 
-        # Detect PDF type
         pdf_files = list(pdf_source_path.glob('*.pdf')) if pdf_source_path and pdf_source_path.exists() else []
-        pdf_type = 'scanned'  # Default
+        pdf_type = 'scanned'
+        pdf_doc = None
+
         if pdf_files:
             pdf_type = self.detect_pdf_type(pdf_files[0])
             print(f"Detected PDF type: {pdf_type}")
+            if pdf_type == 'native':
+                try:
+                    pdf_doc = fitz.open(str(pdf_files[0]))
+                    print(f"Opened PDF with {len(pdf_doc)} pages")
+                except Exception as e:
+                    print(f"Error opening PDF: {e}")
+                    pdf_type = 'scanned'
 
-        # Process each unique page
         unique_pages = df_info['file'].unique()
-
-        # Add new columns if not present
-        new_columns = ['page_num', 'caption_text', 'figure_num', 'pottery_id']
-        for col in new_columns:
+        for col in ['page_num', 'caption_text', 'figure_num', 'pottery_id']:
             if col not in df_info.columns:
                 df_info[col] = ""
 
         processed_count = 0
-
-        for page_name in unique_pages:
-            print(f"Processing page: {page_name}")
-
-            # Get image path
-            image_file = None
-            for ext in ['.jpg', '.jpeg', '.png']:
-                candidate = images_path / f"{page_name}{ext}"
-                if candidate.exists():
-                    image_file = candidate
-                    break
-
-            if not image_file:
-                print(f"  Image not found for {page_name}")
-                continue
-
-            # Extract page number
-            page_num = self.extract_page_number_from_filename(page_name)
-
-            # Get text blocks based on PDF type
-            text_blocks = []
-            if pdf_type == 'native' and pdf_files and page_num >= 0:
-                text_blocks = self.extract_text_native(pdf_files[0], page_num)
-                print(f"  Extracted {len(text_blocks)} text blocks from PDF")
-            else:
-                text_blocks = self.extract_text_ocr(image_file)
-                print(f"  Extracted {len(text_blocks)} text blocks via OCR")
-
-            # Get image dimensions
-            with Image.open(image_file) as img:
-                img_width, img_height = img.size
-
-            # Process each card on this page
-            page_annots = df_annots[df_annots['mask_file'].str.startswith(page_name)]
-
-            for _, annot_row in page_annots.iterrows():
-                mask_file = annot_row['mask_file'].replace('.png', '')
-                bbox_str = str(annot_row['bbox'])
-
-                # Parse bbox
-                try:
-                    bbox = tuple(map(int, bbox_str.strip('()').split(',')))
-                except:
-                    print(f"  Warning: Could not parse bbox: {bbox_str}")
+        try:
+            for page_name in unique_pages:
+                print(f"Processing page: {page_name}")
+                image_file = None
+                for ext in ['.jpg', '.jpeg', '.png']:
+                    candidate = images_path / f"{page_name}{ext}"
+                    if candidate.exists():
+                        image_file = candidate
+                        break
+                if not image_file:
                     continue
 
-                # Find caption
-                metadata = self.find_caption_for_bbox(bbox, text_blocks, img_height)
+                page_num = self.extract_page_number_from_filename(page_name)
+                text_blocks = []
+                if pdf_type == 'native' and pdf_doc and page_num >= 0:
+                    text_blocks = self.extract_text_native_from_doc(pdf_doc, page_num)
+                    print(f"  Extracted {len(text_blocks)} text blocks from PDF")
+                    # Debug: print first few text blocks
+                    for i, block in enumerate(text_blocks[:10]):
+                        print(f"    Block {i}: '{block['text'][:50]}...' at {block['bbox']}")
+                else:
+                    text_blocks = self.extract_text_ocr(image_file)
+                    print(f"  Extracted {len(text_blocks)} text blocks via OCR")
+                    for i, block in enumerate(text_blocks[:10]):
+                        print(f"    Block {i}: '{block['text'][:50]}...' at {block['bbox']}")
 
-                # Update dataframe
-                mask = df_info['mask_file'] == mask_file
-                df_info.loc[mask, 'page_num'] = page_num
-                df_info.loc[mask, 'caption_text'] = metadata['caption_text']
-                df_info.loc[mask, 'figure_num'] = metadata['figure_num']
-                df_info.loc[mask, 'pottery_id'] = metadata['pottery_ids']
+                with Image.open(image_file) as img:
+                    img_width, img_height = img.size
 
-                if metadata['caption_text']:
-                    print(f"  Found caption for {mask_file}: {metadata['caption_text'][:50]}...")
+                # Extract figure number from full page (fallback)
+                page_figure_num = self.extract_figure_from_page(text_blocks)
+                print(f"  Page figure number: {page_figure_num}")
 
-                processed_count += 1
+                page_annots = df_annots[df_annots['mask_file'].str.startswith(page_name)]
+                for _, annot_row in page_annots.iterrows():
+                    mask_file = annot_row['mask_file'].replace('.png', '')
+                    bbox_str = str(annot_row['bbox'])
+                    try:
+                        bbox_values = bbox_str.strip('()').split(',')
+                        bbox = tuple(int(float(v.strip())) for v in bbox_values)
+                    except:
+                        continue
 
-        # Save updated CSV
+                    metadata = self.find_caption_for_bbox(bbox, text_blocks, img_height, img_width)
+
+                    # Use page-level figure number as fallback if not found near pottery
+                    figure_num = metadata['figure_num'] if metadata['figure_num'] else page_figure_num
+
+                    mask = df_info['mask_file'] == mask_file
+                    df_info.loc[mask, 'page_num'] = page_num
+                    df_info.loc[mask, 'caption_text'] = metadata['caption_text']
+                    df_info.loc[mask, 'figure_num'] = figure_num
+                    df_info.loc[mask, 'pottery_id'] = metadata['pottery_ids']
+                    # Add filename column for export compatibility
+                    df_info.loc[mask, 'filename'] = mask_file
+                    processed_count += 1
+
+                    if metadata['pottery_ids']:
+                        print(f"    Found pottery IDs: {metadata['pottery_ids']} for {mask_file}")
+        finally:
+            if pdf_doc:
+                pdf_doc.close()
+
         df_info.to_csv(mask_info_path, index=False)
-        print(f"Saved updated metadata to {mask_info_path}")
-
         return f"Extracted metadata for {processed_count} cards"
 
 

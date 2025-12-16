@@ -371,6 +371,24 @@ body {
     background: #475569;
 }
 
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-info {
+    background: #0ea5e9;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #0284c7;
+}
+
 .btn-tool {
     background: white;
     color: var(--text-primary);
