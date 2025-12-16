@@ -1,0 +1,2058 @@
+# utils.py
+
+import numpy as np
+import os
+from pathlib import Path
+from dataclasses import dataclass
+import pandas as pd
+from PIL import Image
+#import gradio as gr
+import fitz
+from ultralytics import YOLO
+from skimage.filters import threshold_otsu, median
+from skimage.segmentation import clear_border
+from skimage.measure import label, regionprops
+from skimage.morphology import closing, square, disk
+from scipy.ndimage import binary_dilation, binary_erosion
+from typing import  Dict, List, Optional, Tuple
+import numpy as np
+from dataclasses import dataclass
+import torch
+import torchvision.transforms as transforms
+from models import MultiHeadEfficientNet
+import shutil
+from reportlab.lib import pagesizes
+from reportlab.pdfgen import canvas
+from PIL import Image
+import gc
+
+
+
+@dataclass
+class PDFConfig:
+    """Configuration for PDF processing"""
+    output_dir: Path
+
+@dataclass
+class ModelConfig:
+    """Configuration for model processing"""
+    models_dir: Path
+    pred_output_dir: Path
+    confidence: float = 0.5
+    kernel_size: int = 2
+    iterations: int = 10
+    diagnostic: bool = False
+    ###
+    device: str = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+
+@dataclass
+class MaskExtractionConfig:
+    """Configuration for mask extraction"""
+    pdfimg_output_dir: Path  # Directory containing the original images
+    pred_output_dir: Path    # Directory for predictions and output
+    min_area_ratio: float = 0.001 # 0.005
+    closing_kernel_size: int = 3
+    output_suffix: str = "_card"
+    mask_suffix: str = "_mask"
+
+@dataclass
+class AnnotationConfig:
+    """Configuration for annotation processing"""
+    pred_output_dir: Path
+
+@dataclass
+class TabularConfig:
+    """Configuration for tabular processing"""
+    pdfimg_output_dir: Path
+    pred_output_dir: Path
+    max_workers: int = 4  # For parallel processing
+    cache_size: int = 32  # For LRU cache
+
+@dataclass
+class MetadataExtractionConfig:
+    """Configuration for metadata extraction from PDF pages"""
+    project_path: Path           # Project root path
+    search_radius_ratio: float = 0.15  # Ratio of image height to search for captions
+    ocr_languages: List[str] = None    # Languages for OCR (default: ['en', 'it'])
+
+    def __post_init__(self):
+        if self.ocr_languages is None:
+            self.ocr_languages = ['en', 'it']
+
+class PDFProcessor:
+    """Handles PDF to image conversion using PyMuPDF"""
+    
+    def __init__(self, config):
+        self.config = config
+
+    def process_pdf(self, pdf_path: str, split_pages: bool = False) -> str:
+        """
+        Convert PDF to images with optional page splitting
+        
+        Args:
+            pdf_path: Path to PDF file
+            split_pages: If True, splits each page into left and right halves
+        """
+        try:
+            pdf_file_name = Path(pdf_path).stem
+            output_folder = self.config.output_dir / pdf_file_name
+            os.makedirs(output_folder, exist_ok=True)
+            
+            # Open PDF document
+            doc = fitz.open(pdf_path)
+            
+            for page_num in range(len(doc)):
+                page = doc[page_num]
+                
+                # Get the pixel map with a good resolution
+                pix = page.get_pixmap(matrix=fitz.Matrix(300/72, 300/72))
+
+                
+                # Convert to PIL Image
+                img_data = pix.samples
+                img = Image.frombytes("RGB", [pix.width, pix.height], img_data)
+                
+                if split_pages:
+                    self._process_split_page(img, pdf_file_name, page_num, output_folder)
+                else:
+                    self._process_single_page(img, pdf_file_name, page_num, output_folder)
+            
+            doc.close()
+            return f"PDF file {pdf_file_name} has been converted to JPG"
+            
+        except Exception as e:
+            return f"Error processing PDF: {str(e)}"
+
+    def process_pdf_to_folder(self, pdf_path: str, output_folder: str, split_pages: bool = False, project_name: str = None) -> str:
+        """
+        Convert PDF to images with optional page splitting, saving to specified folder
+        
+        Args:
+            pdf_path: Path to PDF file
+            output_folder: Destination folder for images
+            split_pages: If True, splits each page into left and right halves
+            project_name: Optional project name to use for image naming (defaults to PDF filename)
+        """
+        try:
+            # Use project name if provided, otherwise fall back to PDF filename
+            base_name = project_name if project_name else Path(pdf_path).stem
+            output_path = Path(output_folder)
+            os.makedirs(output_path, exist_ok=True)
+            
+            # Open PDF document
+            doc = fitz.open(pdf_path)
+            
+            for page_num in range(len(doc)):
+                page = doc[page_num]
+                
+                # Get the pixel map with a good resolution
+                pix = page.get_pixmap(matrix=fitz.Matrix(300/72, 300/72))
+                
+                # Convert to PIL Image
+                img_data = pix.samples
+                img = Image.frombytes("RGB", [pix.width, pix.height], img_data)
+                
+                if split_pages:
+                    self._process_split_page(img, base_name, page_num, output_path)
+                else:
+                    self._process_single_page(img, base_name, page_num, output_path)
+            
+            doc.close()
+            return f"PDF file {base_name} has been converted to JPG"
+            
+        except Exception as e:
+            return f"Error processing PDF: {str(e)}"
+
+    def _process_single_page(self, image: Image.Image, pdf_name: str, page_num: int, output_folder: Path):
+        """Save a single page as one image"""
+        output_image_name = f'{pdf_name}_page_{page_num}.jpg'
+        image.save(output_folder / output_image_name, 'JPEG')
+
+    def _process_split_page(self, image: Image.Image, pdf_name: str, page_num: int, output_folder: Path):
+        """Split a page into left and right halves and save separately"""
+        width, height = image.size
+        mid_point = width // 2
+
+        # Split into left and right pages
+        left_page = image.crop((0, 0, mid_point, height))
+        right_page = image.crop((mid_point, 0, width, height))
+
+        # Save both pages with appropriate numbering
+        left_page.save(output_folder / f'{pdf_name}_page_{page_num}a.jpg', 'JPEG')
+        right_page.save(output_folder / f'{pdf_name}_page_{page_num}b.jpg', 'JPEG')
+
+        
+class ModelProcessor:
+    """Handles model application and prediction"""
+    
+    def __init__(self, config: ModelConfig):
+        self.config = config
+
+    def apply_model(self,
+                   folder: str,
+                   model_name: str,
+                   confidence: float,
+                   diagnostic: bool,
+                   kernel_size: float,
+                   iterations: float,
+                   excluded_images: list = None) -> str:
+        """Apply model to images in folder"""
+        try:
+            kernel_size = int(kernel_size)
+            iterations = int(iterations)
+            
+            if not folder or not model_name:
+                return "Please select both a folder and a model"
+            
+            # Load model from models directory
+            model_path = self.config.models_dir / model_name
+            if not model_path.exists():
+                return f"Model not found: {model_name}"
+            
+            model = YOLO(model_path)
+            
+            # Setup output directory for masks
+            output_folder = self.config.pred_output_dir / f"{folder}_mask"
+            os.makedirs(output_folder, exist_ok=True)
+            
+            # Get images from pdf2img_outputs directory
+            image_path = self.config.pred_output_dir.parent / "pdf2img_outputs" / folder
+            if not image_path.exists():
+                return f"Image folder not found: {folder}"
+                
+            images = os.listdir(image_path)
+            
+            # Filter out excluded images
+            if excluded_images:
+                # Extract just the filename from URLs like "/api/image/folder/filename.jpg"
+                excluded_filenames = set()
+                for url in excluded_images:
+                    filename = url.split('/')[-1]  # Get the last part of the URL
+                    excluded_filenames.add(filename)
+                
+                # Filter images list
+                original_count = len(images)
+                images = [img for img in images if img not in excluded_filenames]
+                excluded_count = original_count - len(images)
+                print(f"Excluded {excluded_count} images from processing")
+            
+            if diagnostic:
+                images = images[:25]
+            
+            total = len(images)
+            for idx, image_file in enumerate(images, 1):
+                print(f"Processing image {idx}/{total}: {image_file}")
+                self._process_single_image(
+                    image_file,
+                    image_path,
+                    model,
+                    confidence,
+                    kernel_size,
+                    iterations,
+                    output_folder
+                )
+            
+            return f"Model applied successfully to {folder} with confidence={confidence}, kernel={kernel_size}, iterations={iterations}"
+        except Exception as e:
+            return f"Error applying model: {str(e)}"
+
+    def apply_model_to_project(self,
+                               images_path: str,
+                               masks_path: str,
+                               model_name: str,
+                               confidence: float,
+                               diagnostic: bool,
+                               kernel_size: int,
+                               iterations: int,
+                               excluded_images: list = None,
+                               progress_callback=None) -> str:
+        """Apply model to images in a project, saving masks to project folder"""
+        try:
+            images_path = Path(images_path)
+            masks_path = Path(masks_path)
+            
+            if not images_path.exists():
+                return f"Images folder not found: {images_path}"
+            
+            # Load model from models directory
+            model_path = self.config.models_dir / model_name
+            if not model_path.exists():
+                return f"Model not found: {model_name}"
+            
+            model = YOLO(model_path)
+            
+            # Setup output directory for masks
+            os.makedirs(masks_path, exist_ok=True)
+            
+            # Get all images
+            image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff'}
+            images = [f.name for f in images_path.iterdir() 
+                     if f.is_file() and f.suffix.lower() in image_extensions]
+            
+            # Filter out excluded images
+            if excluded_images:
+                # Extract just the filename from URLs
+                excluded_filenames = set()
+                for url in excluded_images:
+                    filename = url.split('/')[-1]
+                    excluded_filenames.add(filename)
+                
+                original_count = len(images)
+                images = [img for img in images if img not in excluded_filenames]
+                excluded_count = original_count - len(images)
+                print(f"Excluded {excluded_count} images from processing")
+            
+            if diagnostic:
+                images = images[:25]
+            
+            total = len(images)
+            for idx, image_file in enumerate(images, 1):
+                print(f"Processing image {idx}/{total}: {image_file}")
+                
+                # Call progress callback if provided
+                if progress_callback:
+                    progress_callback(idx, total, f"Processing {image_file}")
+                
+                self._process_single_image(
+                    image_file,
+                    images_path,
+                    model,
+                    confidence,
+                    kernel_size,
+                    iterations,
+                    masks_path
+                )
+            
+            return f"Model applied successfully: {total} images processed with confidence={confidence}, kernel={kernel_size}, iterations={iterations}"
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return f"Error applying model: {str(e)}"
+
+    def _process_single_image(self,
+                            image_file: str,
+                            image_path: Path,
+                            model: YOLO,
+                            confidence: float,
+                            kernel_size: int,
+                            iterations: int,
+                            output_folder: Path) -> None:
+        """Process a single image with the model"""
+        try:
+            img = Image.open(image_path / image_file)
+            #img_tensor = transforms.ToTensor()(img).to(self.config.device)
+            results = model.predict(
+                img,
+                save_crop=False,
+                conf=confidence,
+                retina_masks=True,
+                device=self.config.device
+            )[0]
+            
+            if len(results) > 0:
+                pred_masks = results.masks.data.cpu().numpy()
+                save_mask(
+                    img,
+                    pred_masks,
+                    image_file.split(".")[0],
+                    output_folder,
+                    kernel_size,
+                    iterations,
+                    export_masks=True
+                )
+        except Exception as e:
+            print(f"Error processing image {image_file}: {str(e)}")
+
+    #def _process_single_image(self,
+    #                        image_file: str,
+    #                        image_path: Path,
+    #                        model: YOLO,
+    #                        confidence: float,
+    #                        kernel_size: int,
+    #                        iterations: int,
+    #                        output_folder: Path) -> None:
+    #    """Process a single image with the model"""
+    #    try:
+    #        img = Image.open(image_path / image_file)
+    #        results = model.predict(
+    #            img,
+    #            save_crop=False,
+    #            conf=confidence,
+    #            retina_masks=True
+    #        )[0]
+    #        
+    #        if len(results) > 0:
+    #            pred_masks = results.masks.data.cpu().numpy()
+    #            save_mask(
+    #                img,
+    #                pred_masks,
+    #                image_file.split(".")[0],
+    #                output_folder,
+    #                kernel_size,
+    #                iterations,
+    #                export_masks=True
+    #            )
+    #    except Exception as e:
+    #        print(f"Error processing image {image_file}: {str(e)}")
+
+
+
+class MaskExtractor:
+    """Handles mask extraction using black mask annotations"""
+    
+    def __init__(self, config: MaskExtractionConfig):
+        self.config = config
+
+    def _setup_directories(self, folder: str) -> tuple[Path, str, Path, Path]:
+        """Setup and return required directories and image format"""
+        img_folder = self.config.pdfimg_output_dir / folder
+        img_format = os.listdir(img_folder)[0].split(".")[1]
+        mask_folder = self.config.pred_output_dir / f"{folder}_mask"
+        output_folder = self.config.pred_output_dir / f"{folder}_card"
+        os.makedirs(output_folder, exist_ok=True)
+        return img_folder, img_format, mask_folder, output_folder
+
+    #def _process_mask(self, mask_array: np.ndarray) -> np.ndarray:
+    #    """Process mask array to get labeled regions"""
+    #    thresh = threshold_otsu(mask_array)
+    #    bw = closing(mask_array > thresh, square(3))
+    #    cleared = clear_border(bw)
+
+    #    return label(cleared)
+
+
+    def _process_mask(self, image_array: np.ndarray) -> np.ndarray:
+        """
+        Process PNG with alpha channel to get labeled regions from non-transparent areas.
+        """
+        # Extract alpha channel (assuming it's the 4th channel)
+        if image_array.ndim == 3 and image_array.shape[2] >= 4:
+            alpha_channel = image_array[:, :, 3]
+        else:
+            raise ValueError("Input image doesn't appear to have an alpha channel")
+        
+        # Create binary mask from alpha channel (non-zero alpha values)
+        mask_array = np.where(alpha_channel > 0, 1, 0).astype(np.uint8)
+        
+        # Only apply Otsu thresholding if we have both foreground and background pixels
+        if mask_array.min() < mask_array.max():
+            thresh = threshold_otsu(alpha_channel)
+            bw = closing(alpha_channel > thresh, square(3))
+        else:
+            bw = mask_array
+        
+        # Clear artifacts connected to image border
+        cleared = clear_border(bw)
+        
+        # Label connected regions
+        return label(cleared)
+
+    
+    def _create_region_mask(self, shape: tuple, region_bbox: tuple, region_mask: np.ndarray) -> np.ndarray:
+        """Create full-size mask for a region"""
+        minr, minc, maxr, maxc = region_bbox
+        mask = np.zeros(shape)
+        mask[minr:maxr, minc:maxc] = region_mask
+        return mask
+
+    def _expand_mask(self, mask: np.ndarray) -> np.ndarray:
+        """Expand mask to match image dimensions"""
+        mask_exp = np.expand_dims(mask * 255, axis=-1)
+        return np.repeat(mask_exp, 3, axis=-1).astype(np.uint8)
+
+
+    def _extract_region(self, 
+                    region: 'RegionProperties', 
+                    mask_array: np.ndarray, 
+                    orig_array: np.ndarray, 
+                    total_area: int) -> tuple[np.ndarray, tuple] | None:
+        """
+        Extract region using precise segmentation mask with PIL for image handling
+        """
+        if region.area < total_area * self.config.min_area_ratio:
+            return None
+
+        # Get bounding box coordinates
+        minr, minc, maxr, maxc = region.bbox
+        
+        # Ensure dimensions match before processing
+        mask_shape = mask_array.shape[:2]
+        orig_shape = orig_array.shape[:2]
+        
+        if mask_shape != orig_shape:
+            # Convert mask array to PIL Image for resizing
+            mask_img = Image.fromarray(mask_array)
+            # Resize mask to match original image dimensions
+            mask_resized = mask_img.resize((orig_array.shape[1], orig_array.shape[0]), 
+                                        resample=Image.Resampling.NEAREST)
+            # Convert back to numpy array
+            mask_array = np.array(mask_resized)
+            
+            # Recalculate bbox coordinates
+            scale_y = orig_shape[0] / mask_shape[0]
+            scale_x = orig_shape[1] / mask_shape[1]
+            minr = int(minr * scale_y)
+            maxr = int(maxr * scale_y)
+            minc = int(minc * scale_x)
+            maxc = int(maxc * scale_x)
+            
+            # Convert region mask to PIL Image and resize
+            region_mask_img = Image.fromarray(region.image.astype(np.uint8) * 255)
+            region_mask_resized = region_mask_img.resize((maxc - minc, maxr - minr), 
+                                                        resample=Image.Resampling.NEAREST)
+            region_mask = np.array(region_mask_resized) > 0
+        else:
+            region_mask = region.image
+
+        # Create full-size mask
+        full_mask = np.zeros_like(orig_array[:,:,0], dtype=bool)
+        full_mask[minr:maxr, minc:maxc] = region_mask
+        
+        # Expand mask to match image dimensions
+        mask_exp = np.expand_dims(full_mask, axis=-1).astype(np.uint8)
+        mask_exp = np.repeat(mask_exp, 3, axis=-1)
+        
+        # Apply mask to original image
+        masked_img = np.where(mask_exp == 0, 255, orig_array)
+        
+        # Crop to bounding box
+        cropped = masked_img[minr:maxr, minc:maxc]
+        
+        return cropped, (minc, minr, maxc, maxr)
+
+    def _save_metadata(self, 
+                      metadata: list[tuple], 
+                      annotations: list[tuple], 
+                      output_folder: Path) -> None:
+        """Save extraction metadata to CSV files"""
+        if not metadata:
+            return
+            
+        pd.DataFrame(metadata, columns=["file", "mask_file"]).to_csv(
+            output_folder / "mask_info.csv", index=False
+        )
+        pd.DataFrame(annotations, columns=["bbox", "mask_file"]).to_csv(
+            output_folder / "mask_info_annots.csv", index=False
+        )
+
+    def extract_masks(self, drop_folder_review: str) -> str:
+        """Extract masks from images in folder"""
+        try:
+            # Setup directories
+            img_folder, img_format, mask_folder, output_folder = self._setup_directories(drop_folder_review)
+            
+            metadata = []
+            annotations = []
+
+            # Get list of files to process
+            mask_files = os.listdir(mask_folder)
+            total_files = len(mask_files)
+            
+            # Process each mask file
+            for idx, file in enumerate(mask_files, 1):
+                print(f"Processing mask {idx}/{total_files}: {file}")
+                
+                base_filename = file.split(".")[0].replace("_mask_layer", "")
+                
+                # Load images
+                mask_array = np.array(Image.open(mask_folder / file))
+                orig_array = np.array(Image.open(img_folder / f"{base_filename}.{img_format}"))
+                
+                # Process mask and get labeled regions
+                label_image = self._process_mask(mask_array)
+                total_area = mask_array.size
+                
+                # Process each region
+                for i, region in enumerate(regionprops(label_image)):
+                    result = self._extract_region(region, mask_array, orig_array, total_area)
+                    if result is None:
+                        continue
+                        
+                    cropped, bbox = result
+                    output_filename = f"{base_filename}_mask_layer_{i}.png"
+                    
+                    # Save cropped image
+                    ### add some white space around the cropped image
+                    cropped = np.pad(cropped, ((50, 50), (50, 50), (0, 0)), mode='constant', constant_values=255)
+                    Image.fromarray(cropped).save(output_folder / output_filename)
+                    
+                    # Store metadata
+                    metadata.append((base_filename, f"{base_filename}_mask_layer_{i}"))
+                    annotations.append((bbox, output_filename))
+
+            # Save metadata
+            self._save_metadata(metadata, annotations, output_folder)
+            
+            if metadata:
+                return f"Successfully extracted {len(metadata)} masks from '{drop_folder_review}'"
+            return "No masks were extracted. Check if masks are properly drawn."
+
+        except Exception as e:
+            print(f"Error in mask extraction: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return f"Error extracting masks: {str(e)}"
+
+    def extract_masks_from_project(self, masks_path: str, cards_path: str) -> str:
+        """Extract cards from masks in a project"""
+        try:
+            masks_path = Path(masks_path)
+            cards_path = Path(cards_path)
+            
+            if not masks_path.exists():
+                return "Masks folder not found"
+            
+            # Create cards folder
+            os.makedirs(cards_path, exist_ok=True)
+            
+            # Get all mask files
+            mask_files = [f.name for f in masks_path.iterdir() 
+                         if f.name.endswith('_mask_layer.png')]
+            
+            if not mask_files:
+                return "No mask files found. Apply a model first."
+            
+            metadata = []
+            annotations = []
+            
+            total_files = len(mask_files)
+            
+            # Process each mask file
+            for idx, file in enumerate(mask_files, 1):
+                print(f"Processing mask {idx}/{total_files}: {file}")
+                
+                base_filename = file.replace("_mask_layer.png", "")
+                
+                # Load mask
+                mask_array = np.array(Image.open(masks_path / file))
+                
+                # Try to find corresponding original image
+                # Look for image in parent's images folder
+                orig_image_path = masks_path.parent / 'images' / f"{base_filename}.jpg"
+                if not orig_image_path.exists():
+                    orig_image_path = masks_path.parent / 'images' / f"{base_filename}.png"
+                
+                if not orig_image_path.exists():
+                    print(f"Warning: Original image not found for {base_filename}")
+                    continue
+                
+                orig_array = np.array(Image.open(orig_image_path))
+                
+                # Process mask and get labeled regions
+                label_image = self._process_mask(mask_array)
+                total_area = mask_array.size
+                
+                # Process each region
+                for i, region in enumerate(regionprops(label_image)):
+                    result = self._extract_region(region, mask_array, orig_array, total_area)
+                    if result is None:
+                        continue
+                        
+                    cropped, bbox = result
+                    output_filename = f"{base_filename}_mask_layer_{i}.png"
+                    
+                    # Save cropped image with padding
+                    cropped = np.pad(cropped, ((50, 50), (50, 50), (0, 0)), mode='constant', constant_values=255)
+                    Image.fromarray(cropped).save(cards_path / output_filename)
+                    
+                    # Store metadata
+                    metadata.append((base_filename, f"{base_filename}_mask_layer_{i}"))
+                    annotations.append((bbox, output_filename))
+
+            # Save metadata
+            self._save_metadata(metadata, annotations, cards_path)
+            
+            if metadata:
+                return f"Successfully extracted {len(metadata)} cards from project masks"
+            return "No cards were extracted. Check if masks are properly drawn."
+
+        except Exception as e:
+            print(f"Error in mask extraction: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return f"Error extracting masks: {str(e)}"
+
+
+class MetadataExtractor:
+    """
+    Extracts metadata from PDF pages including:
+    - Caption text (full text near pottery bounding boxes)
+    - Figure/Table numbers (Fig. 1, Tav. II, Plate III, etc.)
+    - Pottery IDs (n. 123, Cat. 45, no. 67, etc.)
+    - Page numbers
+    """
+
+    def __init__(self, config: MetadataExtractionConfig):
+        self.config = config
+        self._ocr_reader = None  # Lazy initialization
+        import re
+        self.re = re
+
+        # Regex patterns for figure/table numbers
+        self.figure_patterns = [
+            r'(?:Fig\.|Figure|Figura)\s*(\d+[a-zA-Z]?)',
+            r'(?:Tav\.|Tavola|Plate)\s*([IVXLCDM]+|\d+)',
+            r'(?:Tab\.|Table|Tabella)\s*(\d+[a-zA-Z]?)',
+        ]
+
+        # Regex patterns for pottery IDs
+        self.pottery_id_patterns = [
+            r'(?:n\.|no\.|nr\.)\s*(\d+)',
+            r'(?:Cat\.|Catalogue)\s*(\d+[a-zA-Z]?)',
+            r'(?:Inv\.|Inventory)\s*(\d+[a-zA-Z\-]*)',
+        ]
+
+    @property
+    def ocr_reader(self):
+        """Lazy initialization of OCR reader"""
+        if self._ocr_reader is None:
+            import easyocr
+            self._ocr_reader = easyocr.Reader(
+                self.config.ocr_languages,
+                gpu=torch.cuda.is_available() or (hasattr(torch.backends, 'mps') and torch.backends.mps.is_available())
+            )
+        return self._ocr_reader
+
+    def detect_pdf_type(self, pdf_path: Path) -> str:
+        """
+        Detect if PDF is native (selectable text) or scanned
+        Returns: 'native' or 'scanned'
+        """
+        doc = fitz.open(str(pdf_path))
+        total_text_length = 0
+
+        for page_num in range(min(5, len(doc))):  # Check first 5 pages
+            page = doc[page_num]
+            text = page.get_text()
+            total_text_length += len(text.strip())
+
+        doc.close()
+
+        # If average text per page is very low, likely scanned
+        avg_text = total_text_length / max(1, min(5, len(doc)))
+        return 'native' if avg_text > 100 else 'scanned'
+
+    def extract_text_native(self, pdf_path: Path, page_num: int) -> list:
+        """
+        Extract text blocks from native PDF using PyMuPDF
+        Returns list of dicts with 'text', 'bbox', 'block_no'
+        """
+        doc = fitz.open(str(pdf_path))
+
+        if page_num >= len(doc):
+            doc.close()
+            return []
+
+        page = doc[page_num]
+
+        # Get text blocks with layout preservation
+        blocks = page.get_text("dict", flags=fitz.TEXT_PRESERVE_WHITESPACE)["blocks"]
+
+        text_blocks = []
+        for block in blocks:
+            if block.get("type") == 0:  # Text block
+                bbox = block["bbox"]
+                lines_text = []
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        lines_text.append(span.get("text", ""))
+
+                text_blocks.append({
+                    "text": " ".join(lines_text),
+                    "bbox": bbox,  # (x0, y0, x1, y1)
+                    "block_no": block.get("number", 0)
+                })
+
+        doc.close()
+        return text_blocks
+
+    def extract_text_ocr(self, image_path: Path) -> list:
+        """
+        Extract text from image using OCR
+        Returns list of dicts with 'text', 'bbox'
+        """
+        result = self.ocr_reader.readtext(str(image_path))
+
+        text_blocks = []
+        for detection in result:
+            bbox_points = detection[0]  # [[x1,y1], [x2,y1], [x2,y2], [x1,y2]]
+            text = detection[1]
+            confidence = detection[2]
+
+            if confidence > 0.3:  # Filter low confidence
+                # Convert to (x0, y0, x1, y1) format
+                x_coords = [p[0] for p in bbox_points]
+                y_coords = [p[1] for p in bbox_points]
+                bbox = (min(x_coords), min(y_coords), max(x_coords), max(y_coords))
+
+                text_blocks.append({
+                    "text": text,
+                    "bbox": bbox,
+                    "confidence": confidence
+                })
+
+        return text_blocks
+
+    def find_caption_for_bbox(self, pottery_bbox: tuple, text_blocks: list,
+                              image_height: int) -> dict:
+        """
+        Find caption text near a pottery bounding box
+
+        Args:
+            pottery_bbox: (x0, y0, x1, y1) of the pottery card
+            text_blocks: list of text blocks from page
+            image_height: height of the page image
+
+        Returns:
+            dict with 'caption_text', 'figure_num', 'pottery_ids'
+        """
+        px0, py0, px1, py1 = pottery_bbox
+
+        search_radius = image_height * self.config.search_radius_ratio
+
+        # Find text blocks near the pottery bbox
+        nearby_texts = []
+        for block in text_blocks:
+            bx0, by0, bx1, by1 = block["bbox"]
+
+            # Check if text is below or beside the pottery
+            # Priority: below > right > left > above
+
+            # Below the pottery (most common caption position)
+            if by0 >= py1 and by0 <= py1 + search_radius:
+                if bx0 < px1 and bx1 > px0:  # Horizontal overlap
+                    nearby_texts.append({
+                        **block,
+                        "position": "below",
+                        "distance": by0 - py1
+                    })
+
+            # Right of the pottery
+            elif bx0 >= px1 and bx0 <= px1 + search_radius:
+                if by0 < py1 and by1 > py0:  # Vertical overlap
+                    nearby_texts.append({
+                        **block,
+                        "position": "right",
+                        "distance": bx0 - px1
+                    })
+
+            # Left of the pottery
+            elif bx1 <= px0 and bx1 >= px0 - search_radius:
+                if by0 < py1 and by1 > py0:  # Vertical overlap
+                    nearby_texts.append({
+                        **block,
+                        "position": "left",
+                        "distance": px0 - bx1
+                    })
+
+        # Sort by position priority and distance
+        position_priority = {"below": 0, "right": 1, "left": 2, "above": 3}
+        nearby_texts.sort(key=lambda x: (position_priority.get(x["position"], 4), x["distance"]))
+
+        # Combine nearby texts into caption
+        caption_parts = []
+        for text_block in nearby_texts[:3]:  # Take up to 3 nearest blocks
+            caption_parts.append(text_block["text"])
+
+        caption_text = " ".join(caption_parts).strip()
+
+        # Extract figure/table numbers
+        figure_num = self._extract_figure_number(caption_text)
+
+        # Extract pottery IDs
+        pottery_ids = self._extract_pottery_ids(caption_text)
+
+        return {
+            "caption_text": caption_text,
+            "figure_num": figure_num,
+            "pottery_ids": pottery_ids
+        }
+
+    def _extract_figure_number(self, text: str) -> str:
+        """Extract figure/table number from text"""
+        for pattern in self.figure_patterns:
+            match = self.re.search(pattern, text, self.re.IGNORECASE)
+            if match:
+                return match.group(0)
+        return ""
+
+    def _extract_pottery_ids(self, text: str) -> str:
+        """Extract pottery IDs from text"""
+        ids = []
+        for pattern in self.pottery_id_patterns:
+            matches = self.re.findall(pattern, text, self.re.IGNORECASE)
+            ids.extend(matches)
+        return ", ".join(ids) if ids else ""
+
+    def extract_page_number_from_filename(self, filename: str) -> int:
+        """Extract page number from filename like 'project_page_5.jpg'"""
+        match = self.re.search(r'page_(\d+)', filename)
+        return int(match.group(1)) if match else -1
+
+    def process_project(self, project_id: str, project_manager) -> str:
+        """
+        Process all cards in a project and extract metadata
+
+        Args:
+            project_id: Project identifier
+            project_manager: ProjectManager instance
+
+        Returns:
+            Status message
+        """
+        # Get project paths
+        cards_path = project_manager.get_project_path(project_id, 'cards')
+        images_path = project_manager.get_project_path(project_id, 'images')
+        pdf_source_path = project_manager.get_project_path(project_id, 'pdf_source')
+
+        if not cards_path or not cards_path.exists():
+            return "No cards folder found"
+
+        # Load mask_info.csv
+        mask_info_path = cards_path / 'mask_info.csv'
+        annots_path = cards_path / 'mask_info_annots.csv'
+
+        if not mask_info_path.exists() or not annots_path.exists():
+            return "Mask info files not found. Please extract cards first."
+
+        df_info = pd.read_csv(mask_info_path)
+        df_annots = pd.read_csv(annots_path)
+
+        # Detect PDF type
+        pdf_files = list(pdf_source_path.glob('*.pdf')) if pdf_source_path and pdf_source_path.exists() else []
+        pdf_type = 'scanned'  # Default
+        if pdf_files:
+            pdf_type = self.detect_pdf_type(pdf_files[0])
+            print(f"Detected PDF type: {pdf_type}")
+
+        # Process each unique page
+        unique_pages = df_info['file'].unique()
+
+        # Add new columns if not present
+        new_columns = ['page_num', 'caption_text', 'figure_num', 'pottery_id']
+        for col in new_columns:
+            if col not in df_info.columns:
+                df_info[col] = ""
+
+        processed_count = 0
+
+        for page_name in unique_pages:
+            print(f"Processing page: {page_name}")
+
+            # Get image path
+            image_file = None
+            for ext in ['.jpg', '.jpeg', '.png']:
+                candidate = images_path / f"{page_name}{ext}"
+                if candidate.exists():
+                    image_file = candidate
+                    break
+
+            if not image_file:
+                print(f"  Image not found for {page_name}")
+                continue
+
+            # Extract page number
+            page_num = self.extract_page_number_from_filename(page_name)
+
+            # Get text blocks based on PDF type
+            text_blocks = []
+            if pdf_type == 'native' and pdf_files and page_num >= 0:
+                text_blocks = self.extract_text_native(pdf_files[0], page_num)
+                print(f"  Extracted {len(text_blocks)} text blocks from PDF")
+            else:
+                text_blocks = self.extract_text_ocr(image_file)
+                print(f"  Extracted {len(text_blocks)} text blocks via OCR")
+
+            # Get image dimensions
+            with Image.open(image_file) as img:
+                img_width, img_height = img.size
+
+            # Process each card on this page
+            page_annots = df_annots[df_annots['mask_file'].str.startswith(page_name)]
+
+            for _, annot_row in page_annots.iterrows():
+                mask_file = annot_row['mask_file'].replace('.png', '')
+                bbox_str = str(annot_row['bbox'])
+
+                # Parse bbox
+                try:
+                    bbox = tuple(map(int, bbox_str.strip('()').split(',')))
+                except:
+                    print(f"  Warning: Could not parse bbox: {bbox_str}")
+                    continue
+
+                # Find caption
+                metadata = self.find_caption_for_bbox(bbox, text_blocks, img_height)
+
+                # Update dataframe
+                mask = df_info['mask_file'] == mask_file
+                df_info.loc[mask, 'page_num'] = page_num
+                df_info.loc[mask, 'caption_text'] = metadata['caption_text']
+                df_info.loc[mask, 'figure_num'] = metadata['figure_num']
+                df_info.loc[mask, 'pottery_id'] = metadata['pottery_ids']
+
+                if metadata['caption_text']:
+                    print(f"  Found caption for {mask_file}: {metadata['caption_text'][:50]}...")
+
+                processed_count += 1
+
+        # Save updated CSV
+        df_info.to_csv(mask_info_path, index=False)
+        print(f"Saved updated metadata to {mask_info_path}")
+
+        return f"Extracted metadata for {processed_count} cards"
+
+
+class AnnotationProcessor:
+    """Handles annotation processing"""
+    
+    def __init__(self, config: AnnotationConfig):
+        self.config = config
+
+    def save_annotation(self, folder: str, editor_data: Dict, current_image: str) -> bool:
+        """Save annotation and return success status"""
+        try:
+            if not all([folder, editor_data, current_image]):
+                return False
+                    
+            # Fast path for saving
+            if 'layers' in editor_data and editor_data['layers']:
+                layer = editor_data['layers'][0]
+                if layer is not None:
+                    # Setup paths
+                    file_name = Path(current_image).stem + "_mask_layer"
+                    saving_folder = folder + "_mask"
+                    saving_path = self.config.pred_output_dir / saving_folder / f"{file_name}.png"
+                    
+                    # Ensure saving directory exists
+                    os.makedirs(self.config.pred_output_dir / saving_folder, exist_ok=True)
+                    
+                    # Direct save
+                    Image.fromarray(layer).save(saving_path)
+                    
+                    # Force Python garbage collection
+                    del layer
+                    gc.collect()
+                    
+                    return True
+                    
+            return False
+            
+        except Exception as e:
+            print(f"Error saving annotation: {str(e)}")
+            return False
+        
+    def file_selection(self, file_path: str) -> Dict:
+        """Select file and prepare image data with performance optimizations"""
+        try:
+            if not file_path:
+                return {"background": None, "layers": [], "composite": None}
+                    
+            file_path = Path(file_path)
+            
+            # Prepare mask path
+            mask_dir_name = file_path.parent.name + "_mask"
+            mask_name = file_path.stem + "_mask_layer.png"
+            mask_path = self.config.pred_output_dir / mask_dir_name / mask_name
+
+            # Load and resize original image
+            with Image.open(file_path) as img:
+                # Resize for preview while maintaining aspect ratio
+                img.thumbnail((1200, 1200))
+                img_background = np.asarray(img, dtype=np.uint8)
+            
+            # Check and load mask if exists
+            layers = []
+            if mask_path.exists():
+                with Image.open(mask_path) as mask_img:
+                    # Resize mask to match image dimensions
+                    mask_img = mask_img.resize(img_background.shape[:2][::-1], Image.Resampling.NEAREST)
+                    mask = np.asarray(mask_img, dtype=np.uint8)
+                    layers = [mask]
+            
+            # Force cleanup
+            gc.collect()
+            
+            return {
+                "background": img_background,
+                "layers": layers,
+                "composite": img_background.copy()
+            }
+            
+        except Exception as e:
+            print(f"Error in file selection: {str(e)}")
+            return {"background": None, "layers": [], "composite": None}
+
+class ImageProcessor:
+    """Handles image processing and display"""
+    
+    def __init__(self, pdfimg_output_dir: Path, pred_output_dir: Path):
+        self.pdfimg_output_dir = Path(pdfimg_output_dir)
+        self.pred_output_dir = Path(pred_output_dir)
+
+    def return_images(self, folder: str) -> List[str]:
+        """Return list of images in folder"""
+        if not folder:
+            return []
+        try:
+            return [
+                str(self.pdfimg_output_dir / folder / img_name)
+                for img_name in os.listdir(self.pdfimg_output_dir / folder)
+                if img_name.lower().endswith(('.png', '.jpg', '.jpeg'))
+            ]
+        except Exception as e:
+            print(f"Error loading images: {str(e)}")
+            return []
+        
+
+class TabularProcessor:
+    """Handles tabular data viewing and editing for extracted masks"""
+    
+    def __init__(self, config: TabularConfig):
+        self.pdfimg_output_dir = Path(config.pdfimg_output_dir).resolve()
+        self.pred_output_dir = Path(config.pred_output_dir).resolve()
+        self._current_file = None
+
+    def get_results_folders(self) -> List[str]:
+        """Get list of folders containing results with validation"""
+        try:
+            folder_list = [f for f in os.listdir(self.pred_output_dir) 
+                          if f.endswith('_card') and not f.endswith('transformed_card')]
+            
+            # Validate each folder contains required files
+            valid_folders = []
+            for folder in folder_list:
+                folder_path = self.pred_output_dir / folder
+                if folder_path.is_dir():
+                    mask_info = folder_path / "mask_info.csv"
+                    mask_info_annots = folder_path / "mask_info_annots.csv"
+                    if mask_info.exists() and mask_info_annots.exists():
+                        valid_folders.append(folder)
+                        print(f"Valid folder found: {folder}")
+            
+            return valid_folders
+            
+        except Exception as e:
+            print(f"Error in get_results_folders: {str(e)}")
+            return []
+
+    def convert_bbox(self, bbox_str: str) -> tuple:
+        """Convert bbox string to tuple with error handling"""
+        try:
+            # Remove parentheses and split
+            bbox = bbox_str.strip('()').split(',')
+            return tuple(int(float(coord)) for coord in bbox)
+        except Exception as e:
+            print(f"Error converting bbox {bbox_str}: {str(e)}")
+            return (0, 0, 0, 0)
+
+    def create_annotation_tuple(self, df: pd.DataFrame, image_name: str) -> List[tuple]:
+        """Create list of annotation tuples with validation"""
+        try:
+            # Filter dataframe for current image
+            df_selected = df[df['image_name'] == image_name].copy()
+            
+            if df_selected.empty:
+                print(f"No annotations found for image {image_name}")
+                return []
+            
+            # Create annotation tuples with error handling
+            annotations = []
+            for _, row in df_selected.iterrows():
+                try:
+                    bbox = self.convert_bbox(row['bbox'])
+                    mask_id = str(row['ID']).strip()  # Ensure ID is string and clean
+                    if all(isinstance(x, (int, float)) for x in bbox):
+                        annotations.append((bbox, mask_id))
+                except Exception as e:
+                    print(f"Error processing annotation row: {str(e)}")
+                    continue
+                    
+            return annotations
+            
+        except Exception as e:
+            print(f"Error creating annotations: {str(e)}")
+            return []
+
+    def image_selection(self, folder: str, img_num: int) -> tuple:
+        """Select and prepare image and associated data for display"""
+        try:
+            if not folder:
+                return None, img_num, pd.DataFrame()
+
+            # Setup paths
+            context = folder.split("_card")[0]
+            folder_mask_path = (self.pred_output_dir / f"{context}_mask").resolve()
+            folder_img_path = (self.pdfimg_output_dir / context).resolve()
+            csv_path = (self.pred_output_dir / folder).resolve()
+
+            print(f"\nProcessing paths:")
+            print(f"Mask folder: {folder_mask_path}")
+            print(f"Image folder: {folder_img_path}")
+            print(f"CSV folder: {csv_path}")
+
+            # Validate paths existence
+            if not all(p.exists() for p in [folder_mask_path, folder_img_path, csv_path]):
+                print("Missing required folders")
+                return None, img_num, pd.DataFrame()
+
+            # Load CSV files
+            try:
+                mask_info_path = csv_path / "mask_info.csv"
+                mask_info_annots_path = csv_path / "mask_info_annots.csv"
+
+                print(f"\nReading CSV files:")
+                print(f"mask_info.csv: {mask_info_path}")
+                print(f"mask_info_annots.csv: {mask_info_annots_path}")
+
+                if not mask_info_path.exists() or not mask_info_annots_path.exists():
+                    print("Required CSV files not found")
+                    return None, img_num, pd.DataFrame()
+
+                # Read CSVs with explicit dtypes
+                df = pd.read_csv(mask_info_path).fillna('')
+                df_annots = pd.read_csv(mask_info_annots_path)
+                
+                # Clean and prepare annotation data
+                df_annots['image_name'] = df_annots['mask_file'].apply(
+                    lambda x: x.split('_mask')[0] if isinstance(x, str) else '')
+                df_annots['ID'] = df_annots['mask_file'].apply(
+                    lambda x: x.split('layer_')[1] if isinstance(x, str) else '')
+
+            except Exception as e:
+                print(f"Error reading CSV files: {str(e)}")
+                return None, img_num, pd.DataFrame()
+
+            # Get valid images with corresponding masks
+            images = []
+            for f in os.listdir(folder_img_path):
+                if not f.lower().endswith(('.png', '.jpg', '.jpeg')):
+                    continue
+                    
+                mask_file = f.split(".")[0] + "_mask_layer.png"
+                if os.path.exists(folder_mask_path / mask_file):
+                    images.append(f)
+
+            if not images:
+                print("No valid images found")
+                return None, img_num, pd.DataFrame()
+
+            # Get current image
+            img_num = max(0, min(img_num, len(images) - 1))
+            current_image = images[img_num]
+            image_base_name = current_image.split(".")[0]
+            
+            print(f"\nProcessing image: {image_base_name}")
+            
+            # Store current file
+            self._current_file = image_base_name
+
+            # Prepare display data
+            df_subset = df[df["file"] == image_base_name].copy()
+            
+            if df_subset.empty:
+                print(f"No data found for image {image_base_name}")
+                return None, img_num, pd.DataFrame()
+
+            df_subset["ID"] = df_subset["mask_file"].apply(lambda x: x.split('layer_')[1] if isinstance(x, str) else '')
+            
+            # Clean up columns
+            drop_cols = [col for col in ["mask_file", "file"] if col in df_subset.columns]
+            if drop_cols:
+                df_subset.drop(columns=drop_cols, inplace=True)
+            
+            # Reorder columns
+            columns_order = ["ID"] + [col for col in df_subset.columns if col != "ID"]
+            df_display = df_subset[columns_order]
+
+            # Create image with annotations
+            try:
+                img_path = folder_img_path / current_image
+                if not img_path.exists():
+                    print(f"Image file not found: {img_path}")
+                    return None, img_num, df_display
+
+                with Image.open(img_path) as img:
+                    original_size = img.size  # Save original dimensions
+                    img.thumbnail((1200, 1200))
+                    scale_x = img.size[0] / original_size[0]
+                    scale_y = img.size[1] / original_size[1]
+                    image = np.asarray(img, dtype=np.uint8)
+                    
+                # Get original annotations and scale them
+                original_annotations = self.create_annotation_tuple(df_annots, image_base_name)
+                scaled_annotations = []
+                    
+                for bbox, mask_id in original_annotations:
+                    scaled_bbox = (
+                        int(bbox[0] * scale_x),
+                        int(bbox[1] * scale_y),
+                        int(bbox[2] * scale_x),
+                        int(bbox[3] * scale_y)
+                    )
+                    scaled_annotations.append((scaled_bbox, mask_id))
+                
+                return (
+                    gr.AnnotatedImage(value=[image, scaled_annotations]), 
+                    img_num, 
+                    df_display
+                )
+                
+            except Exception as e:
+                print(f"Error creating annotated image: {str(e)}")
+                return None, img_num, df_display
+
+        except Exception as e:
+            print(f"Error in image selection: {str(e)}")
+            return None, img_num, pd.DataFrame()
+
+    def save_table(self, table: pd.DataFrame, folder: str) -> None:
+        """Save table with robust error handling"""
+        try:
+            if self._current_file is None:
+                print("No file currently selected")
+                return
+
+            csv_path = self.pred_output_dir / folder / "mask_info.csv"
+            if not csv_path.exists():
+                print(f"CSV file not found: {csv_path}")
+                return
+
+            # Read existing table
+            existing_table = pd.read_csv(csv_path)
+            
+            # Add back file information
+            table = table.copy()
+            table['file'] = self._current_file
+            table["mask_file"] = table["file"] + "_mask_layer_" + table["ID"]
+            
+            if "ID" in table.columns:
+                table.drop(columns=["ID"], inplace=True)
+            
+            # Update existing table
+            existing_table.set_index("mask_file", inplace=True)
+            table.set_index("mask_file", inplace=True)
+
+            # Update values
+            for col in table.columns:
+                if col not in existing_table.columns:
+                    existing_table[col] = pd.NA
+                existing_table.loc[table.index, col] = table[col]
+
+            # Clean up and save
+            existing_table.reset_index(inplace=True)
+            existing_table = existing_table.loc[:, ~existing_table.columns.str.contains('Header')]
+            existing_table.to_csv(csv_path, index=False)
+            
+            print(f"Table saved successfully to {csv_path}")
+            
+        except Exception as e:
+            print(f"Error saving table: {str(e)}")
+            
+def save_mask(img: Image.Image,
+             masks_array: np.ndarray,
+             img_name: str = "",
+             output_dir: str = ".",
+             kernel_size: int = 5,
+             num_iterations: int = 10,
+             export_masks: bool = False) -> None:
+    """Save mask layers for detected objects"""
+    output_path = Path(output_dir)
+    
+    kernel = np.ones((kernel_size, kernel_size), dtype=np.uint8)
+
+    dilated_masks = _process_masks(masks_array, kernel, num_iterations)
+
+    combined_mask = _combine_masks(dilated_masks, kernel)
+    
+    if export_masks:
+        _export_mask(combined_mask, output_path, img_name)
+
+def _process_masks(masks_array: np.ndarray,
+                  kernel: np.ndarray,
+                  num_iterations: int) -> List[np.ndarray]:
+    """Process individual masks"""
+    return [
+        binary_dilation(mask.copy(), iterations=num_iterations, structure=kernel)
+        for mask in masks_array
+    ]
+
+def _combine_masks(masks: List[np.ndarray], kernel: np.ndarray) -> np.ndarray:
+    """Combine multiple masks into one"""
+    combined = np.sum(masks, axis=0)
+    ###
+    combined = binary_erosion(combined, iterations=2, structure=kernel)
+    ###
+    return median(combined, footprint=disk(5))
+
+def _export_mask(mask: np.ndarray,
+                output_path: Path,
+                img_name: str) -> None:
+    """Export processed mask"""
+    mask_repeated = np.repeat(np.expand_dims(mask * 128, 2), 4, axis=2)
+    mask_rgba = Image.fromarray(mask_repeated.astype(np.uint8), mode="RGBA")
+    mask_rgba.save(output_path / f"{img_name}_mask_layer.png")
+
+
+# Update in utils_new.py
+
+@dataclass
+class SecondStepConfig:
+    """Configuration for second step processing"""
+    pred_output_dir: Path
+    model_path: Path = Path("models/model_classifier.pth")
+    device: str = "cuda" if torch.cuda.is_available() else "cpu"
+    processed_suffix: str = "_processed"
+
+class SecondStepProcessor:
+    def __init__(self, config: SecondStepConfig):
+        self.config = config
+        self.device = torch.device(config.device)
+        self.model = self._load_model()
+        self.transforms = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485], std=[0.229])
+        ])
+        # Add flip options with defaults
+        self.auto_flip_vertical = True
+        self.auto_flip_horizontal = True
+
+    def _load_model(self) -> Optional[torch.nn.Module]:
+        """Load the trained model"""
+        try:
+            print(f"Attempting to load model from {self.config.model_path}")
+            
+            if not self.config.model_path.exists():
+                print(f"Model file not found at {self.config.model_path}")
+                return None
+            
+            # Create model instance
+            model = MultiHeadEfficientNet()
+            
+            # Load state dict with device mapping
+            checkpoint = torch.load(self.config.model_path, map_location=self.device)
+            
+            # Handle both checkpoint dict and state dict formats
+            if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+                model.load_state_dict(checkpoint['model_state_dict'])
+                #if 'epoch' in checkpoint:
+                #    print(f"Loaded checkpoint from epoch {checkpoint['epoch']}")
+            else:
+                model.load_state_dict(checkpoint)
+            
+            # Move to device and set to eval mode
+            model = model.to(self.device)
+            model.eval()
+            
+            print("Model loaded successfully")
+            return model
+            
+        except Exception as e:
+            print(f"Error loading model: {str(e)}")
+            return None
+
+
+    def get_transformed_folder_path(self, folder: str) -> Path:
+        """Get path to the transformed folder"""
+        base_folder = folder.replace("_card", "")
+        return self.config.pred_output_dir / f"{base_folder}_transformed_card"
+
+    def get_original_path(self, folder: str, filename: str) -> Path:
+        """Get path to original image"""
+        return self.config.pred_output_dir / folder / filename
+
+    def get_transformed_path(self, folder: str, filename: str) -> Path:
+        """Get path to transformed image"""
+        transformed_folder = self.get_transformed_folder_path(folder)
+        return transformed_folder / filename
+
+    def set_flip_options(self, flip_vertical: bool, flip_horizontal: bool):
+        """Update flip options for model processing"""
+        self.auto_flip_vertical = flip_vertical
+        self.auto_flip_horizontal = flip_horizontal
+        print(f"Updated flip options - vertical: {flip_vertical}, horizontal: {flip_horizontal}")
+
+    def manual_flip(self, folder: str, filename: str, flip_type: str) -> Optional[Image.Image]:
+        """Manually flip an image vertically or horizontally"""
+        try:
+            # Get paths
+            transformed_folder = self.get_transformed_folder_path(folder)
+            transformed_path = transformed_folder / filename
+            
+            # Load image from transformed folder if it exists, otherwise from original
+            if transformed_path.exists():
+                image = Image.open(transformed_path).convert('L')
+            else:
+                image_path = self.get_original_path(folder, filename)
+                image = Image.open(image_path).convert('L')
+            
+            # Apply the requested flip
+            if flip_type == "vertical":
+                transformed = image.transpose(Image.FLIP_TOP_BOTTOM)  # For vertical flip (top-down)
+            elif flip_type == "horizontal":
+                transformed = image.transpose(Image.FLIP_LEFT_RIGHT)  # For horizontal flip (left-right)
+            else:
+                print(f"Unknown flip type: {flip_type}")
+                return None
+            
+            # Ensure transformed folder exists
+            os.makedirs(transformed_folder, exist_ok=True)
+            
+            # Save the transformed image
+            transformed.save(transformed_path)
+            
+            return transformed
+        
+           
+        except Exception as e:
+            print(f"Error in manual flip: {str(e)}")
+            return None
+        
+    def _update_flip_status(self, folder: str, filename: str, flip_type: str):
+        """Update the status in results CSV after a manual flip"""
+        try:
+            results = self.load_results(folder)
+            if results.empty:
+                return
+            
+            mask = results['filename'] == filename
+            if not any(mask):
+                return
+            
+            # Update position or rotation based on flip type
+            if flip_type == "vertical":
+                current_position = results.loc[mask, 'position'].iloc[0]
+                new_position = "TOP" if current_position == "BOTTOM" else "BOTTOM"
+                results.loc[mask, 'position'] = new_position
+            elif flip_type == "horizontal":
+                current_rotation = results.loc[mask, 'rotation'].iloc[0]
+                new_rotation = "RIGHT" if current_rotation == "LEFT" else "LEFT"
+                results.loc[mask, 'rotation'] = new_rotation
+            
+            # Save updated results
+            transformed_folder = self.get_transformed_folder_path(folder)
+            save_path = transformed_folder / 'classifications.csv'
+            results.to_csv(save_path, index=False)
+            
+        except Exception as e:
+            print(f"Error updating flip status: {str(e)}")
+
+    def process_folder(self, folder: str) -> pd.DataFrame:
+        """Process all mask images in the folder"""
+        try:
+            results = []
+            source_folder = self.config.pred_output_dir / folder
+            transformed_folder = self.get_transformed_folder_path(folder)
+            
+            # Create transformed folder
+            transformed_folder.mkdir(exist_ok=True)
+            
+            if not source_folder.exists():
+                print(f"Source folder not found: {source_folder}")
+                return pd.DataFrame()
+            
+            image_files = [f for f in os.listdir(source_folder) if f.endswith('.png')]
+            print(f"Found {len(image_files)} masks to analyze")
+            
+            for file in image_files:
+                try:
+                    image_path = source_folder / file
+                    print(f"Processing {file}...")
+                    
+                    type_pred, pos_pred, rot_pred, transformed_image = self.process_image(str(image_path))
+                    
+                    if all((type_pred, pos_pred, rot_pred)):
+                        # Save transformed image
+                        transformed_path = transformed_folder / file
+                        if transformed_image:
+                            transformed_image.save(transformed_path)
+                            print(f"Saved transformed image to {transformed_path}")
+                        
+                        results.append({
+                            'filename': file,
+                            'type': type_pred,
+                            'position': pos_pred,
+                            'rotation': rot_pred
+                        })
+                        print(f"Successfully processed {file}: Type={type_pred}, Pos={pos_pred}, Rot={rot_pred}")
+                    
+                except Exception as e:
+                    print(f"Error processing individual image {file}: {str(e)}")
+                    continue
+            
+            # Create and save results DataFrame
+            results_df = pd.DataFrame(results)
+            if not results_df.empty:
+                save_path = transformed_folder / 'classifications.csv'
+                results_df.to_csv(save_path, index=False)
+                print(f"Saved results for {len(results_df)} images")
+                
+            return results_df
+            
+        except Exception as e:
+            print(f"Error in process_folder: {str(e)}")
+            return pd.DataFrame()
+
+    def process_image(self, image_path: str) -> tuple[str, str, str, Image.Image]:
+        """Process a single image with respect to flip options"""
+        try:
+            if self.model is None:
+                print("Model not loaded")
+                return None, None, None, None
+                
+            image = Image.open(image_path).convert('L')
+            image_tensor = self.transforms(image).unsqueeze(0).to(self.device)
+            
+            with torch.no_grad():
+                pred_type, pred_position, pred_rotation = self.model(image_tensor)
+                
+            type_label = "ENT" if pred_type.item() < 0.5 else "FRAG"
+            position_label = "BOTTOM" if pred_position.item() < 0.5 else "TOP"
+            rotation_label = "LEFT" if pred_rotation.item() < 0.5 else "RIGHT"
+            
+            # Transform image according to enabled flip options and predictions
+            transformed = self._transform_image(
+                image, 
+                position_label if self.auto_flip_vertical else None,
+                rotation_label if self.auto_flip_horizontal else None
+            )
+            
+            return type_label, position_label, rotation_label, transformed
+            
+        except Exception as e:
+            print(f"Error processing image {image_path}: {str(e)}")
+            return None, None, None, None
+
+    def _transform_image(self, image: Image.Image, position: Optional[str], rotation: Optional[str]) -> Image.Image:
+        """Transform image based on position and rotation if enabled"""
+        transformed = image.copy()
+        
+        if position == "BOTTOM":
+            transformed = transformed.transpose(Image.FLIP_TOP_BOTTOM)
+        if rotation == "LEFT":
+            transformed = transformed.transpose(Image.FLIP_LEFT_RIGHT)
+            
+        return transformed
+
+    def load_results(self, folder: str) -> pd.DataFrame:
+        """Load results from the transformed folder"""
+        transformed_folder = self.get_transformed_folder_path(folder)
+        results_path = transformed_folder / 'classifications.csv'
+        
+        if results_path.exists():
+            return pd.read_csv(results_path)
+        return pd.DataFrame()
+
+    def update_result(self, folder: str, filename: str, updates: dict):
+        """Update result and transform image if needed"""
+        try:
+            results = self.load_results(folder)
+            if results.empty:
+                print("No results found to update")
+                return
+            
+            # Find the row to update
+            mask = results['filename'] == filename
+            if not any(mask):
+                print(f"No entry found for {filename}")
+                return
+                
+            # Update the values
+            for key, value in updates.items():
+                if key in results.columns:
+                    results.loc[mask, key] = value
+                    
+                    # If position or rotation changed, transform the image
+                    if key in ['position', 'rotation']:
+                        try:
+                            # Load and transform image
+                            image_path = self.get_original_path(folder, filename)
+                            image = Image.open(image_path).convert('L')
+                            
+                            row = results[mask].iloc[0]
+                            transformed = self._transform_image(
+                                image,
+                                row['position'],
+                                row['rotation']
+                            )
+                            
+                            # Save transformed image
+                            transformed_path = self.get_transformed_path(folder, filename)
+                            transformed.save(transformed_path)
+                            print(f"Saved updated transformed image to {transformed_path}")
+                            
+                        except Exception as e:
+                            print(f"Error updating transformed image: {str(e)}")
+            
+            # Save updated results
+            transformed_folder = self.get_transformed_folder_path(folder)
+            save_path = transformed_folder / 'classifications.csv'
+            results.to_csv(save_path, index=False)
+            print(f"Saved updated results to {save_path}")
+            
+        except Exception as e:
+            print(f"Error updating results: {str(e)}")
+            raise e
+        
+
+def download_model(url: str = 'https://huggingface.co/lrncrd/PyPotteryLens/resolve/main/BasicModelv8_v01.pt', 
+                  dest_path: str = 'models_vision/BasicModelv8_v01.pt') -> bool:
+    """Download model file from url to specified path"""
+    try:
+        import os
+        import requests
+        from pathlib import Path
+
+        dest_path = Path(dest_path)
+        os.makedirs(dest_path.parent, exist_ok=True)
+        
+        if dest_path.exists():
+            print('[✓] Model already exists in models_vision directory')
+            return True
+            
+        print(f'[*] Downloading model from {url}...')
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        
+        total_size = int(response.headers.get('content-length', 0))
+        block_size = 1024
+        downloaded = 0
+        
+        with open(dest_path, 'wb') as f:
+            for data in response.iter_content(block_size):
+                downloaded += len(data)
+                f.write(data)
+                if total_size > 0:
+                    percent = int((downloaded / total_size) * 100)
+                    print(f'\r[*] Download progress: {percent}% ({downloaded}/{total_size} bytes)', end='')
+                    
+        print('\n[✓] Model downloaded successfully')
+        return True
+        
+    except Exception as e:
+        print(f'\n[!] Error downloading model: {str(e)}')
+        return False
+    
+
+@dataclass
+class ExportConfig:
+    """Configuration for final export processing"""
+    pred_output_dir: Path
+    export_pdf: bool = False
+    pdf_page_size: str = 'A4'
+    scale_factor: float = 1.0
+
+class ExportProcessor:
+    """Handles final export processing with PDF export capability"""
+    
+    def __init__(self, config: ExportConfig):
+        self.config = config
+        self.pdf_exporter = None  # Will be initialized when needed
+
+    def export_results(self, folder: str, acronym: str, export_pdf: bool = False, 
+                        page_size: str = 'A4', scale_factor: float = 1.0) -> str:
+            """
+            Export processed images and metadata with optional PDF export
+            """
+            try:
+                # Setup paths
+                base_folder = folder.split("_card")[0]
+                source_folder = self.config.pred_output_dir / f"{base_folder}_transformed_card"
+                export_folder = self.config.pred_output_dir / f"{acronym}"
+                
+                if not source_folder.exists():
+                    return f"Transformed folder not found. Please process images first."
+
+                merged_annotations_path = source_folder / "merged_annotations.csv"
+                    
+                if not merged_annotations_path.exists():
+                    return "Merged annotations file not found. Please merge annotations first."
+
+                try:
+                    # Load merged_annotations
+                    metadata = pd.read_csv(merged_annotations_path)
+                    
+                    # Create the export folder
+                    os.makedirs(export_folder, exist_ok=True)
+
+                    # Create new sequential IDs and track exported image paths
+                    image_data = []  # List to store (path, new_id) tuples
+                    metadata['new_id'] = [f"{acronym}_{i+1}" for i in range(len(metadata))]
+                    metadata.set_index('new_id', inplace=True)
+                    
+                    # Copy transformed images with new names
+                    copied_count = 0
+                    for idx, row in metadata.iterrows():
+                        try:
+                            source_image = source_folder / f"{row['filename']}.png"
+                            if source_image.exists():
+                                dest_image = export_folder / f"{idx}.png"
+                                shutil.copy2(source_image, dest_image)
+                                image_data.append((str(dest_image), idx))  # Store path and new_id
+                                copied_count += 1
+                        except Exception as e:
+                            print(f"Error copying image {idx}: {str(e)}")
+                            continue
+
+                    # Clean up and save metadata
+                    metadata = metadata.drop('filename', axis=1, errors='ignore')
+                    metadata.to_csv(export_folder / f"{acronym}_metadata.csv")
+                    
+                    # Generate PDF if requested
+                    pdf_message = ""
+                    if export_pdf and image_data:
+                        pdf_path = export_folder / f"{acronym}_catalog.pdf"
+                        pdf_exporter = PDFExporter(
+                            page_size=page_size,
+                            scale_factor=scale_factor
+                        )
+                        if pdf_exporter.generate_pdf(str(pdf_path), image_data):
+                            pdf_message = f" PDF catalog generated at {pdf_path}."
+                        else:
+                            pdf_message = " Warning: PDF generation failed."
+
+                    if copied_count == 0:
+                        return "Warning: No images were exported."
+                        
+                    return (f"Export complete: {copied_count} images exported to {export_folder} "
+                        f"with prefix '{acronym}_'.{pdf_message}")
+                    
+                except Exception as e:
+                    print(f"Detailed error: {str(e)}")
+                    return f"Error processing data: {str(e)}"
+                
+            except Exception as e:
+                print(f"Export error: {str(e)}")
+                return f"Error during export: {str(e)}"
+        
+
+
+from typing import List, Dict, Tuple
+from PIL import Image
+from reportlab.lib import pagesizes
+from reportlab.pdfgen import canvas
+import numpy as np
+
+class LayoutNode:
+    """Tree node representing available space in the layout"""
+    def __init__(self, x: float, y: float, width: float, height: float):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.used = False
+        self.down = None
+        self.right = None
+        self.image_info = None
+
+    def fits(self, width: float, height: float) -> bool:
+        """Check if an image fits in this node"""
+        return (not self.used and 
+                width <= self.width and 
+                height <= self.height)
+
+class PDFLayoutOptimizer:
+    """Optimizes PDF layout using binary tree bin packing algorithm"""
+    
+    def __init__(self, page_width: float, page_height: float, margin: float = 50):
+        self.page_width = page_width - (2 * margin)
+        self.page_height = page_height - (2 * margin)
+        self.margin = margin
+        self.min_padding = 10  # Minimum padding between images
+        self.label_height = 20  # Height reserved for labels
+
+    def find_node(self, root: LayoutNode, width: float, height: float) -> LayoutNode:
+        """Find a node that can accommodate the given dimensions"""
+        if not root:
+            return None
+            
+        if root.used:
+            # Try finding space in existing splits
+            node = self.find_node(root.right, width, height)
+            if not node:
+                node = self.find_node(root.down, width, height)
+            return node
+            
+        elif root.fits(width, height):
+            return root
+            
+        return None
+
+    def split_node(self, node: LayoutNode, width: float, height: float) -> None:
+        """Split a node to accommodate an image and create remaining space"""
+        node.used = True
+        
+        # Create space below current image
+        node.down = LayoutNode(
+            node.x,
+            node.y + height + self.min_padding,
+            node.width,
+            node.height - height - self.min_padding
+        )
+        
+        # Create space to the right of current image
+        node.right = LayoutNode(
+            node.x + width + self.min_padding,
+            node.y,
+            node.width - width - self.min_padding,
+            height
+        )
+
+    def optimize_page_layout(self, images: List[Dict]) -> List[List[Dict]]:
+        """Optimize layout across multiple pages using bin packing"""
+        pages = []
+        current_images = images.copy()
+        
+        while current_images:
+            # Initialize new page
+            root = LayoutNode(self.margin, self.margin, self.page_width, self.page_height)
+            page_layout = []
+            remaining_images = []
+            
+            for img in current_images:
+                # Account for label height in total height
+                total_height = img['height'] + self.label_height + self.min_padding
+                
+                # Find space for image
+                node = self.find_node(root, img['width'], total_height)
+                
+                if node:
+                    # Place image and split remaining space
+                    self.split_node(node, img['width'], total_height)
+                    node.image_info = {
+                        'path': img['path'],
+                        'new_id': img['new_id'],
+                        'x': node.x,
+                        'y': node.y,
+                        'width': img['width'],
+                        'height': img['height'],
+                        'label_y': node.y + img['height'] + 5
+                    }
+                    page_layout.append(node.image_info)
+                else:
+                    remaining_images.append(img)
+            
+            pages.append(page_layout)
+            current_images = remaining_images
+            
+        return pages
+
+    def pack_images(self, image_paths: List[tuple], scale_factor: float = 1.0) -> List[List[Dict]]:
+        """Process images and optimize their layout"""
+        # Get image dimensions and create scaled info
+        ######
+        px_to_pt = 72.0 / 300
+        ###### 
+        image_info = []
+        
+        for img_path, new_id in image_paths:
+            with Image.open(img_path) as img:
+                w, h = img.size
+
+
+                ############
+                # Convert pixel dimensions to PDF points
+                w = w * px_to_pt
+                h = h * px_to_pt
+                ###########
+
+
+                # Scale dimensions
+                scaled_w = w * scale_factor
+                scaled_h = h * scale_factor
+
+                
+                # Ensure scaled image fits on page
+                if scaled_w > self.page_width:
+                    scale = self.page_width / scaled_w
+                    scaled_w *= scale
+                    scaled_h *= scale
+                
+                if scaled_h > (self.page_height - self.label_height):
+                    scale = (self.page_height - self.label_height) / scaled_h
+                    scaled_w *= scale
+                    scaled_h *= scale
+                
+                image_info.append({
+                    'path': img_path,
+                    'new_id': new_id,
+                    'width': scaled_w,
+                    'height': scaled_h,
+                    'area': scaled_w * scaled_h
+                })
+        
+        # Sort images by area for better packing
+        image_info.sort(key=lambda x: x['area'], reverse=True)
+        
+        # Optimize layout
+        return self.optimize_page_layout(image_info)
+
+class PDFExporter:
+    """Handles PDF generation with optimized layout"""
+    
+    PAGE_SIZES = {
+        'A4': pagesizes.A4,
+        'A3': pagesizes.A3,
+        'A5': pagesizes.A5,
+        'LETTER': pagesizes.LETTER,
+        'LEGAL': pagesizes.LEGAL
+    }
+    
+    def __init__(self, page_size: str = 'A4', margin: int = 50, scale_factor: float = 1.0):
+
+        self.page_size = self.PAGE_SIZES.get(page_size, pagesizes.A4)
+        self.margin = margin
+        self.scale_factor = scale_factor
+        self.optimizer = PDFLayoutOptimizer(
+            page_width=self.page_size[0],
+            page_height=self.page_size[1],
+            margin=margin
+        )
+        
+      
+
+    def generate_pdf(self, output_path: str, image_data: List[tuple]) -> bool:
+        """Generate PDF with optimized image layout"""
+        try:
+            # Create PDF canvas
+            c = canvas.Canvas(output_path, pagesize=self.page_size)
+            
+            # Set up font for labels
+            c.setFont("Helvetica", 10)
+            
+            # Get optimized layout
+            pages = self.optimizer.pack_images(image_data, self.scale_factor)
+            
+            # Generate each page
+            for page in pages:
+                for img_info in page:
+                    # Draw image
+                    c.drawImage(
+                        img_info['path'],
+                        img_info['x'],
+                        img_info['y'],
+                        width=img_info['width'],
+                        height=img_info['height'],
+                        preserveAspectRatio=True
+                    )
+                    
+                    # Draw centered label
+                    text = img_info['new_id']
+                    text_width = c.stringWidth(text, "Helvetica", 10)
+                    center_x = img_info['x'] + (img_info['width'] / 2) - (text_width / 2)
+                    
+                    c.drawString(
+                        center_x,
+                        img_info['label_y'],
+                        text
+                    )
+                
+                c.showPage()
+            
+            c.save()
+            return True
+            
+        except Exception as e:
+            print(f"Error generating PDF: {str(e)}")
+            return False

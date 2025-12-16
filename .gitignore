@@ -220,6 +220,7 @@ models/
 *.xlsx
 *.ipynb
 
-apps/
+apps/PyPotteryInk/
+apps/PyPotteryLayout/
 BK/
 pypottery_env/
