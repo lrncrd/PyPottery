@@ -2434,9 +2434,60 @@ def export_project_results(project_id):
                 # Re-save metadata with updated paths
                 final_df.to_csv(metadata_temp_path, index=False)
 
-                # Add metadata
+                # Create Excel file with clickable hyperlinks
+                excel_temp_path = Path(temp_dir) / f"{acronym}_metadata.xlsx"
+                try:
+                    from openpyxl import Workbook
+                    from openpyxl.styles import Font
+
+                    wb = Workbook()
+                    ws = wb.active
+                    ws.title = "Metadata"
+
+                    # Write header
+                    for col_idx, col_name in enumerate(final_df.columns, 1):
+                        ws.cell(row=1, column=col_idx, value=col_name)
+                        ws.cell(row=1, column=col_idx).font = Font(bold=True)
+
+                    # Write data with hyperlinks for image_path
+                    image_path_col = list(final_df.columns).index('image_path') + 1 if 'image_path' in final_df.columns else None
+
+                    for row_idx, row in enumerate(final_df.itertuples(index=False), 2):
+                        for col_idx, value in enumerate(row, 1):
+                            cell = ws.cell(row=row_idx, column=col_idx)
+
+                            # Make image_path a clickable hyperlink
+                            if col_idx == image_path_col and value and str(value).strip():
+                                # Relative path works when Excel is in same folder as extracted images
+                                cell.value = str(value)
+                                cell.hyperlink = str(value)
+                                cell.font = Font(color="0000FF", underline="single")
+                            else:
+                                cell.value = value if not pd.isna(value) else ""
+
+                    # Auto-adjust column widths
+                    for col in ws.columns:
+                        max_length = 0
+                        column = col[0].column_letter
+                        for cell in col:
+                            try:
+                                if cell.value:
+                                    max_length = max(max_length, len(str(cell.value)))
+                            except:
+                                pass
+                        ws.column_dimensions[column].width = min(max_length + 2, 50)
+
+                    wb.save(excel_temp_path)
+                    print(f"Created Excel file with hyperlinks")
+                except Exception as excel_err:
+                    print(f"Warning: Could not create Excel file: {excel_err}")
+                    excel_temp_path = None
+
+                # Add metadata files to ZIP
                 zipf.write(metadata_temp_path, f"{acronym}_metadata.csv")
-                print(f"Added metadata CSV")
+                if excel_temp_path and excel_temp_path.exists():
+                    zipf.write(excel_temp_path, f"{acronym}_metadata.xlsx")
+                print(f"Added metadata files")
         
             # Send the ZIP file
             return send_file(
