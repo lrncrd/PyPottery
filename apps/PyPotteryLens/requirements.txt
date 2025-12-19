@@ -11,6 +11,7 @@ reportlab
 pandas
 numpy
 scipy
+easyocr>=1.7.0
 # PyTorch with CUDA support (if available, otherwise CPU)
 --extra-index-url https://download.pytorch.org/whl/cu126
 torch

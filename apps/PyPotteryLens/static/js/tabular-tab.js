@@ -70,15 +70,35 @@ async function extractMetadata() {
         window.PyPotteryUtils.showStatus('tabular-status', 'No project selected', 'error');
         return;
     }
+
+    // Check if there's a reference PDF for period extraction
+    const referencePdfInput = document.getElementById('reference-pdf-path');
+    const referencePdfPath = referencePdfInput ? referencePdfInput.value.trim() : '';
+
     const btn = document.getElementById('extract-metadata-btn');
     const originalText = btn.innerHTML;
     try {
         btn.disabled = true;
         btn.innerHTML = '⏳ Extracting...';
-        window.PyPotteryUtils.showStatus('tabular-status', 'Extracting metadata from PDF (may take a while for OCR)...', 'info');
+
+        let statusMsg = 'Extracting metadata from PDF (may take a while for OCR)...';
+        if (referencePdfPath) {
+            statusMsg += ' Also extracting period info from reference PDF.';
+        }
+        window.PyPotteryUtils.showStatus('tabular-status', statusMsg, 'info');
+
+        const requestBody = {};
+        if (referencePdfPath) {
+            requestBody.reference_pdf_path = referencePdfPath;
+        }
+
         const response = await window.PyPotteryUtils.apiRequest(
             `/api/projects/${tabularState.currentProject.project_id}/metadata/extract`,
-            { method: 'POST' }
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            }
         );
         if (response.success) {
             window.PyPotteryUtils.showStatus('tabular-status', response.message || 'Metadata extracted!', 'success');

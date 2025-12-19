@@ -647,13 +647,66 @@ def extract_project_metadata(project_id):
         if not project_metadata:
             return jsonify({'error': 'Project not found', 'success': False}), 404
 
+        data = request.json or {}
+        reference_pdf_path = data.get('reference_pdf_path')  # Optional: PDF with period info
+
         project_path = project_manager.get_project_path(project_id)
         config = MetadataExtractionConfig(project_path=project_path)
         extractor = MetadataExtractor(config)
 
-        result = extractor.process_project(project_id, project_manager)
+        # Extract period mappings from reference PDF if provided
+        period_mappings = {}
+        if reference_pdf_path:
+            ref_path = Path(reference_pdf_path)
+            if ref_path.exists():
+                print(f"Extracting period mappings from: {ref_path}")
+                period_mappings = extractor.extract_period_mappings_from_pdf(ref_path)
+
+        result = extractor.process_project(project_id, project_manager, period_mappings)
 
         return jsonify({'message': result, 'success': True})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'success': False}), 500
+
+
+@app.route('/api/projects/<project_id>/metadata/extract-periods', methods=['POST'])
+def extract_period_mappings(project_id):
+    """Extract pottery->period mappings from a reference PDF"""
+    try:
+        project_metadata = project_manager.get_project(project_id)
+        if not project_metadata:
+            return jsonify({'error': 'Project not found', 'success': False}), 404
+
+        data = request.json
+        reference_pdf_path = data.get('reference_pdf_path')
+
+        if not reference_pdf_path:
+            return jsonify({'error': 'reference_pdf_path is required', 'success': False}), 400
+
+        ref_path = Path(reference_pdf_path)
+        if not ref_path.exists():
+            return jsonify({'error': f'PDF not found: {reference_pdf_path}', 'success': False}), 404
+
+        project_path = project_manager.get_project_path(project_id)
+        config = MetadataExtractionConfig(project_path=project_path)
+        extractor = MetadataExtractor(config)
+
+        mappings = extractor.extract_period_mappings_from_pdf(ref_path)
+
+        # Save mappings to project
+        mappings_path = project_path / 'period_mappings.json'
+        import json
+        with open(mappings_path, 'w', encoding='utf-8') as f:
+            json.dump(mappings, f, indent=2, ensure_ascii=False)
+
+        return jsonify({
+            'message': f'Extracted {len(mappings)} period mappings',
+            'mappings': mappings,
+            'success': True
+        })
 
     except Exception as e:
         import traceback

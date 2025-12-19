@@ -918,11 +918,115 @@ class MetadataExtractor:
         full_text = " ".join([block["text"] for block in text_blocks])
         return self._extract_figure_number(full_text)
 
+    def extract_period_mappings_from_pdf(self, pdf_path: Path) -> dict:
+        """
+        Extract pottery_id -> period mappings from a reference PDF (e.g., chapters with descriptions).
+        Returns a dict like: {"SU53,2": "Età del Bronzo", "Tav. XLVIII.11": "periodo Wadi Suq", ...}
+        """
+        doc = fitz.open(str(pdf_path))
+        mappings = {}
+
+        # Pattern per i periodi cronologici
+        period_patterns = [
+            (r"(?:Prima\s+)?Età\s+del\s+Bronzo", "Età del Bronzo"),
+            (r"(?:Prima\s+)?Età\s+del\s+Ferro", "Età del Ferro"),
+            (r"periodo\s+Wadi\s+Suq", "Wadi Suq"),
+            (r"Wadi\s+Suq", "Wadi Suq"),
+            (r"periodo\s+islamico", "Periodo Islamico"),
+            (r"Bronze\s+Age", "Età del Bronzo"),
+            (r"Iron\s+Age", "Età del Ferro"),
+            (r"III\s+millennio", "III millennio"),
+            (r"II\s+millennio", "II millennio"),
+            (r"periodo\s+(?:IId|IIe|IIf|IIc)", "Età del Bronzo"),  # Fasi di Hili 8
+        ]
+
+        # Pattern per ID ceramica con riferimento a tavola
+        # Es: "SU53,2 - cfr. Tav. XXII", "SU 55,1 - Tav. XXIV", "(Tav. XLVIII.11,12,13)"
+        pottery_tav_pattern = r'(SU\s*\d+[,.\s]*\d*)\s*[-–]\s*(?:cfr\.\s*)?(?:Tav\.|Tavola)\s*([IVXLCDM\d]+)'
+        tav_items_pattern = r'(?:Tav\.|Tavola|Tavv\.)\s*([IVXLCDM\d]+)\.(\d+(?:,\s*\d+)*)'
+
+        for page_num in range(len(doc)):
+            page = doc[page_num]
+            text = page.get_text()
+
+            # Trova il periodo dominante nel contesto della pagina
+            current_period = None
+            for pattern, period_name in period_patterns:
+                if self.re.search(pattern, text, self.re.IGNORECASE):
+                    current_period = period_name
+                    break
+
+            if not current_period:
+                continue
+
+            # Cerca riferimenti a ceramica con tavole
+            # Pattern: SU53,2 - cfr. Tav. XXII
+            for match in self.re.finditer(pottery_tav_pattern, text, self.re.IGNORECASE):
+                su_id = match.group(1).replace(' ', '')
+                tav_num = match.group(2)
+                key = f"{su_id}"
+                if key not in mappings:
+                    mappings[key] = current_period
+                    print(f"  Found: {key} -> {current_period}")
+
+            # Pattern: Tav. XLVIII.11,12,13
+            for match in self.re.finditer(tav_items_pattern, text, self.re.IGNORECASE):
+                tav_num = match.group(1)
+                items = match.group(2).split(',')
+                for item in items:
+                    item = item.strip()
+                    key = f"Tav.{tav_num}.{item}"
+                    if key not in mappings:
+                        mappings[key] = current_period
+                        print(f"  Found: {key} -> {current_period}")
+
+            # Cerca anche pattern più semplici nel contesto di periodi
+            # Es: menzioni di Tav. XXII nel contesto di "Età del Bronzo"
+            simple_tav = self.re.findall(r'(?:Tav\.|Tavola)\s*([IVXLCDM]+)', text, self.re.IGNORECASE)
+            for tav in simple_tav:
+                key = f"Tav.{tav}"
+                if key not in mappings:
+                    mappings[key] = current_period
+
+        doc.close()
+        print(f"Extracted {len(mappings)} pottery->period mappings")
+        return mappings
+
+    def lookup_period(self, pottery_id: str, figure_num: str, period_mappings: dict) -> str:
+        """Look up the period for a pottery item using the mappings"""
+        if not period_mappings:
+            return ""
+
+        # Try direct lookup with pottery_id
+        if pottery_id:
+            for pid in pottery_id.split(', '):
+                pid_clean = pid.strip().upper()
+                for key, period in period_mappings.items():
+                    if pid_clean in key.upper() or key.upper() in pid_clean:
+                        return period
+
+        # Try lookup with figure/tavola number
+        if figure_num:
+            fig_clean = figure_num.strip()
+            for key, period in period_mappings.items():
+                if fig_clean.upper() in key.upper() or key.upper() in fig_clean.upper():
+                    return period
+
+            # Try just the roman numeral
+            roman_match = self.re.search(r'([IVXLCDM]+)', fig_clean)
+            if roman_match:
+                roman = roman_match.group(1)
+                for key, period in period_mappings.items():
+                    if roman in key:
+                        return period
+
+        return ""
+
     def extract_page_number_from_filename(self, filename: str) -> int:
         match = self.re.search(r'page_(\d+)', filename)
         return int(match.group(1)) if match else -1
 
-    def process_project(self, project_id: str, project_manager) -> str:
+    def process_project(self, project_id: str, project_manager, period_mappings: dict = None) -> str:
         cards_path = project_manager.get_project_path(project_id, 'cards')
         images_path = project_manager.get_project_path(project_id, 'images')
         pdf_source_path = project_manager.get_project_path(project_id, 'pdf_source')
@@ -955,7 +1059,11 @@ class MetadataExtractor:
                     pdf_type = 'scanned'
 
         unique_pages = df_info['file'].unique()
-        for col in ['page_num', 'caption_text', 'figure_num', 'pottery_id']:
+        # Add period column if we have period mappings
+        metadata_cols = ['page_num', 'caption_text', 'figure_num', 'pottery_id']
+        if period_mappings:
+            metadata_cols.append('period')
+        for col in metadata_cols:
             if col not in df_info.columns:
                 df_info[col] = ""
 
@@ -1015,6 +1123,14 @@ class MetadataExtractor:
                     df_info.loc[mask, 'pottery_id'] = metadata['pottery_ids']
                     # Add filename column for export compatibility
                     df_info.loc[mask, 'filename'] = mask_file
+
+                    # Look up period from mappings if available
+                    if period_mappings:
+                        period = self.lookup_period(metadata['pottery_ids'], figure_num, period_mappings)
+                        if period:
+                            df_info.loc[mask, 'period'] = period
+                            print(f"    Found period: {period} for {mask_file}")
+
                     processed_count += 1
 
                     if metadata['pottery_ids']:
