@@ -2196,12 +2196,12 @@ def export_project_results(project_id):
         combined_csv_path = project_path / f"{project_id}_mask_info.csv"
         cards_mask_info_path = cards_path / 'mask_info.csv'
 
-        # Prefer cards/mask_info.csv if it has metadata columns (page_num, figure_num, pottery_id)
+        # Prefer cards/mask_info.csv if it has metadata columns (page_num, figure_num, pottery_id, period)
         # This ensures metadata extraction results are used even if user didn't export tabular CSV
         if cards_mask_info_path.exists():
             try:
                 cards_df = pd.read_csv(cards_mask_info_path)
-                has_metadata = any(col in cards_df.columns for col in ['page_num', 'figure_num', 'pottery_id'])
+                has_metadata = any(col in cards_df.columns for col in ['page_num', 'figure_num', 'pottery_id', 'period'])
                 if has_metadata:
                     print(f"Using cards/mask_info.csv with metadata columns: {list(cards_df.columns)}")
                     # Copy to project root for consistency
@@ -2368,10 +2368,9 @@ def export_project_results(project_id):
             # Create final metadata DataFrame
             final_df = pd.DataFrame(final_metadata)
             
-            # Reorder columns: id first, then type (if present), then others alphabetically
-            cols = ['id']
-            if 'type' in final_df.columns:
-                cols.append('type')
+            # Reorder columns: important ones first, then others alphabetically
+            priority_cols = ['id', 'type', 'period', 'figure_num', 'page_num', 'pottery_id', 'folder', 'image_path']
+            cols = [c for c in priority_cols if c in final_df.columns]
             # Add remaining columns alphabetically
             remaining = sorted([col for col in final_df.columns if col not in cols])
             cols.extend(remaining)
@@ -2426,6 +2425,9 @@ def export_project_results(project_id):
                     final_df.loc[idx-1, 'id'] = new_name
                     if subfolder:
                         final_df.loc[idx-1, 'folder'] = subfolder
+
+                    # Add image path (relative path in ZIP - works after extraction)
+                    final_df.loc[idx-1, 'image_path'] = zip_path_in_archive
 
                 # Re-save metadata with updated paths
                 final_df.to_csv(metadata_temp_path, index=False)
