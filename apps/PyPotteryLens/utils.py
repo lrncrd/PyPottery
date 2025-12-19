@@ -731,9 +731,23 @@ class MetadataExtractor:
         ]
         # Pattern per numeri isolati (applicato solo a testo corto)
         self.standalone_number_pattern = r'^(\d{1,3}[a-z]?)$'
-        # Parole da escludere (falsi positivi comuni)
-        self.excluded_words = {'AL', 'IN', 'ON', 'AT', 'TO', 'OF', 'AN', 'AS', 'BY', 'OR', 'IF',
-                               'IT', 'IS', 'NO', 'SO', 'UP', 'WE', 'BE', 'HE', 'ME', 'DO', 'GO'}
+        # Parole da escludere (falsi positivi comuni in EN, IT, FR, DE, ES)
+        self.excluded_words = {
+            # English
+            'AL', 'IN', 'ON', 'AT', 'TO', 'OF', 'AN', 'AS', 'BY', 'OR', 'IF',
+            'IT', 'IS', 'NO', 'SO', 'UP', 'WE', 'BE', 'HE', 'ME', 'DO', 'GO',
+            # Italian
+            'DI', 'DA', 'LA', 'LE', 'IL', 'LO', 'UN', 'DE', 'ET', 'SI', 'NE',
+            'SE', 'MA', 'PER', 'CON', 'CHE', 'NON', 'ERA', 'DAL', 'DEL', 'TRA',
+            # French
+            'LE', 'LA', 'LES', 'DU', 'UN', 'UNE', 'ET', 'EN', 'AU', 'OU', 'SUR',
+            # German
+            'IM', 'AM', 'UM', 'ZU', 'AB', 'AUS', 'BEI', 'MIT', 'UND', 'DER', 'DIE',
+            # Spanish
+            'EL', 'LA', 'LOS', 'LAS', 'DEL', 'POR', 'CON', 'SIN', 'UNA', 'UNO',
+            # Common abbreviations that are NOT pottery IDs
+            'CM', 'MM', 'KG', 'GR', 'LT', 'MT', 'PZ', 'NR',
+        }
 
     @property
     def ocr_reader(self):
@@ -834,34 +848,44 @@ class MetadataExtractor:
         position_priority = {"inside": 0, "below": 1, "above": 2, "right": 3, "left": 4}
         nearby_texts.sort(key=lambda x: (position_priority.get(x["position"], 5), x["distance"]))
 
-        # Combine texts
+        # Combine texts for caption (use multiple blocks)
         all_texts = inside_texts + nearby_texts
-        caption_parts = [t["text"] for t in all_texts[:5]]  # Get more text blocks
+        caption_parts = [t["text"] for t in all_texts[:3]]  # Limit to 3 blocks for caption
         caption_text = " ".join(caption_parts).strip()
 
-        # Also extract IDs from inside texts separately (pottery labels)
-        # Check each inside text block individually for standalone numbers
+        # For pottery ID, only use the CLOSEST text block to avoid mixing IDs from different items
         all_ids = []
+
+        # First priority: text INSIDE the pottery bbox (labels directly on the pottery)
         for inside_block in inside_texts:
             block_text = inside_block["text"].strip()
-            # Check for standalone number (pottery label)
-            if len(block_text) <= 5:
-                standalone_match = self.re.match(self.standalone_number_pattern, block_text)
-                if standalone_match:
-                    all_ids.append(standalone_match.group(1))
-            # Also check for other ID patterns
-            block_ids = self._extract_pottery_ids(block_text)
-            if block_ids:
-                all_ids.extend(block_ids.split(", "))
+            if len(block_text) <= 10:  # Short text is likely an ID
+                block_ids = self._extract_pottery_ids(block_text)
+                if block_ids:
+                    # Take only the first ID found
+                    first_id = block_ids.split(", ")[0]
+                    all_ids.append(first_id)
+                    break  # Stop after finding first ID inside
 
-        inside_text = " ".join([t["text"] for t in inside_texts])
+        # Second priority: closest text block BELOW (usually the label)
+        if not all_ids and nearby_texts:
+            # Get only the closest text block
+            closest = nearby_texts[0]
+            if closest["distance"] < 50:  # Only if very close
+                block_text = closest["text"].strip()
+                if len(block_text) <= 15:  # Short text is likely an ID
+                    block_ids = self._extract_pottery_ids(block_text)
+                    if block_ids:
+                        first_id = block_ids.split(", ")[0]
+                        all_ids.append(first_id)
 
         # Extract figure number from caption
         figure_num = self._extract_figure_number(caption_text)
 
-        # Extract pottery IDs from caption as well
-        pottery_ids_caption = self._extract_pottery_ids(caption_text)
-        if pottery_ids_caption:
+        # DON'T extract pottery IDs from full caption - too many false positives
+        # Only use IDs from inside/closest blocks above
+        dummy = None  # placeholder to maintain code structure
+        if dummy:
             all_ids.extend(pottery_ids_caption.split(", "))
 
         # Remove duplicates preserving order
@@ -1063,10 +1087,8 @@ class MetadataExtractor:
                     pdf_type = 'scanned'
 
         unique_pages = df_info['file'].unique()
-        # Add period column if we have period mappings
-        metadata_cols = ['page_num', 'caption_text', 'figure_num', 'pottery_id']
-        if period_mappings:
-            metadata_cols.append('period')
+        # Always include period column (will be empty if no reference PDF provided)
+        metadata_cols = ['page_num', 'caption_text', 'figure_num', 'pottery_id', 'period']
         for col in metadata_cols:
             if col not in df_info.columns:
                 df_info[col] = ""
