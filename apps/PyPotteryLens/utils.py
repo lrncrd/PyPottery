@@ -714,25 +714,26 @@ class MetadataExtractor:
             r'[Pp]rancha\s*[IVXLCDM\d]+[a-zA-Z]?',     # Prancha II
             r'[Ee]stampa\s*[IVXLCDM\d]+[a-zA-Z]?',     # Estampa II
         ]
-        # Pattern per ID ceramica - MOLTO FLESSIBILI
+        # Pattern per ID ceramica - con filtri per evitare falsi positivi
         self.pottery_id_patterns = [
-            # Codici con trattino e spazi opzionali: GJ-05, M5 - 1, GRO - 12, ABC-123
-            r'\b([A-Z]{1,4}\d{0,2})\s*[-–—]\s*(\d{1,3})\b',  # M5 - 1, GRO - 12, A - 5
-            r'\b([A-Z]{2,5})\s*[-–—]\s*(\d{1,3})\b',          # GRO - 1, ABCD - 12
-            r'\b([A-Z]{2,4}\d{1,2})\b',                        # GJ05, M5, ABC12 (senza trattino)
+            # Pattern principale: SU + numero (es. SU 53, SU53,1)
+            r'\b(SU\s*\d+(?:[,\.]\d+)?)\b',                   # SU 53, SU53,1, SU 53.2
+            # Codici con trattino e spazi opzionali: GJ-05, M5 - 1, GRO - 12
+            r'\b([A-Z]{2,4}\d{0,2})\s*[-–—]\s*(\d{1,3})\b',   # M5 - 1, GRO - 12
+            r'\b([A-Z]{3,5})\s*[-–—]\s*(\d{1,3})\b',          # GRO - 1, ABCD - 12 (min 3 lettere)
             r'\b([A-Z]{2,4}-\d{1,3}[a-z]?)\b',                # GJ-05, JM-01a
-            # Codici comuni
-            r'\b(GP|AGJ|VBC|GJ|JM|PJ|BM|GRO|TSG|DSP)\b',      # Codici noti
+            # Codici noti specifici (evita falsi positivi come AL, IN, etc.)
+            r'\b(GP|AGJ|VBC|GRO|TSG|DSP)\b',                   # Codici noti (almeno 2-3 caratteri specifici)
             # Numerazione classica
-            r'(?:n[°\.\s]|no\.?\s*|nr\.?\s*)(\d+)',           # n° 123, n. 45
-            r'(?:Cat\.?\s*|Catalogue\s*|Katalog\s*)(\d+[a-zA-Z]?)',  # Cat. 67
-            r'(?:Inv\.?\s*|Inventory\s*|Inventar\s*)(\d+[a-zA-Z\-]*)', # Inv. 89
-            r'\((\d{1,3})\)',                                  # (1), (12)
-            # Numeri con lettere: 1a, 2b, 12c
-            r'\b(\d{1,3}[a-z])\b',                             # 1a, 2b, 12c
+            r'(?:n[°\.]\s*)(\d+)',                             # n° 123, n. 45 (più restrittivo)
+            r'(?:Cat\.\s*)(\d+[a-zA-Z]?)',                     # Cat. 67
+            r'(?:Inv\.\s*)(\d+[a-zA-Z\-]*)',                   # Inv. 89
         ]
         # Pattern per numeri isolati (applicato solo a testo corto)
         self.standalone_number_pattern = r'^(\d{1,3}[a-z]?)$'
+        # Parole da escludere (falsi positivi comuni)
+        self.excluded_words = {'AL', 'IN', 'ON', 'AT', 'TO', 'OF', 'AN', 'AS', 'BY', 'OR', 'IF',
+                               'IT', 'IS', 'NO', 'SO', 'UP', 'WE', 'BE', 'HE', 'ME', 'DO', 'GO'}
 
     @property
     def ocr_reader(self):
@@ -903,10 +904,13 @@ class MetadataExtractor:
             if standalone_match:
                 ids.append(standalone_match.group(1))
 
+        # Filter out excluded words (common false positives)
+        filtered_ids = [id_val for id_val in ids if id_val not in self.excluded_words]
+
         # Remove duplicates preserving order
         seen = set()
         unique_ids = []
-        for id_val in ids:
+        for id_val in filtered_ids:
             if id_val not in seen:
                 seen.add(id_val)
                 unique_ids.append(id_val)

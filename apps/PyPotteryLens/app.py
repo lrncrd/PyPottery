@@ -2402,11 +2402,13 @@ def export_project_results(project_id):
                         elif page_num and str(page_num).strip() and str(page_num) != '-1':
                             subfolder = f"page_{page_num}"
 
-                        # Add pottery_id to filename if available
+                        # Add pottery_id to filename if available (check for NaN)
                         pottery_id = row.get('pottery_id', '')
-                        if pottery_id and str(pottery_id).strip():
-                            # Clean pottery_id for filename
-                            pottery_id_clean = str(pottery_id).strip().replace(', ', '_').replace(' ', '').replace('/', '-')
+                        if pottery_id and str(pottery_id).strip() and str(pottery_id).lower() not in ['nan', 'none', '']:
+                            # Clean pottery_id for filename - take only first ID if multiple
+                            pottery_id_str = str(pottery_id).strip()
+                            first_id = pottery_id_str.split(',')[0].strip() if ',' in pottery_id_str else pottery_id_str
+                            pottery_id_clean = first_id.replace(' ', '_').replace('/', '-')
                             pottery_id_suffix = f"_{pottery_id_clean}"
 
                     # Build new filename
