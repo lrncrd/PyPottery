@@ -20,6 +20,7 @@ from launcher.hardware_detector import detect_hardware, get_hardware_summary, Ha
 from launcher.environment_manager import EnvironmentManager, InstallProgress
 from launcher.app_manager import AppManager, AppInfo, DownloadProgress
 from launcher.update_checker import UpdateChecker, UpdateInfo
+from launcher.updater import LauncherUpdater
 
 # Try to import PIL for image loading
 try:
@@ -28,10 +29,44 @@ try:
         # The launcher will fall back to using emojis defined in app config
         HAS_PIL = False
     else:
-        from PIL import Image
+        from PIL import Image, ImageTk
         HAS_PIL = True
 except ImportError:
     HAS_PIL = False
+
+
+class Theme:
+    """Application visual theme configuration"""
+    # Colors are (Light Mode, Dark Mode)
+    
+    # Backgrounds
+    BG_MAIN = ("#f8fafc", "#0f172a")      # Window background
+    BG_CARD = ("#ffffff", "#1e293b")      # Card/Panel background
+    BG_HOVER = ("#f1f5f9", "#334155")     # Hover states
+    BG_HEADER = ("#f1f5f9", "#1e293b")    # Header backgrounds
+    
+    # Text
+    TEXT_MAIN = ("#1f2937", "#f8fafc")    # Primary text
+    TEXT_DIM = ("#6b7280", "#94a3b8")     # Secondary text
+    
+    # Borders
+    BORDER = ("#e5e7eb", "#334155")
+    
+    # Brand/Status
+    PRIMARY = ("#667eea", "#6366f1")
+    PRIMARY_HOVER = ("#5a6fd6", "#4f46e5")
+    
+    SUCCESS = ("#10b981", "#22c55e")
+    SUCCESS_HOVER = ("#059669", "#16a34a")
+    
+    DANGER = ("#ef4444", "#ef4444")
+    DANGER_HOVER = ("#dc2626", "#b91c1c")
+    
+    WARNING = ("#f59e0b", "#f59e0b")
+    
+    # Console
+    CONSOLE_BG = ("#1e1e2e", "#020617")
+    CONSOLE_FG = ("#cdd6f4", "#e2e8f0")
 
 
 def load_app_logo(logo_path: Optional[str], base_path: Path, size: tuple = (48, 48)) -> Optional[ctk.CTkImage]:
@@ -71,8 +106,8 @@ class DownloadDialog(ctk.CTkToplevel):
         y = master.winfo_y() + (master.winfo_height() - 210) // 2
         self.geometry(f"+{x}+{y}")
         
-        # Content - Light theme
-        self.configure(fg_color="#f8fafc")
+        # Content - Adaptive theme
+        self.configure(fg_color=Theme.BG_MAIN)
         
         # Header with icon
         header_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -91,7 +126,7 @@ class DownloadDialog(ctk.CTkToplevel):
             title_frame,
             text=f"Installing {app_name}",
             font=("Segoe UI", 17, "bold"),
-            text_color="#1f2937",
+            text_color=Theme.TEXT_MAIN,
             anchor="w"
         ).pack(fill="x")
         
@@ -99,7 +134,7 @@ class DownloadDialog(ctk.CTkToplevel):
             title_frame,
             text="Preparing download...",
             font=("Segoe UI", 11),
-            text_color="#6b7280",
+            text_color=Theme.TEXT_DIM,
             anchor="w"
         )
         self.status_label.pack(fill="x")
@@ -112,7 +147,7 @@ class DownloadDialog(ctk.CTkToplevel):
             progress_frame, 
             height=12, 
             corner_radius=6,
-            progress_color="#667eea"
+            progress_color=Theme.PRIMARY
         )
         self.progress_bar.pack(fill="x")
         self.progress_bar.set(0)
@@ -122,7 +157,7 @@ class DownloadDialog(ctk.CTkToplevel):
             progress_frame,
             text="0%",
             font=("Segoe UI", 10),
-            text_color="#9ca3af"
+            text_color=Theme.TEXT_DIM
         )
         self.details_label.pack(pady=(6, 0))
         
@@ -132,8 +167,8 @@ class DownloadDialog(ctk.CTkToplevel):
             text="Close",
             width=100,
             corner_radius=8,
-            fg_color="#667eea",
-            hover_color="#5a6fd6",
+            fg_color=Theme.PRIMARY,
+            hover_color=Theme.PRIMARY_HOVER,
             state="disabled",
             command=self._on_close
         )
@@ -170,15 +205,15 @@ class DownloadDialog(ctk.CTkToplevel):
         
         elif progress.stage == "complete":
             self.progress_bar.set(1.0)
-            self.progress_bar.configure(progress_color="#10b981")  # Green
-            self.status_label.configure(text="✅ " + progress.message, text_color="#10b981")
+            self.progress_bar.configure(progress_color=Theme.SUCCESS)  # Green
+            self.status_label.configure(text="✅ " + progress.message, text_color=Theme.SUCCESS)
             self.details_label.configure(text="100% - Complete!")
             self._is_complete = True
             self.cancel_btn.configure(state="normal", text="Close")
         
         elif progress.stage == "error":
-            self.progress_bar.configure(progress_color="#ef4444")  # Red
-            self.status_label.configure(text="❌ " + progress.message, text_color="#ef4444")
+            self.progress_bar.configure(progress_color=Theme.DANGER)  # Red
+            self.status_label.configure(text="❌ " + progress.message, text_color=Theme.DANGER)
             self.details_label.configure(text="Installation failed")
             self._is_error = True
             self.cancel_btn.configure(state="normal", text="Close")
@@ -195,60 +230,105 @@ class DownloadDialog(ctk.CTkToplevel):
 
 
 class ConsoleOutput(ctk.CTkFrame):
-    """Modern styled console output widget"""
+    """Modern collapsible console output widget"""
     
-    def __init__(self, master, height=150, **kwargs):
+    def __init__(self, master, height=200, **kwargs):
         super().__init__(master, **kwargs)
+        
+        self.expanded_height = height
+        self.collapsed_height = 40
+        self.is_expanded = False
         
         self.configure(
             corner_radius=12,
-            fg_color="white",
+            fg_color=Theme.BG_CARD,
             border_width=1,
-            border_color="#e5e7eb"
+            border_color=Theme.BORDER
         )
         
-        # Header with gradient-like styling
-        header = ctk.CTkFrame(self, fg_color="#f1f5f9", corner_radius=0, height=32)
-        header.pack(fill="x", padx=1, pady=(1, 0))
-        header.pack_propagate(False)
+        # Header (Always visible)
+        self.header = ctk.CTkFrame(self, fg_color="transparent", corner_radius=0, height=40)
+        self.header.pack(fill="x", padx=1, pady=1)
+        self.header.pack_propagate(False)
         
-        ctk.CTkLabel(
-            header,
-            text="● Console",
-            font=("Segoe UI", 11, "bold"),
-            text_color="#667eea"
-        ).pack(side="left", padx=12, pady=4)
+        # Status indicator dot
+        self.status_dot = ctk.CTkLabel(
+            self.header,
+            text="●",
+            font=("Segoe UI", 14),
+            text_color=Theme.TEXT_DIM
+        )
+        self.status_dot.pack(side="left", padx=(12, 6))
         
-        # Clear button in header
+        # Latest log message in header (for collapsed view)
+        self.last_msg_label = ctk.CTkLabel(
+            self.header,
+            text="Ready",
+            font=("Segoe UI", 11),
+            text_color=Theme.TEXT_DIM,
+            anchor="w"
+        )
+        self.last_msg_label.pack(side="left", fill="x", expand=True)
+        
+        # Toggle button
+        self.toggle_btn = ctk.CTkButton(
+            self.header,
+            text="Show Logs",
+            width=80,
+            height=24,
+            corner_radius=6,
+            font=("Segoe UI", 11),
+            fg_color=Theme.BG_HOVER,
+            hover_color=Theme.BORDER,
+            text_color=Theme.TEXT_MAIN,
+            command=self.toggle
+        )
+        self.toggle_btn.pack(side="right", padx=12)
+        
+        # Clear button
         self._clear_btn = ctk.CTkButton(
-            header,
+            self.header,
             text="Clear",
             width=50,
-            height=22,
+            height=24,
             corner_radius=6,
-            font=("Segoe UI", 10),
-            fg_color="#e5e7eb",
-            hover_color="#d1d5db",
-            text_color="#374151",
+            font=("Segoe UI", 11),
+            fg_color="transparent",
+            hover_color=Theme.BG_HOVER,
+            text_color=Theme.TEXT_DIM,
             command=self.clear
         )
-        self._clear_btn.pack(side="right", padx=8, pady=4)
+        self._clear_btn.pack(side="right", padx=(0, 4))
         
-        # Text area with modern font
+        # Text area container (Collapsible)
+        self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
+        # Don't pack initially (start collapsed)
+        
+        # Text area
         self._textbox = ctk.CTkTextbox(
-            self,
-            height=height - 32,
+            self.content_frame,
+            height=height - 50,
             corner_radius=0,
-            fg_color="#1e1e2e",  # Dark background for contrast
-            text_color="#cdd6f4",  # Light text
-            font=("JetBrains Mono", 11) if self._font_exists("JetBrains Mono") else ("Cascadia Code", 11) if self._font_exists("Cascadia Code") else ("Consolas", 11),
-            border_width=0,
-            scrollbar_button_color="#45475a",
-            scrollbar_button_hover_color="#585b70"
+            fg_color=Theme.CONSOLE_BG,
+            text_color=Theme.CONSOLE_FG,
+            font=("JetBrains Mono", 11) if self._font_exists("JetBrains Mono") else ("Consolas", 11),
+            border_width=0
         )
         self._textbox.pack(fill="both", expand=True, padx=1, pady=(0, 1))
         self._textbox.configure(state="disabled")
-    
+
+    def toggle(self):
+        """Toggle console expansion"""
+        if self.is_expanded:
+            self.content_frame.pack_forget()
+            self.toggle_btn.configure(text="Show Logs")
+            self.configure(height=self.collapsed_height)
+        else:
+            self.content_frame.pack(fill="both", expand=True)
+            self.toggle_btn.configure(text="Hide Logs")
+            
+        self.is_expanded = not self.is_expanded
+        
     def _font_exists(self, font_name: str) -> bool:
         """Check if a font exists"""
         try:
@@ -258,270 +338,252 @@ class ConsoleOutput(ctk.CTkFrame):
             return False
     
     def log(self, message: str, tag: str = "info"):
-        """Add message to console with colored prefix"""
+        """Add message to console"""
         self._textbox.configure(state="normal")
         
-        # Add timestamp
         from datetime import datetime
         timestamp = datetime.now().strftime("%H:%M:%S")
         
-        # Color-coded prefixes
         prefix_map = {
-            "info": ("•", "#89b4fa"),      # Blue
-            "success": ("✓", "#a6e3a1"),   # Green
-            "error": ("✗", "#f38ba8"),     # Red
-            "warning": ("▲", "#f9e2af"),   # Yellow
-            "progress": ("○", "#cba6f7")   # Purple
+            "info": ("•", "#89b4fa"),
+            "success": ("✓", "#a6e3a1"),
+            "error": ("✗", "#f38ba8"),
+            "warning": ("▲", "#f9e2af"),
+            "progress": ("○", "#cba6f7")
         }
-        prefix, _ = prefix_map.get(tag, ("•", "#cdd6f4"))
+        prefix, color = prefix_map.get(tag, ("•", "#cdd6f4"))
         
-        self._textbox.insert("end", f"[{timestamp}] {prefix} {message}\n")
+        # Update header preview
+        self.last_msg_label.configure(text=f"{prefix} {message}")
+        
+        # Flash status dot
+        if tag == "error":
+            self.status_dot.configure(text_color=Theme.DANGER)
+        elif tag == "success":
+            self.status_dot.configure(text_color=Theme.SUCCESS)
+        elif tag == "warning":
+            self.status_dot.configure(text_color=Theme.WARNING)
+        else:
+            self.status_dot.configure(text_color=Theme.PRIMARY)
+            
+        full_msg = f"[{timestamp}] {prefix} {message}\n"
+        self._textbox.insert("end", full_msg)
         self._textbox.see("end")
         self._textbox.configure(state="disabled")
     
     def clear(self):
-        """Clear console"""
         self._textbox.configure(state="normal")
         self._textbox.delete("1.0", "end")
         self._textbox.configure(state="disabled")
+        self.last_msg_label.configure(text="Console cleared")
 
 
 class AppCard(ctk.CTkFrame):
-    """Card widget for displaying an application"""
+    """Refined App Card with Smart Action Button"""
     
     def __init__(self, master, app_info: AppInfo, launcher: "PyPotteryLauncher", **kwargs):
         super().__init__(master, **kwargs)
         self.app_info = app_info
         self.launcher = launcher
         
-        self.configure(corner_radius=12, fg_color="white", border_width=1, border_color="#e5e7eb")
+        self.configure(
+            corner_radius=16,
+            fg_color=Theme.BG_CARD,
+            border_width=1,
+            border_color=Theme.BORDER
+        )
         
-        # Header row
-        header_frame = ctk.CTkFrame(self, fg_color="transparent")
-        header_frame.pack(fill="x", padx=15, pady=(12, 8))
+        # Main layout: Icon | Content | Actions
         
-        # Try to load logo image with proper aspect ratio
-        logo_image = self._load_logo_with_aspect_ratio(app_info.logo_path, launcher.base_path, max_size=64)
+        # 1. Icon Section
+        icon_frame = ctk.CTkFrame(self, fg_color="transparent")
+        icon_frame.pack(side="left", padx=20, pady=20)
         
+        logo_image = self._load_logo_with_aspect_ratio(app_info.logo_path, launcher.base_path, max_size=56)
         if logo_image:
-            self.icon_label = ctk.CTkLabel(
-                header_frame, 
-                image=logo_image,
-                text=""
-            )
-            self._logo_image = logo_image  # Keep reference to prevent garbage collection
+            self.icon_label = ctk.CTkLabel(icon_frame, image=logo_image, text="")
+            self._logo_image = logo_image
         else:
-            self.icon_label = ctk.CTkLabel(
-                header_frame, 
-                text=app_info.icon,
-                font=("Segoe UI Emoji", 32)
-            )
-        self.icon_label.pack(side="left", padx=(0, 12))
+            self.icon_label = ctk.CTkLabel(icon_frame, text=app_info.icon, font=("Segoe UI Emoji", 36))
+        self.icon_label.pack()
         
-        name_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
-        name_frame.pack(side="left", fill="x", expand=True)
+        # 2. Content Section
+        content_frame = ctk.CTkFrame(self, fg_color="transparent")
+        content_frame.pack(side="left", fill="both", expand=True, pady=16)
+        
+        # Title Row
+        title_row = ctk.CTkFrame(content_frame, fg_color="transparent")
+        title_row.pack(fill="x")
         
         self.name_label = ctk.CTkLabel(
-            name_frame,
+            title_row,
             text=app_info.name,
-            font=("Segoe UI", 16, "bold"),
-            text_color="#1f2937",
+            font=("Segoe UI", 18, "bold"),
+            text_color=Theme.TEXT_MAIN,
             anchor="w"
         )
-        self.name_label.pack(fill="x")
+        self.name_label.pack(side="left")
         
+        # Status Badge (Small, pill shaped)
+        self.status_badge = ctk.CTkLabel(
+            title_row,
+            text="Off",
+            font=("Segoe UI", 10, "bold"),
+            text_color=Theme.TEXT_DIM,
+            fg_color=Theme.BG_HOVER,
+            corner_radius=10,
+            padx=8
+        )
+        self.status_badge.pack(side="left", padx=10)
+        
+        # Description
         self.desc_label = ctk.CTkLabel(
-            name_frame,
-            text=app_info.description[:60] + "..." if len(app_info.description) > 60 else app_info.description,
-            font=("Segoe UI", 11),
-            text_color="#6b7280",
+            content_frame,
+            text=app_info.description,
+            font=("Segoe UI", 12),
+            text_color=Theme.TEXT_DIM,
             anchor="w"
         )
-        self.desc_label.pack(fill="x")
+        self.desc_label.pack(fill="x", pady=(2, 8))
         
-        # Status badge
-        self.status_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
-        self.status_frame.pack(side="right")
+        # Metadata Row
+        meta_frame = ctk.CTkFrame(content_frame, fg_color="transparent")
+        meta_frame.pack(fill="x")
         
-        self.status_label = ctk.CTkLabel(
-            self.status_frame,
-            text="Not installed",
-            font=("Segoe UI", 10),
-            corner_radius=6,
-            fg_color="#e5e7eb",
-            text_color="#6b7280",
-            padx=10,
-            pady=3
-        )
-        self.status_label.pack()
-        
-        # Info row
-        info_frame = ctk.CTkFrame(self, fg_color="transparent")
-        info_frame.pack(fill="x", padx=15, pady=5)
-        
-        port_text = f"Port: {app_info.port}"
-        ram_text = f"RAM: {app_info.min_ram_gb}GB min"
-        gpu_text = "GPU required" if app_info.requires_gpu else "CPU OK"
-        
-        ctk.CTkLabel(info_frame, text=port_text, font=("Segoe UI", 10), text_color="#9ca3af").pack(side="left", padx=(0, 15))
-        ctk.CTkLabel(info_frame, text=ram_text, font=("Segoe UI", 10), text_color="#9ca3af").pack(side="left", padx=(0, 15))
-        ctk.CTkLabel(info_frame, text=gpu_text, font=("Segoe UI", 10), text_color="#9ca3af").pack(side="left")
-        
-        # Version info
+        # Helper for meta tags
+        def add_tag(parent, icon, text):
+            f = ctk.CTkFrame(parent, fg_color="transparent")
+            f.pack(side="left", padx=(0, 12))
+            ctk.CTkLabel(f, text=icon, font=("Segoe UI Emoji", 10)).pack(side="left", padx=(0,4))
+            ctk.CTkLabel(f, text=text, font=("Segoe UI", 11), text_color=Theme.TEXT_DIM).pack(side="left")
+            
+        add_tag(meta_frame, "🔌", f"Port {app_info.port}")
+        add_tag(meta_frame, "💾", f"{app_info.min_ram_gb}GB")
+        if app_info.requires_gpu:
+            add_tag(meta_frame, "⚡", "GPU")
+            
+        # Version
         self.version_label = ctk.CTkLabel(
-            info_frame,
+            meta_frame,
             text="",
-            font=("Segoe UI", 10),
-            text_color="#9ca3af"
+            font=("Segoe UI", 11),
+            text_color=Theme.TEXT_DIM
         )
-        self.version_label.pack(side="right")
+        self.version_label.pack(side="left", padx=12)
         
-        # Buttons row
-        button_frame = ctk.CTkFrame(self, fg_color="transparent")
-        button_frame.pack(fill="x", padx=15, pady=(5, 12))
+        # 3. Action Section
+        action_frame = ctk.CTkFrame(self, fg_color="transparent")
+        action_frame.pack(side="right", padx=20, fill="y", pady=16)
         
-        self.install_btn = ctk.CTkButton(
-            button_frame,
+        # Smart Primary Button (Install / Launch / Stop)
+        self.main_action_btn = ctk.CTkButton(
+            action_frame,
             text="Install",
-            width=100,
-            corner_radius=8,
-            fg_color="#667eea",
-            hover_color="#5a6fd6",
-            command=self._on_install
+            width=120,
+            height=38,
+            corner_radius=19,
+            font=("Segoe UI", 13, "bold"),
+            command=self._on_smart_action
         )
-        self.install_btn.pack(side="left", padx=(0, 6))
+        self.main_action_btn.pack(pady=(0, 8))
         
-        self.launch_btn = ctk.CTkButton(
-            button_frame,
-            text="Launch",
-            width=100,
-            corner_radius=8,
-            fg_color="#10b981",
-            hover_color="#059669",
-            command=self._on_launch
-        )
-        self.launch_btn.pack(side="left", padx=(0, 6))
-        
-        self.stop_btn = ctk.CTkButton(
-            button_frame,
-            text="Stop",
-            width=80,
-            corner_radius=8,
-            fg_color="#ef4444",
-            hover_color="#dc2626",
-            command=self._on_stop
-        )
-        self.stop_btn.pack(side="left", padx=(0, 6))
+        # Secondary actions row
+        sec_actions = ctk.CTkFrame(action_frame, fg_color="transparent")
+        sec_actions.pack()
         
         self.update_btn = ctk.CTkButton(
-            button_frame,
-            text="Update",
-            width=80,
+            sec_actions,
+            text="⬆",
+            width=32,
+            height=32,
             corner_radius=8,
-            fg_color="#f59e0b",
-            hover_color="#d97706",
+            fg_color=Theme.WARNING,
+            hover_color=Theme.WARNING,
             command=self._on_update
         )
-        self.update_btn.pack(side="left")
+        # Packed only when needed
         
-        # Folder button
         self.folder_btn = ctk.CTkButton(
-            button_frame,
-            text="📁",
-            width=40,
+            sec_actions,
+            text="📂",
+            width=32,
+            height=32,
             corner_radius=8,
-            fg_color="#e5e7eb",
-            hover_color="#d1d5db",
-            text_color="#374151",
+            fg_color=Theme.BG_HOVER,
+            hover_color=Theme.BORDER,
+            text_color=Theme.TEXT_MAIN,
             command=self._on_open_folder
         )
         self.folder_btn.pack(side="right")
         
-        # Initial state
         self.update_ui()
-    
-    def _load_logo_with_aspect_ratio(self, logo_path: Optional[str], base_path: Path, max_size: int = 64) -> Optional[ctk.CTkImage]:
-        """Load logo maintaining aspect ratio"""
-        if not logo_path or not HAS_PIL:
-            return None
-        
-        full_path = base_path / logo_path
-        if not full_path.exists():
-            return None
-        
-        try:
-            img = Image.open(full_path)
-            # Calculate size maintaining aspect ratio
-            orig_width, orig_height = img.size
-            ratio = min(max_size / orig_width, max_size / orig_height)
-            new_width = int(orig_width * ratio)
-            new_height = int(orig_height * ratio)
-            return ctk.CTkImage(light_image=img, dark_image=img, size=(new_width, new_height))
-        except Exception:
-            return None
-    
+
     def update_ui(self):
-        """Update UI based on app state"""
         app = self.app_info
         
+        # Update Status Badge & Main Button
         if app.is_running:
-            self.status_label.configure(
-                text="● Running",
-                fg_color="#dcfce7",
-                text_color="#166534"
+            self.status_badge.configure(text="RUNNING", text_color=Theme.SUCCESS, fg_color=Theme.BG_HOVER)
+            self.main_action_btn.configure(
+                text="Stop",
+                fg_color=Theme.DANGER, 
+                hover_color=Theme.DANGER_HOVER,
+                state="normal"
             )
-            self.launch_btn.configure(state="disabled")
-            self.stop_btn.configure(state="normal")
-            self.install_btn.configure(state="disabled")
         elif app.installed:
-            self.status_label.configure(
-                text="Installed",
-                fg_color="#dbeafe",
-                text_color="#1e40af"
+            self.status_badge.configure(text="READY", text_color=Theme.PRIMARY, fg_color=Theme.BG_HOVER)
+            self.main_action_btn.configure(
+                text="Launch",
+                fg_color=Theme.SUCCESS,
+                hover_color=Theme.SUCCESS_HOVER,
+                state="normal"
             )
-            self.launch_btn.configure(state="normal")
-            self.stop_btn.configure(state="disabled")
-            self.install_btn.configure(text="Reinstall")
+            self.folder_btn.configure(state="normal")
         else:
-            self.status_label.configure(
-                text="Not installed",
-                fg_color="#e5e7eb",
-                text_color="#6b7280"
+            self.status_badge.configure(text="NOT INSTALLED", text_color=Theme.TEXT_DIM, fg_color=Theme.BG_HOVER)
+            self.main_action_btn.configure(
+                text="Install",
+                fg_color=Theme.PRIMARY,
+                hover_color=Theme.PRIMARY_HOVER,
+                state="normal"
             )
-            self.launch_btn.configure(state="disabled")
-            self.stop_btn.configure(state="disabled")
-            self.install_btn.configure(text="Install", state="normal")
-        
-        # Version info
+            self.folder_btn.configure(state="disabled")
+
+        # Update Version Info
         if app.installed_version:
-            version_text = f"v{app.installed_version}"
-            if app.update_available and app.latest_version:
-                version_text += f" → v{app.latest_version}"
-                self.update_btn.configure(state="normal")
+            v_text = f"v{app.installed_version}"
+            if app.update_available:
+                self.update_btn.pack(side="right", padx=4)
+                v_text += " • Update Available"
             else:
-                self.update_btn.configure(state="disabled")
-            self.version_label.configure(text=version_text)
+                self.update_btn.pack_forget()
+            self.version_label.configure(text=v_text)
         else:
             self.version_label.configure(text="")
-            self.update_btn.configure(state="disabled")
-        
-        # Folder button
-        self.folder_btn.configure(state="normal" if app.installed else "disabled")
-    
-    def _on_install(self):
-        self.launcher.install_app(self.app_info.id)
-    
-    def _on_launch(self):
-        self.launcher.launch_app(self.app_info.id)
-    
-    def _on_stop(self):
-        self.launcher.stop_app(self.app_info.id)
-    
-    def _on_update(self):
-        self.launcher.update_app(self.app_info.id)
-    
-    def _on_open_folder(self):
-        self.launcher.open_app_folder(self.app_info.id)
+            self.update_btn.pack_forget()
+
+    def _on_smart_action(self):
+        if self.app_info.is_running:
+            self.launcher.stop_app(self.app_info.id)
+        elif self.app_info.installed:
+            self.launcher.launch_app(self.app_info.id)
+        else:
+            self.launcher.install_app(self.app_info.id)
+
+    # ... Include helper methods ...
+    def _load_logo_with_aspect_ratio(self, logo_path: Optional[str], base_path: Path, max_size: int = 64) -> Optional[ctk.CTkImage]:
+        if not logo_path or not HAS_PIL: return None
+        full_path = base_path / logo_path
+        if not full_path.exists(): return None
+        try:
+            img = Image.open(full_path)
+            orig_width, orig_height = img.size
+            ratio = min(max_size / orig_width, max_size / orig_height)
+            return ctk.CTkImage(light_image=img, dark_image=img, size=(int(orig_width * ratio), int(orig_height * ratio)))
+        except: return None
+
+    def _on_update(self): self.launcher.update_app(self.app_info.id)
+    def _on_open_folder(self): self.launcher.open_app_folder(self.app_info.id)
 
 
 class HardwarePanel(ctk.CTkFrame):
@@ -530,14 +592,19 @@ class HardwarePanel(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         
-        self.configure(corner_radius=12, fg_color="white", border_width=1, border_color="#e5e7eb")
+        self.configure(
+            corner_radius=12,
+            fg_color=Theme.BG_CARD,
+            border_width=1,
+            border_color=Theme.BORDER
+        )
         
         # Header
         ctk.CTkLabel(
             self,
             text="💻 System Information",
             font=("Segoe UI", 14, "bold"),
-            text_color="#374151"
+            text_color=Theme.TEXT_MAIN
         ).pack(padx=15, pady=(12, 8), anchor="w")
         
         # Info container
@@ -562,7 +629,7 @@ class HardwarePanel(ctk.CTkFrame):
                 frame,
                 text=label_names[key] + ":",
                 font=("Segoe UI", 11, "bold"),
-                text_color="#667eea",
+                text_color=Theme.PRIMARY,
                 width=70,
                 anchor="w"
             ).pack(side="left")
@@ -571,7 +638,7 @@ class HardwarePanel(ctk.CTkFrame):
                 frame,
                 text="Detecting...",
                 font=("Segoe UI", 11),
-                text_color="#4b5563",
+                text_color=Theme.TEXT_DIM,
                 anchor="w"
             )
             self.labels[key].pack(side="left", fill="x", expand=True)
@@ -602,7 +669,12 @@ class EnvironmentPanel(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.launcher = launcher
         
-        self.configure(corner_radius=12, fg_color="white", border_width=1, border_color="#e5e7eb")
+        self.configure(
+            corner_radius=12,
+            fg_color=Theme.BG_CARD,
+            border_width=1,
+            border_color=Theme.BORDER
+        )
         
         # Header
         header_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -612,19 +684,19 @@ class EnvironmentPanel(ctk.CTkFrame):
             header_frame,
             text="🐍 Python Environment",
             font=("Segoe UI", 14, "bold"),
-            text_color="#374151"
+            text_color=Theme.TEXT_MAIN
         ).pack(side="left")
         
         self.status_label = ctk.CTkLabel(
             header_frame,
             text="Not configured",
             font=("Segoe UI", 11),
-            text_color="#6b7280"
+            text_color=Theme.TEXT_DIM
         )
         self.status_label.pack(side="right")
         
         # Progress bar with gradient colors
-        self.progress_bar = ctk.CTkProgressBar(self, height=8, corner_radius=4, progress_color="#667eea")
+        self.progress_bar = ctk.CTkProgressBar(self, height=8, corner_radius=4, progress_color=Theme.PRIMARY)
         self.progress_bar.pack(fill="x", padx=15, pady=(0, 8))
         self.progress_bar.set(0)
         
@@ -633,7 +705,7 @@ class EnvironmentPanel(ctk.CTkFrame):
             self,
             text="",
             font=("Segoe UI", 10),
-            text_color="#6b7280"
+            text_color=Theme.TEXT_DIM
         )
         self.progress_label.pack(padx=15, pady=(0, 8))
         
@@ -645,8 +717,8 @@ class EnvironmentPanel(ctk.CTkFrame):
             button_frame,
             text="Setup Environment",
             corner_radius=8,
-            fg_color="#667eea",
-            hover_color="#5a6fd6",
+            fg_color=Theme.PRIMARY,
+            hover_color=Theme.PRIMARY_HOVER,
             command=self._on_setup
         )
         self.setup_btn.pack(side="left", padx=(0, 8))
@@ -656,8 +728,8 @@ class EnvironmentPanel(ctk.CTkFrame):
             text="Verify",
             width=80,
             corner_radius=8,
-            fg_color="#764ba2",
-            hover_color="#6b4190",
+            fg_color=Theme.WARNING,
+            hover_color=Theme.WARNING,
             command=self._on_verify
         )
         self.verify_btn.pack(side="left")
@@ -665,11 +737,11 @@ class EnvironmentPanel(ctk.CTkFrame):
     def update_status(self, installed: bool, message: str = ""):
         """Update environment status"""
         if installed:
-            self.status_label.configure(text="✅ Ready", text_color="#10b981")
+            self.status_label.configure(text="✅ Ready", text_color=Theme.SUCCESS)
             self.setup_btn.configure(text="Reinstall")
             self.progress_bar.set(1.0)  # Full bar when configured
         else:
-            self.status_label.configure(text="❌ Not configured", text_color="#ef4444")
+            self.status_label.configure(text="❌ Not configured", text_color=Theme.DANGER)
             self.setup_btn.configure(text="Setup Environment")
             self.progress_bar.set(0)
         
@@ -681,7 +753,7 @@ class EnvironmentPanel(ctk.CTkFrame):
         self.progress_bar.set(progress.percent / 100)
         self.progress_label.configure(
             text=progress.message,
-            text_color="red" if progress.is_error else "gray50"
+            text_color=Theme.DANGER if progress.is_error else Theme.TEXT_DIM
         )
     
     def _on_setup(self):
@@ -695,7 +767,7 @@ class PyPotteryLauncher(ctk.CTk):
     """Main launcher application window"""
     
     APP_NAME = "PyPottery Suite Launcher"
-    VERSION = "1.0.1"
+    VERSION = "1.0.2"
     
     # Color palette
     GRADIENT_START = "#667eea"
@@ -717,8 +789,8 @@ class PyPotteryLauncher(ctk.CTk):
         self.geometry("950x750")
         self.minsize(850, 650)
         
-        # Set appearance - Light theme only
-        ctk.set_appearance_mode("light")
+        # Set appearance - System theme
+        ctk.set_appearance_mode("system")
         ctk.set_default_color_theme("blue")
         
         # Base paths
@@ -796,10 +868,10 @@ class PyPotteryLauncher(ctk.CTk):
     def _build_ui(self):
         """Build the main UI"""
         # Configure main window background
-        self.configure(fg_color="#f8fafc")
+        self.configure(fg_color=Theme.BG_MAIN)
         
         # Main container with scrolling
-        self.main_frame = ctk.CTkScrollableFrame(self, fg_color="#f8fafc")
+        self.main_frame = ctk.CTkScrollableFrame(self, fg_color=Theme.BG_MAIN)
         self.main_frame.pack(fill="both", expand=True, padx=15, pady=15)
         
         # Header with centered logo
@@ -831,7 +903,7 @@ class PyPotteryLauncher(ctk.CTk):
             center_container,
             text="PyPottery Suite",
             font=("Segoe UI", 26, "bold"),
-            text_color="#1f2937"
+            text_color=Theme.TEXT_MAIN
         ).pack(side="left")
         
         # Check Updates button (right side, styled)
@@ -841,8 +913,8 @@ class PyPotteryLauncher(ctk.CTk):
             width=140,
             height=36,
             corner_radius=18,
-            fg_color=self.PRIMARY_COLOR,
-            hover_color=self.PRIMARY_HOVER,
+            fg_color=Theme.PRIMARY,
+            hover_color=Theme.PRIMARY_HOVER,
             command=self._check_updates
         ).pack(side="right", padx=5)
         
@@ -862,7 +934,7 @@ class PyPotteryLauncher(ctk.CTk):
             apps_header,
             text="📦 Applications",
             font=("Segoe UI", 16, "bold"),
-            text_color="#374151"
+            text_color=Theme.TEXT_MAIN
         ).pack(side="left")
         
         # Apps container
@@ -870,7 +942,7 @@ class PyPotteryLauncher(ctk.CTk):
         self.apps_frame.pack(fill="x", pady=(0, 15))
         
         # Console (self-contained with header)
-        self.console = ConsoleOutput(self.main_frame, height=180)
+        self.console = ConsoleOutput(self.main_frame, height=200)
         self.console.pack(fill="x", pady=(0, 10))
         
         # Footer
@@ -881,7 +953,7 @@ class PyPotteryLauncher(ctk.CTk):
             footer,
             text=f"PyPottery Suite Launcher v{self.VERSION} | github.com/lrncrd",
             font=("Segoe UI", 10),
-            text_color="#9ca3af"
+            text_color=Theme.TEXT_DIM
         ).pack(side="left")
     
     def _initialize(self):
@@ -899,6 +971,15 @@ class PyPotteryLauncher(ctk.CTk):
         """Called when hardware detection completes"""
         self.console.log("Hardware detection complete", "success")
         self.hardware_panel.update_info(self.hardware_info)
+        
+        # Check for driver compatibility
+        if not self.hardware_info.cuda_compatible and self.hardware_info.driver_warning:
+            self.console.log("Incompatible NVIDIA driver detected", "warning")
+            # Show warning after a short delay to ensure window is ready
+            self.after(500, lambda: messagebox.showwarning(
+                "NVIDIA Driver Update Required",
+                self.hardware_info.driver_warning
+            ))
         
         # Initialize environment manager
         self.env_manager = EnvironmentManager(self.base_path)
@@ -949,8 +1030,39 @@ class PyPotteryLauncher(ctk.CTk):
         self.after(0, lambda: self.env_panel.update_progress(progress))
         self.after(0, lambda: self.console.log(progress.message, "error" if progress.is_error else "progress"))
     
+    def _update_launcher(self, update_info: UpdateInfo):
+        """Update the launcher itself"""
+        self.console.log(f"Updating launcher to {update_info.latest_version}...", "progress")
+        
+        # Create dialog
+        dialog = DownloadDialog(self, "Launcher Update", "🚀")
+        
+        def run_update():
+            updater = LauncherUpdater(self.base_path)
+            
+            def progress(msg, percent):
+                if dialog.winfo_exists():
+                    dialog.update_progress(DownloadProgress(
+                        "launcher", "downloading", msg, 0, 0, percent
+                    ))
+            
+            # Download URL is source zip
+            # GitHub releases usually provide 'zipball_url' or we construct it
+            download_url = f"https://github.com/lrncrd/PyPottery/archive/refs/tags/{update_info.latest_version}.zip"
+            
+            success = updater.update(download_url, progress)
+            
+            if success:
+                self.after(0, lambda: messagebox.showinfo("Update Complete", "Launcher will now restart."))
+                self.after(1000, updater.restart)
+            else:
+                self.after(0, lambda: self.console.log("Launcher update failed", "error"))
+                self.after(0, dialog.destroy)
+        
+        threading.Thread(target=run_update, daemon=True).start()
+
     def _on_app_status(self, app_id: str, message: str):
-        """Handle app status updates"""
+        """Handle status updates from app manager"""
         self.after(0, lambda: self.console.log(f"[{app_id}] {message}", "info"))
         self.after(0, lambda: self._refresh_app_card(app_id))
     
@@ -961,10 +1073,32 @@ class PyPotteryLauncher(ctk.CTk):
             self.app_cards[app_id].update_ui()
     
     def _check_updates(self):
-        """Check for updates from GitHub"""
+        """Check for updates for all apps and the launcher"""
+        if not self.app_manager:
+            return
+            
         self.console.log("Checking for updates...", "info")
         
-        def check():
+        # Check Launcher Update First
+        try:
+            launcher_update = self.update_checker.check_for_update(
+                "lrncrd", "PyPottery", self.VERSION
+            )
+            
+            if launcher_update.update_available:
+                self.console.log(f"Launcher update available: {launcher_update.latest_version}", "warning")
+                if messagebox.askyesno(
+                    "Launcher Update Available",
+                    f"A new version of PyPottery Launcher ({launcher_update.latest_version}) is available.\n\n"
+                    "Do you want to update and restart now?"
+                ):
+                    self._update_launcher(launcher_update)
+                    return  # Stop other checks if updating
+        except Exception as e:
+            self.console.log(f"Failed to check launcher updates: {e}", "error")
+
+        # Check Apps
+        def check_apps_for_updates():
             apps = {}
             for app_id, app_info in self.app_manager.apps.items():
                 apps[app_id] = (
@@ -976,7 +1110,7 @@ class PyPotteryLauncher(ctk.CTk):
             results = self.update_checker.check_all_updates(apps)
             self.after(0, lambda: self._on_updates_checked(results))
         
-        threading.Thread(target=check, daemon=True).start()
+        threading.Thread(target=check_apps_for_updates, daemon=True).start()
     
     def _on_updates_checked(self, results: Dict[str, UpdateInfo]):
         """Handle update check results"""

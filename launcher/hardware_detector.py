@@ -43,6 +43,8 @@ class HardwareInfo:
     # GPU Info
     cuda_available: bool = False
     cuda_version: Optional[str] = None
+    cuda_compatible: bool = True  # True unless outdated driver detected
+    driver_warning: Optional[str] = None
     cudnn_version: Optional[str] = None
     mps_available: bool = False  # Apple Silicon
     rocm_available: bool = False  # AMD ROCm
@@ -65,6 +67,8 @@ class HardwareInfo:
             "ram_available_gb": self.ram_available_gb,
             "cuda_available": self.cuda_available,
             "cuda_version": self.cuda_version,
+            "cuda_compatible": self.cuda_compatible,
+            "driver_warning": self.driver_warning,
             "cudnn_version": self.cudnn_version,
             "mps_available": self.mps_available,
             "rocm_available": self.rocm_available,
@@ -322,6 +326,28 @@ def detect_hardware() -> HardwareInfo:
     mps_available = detect_apple_mps()
     rocm_available = detect_amd_rocm()
     
+    # Check CUDA version compatibility (Require >= 12.4)
+    cuda_compatible = True
+    driver_warning = None
+    
+    if cuda_available and cuda_version:
+        try:
+            # Simple float parsing for "12.4" or "12.6"
+            # Extracts major.minor from string
+            parts = cuda_version.split(".")
+            if len(parts) >= 2:
+                ver_float = float(f"{parts[0]}.{parts[1]}")
+                if ver_float < 12.4:
+                    cuda_compatible = False
+                    driver_warning = (
+                        f"Your NVIDIA driver (CUDA {cuda_version}) is too old.\n"
+                        f"PyPottery requires CUDA 12.4 or newer.\n"
+                        f"Please update your NVIDIA drivers."
+                    )
+        except Exception:
+            pass  # Parsing failed, assume compatible
+    
+    
     # Get PyTorch recommendation
     variant, index_url = get_pytorch_recommendation(
         cuda_available, cuda_version, mps_available, rocm_available
@@ -338,6 +364,8 @@ def detect_hardware() -> HardwareInfo:
         ram_available_gb=ram_available,
         cuda_available=cuda_available,
         cuda_version=cuda_version,
+        cuda_compatible=cuda_compatible,
+        driver_warning=driver_warning,
         cudnn_version=cudnn_version,
         mps_available=mps_available,
         rocm_available=rocm_available,

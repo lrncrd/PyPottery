@@ -165,6 +165,35 @@ class AppManager:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             return s.connect_ex(('localhost', port)) == 0
     
+    def _detect_version(self, app_path: Path) -> Optional[str]:
+        """Detect version from application files"""
+        # 1. Try version.txt / VERSION
+        for v_file in ["version.txt", "VERSION"]:
+            vf = app_path / v_file
+            if vf.exists():
+                try:
+                    return vf.read_text(encoding='utf-8').strip()
+                except:
+                    pass
+            
+        # 2. Try __init__.py or _version.py in package directory
+        # Look for __version__ = "..."
+        try:
+            import re
+            for item in app_path.rglob("*.py"):
+                if item.name in ["__init__.py", "_version.py", "version.py"]:
+                    try:
+                        content = item.read_text(encoding='utf-8', errors='ignore')
+                        match = re.search(r"__version__\s*=\s*['\"]([^'\"]+)['\"]", content)
+                        if match:
+                            return match.group(1)
+                    except:
+                        pass
+        except Exception:
+            pass
+            
+        return None
+    
     def download_app(self, app_id: str, version: Optional[str] = None) -> bool:
         """
         Download and extract application from GitHub.
@@ -297,13 +326,24 @@ class AppManager:
             # Cleanup
             temp_zip.unlink()
             
+            # Detect real version if we just downloaded "main"
+            # This prevents stuck "Update Available" messages
+            detected_version = self._detect_version(app_path)
+            
+            # If we found a real version in the files, prefer it over "main"
+            final_version = version
+            if (not version or version in ["main", "master"]) and detected_version:
+                final_version = detected_version
+            elif not final_version:
+                final_version = "main"
+            
             # Save version info
             version_file = app_path / ".version"
-            version_file.write_text(version or "main")
+            version_file.write_text(final_version)
             
             # Update app status
             app.installed = True
-            app.installed_version = version or "main"
+            app.installed_version = final_version
             app.update_available = False
             
             self._report_status(app_id, f"{app.name} installed successfully!")

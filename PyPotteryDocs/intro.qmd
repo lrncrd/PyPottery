@@ -49,7 +49,7 @@ title: "PyPottery"
       <img src="imgs/LogoInk.png" alt="PyPotteryInk Logo" class="card-logo">
       <div class="card-title-group">
         <h3 class="card-title">PyPotteryInk</h3>
-        <span class="card-version">v2.0.0</span>
+        <span class="card-version">v2.1.0</span>
       </div>
     </div>
     <p class="card-description">
@@ -75,7 +75,7 @@ title: "PyPottery"
       <img src="imgs/LogoLens.png" alt="PyPotteryLens Logo" class="card-logo">
       <div class="card-title-group">
         <h3 class="card-title">PyPotteryLens</h3>
-        <span class="card-version">v0.2.0</span>
+        <span class="card-version">v0.2.1</span>
       </div>
     </div>
     <p class="card-description">

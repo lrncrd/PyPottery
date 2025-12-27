@@ -12,6 +12,34 @@ toc: true
   </span>
 </div>
 
+```{=html}
+<div style="
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border: 1px solid #e1e4e8;
+    border-left: 5px solid #667eea;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+">
+    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
+        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
+            Need a hand?
+        </div>
+        <div style="line-height: 1.5;">
+            Look for <strong style="color: #667eea;">Pixel</strong> in the app! <br>
+            Clicking on him brings you straight back to this guide.
+        </div>
+    </div>
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
+    </div>
+</div>
+```
+
 # Interface Overview
 
 The PyPotteryScan interface is divided into eight main sections:
@@ -274,4 +302,6 @@ Opening a project allows you to resume work exactly where it was left off. Even 
 ![](imgs\23.png){#fig-loaded_project}
 
 The **Load** table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the **Annotate** tab on that specific image.
+
+
 

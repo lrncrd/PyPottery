@@ -6,6 +6,15 @@ format: html
 
 ## Latest Release
 
+### Version 0.2.1 (December 2025)
+
+**Key Features:**
+
+-   Added Pixel
+-   Minor UI improvements
+
+## Version History
+
 ### Version 0.2.0 (December 2025)
 
 **Key Features:**
@@ -20,8 +29,6 @@ format: html
 -   Workflow Status Tracking: Visual indicators for project completion stages
 -   Multi-project Support: Work on multiple datasets simultaneously
 -   Improved Error Handling: Better user feedback and error recovery
-
-## Version History
 
 ### Version 0.1.3 (August 2025)
 

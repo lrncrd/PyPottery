@@ -55,7 +55,7 @@
             /* Standard app border radius */
             overflow: hidden;
             width: 900px;
-            height: 650px;
+            height: 750px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -275,7 +275,7 @@
             <div class="dot red"></div>
             <div class="dot yellow"></div>
             <div class="dot green"></div>
-            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.0.0
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.1.0
             </div>
         </div>
         <!-- Tabs -->
@@ -305,26 +305,77 @@
             </button>
 
             <div id="report" class="report-container">
-                <div class="report-header">
-                    <h3 style="margin:0; color:#1f2937;">Hardware Report</h3>
-                    <span class="report-score">Score: 78/100</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">GPU</span>
-                    <span class="spec-val">Apple Metal (MPS)</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">CPU</span>
-                    <span class="spec-val">Apple M3 (8 Cores)</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">RAM</span>
-                    <span class="spec-val">16.0 GB</span>
-                </div>
+                <!-- Suitability Badge -->
                 <div
-                    style="margin-top: 15px; font-size: 0.9em; color: #059669; background: #d1fae5; padding: 10px; border-radius: 6px;">
-                    ✅ Your hardware is adequate for using PyPotteryInk.
+                    style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 30px; border-radius: 12px; font-size: 1.4em; font-weight: 600; text-align: center; margin-bottom: 20px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; border: 2px solid #10b981;">
+                    <span style="font-size: 1.8em;">🟢</span>
+                    <span>Highly Recommended</span>
                 </div>
+
+                <p style="text-align: center; color: #6b7280; margin-bottom: 25px;">Your hardware is excellent for
+                    PyPotteryInk!</p>
+
+                <!-- Cards Grid -->
+                <div
+                    style="display: flex; gap: 6px; justify-content: center; max-width: 800px; margin: 0 auto; overflow: hidden;">
+                    <!-- GPU Card -->
+                    <div
+                        style="background: white; border-radius: 12px; padding: 8px; border: 2px solid #e5e7eb; flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 1.5em;">🎮</span>
+                            <span style="font-size: 1em; font-weight: 600; color: #1f2937;">GPU</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #6b7280; margin-bottom: 10px;">Apple MPS</div>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: 500; background: #d1fae5; color: #065f46; border: 1px solid #10b981;">
+                            ✅ Metal Accel.
+                        </div>
+                    </div>
+
+                    <!-- RAM Card -->
+                    <div
+                        style="background: white; border-radius: 12px; padding: 8px; border: 2px solid #e5e7eb; flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 1.5em;">💾</span>
+                            <span style="font-size: 1em; font-weight: 600; color: #1f2937;">RAM</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #6b7280; margin-bottom: 10px;">16.0 GB</div>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: 500; background: #d1fae5; color: #065f46; border: 1px solid #10b981;">
+                            ✅ Optimal
+                        </div>
+                    </div>
+
+                    <!-- CPU Card -->
+                    <div
+                        style="background: white; border-radius: 12px; padding: 8px; border: 2px solid #e5e7eb; flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 1.5em;">🖥️</span>
+                            <span style="font-size: 1em; font-weight: 600; color: #1f2937;">CPU</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #6b7280; margin-bottom: 10px;">Apple M3</div>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: 500; background: #d1fae5; color: #065f46; border: 1px solid #10b981;">
+                            ✅ Silicone
+                        </div>
+                    </div>
+
+                    <!-- Disk Card -->
+                    <div
+                        style="background: white; border-radius: 12px; padding: 8px; border: 2px solid #e5e7eb; flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 1.5em;">💿</span>
+                            <span style="font-size: 1em; font-weight: 600; color: #1f2937;">Disk</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #6b7280; margin-bottom: 10px;">R:2500 | W:1800</div>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: 500; background: #d1fae5; color: #065f46; border: 1px solid #10b981;">
+                            ✅ Fast NVMe
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 

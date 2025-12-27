@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Assistant Component</title>
+    <style>
+        /* 
+           Pixel Assistant Styles 
+           ----------------------
+           Copy this CSS block into your project's stylesheet or <style> tag.
+        */
+
+        .pixel-assistant-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            cursor: default;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .pixel-assistant-container:hover {
+            transform: scale(1.1);
+        }
+
+        /* Speech Bubble */
+        .pixel-speech-bubble {
+            background: #fff;
+            color: #000;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 2px solid #444;
+            font-weight: bold;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            margin-right: 5px;
+            /* Added for spacing if not using gap */
+        }
+
+        .pixel-assistant-container:hover .pixel-speech-bubble {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Monitor and Face Animations */
+        #pixel-face-idle {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+            animation: pixel-breathe 4s infinite ease-in-out;
+        }
+
+        #pixel-face-awake {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+
+        /* Hover States for Face - Ensuring distinct states (no ghosting) */
+        .pixel-assistant-container:hover #pixel-face-idle {
+            opacity: 0 !important;
+            visibility: hidden;
+            transition-delay: 0s;
+        }
+
+        .pixel-assistant-container:hover #pixel-face-awake {
+            opacity: 1 !important;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        /* Screen Color Change on Hover */
+        .pixel-assistant-container:hover #pixel-screen {
+            fill: #002200;
+        }
+
+        /* Monitor Wiggle/Scale Effect */
+        .pixel-assistant-container svg {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
+        }
+
+        .pixel-assistant-container:hover svg {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        @keyframes pixel-breathe {
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* Demo Page Styling (Ignore when copying) */
+        body {
+            font-family: sans-serif;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            /* Prevent scrollbars */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 
+        Pixel Assistant Component 
+        -------------------------
+        Copy this HTML block where you want the assistant to appear.
+        Change the href attribute to point to your desired help page.
+    -->
+    <div class="pixel-assistant-container">
+        <div class="pixel-speech-bubble">Need help?</div>
+        <!-- SVG Icon -->
+        <svg width="60" height="60" viewBox="30 45 180 140">
+            <g id="pixel-monitor">
+                <!-- Monitor Body -->
+                <rect x="40" y="50" width="160" height="130" rx="15" ry="15" fill="#d0d0d0" stroke="#444"
+                    stroke-width="3" />
+                <rect x="55" y="65" width="130" height="90" rx="5" ry="5" fill="#a0a0a0" stroke="#444"
+                    stroke-width="2" />
+                <!-- Screen -->
+                <rect id="pixel-screen" x="60" y="70" width="120" height="80" rx="2" ry="2" fill="#111" />
+
+                <!-- Face: IDLE (Zzz...) -->
+                <g id="pixel-face-idle" transform="translate(120, 115)">
+                    <text x="0" y="5" text-anchor="middle" font-family="monospace" font-size="24" fill="#0f0"
+                        font-weight="bold">Zzz...</text>
+                </g>
+
+                <!-- Face: AWAKE -->
+                <g id="pixel-face-awake" transform="translate(120, 115)">
+                    <rect x="-30" y="-15" width="10" height="12" rx="2" fill="#0f0" />
+                    <rect x="20" y="-15" width="10" height="12" rx="2" fill="#0f0" />
+                    <path d="M-15,10 Q0,25 15,10" stroke="#0f0" stroke-width="4" fill="none" stroke-linecap="round" />
+                </g>
+
+                <!-- Power Light -->
+                <circle cx="180" cy="165" r="3" fill="#e74c3c" stroke="#c0392b" stroke-width="1" />
+            </g>
+        </svg>
+    </div>
+
+</body>
+
+</html>

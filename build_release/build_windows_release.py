@@ -208,7 +208,7 @@ start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launch
     # 6. Create zip
     print("\n📦 Step 6: Creating distribution package...")
     
-    zip_name = "PyPottery-Launcher-Windows-v1.0.1"
+    zip_name = "PyPottery-Launcher-Windows-v1.0.2"
     zip_path = release_dir / f"{zip_name}.zip"
     
     if zip_path.exists():

@@ -283,7 +283,7 @@
             <div class="dot red"></div>
             <div class="dot yellow"></div>
             <div class="dot green"></div>
-            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v0.2.0
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.1.0
             </div>
         </div>
         <!-- Tabs -->
@@ -300,42 +300,23 @@
             <p class="info-text">Calculate statistics from training images and apply preprocessing to optimize images
                 for AI processing.</p>
 
-            <!-- Step 1 -->
-            <h3>Step 1: Calculate Statistics (Optional)</h3>
-            <div class="form-group">
-                <label class="form-label">Upload Images for Statistics:</label>
-                <div id="stats-upload" class="upload-area">
-                    <div class="upload-text">Click to select images</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Save Statistics As:</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" value="./custom_stats.npy" class="form-control">
-                    <button class="btn btn-secondary" style="padding: 8px 12px;">Browse...</button>
-                </div>
-            </div>
-            <button id="calc-btn" class="btn btn-secondary">
-                <span>📊</span> Calculate Statistics
-            </button>
-            <div id="stats-output" class="output-container">
-                <div>> Analyzing 50 images...</div>
-                <div style="color:#059669;">> Statistics saved to ./custom_stats.npy</div>
-            </div>
-
-            <!-- Step 2 -->
-            <h3>Step 2: Apply Preprocessing</h3>
+            <!-- Main Flow -->
+            <h3>Apply Preprocessing</h3>
             <div class="form-group">
                 <label class="form-label">Upload Images to Preprocess:</label>
                 <div id="preprocess-upload" class="upload-area">
                     <div class="upload-text">Click to select images</div>
                 </div>
             </div>
+
             <div class="form-group">
-                <label style="display:flex; align-items:center; gap:8px; font-size:0.9em;">
-                    <input type="checkbox" checked> Use calculated statistics from Step 1
-                </label>
+                <label class="form-label">Upload Statistics File (.npy):</label>
+                <div style="display:flex; gap:10px;">
+                    <div class="form-control" style="color: #6b7280; font-style: italic;">Select .npy file...</div>
+                    <button class="btn btn-secondary" style="padding: 8px 12px;">Browse...</button>
+                </div>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Output Directory:</label>
                 <div style="display:flex; gap:10px;">
@@ -343,15 +324,25 @@
                     <button class="btn btn-secondary" style="padding: 8px 12px;">Browse...</button>
                 </div>
             </div>
-            <button id="process-btn" class="btn btn-primary">
+
+            <button id="process-btn" class="btn btn-primary" style="margin-top: 15px;">
                 <span>✨</span> Apply Preprocessing
             </button>
+
             <div id="process-output" class="output-container">
                 <div>> Processing 12 images...</div>
                 <div style="width:100%; height:6px; background:#eee; margin:5px 0; border-radius:3px;">
                     <div style="width:100%; height:100%; background:#10b981; border-radius:3px;"></div>
                 </div>
                 <div style="color:#059669;">> Preprocessing Complete!</div>
+            </div>
+
+            <!-- Advanced Section Mockup -->
+            <div style="margin-top: 30px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">
+                <div
+                    style="padding: 15px 20px; cursor: pointer; font-weight: 500; color: #1f2937; display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.8em;">▶</span> ⚙️ Advanced: Calculate Custom Statistics
+                </div>
             </div>
 
         </div>
@@ -362,10 +353,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.getElementById('cursor');
-            const statsUpload = document.getElementById('stats-upload');
-            const calcBtn = document.getElementById('calc-btn');
-            const statsOutput = document.getElementById('stats-output');
-
             const preprocessUpload = document.getElementById('preprocess-upload');
             const processBtn = document.getElementById('process-btn');
             const processOutput = document.getElementById('process-output');
@@ -388,28 +375,13 @@
             }
 
             async function runAnimation() {
-                // 1. Upload Stats Images
-                await moveCursorTo(statsUpload, 1000, 500);
-                statsUpload.classList.add('active');
-                statsUpload.innerHTML = '<div class="upload-text" style="color:#667eea; font-weight:bold;">50 Images Selected</div>';
-
-                // 2. Calculate Stats
-                await moveCursorTo(calcBtn, 800, 200);
-                calcBtn.classList.add('clicked');
-                await new Promise(r => setTimeout(r, 150));
-                calcBtn.classList.remove('clicked');
-
-                // Show stats output
-                await new Promise(r => setTimeout(r, 500));
-                statsOutput.classList.add('visible');
-
-                // 3. Upload Preprocess Images
+                // 1. Upload Preprocess Images
                 await moveCursorTo(preprocessUpload, 1000, 500);
                 preprocessUpload.classList.add('active');
                 preprocessUpload.innerHTML = '<div class="upload-text" style="color:#667eea; font-weight:bold;">12 Images Selected</div>';
 
-                // 4. Apply Preprocessing
-                await moveCursorTo(processBtn, 800, 200);
+                // 2. Apply Preprocessing
+                await moveCursorTo(processBtn, 800, 400);
                 processBtn.classList.add('clicked');
                 await new Promise(r => setTimeout(r, 150));
                 processBtn.classList.remove('clicked');
@@ -421,22 +393,20 @@
                 // Move cursor away
                 cursor.style.transform = `translate(850px, 550px)`;
 
-                // Loop after 2 seconds
+                // Loop after 3 seconds
                 setTimeout(() => {
                     // Reset state
-                    statsUpload.classList.remove('active');
-                    statsUpload.innerHTML = '<div class="upload-text">Click to select images</div>';
-                    statsOutput.classList.remove('visible');
                     preprocessUpload.classList.remove('active');
                     preprocessUpload.innerHTML = '<div class="upload-text">Click to select images</div>';
                     processOutput.classList.remove('visible');
                     runAnimation();
-                }, 2000);
+                }, 3000);
             }
 
             runAnimation();
         });
     </script>
+
 </body>
 
 </html>

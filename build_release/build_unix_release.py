@@ -216,7 +216,7 @@ def create_unix_release(platform_key: str = None):
                 'CFBundleName': 'PyPotteryLauncher',
                 'CFBundleDisplayName': 'PyPottery Launcher',
                 'CFBundleIdentifier': 'com.lrncrd.pypottery',
-                'CFBundleVersion': '1.0.1',
+                'CFBundleVersion': '1.0.2',
                 'CFBundlePackageType': 'APPL',
                 'CFBundleExecutable': 'launcher',
                 'CFBundleIconFile': 'AppIcon',

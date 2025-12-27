@@ -294,6 +294,82 @@
             transform: translate(-50px, -50px);
             pointer-events: none;
         }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            width: 800px;
+            height: 500px;
+            background: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .lightbox-overlay.visible .lightbox-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 10001;
+            line-height: 1;
+        }
+
+        .open-folder-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .open-folder-btn.active {
+            opacity: 1;
+            background: #fff;
+            border-color: #9ca3af;
+        }
     </style>
 </head>
 
@@ -304,8 +380,7 @@
             <div class="dot red"></div>
             <div class="dot yellow"></div>
             <div class="dot green"></div>
-            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v0.2.0
-            </div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryInk v2.1.0</div>
         </div>
         <!-- Tabs -->
         <div class="tab-bar">
@@ -330,7 +405,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Upload Images:</label>
+                    <label class="form-label">Upload Images (Max 5):</label>
                     <div id="upload-area" class="upload-area">
                         <div class="upload-icon">📁</div>
                         <div class="upload-text">Click to Upload</div>
@@ -354,6 +429,7 @@
                 </div>
 
                 <button id="run-btn" class="btn-primary">Run Diagnostics</button>
+                <button id="open-folder-btn" class="open-folder-btn">📁 Open Diagnostics Folder</button>
             </div>
 
             <div class="visualization">
@@ -365,6 +441,17 @@
         </div>
 
         <div id="cursor" class="cursor"></div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox-overlay">
+        <div class="lightbox-content">
+            <span class="close-btn">&times;</span>
+            <div style="text-align:center;">
+                <div style="font-size:3em; margin-bottom:10px;">🖼️</div>
+                <div>Diagnostic Result View</div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -423,6 +510,9 @@
                 cursor.style.transform = `translate(850px, 600px)`;
 
                 // 4. Process Animation
+                statusText.innerText = 'Clearing temp_diagnostics...';
+                await new Promise(r => setTimeout(r, 500));
+
                 statusText.innerText = 'Processing Patches...';
 
                 for (let i = 0; i < patches.length; i++) {
@@ -431,7 +521,7 @@
                         patches[i - 1].classList.remove('processing');
                         patches[i - 1].classList.add('done');
                     }
-                    await new Promise(r => setTimeout(r, 150));
+                    await new Promise(r => setTimeout(r, 100)); // Faster processing
                 }
                 patches[patches.length - 1].classList.remove('processing');
                 patches[patches.length - 1].classList.add('done');
@@ -439,19 +529,31 @@
                 statusText.innerText = 'Diagnostics Complete';
                 statusText.style.color = '#10b981';
 
+                // 5. Enable Open Folder Button
+                const openFolderBtn = document.getElementById('open-folder-btn');
+                openFolderBtn.classList.add('active');
+
+                // 6. Simulate Lightbox (Quick)
+                await moveCursorTo(patches[5], 800, 200);
+                const lightbox = document.getElementById('lightbox');
+                lightbox.classList.add('visible');
+                await new Promise(r => setTimeout(r, 1500)); // View for 1.5s
+                lightbox.classList.remove('visible');
+
                 // Loop after 2 seconds
                 setTimeout(() => {
                     // Reset state
                     modelSelect.value = 'Select Model...';
                     modelSelect.style.borderColor = '';
-                    uploadBox.classList.remove('active');
-                    uploadBox.innerText = 'Click to Upload';
+                    uploadArea.classList.remove('active');
+                    uploadArea.innerHTML = '<div class="upload-icon">📁</div><div class="upload-text">Click to Upload</div>';
                     patchGrid.style.opacity = '0.3';
                     patches.forEach(p => {
                         p.classList.remove('processing', 'done');
                     });
                     statusText.innerText = 'Ready';
                     statusText.style.color = '';
+                    openFolderBtn.classList.remove('active');
                     runAnimation();
                 }, 2000);
             }

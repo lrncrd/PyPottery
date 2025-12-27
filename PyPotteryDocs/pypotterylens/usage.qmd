@@ -7,10 +7,36 @@ toc: true
 <div style="text-align: center;">
   <img src="../imgs/LogoLens.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
   <br>
-  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.2.0
   </span>
 </div>
+
+```{=html}
+<div style="
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border: 1px solid #e1e4e8;
+    border-left: 5px solid #667eea;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+">
+    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
+        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
+            Need a hand?
+        </div>
+        <div style="line-height: 1.5;">
+            Look for <strong style="color: #667eea;">Pixel</strong> in the app! <br>
+            Clicking on him brings you straight back to this guide.
+        </div>
+    </div>
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
+    </div>
+</div>
+```
 
 
 # GUI Overview

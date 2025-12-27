@@ -306,12 +306,8 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#interface-overview" id="toc-interface-overview" class="nav-link active" data-scroll-target="#interface-overview">Interface Overview</a></li>
   <li><a href="#hardware-check" id="toc-hardware-check" class="nav-link" data-scroll-target="#hardware-check">Hardware Check</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a></li>
   <li><a href="#model-diagnostic" id="toc-model-diagnostic" class="nav-link" data-scroll-target="#model-diagnostic">Model Diagnostic</a></li>
-  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a>
-  <ul class="collapse">
-  <li><a href="#step-1-calculate-statistics" id="toc-step-1-calculate-statistics" class="nav-link" data-scroll-target="#step-1-calculate-statistics">Step 1: Calculate Statistics</a></li>
-  <li><a href="#step-2-apply-preprocessing" id="toc-step-2-apply-preprocessing" class="nav-link" data-scroll-target="#step-2-apply-preprocessing">Step 2: Apply Preprocessing</a></li>
-  </ul></li>
   <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing">Batch Processing</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -339,7 +335,32 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div style="text-align: center;">
-<p><img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;"> version 2.0.0 </span></p>
+<p><img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> </p>
+</div>
+<div style="
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border: 1px solid #e1e4e8;
+    border-left: 5px solid #667eea;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+">
+    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
+        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
+            Need a hand?
+        </div>
+        <div style="line-height: 1.5;">
+            Look for <strong style="color: #667eea;">Pixel</strong> in the app! <br>
+            Clicking on him brings you straight back to this guide.
+        </div>
+    </div>
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
+    </div>
 </div>
 <section id="interface-overview" class="level1">
 <h1>Interface Overview</h1>
@@ -355,50 +376,35 @@ ul.task-list li input[type="checkbox"] {
 <section id="hardware-check" class="level1">
 <h1>Hardware Check</h1>
 <p>This tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.</p>
-<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 900px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
 </iframe>
 <p>The page displays <strong>Recommended Specifications</strong>, indicating the minimum requirements to use the program.</p>
 <p>Clicking on <strong>🔍 Check Hardware</strong> will display your machine’s specifications along with a performance score.</p>
-<p>Here is an example of a hardware check result on a MacBook Air M3:</p>
-<div class="callout callout-style-simple callout-note callout-titled">
+</section>
+<section id="preprocessing" class="level1">
+<h1>Preprocessing</h1>
+<p>This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.</p>
+<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 980px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+</iframe>
+<p>You can use an existing <code>.npy</code> file to apply the statistics to the images.</p>
+<p>PyPotteryInk provides two default <code>.npy</code> files:</p>
+<ul>
+<li><code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model)</li>
+<li><code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</li>
+</ul>
+<p>In short, these metrics can be used to make your images resemble those used to train the model.</p>
+<p>The <strong>Output Directory</strong> text box allows you to indicate where the modified images will be saved. Click <strong>✨ Apply Preprocessing</strong> to start. A progress bar will indicate the status.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-🟠 Recommendation Level: RECOMMENDED
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<section id="hardware-specifications" class="level3">
-<h3 class="anchored" data-anchor-id="hardware-specifications">🖥️ Hardware Specifications</h3>
-<ul>
-<li><strong>GPU:</strong> Apple Metal Performance Shaders (MPS)</li>
-<li><strong>CPU:</strong> arm (8 cores)</li>
-<li><strong>RAM:</strong> 16.0 GB</li>
-<li><strong>Disk speed:</strong> Read: 5931.6 MB/s | Write: 233.8 MB/s</li>
-</ul>
-</section>
-<section id="hardware-score-78100-78.0" class="level3">
-<h3 class="anchored" data-anchor-id="hardware-score-78100-78.0">📊 Hardware Score: 78/100 (78.0%)</h3>
-</section>
-<section id="recommendations" class="level3">
-<h3 class="anchored" data-anchor-id="recommendations">💡 Recommendations</h3>
-<ul>
-<li>✅ Apple Metal Performance Shaders (MPS) - Excellent acceleration for Apple Silicon</li>
-<li>✅ 16GB or more RAM - Ideal for large image batches</li>
-<li>⚠️ Processor with 4+ cores</li>
-<li>⚠️ Decent disk but could be improved with an NVMe SSD</li>
-<li>✅ macOS system - Good compatibility</li>
-<li>💡 If using a laptop, ensure it’s well ventilated and connected to power</li>
-<li>💡 Consider using a cooling pad for laptops to avoid thermal throttling</li>
-</ul>
-</section>
-<section id="conclusion" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h3>
-<p>Your hardware is adequate for using PyPotteryInk, but you may encounter some limitations with very large images.</p>
-<p>💡 <em>If you’re using a laptop, ensure it’s well ventilated and connected to power during processing</em></p>
-</section>
+<p>In the “Advanced” section, you can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The <strong>Save Statistics As</strong> text box allows you to decide the path and name of the <code>.npy</code> file. Click <strong>📊 Calculate Statistics</strong> to perform the calculation.</p>
 </div>
 </div>
 </section>
@@ -416,28 +422,6 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Contrast Test Values</strong>: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.</li>
 </ul>
 <p>Clicking on <strong>🚀 Run Diagnostic</strong> will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results.</p>
-</section>
-<section id="preprocessing" class="level1">
-<h1>Preprocessing</h1>
-<p>This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.</p>
-<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 980px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<p>There are two options:</p>
-<section id="step-1-calculate-statistics" class="level3">
-<h3 class="anchored" data-anchor-id="step-1-calculate-statistics">Step 1: Calculate Statistics</h3>
-<p>You can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The <strong>Save Statistics As</strong> text box allows you to decide the path and name of the <code>.npy</code> file. Click <strong>📊 Calculate Statistics</strong> to perform the calculation.</p>
-</section>
-<section id="step-2-apply-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-apply-preprocessing">Step 2: Apply Preprocessing</h3>
-<p>This step allows you to apply the statistics. Images are uploaded in the same way. A checkbox allows you to use the statistics directly from Step 1. Alternatively, you can use an existing <code>.npy</code> file.</p>
-<p>PyPotteryInk provides two default <code>.npy</code> files:</p>
-<ul>
-<li><code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model)</li>
-<li><code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</li>
-</ul>
-<p>In short, these metrics can be used to make your images resemble those used to train the model.</p>
-<p>The <strong>Output Directory</strong> text box allows you to indicate where the modified images will be saved. Click <strong>✨ Apply Preprocessing</strong> to start. A progress bar will indicate the status.</p>
-</section>
 </section>
 <section id="batch-processing" class="level1">
 <h1>Batch Processing</h1>

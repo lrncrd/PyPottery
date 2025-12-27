@@ -180,6 +180,14 @@ The build script automatically:
 
 ## 📊 Recent Updates
 
+### v0.3.1
+
+- **New features**:
+  - Added Pixel
+  - Object numbering
+  
+
+
 ### v0.3.0
 
 - **New features**:

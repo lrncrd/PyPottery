@@ -6,11 +6,18 @@ format: html
 
 ## Latest Release
 
+### Version 2.1.0
+
+- Modified System Requirements Check
+- Added Pixel
+- Minor UI Improvements
+
+
+## Version History
+
 ### Version 2.0.1 (12/12/2025)
 
 - Diffusion model downloaded in local directory (models)
-
-## Version History
 
 ### Version 2.0.0 (December 2025)
 

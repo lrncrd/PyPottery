@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,32 +22,39 @@
             color: white;
             transition: opacity 0.5s ease;
         }
-        
+
         .splash-screen.fade-out {
             opacity: 0;
             pointer-events: none;
         }
-        
+
         .splash-content {
             text-align: center;
             max-width: 600px;
             padding: 40px;
         }
-        
+
         .splash-logo {
             max-width: 150px;
             height: auto;
             margin: 0 auto 20px;
             animation: pulse 2s ease-in-out infinite;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
-        
+
         .splash-spinner {
-            border: 4px solid rgba(255,255,255,0.3);
+            border: 4px solid rgba(255, 255, 255, 0.3);
             border-top: 4px solid white;
             border-radius: 50%;
             width: 50px;
@@ -54,33 +62,38 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         .splash-title {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 1rem;
         }
-        
+
         .splash-message {
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .splash-progress {
             width: 100%;
             max-width: 500px;
             margin: 20px auto;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             overflow: hidden;
             height: 30px;
         }
-        
+
         .splash-progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #10b981, #3b82f6);
@@ -102,6 +115,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Splash Screen -->
     <div id="splash-screen" class="splash-screen">
@@ -110,7 +124,7 @@
             <div class="splash-spinner"></div>
             <h1 class="splash-title">PyPotteryLens</h1>
             <p class="splash-message" id="splash-message">Initializing application...</p>
-            
+
             <div class="splash-progress">
                 <div class="splash-progress-bar" id="splash-progress-bar" style="width: 0%">
                     <span id="splash-progress-text">0%</span>
@@ -120,459 +134,478 @@
     </div>
 
     <div class="main-container" id="main-container">
-    <!-- Header -->
-    <header class="app-header">
-        <div class="header-content">
-            <img src="/static/imgs/LogoLens.png" alt="pottery icon" class="header-logo">
-            <div class="header-text">
-                <h1>PyPotteryLens</h1>
-                <span>Archaeological Pottery Documentation Tool 
-                    <span class="version">v0.2.0</span>
-                </span>
-            </div>
-            <div class="model-info-button" id="model-info-button" title="App Information">
-                <span class="model-info-label">ℹ️ Info</span>
-            </div>
-            <div class="model-info-popup" id="model-info-popup">
-                <div class="model-info-popup-content">
-                    <div class="model-info-popup-header">
-                        <h4>PyPotteryLens</h4>
-                        <button class="model-info-close" id="model-info-close">&times;</button>
-                    </div>
-                    <div class="model-info-popup-body">
-                        <!-- Logo centrato -->
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <img src="/static/imgs/LogoLens.png" alt="PyPotteryLens Logo" 
-                                 style="width: 100px; height: auto;">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <img src="/static/imgs/LogoLens.png" alt="pottery icon" class="header-logo">
+                <div class="header-text">
+                    <h1>PyPotteryLens</h1>
+                    <span>Archaeological Pottery Documentation Tool
+                        <span class="version">v0.2.1</span>
+                    </span>
+                </div>
+                <div class="model-info-button" id="model-info-button" title="App Information">
+                    <span class="model-info-label">ℹ️ Info</span>
+                </div>
+                <div class="model-info-popup" id="model-info-popup">
+                    <div class="model-info-popup-content">
+                        <div class="model-info-popup-header">
+                            <h4>PyPotteryLens</h4>
+                            <button class="model-info-close" id="model-info-close">&times;</button>
                         </div>
-                        
-                        <!-- App Info -->
-                        <div class="model-info-item">
-                            <strong>Version:</strong> v0.2.0
-                        </div>
-                        <div class="model-info-item">
-                            <strong>Author:</strong> Lorenzo Cardarelli
-                        </div>
-                        
-                        <!-- System Info -->
-                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border-color);">
+                        <div class="model-info-popup-body">
+                            <!-- Logo centrato -->
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <img src="/static/imgs/LogoLens.png" alt="PyPotteryLens Logo"
+                                    style="width: 100px; height: auto;">
+                            </div>
+
+                            <!-- App Info -->
                             <div class="model-info-item">
-                                <strong>System Information:</strong>
+                                <strong>Version:</strong> v0.2.1
                             </div>
-                            <div id="system-info-container">
+                            <div class="model-info-item">
+                                <strong>Author:</strong> Lorenzo Cardarelli
+                            </div>
+
+                            <!-- System Info -->
+                            <div
+                                style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border-color);">
                                 <div class="model-info-item">
-                                    <em>Loading system info...</em>
+                                    <strong>System Information:</strong>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="app-main">
-        <!-- Project Info Bar -->
-        <div id="project-info-bar" class="project-info-bar">
-            <div class="project-info-content">
-                <span class="project-label">Current Project:</span>
-                <span id="current-project-name" class="project-name">No project selected</span>
-            </div>
-        </div>
-
-        <!-- Tab Navigation -->
-        <div class="tabs">
-            <button class="tab-button active" data-tab="projects">🗂️ Project Manager</button>
-            <button class="tab-button" data-tab="pdf">PDF document processing</button>
-            <button class="tab-button" data-tab="model">Apply Model</button>
-            <button class="tab-button" data-tab="annotation">Review Annotations and extract masks</button>
-            <button class="tab-button" data-tab="tabular">Tabular Information</button>
-            <button class="tab-button" data-tab="postprocess">Post Processing</button>
-        </div>
-
-        <!-- Tab Content -->
-        <div class="tab-content-container">
-            
-            <!-- Project Manager Tab -->
-            <div class="tab-content active" id="projects-tab">
-                <h2>🗂️ Projects </h2>
-                <p class="subtitle">Create, select or delete your analysis projects</p>
-
-                <!-- Create New Project Section -->
-                <div class="project-create-section">
-                    <h3>Create New Project</h3>
-                    <div class="form-group">
-                        <label for="new-project-name">Project Name *</label>
-                        <input type="text" id="new-project-name" class="form-control" 
-                               placeholder="E.g.: Scavi_Capena_2024">
-                    </div>
-                    <div class="form-group">
-                        <label for="new-project-description">Description (optional)</label>
-                        <textarea id="new-project-description" class="form-control" rows="3"
-                                  placeholder="Project description..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Project Icon</label>
-                        <div id="icon-selector" class="icon-selector">
-                            <!-- Icons will be loaded here -->
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" id="create-project-btn">
-                        ➕ Create Project
-                    </button>
-                </div>
-
-                <!-- Projects List Section -->
-                <div class="projects-list-section">
-                    <div class="projects-header">
-                        <h3>Your Projects</h3>
-                        <button class="btn btn-secondary" id="refresh-projects-btn">
-                            🔄 Refresh List
-                        </button>
-                    </div>
-                    <div id="projects-list" class="projects-grid">
-                        <!-- Projects will be loaded here dynamically -->
-                        <div class="loading-message">Loading projects...</div>
-                    </div>
-                </div>
-
-                <div id="projects-status" class="status-message"></div>
-            </div>
-            
-            <!-- PDF Processing Tab -->
-            <div class="tab-content" id="pdf-tab">
-                <h2>Select a PDF file</h2>
-                <p class="subtitle">The PDF will be imported into the currently selected project and converted to images.</p>
-
-                <div class="upload-section">
-                    <input type="file" id="pdf-upload" accept=".pdf" style="display: none;">
-                    <button class="btn btn-primary" id="pdf-upload-btn">
-                        Upload PDF to current project
-                    </button>
-                </div>
-
-                <div class="checkbox-section">
-                    <label>
-                        <input type="checkbox" id="split-pages">
-                        Split scanned pages
-                    </label>
-                    <p class="info-text">Enable if each PDF page contains two actual pages (left and right).</p>
-                </div>
-
-                <div class="result-section">
-                    <label>Upload Info</label>
-                    <div id="pdf-selected-info" class="form-control" style="min-height:40px;display:flex;align-items:center;">
-                        <em>No file uploaded yet</em>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <p><strong>Note:</strong></p>
-                    <p>When you upload a PDF, the server will automatically place the generated images inside the project folder. You don't need to set an output name — the project name will be used.</p>
-                </div>
-
-                <div id="pdf-status" class="status-message"></div>
-            </div>
-
-            <!-- Model Application Tab -->
-            <div class="tab-content" id="model-tab">
-                <div class="tab-layout">
-                    <!-- Left Panel - Controls -->
-                    <div class="controls-panel">
-                        <!-- Model Selection -->
-                        <div class="control-group">
-                            <h3>🤖 Model Selection</h3>
-                            <div class="form-group">
-                                <label>Model</label>
-                                <select id="model-select" class="form-control">
-                                    <option value="">Select model...</option>
-                                </select>
-                                <p class="info-text">Select the YOLO model to apply to project images</p>
-                            </div>
-                        </div>
-
-                        <!-- Model Parameters -->
-                        <div class="control-group">
-                            <h3>⚙️ Model Parameters</h3>
-                            <div class="form-group">
-                                <label>Confidence Threshold</label>
-                                <input type="range" id="confidence" min="0.1" max="1.0" step="0.05" value="0.5" class="form-range">
-                                <span id="confidence-value">0.5</span>
-                                <p class="info-text">Lower values detect more objects but may increase false positives</p>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Kernel Size</label>
-                                    <input type="number" id="kernel-size" min="1" max="10" value="2" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Iterations</label>
-                                    <input type="number" id="iterations" min="1" max="50" value="10" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Advanced Options -->
-                        <div class="control-group">
-                            <h3>🔧 Advanced Options</h3>
-                            <label>
-                                <input type="checkbox" id="diagnostic-mode">
-                                Diagnostic Mode
-                            </label>
-                            <p class="info-text">Process only first 25 images for testing</p>
-                        </div>
-
-                        <!-- Process Button -->
-                        <div class="control-group">
-                            <button class="btn btn-primary btn-block" id="apply-model-btn">
-                                🚀 Apply Model to Project
-                            </button>
-                            
-                            <!-- Progress Bar -->
-                            <div class="progress-container" id="model-progress">
-                                <div class="progress-bar-wrapper">
-                                    <div class="progress-bar" id="model-progress-bar">0%</div>
-                                </div>
-                                <div class="progress-info" id="model-progress-info">Processing...</div>
-                            </div>
-                            
-                            <div id="model-status" class="status-message"></div>
-                        </div>
-                    </div>
-
-                    <!-- Right Panel - Preview -->
-                    <div class="preview-panel">
-                        <div id="model-empty-msg" class="empty-message">
-                            <h3>📁 No project selected</h3>
-                            <p>Select a project to preview its images</p>
-                        </div>
-                        <div id="model-gallery" class="image-gallery" style="display: none;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Annotation Tab -->
-            <div class="tab-content" id="annotation-tab">
-                <div class="tab-layout">
-                    <!-- Left Panel - Image List -->
-                    <div class="controls-panel">
-                        <!-- Image List with Checkboxes -->
-                        <div class="control-group" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
-                            <h3>🖼️ Images (<span id="annotation-image-count">0</span>)</h3>
-                            <div class="annotation-image-list" id="annotation-image-list">
-                                <!-- Empty state will be populated by JavaScript -->
-                            </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="control-group">
-                            <button class="btn btn-primary btn-block" id="annotation-save" style="margin-bottom: 8px;">
-                                💾 Save Current Mask
-                            </button>
-                            <button class="btn btn-primary btn-block" id="extract-masks-btn">
-                                📤 Extract Cards
-                            </button>
-                            
-                            <!-- Extraction Progress Bar -->
-                            <div class="progress-container" id="extraction-progress" style="margin-top: 12px;">
-                                <div class="progress-bar-wrapper">
-                                    <div class="progress-bar" id="extraction-progress-bar">0%</div>
-                                </div>
-                                <div class="progress-info" id="extraction-progress-info">Extracting...</div>
-                            </div>
-                            
-                            <div id="annotation-status" class="status-message"></div>
-                        </div>
-                    </div>
-
-                    <!-- Right Panel - Editor -->
-                    <div class="preview-panel">
-                        <div id="annotation-empty-msg" class="empty-message">
-                            <h3>🖼️ No Mask Selected</h3>
-                            <p>Select a project with masks and click a mask to review</p>
-                        </div>
-                        <div id="annotation-editor" style="display: none;">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <strong id="annotation-current-image">No image</strong>
-                            </div>
-                            <canvas id="annotation-canvas"></canvas>
-                            <div class="editor-controls">
-                                <button class="btn btn-secondary" id="annotation-prev-btn">◀ Prev</button>
-                                <button class="btn btn-tool active" id="brush-tool" data-tool="brush">🖌️ Brush</button>
-                                <button class="btn btn-tool" id="eraser-tool" data-tool="eraser">🧹 Eraser</button>
-                                <button class="btn btn-tool" id="clear-tool" data-tool="clear">🗑️ Clear</button>
-                                <label>Size: <input type="range" id="brush-size" min="5" max="50" value="20"></label>
-                                <button class="btn btn-secondary" id="annotation-next-btn">Next ▶</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabular Tab -->
-            <div class="tab-content" id="tabular-tab">
-                <h2>📊 Tabular Information</h2>
-                <p class="subtitle">View and edit data associated with extracted cards from current project</p>
-
-                <div class="navigation-bar">
-                    <div class="button-group">
-                        <button class="btn btn-secondary" id="tabular-prev">◀ Previous</button>
-                        <button class="btn btn-secondary" id="tabular-next">Next ▶</button>
-                    </div>
-                </div>
-
-                <div class="tabular-layout">
-                    <!-- Image List Sidebar -->
-                    <div class="tabular-sidebar">
-                        <h3>📋 Images</h3>
-                        <div id="tabular-image-list" class="tabular-image-list"></div>
-                    </div>
-                    
-                    <!-- Image Display -->
-                    <div class="tabular-image">
-                        <div class="tabular-canvas-wrapper">
-                            <canvas id="tabular-canvas"></canvas>
-                            <div class="zoom-hint">Click to zoom</div>
-                        </div>
-                    </div>
-
-                    <!-- Table Display -->
-                    <div class="tabular-table">
-                        <div class="form-row">
-                            <button class="btn btn-success" id="tabular-mark-reviewed-btn">👁️ Mark as Reviewed</button>
-                            <input type="text" id="new-column-name" placeholder="New column name..." class="form-control">
-                            <button class="btn btn-secondary" id="add-column-btn">➕ Add Column</button>
-                            <button class="btn btn-primary" id="export-csv-btn">📊 Export Combined CSV</button>
-                        </div>
-                        <div id="tabular-table-container">
-                            <table id="data-table" class="data-table">
-                                <thead id="table-header"></thead>
-                                <tbody id="table-body"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tabular-status" class="status-message"></div>
-            </div>
-
-            <!-- Post Processing Tab -->
-            <div class="tab-content" id="postprocess-tab">
-                <h2>🔍 Post Processing</h2>
-                <p class="subtitle">Review and classify extracted cards from current project</p>
-
-                <div class="navigation-bar">
-                    <div class="button-group">
-                        <button class="btn btn-secondary" id="postprocess-prev">◀ Previous</button>
-                        <button class="btn btn-secondary" id="postprocess-next">Next ▶</button>
-                    </div>
-                </div>
-
-                <div class="postprocess-layout">
-                    <!-- Left: Image List -->
-                    <div class="postprocess-sidebar">
-                        <h3>🖼️ Cards (<span id="postprocess-image-count">0</span>)</h3>
-                        <div id="postprocess-image-list" class="postprocess-image-list"></div>
-                        
-                        <!-- Processing Options -->
-                        <div class="postprocess-options">
-                            <h4>⚙️ Options</h4>
-                            <label>
-                                <input type="checkbox" id="auto-flip-vertical" checked>
-                                Auto Vertical Flip
-                            </label>
-                            <label>
-                                <input type="checkbox" id="auto-flip-horizontal" checked>
-                                Auto Horizontal Flip
-                            </label>
-                        </div>
-                        
-                        <!-- Actions -->
-                        <div class="postprocess-actions">
-                            <button class="btn btn-primary btn-block" id="process-all-btn">🔍 Process All Images</button>
-                            <button class="btn btn-primary btn-block" id="export-btn">📦 Export Results</button>
-                            <div class="progress-bar-wrapper" style="margin-top: 1rem;">
-                                <div class="progress-bar" id="postprocess-progress-bar">0%</div>
-                            </div>
-                            <div id="postprocess-status" class="status-message"></div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Image Comparison -->
-                    <div class="postprocess-preview">
-                        <div class="image-comparison">
-                            <div class="image-container">
-                                <h4>Original Image</h4>
-                                <img id="postprocess-original" class="preview-image" alt="Original">
-                            </div>
-                            <div class="image-container">
-                                <h4>Processed Image</h4>
-                                <div class="processed-image-wrapper">
-                                    <img id="postprocess-transformed" class="preview-image" alt="Processed" style="display: none;">
-                                    <div id="postprocess-placeholder" class="processed-placeholder">
-                                        <p>🔄 Not processed yet</p>
-                                        <p class="placeholder-hint">Click "Process All Images" to generate processed versions</p>
+                                <div id="system-info-container">
+                                    <div class="model-info-item">
+                                        <em>Loading system info...</em>
                                     </div>
                                 </div>
-                                <div class="button-group">
-                                    <button class="btn btn-tool" id="flip-vertical-btn">↕️ Flip Vertical</button>
-                                    <button class="btn btn-tool" id="flip-horizontal-btn">↔️ Flip Horizontal</button>
-                                </div>
-                                <div class="form-group">
-                                    <label>Type</label>
-                                    <select id="type-select" class="form-control">
-                                        <option value="ENT">ENT</option>
-                                        <option value="FRAG">FRAG</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </header>
 
-        </div>
-    </main>
-
-    <!-- Export Dialog -->
-    <div id="export-dialog" class="dialog-overlay" style="display: none;">
-        <div class="dialog">
-            <div class="dialog-header">
-                <h2>📦 Export Options</h2>
-                <p>Configure your export settings</p>
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Project Info Bar -->
+            <div id="project-info-bar" class="project-info-bar">
+                <div class="project-info-content">
+                    <span class="project-label">Current Project:</span>
+                    <span id="current-project-name" class="project-name">No project selected</span>
+                </div>
             </div>
-            <div class="dialog-body">
-                <div class="form-group">
-                    <h3>🏷️ Basic Settings</h3>
-                    <label>Export Acronym</label>
-                    <input type="text" id="export-acronym" class="form-control" placeholder="Enter acronym (e.g., OSA_2024)...">
-                    <p class="info-text">Only letters, numbers, and underscores allowed</p>
+
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="projects">🗂️ Project Manager</button>
+                <button class="tab-button" data-tab="pdf">PDF document processing</button>
+                <button class="tab-button" data-tab="model">Apply Model</button>
+                <button class="tab-button" data-tab="annotation">Review Annotations and extract masks</button>
+                <button class="tab-button" data-tab="tabular">Tabular Information</button>
+                <button class="tab-button" data-tab="postprocess">Post Processing</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content-container">
+
+                <!-- Project Manager Tab -->
+                <div class="tab-content active" id="projects-tab">
+                    <h2>🗂️ Projects </h2>
+                    <p class="subtitle">Create, select or delete your analysis projects</p>
+
+                    <!-- Create New Project Section -->
+                    <div class="project-create-section">
+                        <h3>Create New Project</h3>
+                        <div class="form-group">
+                            <label for="new-project-name">Project Name *</label>
+                            <input type="text" id="new-project-name" class="form-control"
+                                placeholder="E.g.: Scavi_Capena_2024">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-project-description">Description (optional)</label>
+                            <textarea id="new-project-description" class="form-control" rows="3"
+                                placeholder="Project description..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Project Icon</label>
+                            <div id="icon-selector" class="icon-selector">
+                                <!-- Icons will be loaded here -->
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="create-project-btn">
+                            ➕ Create Project
+                        </button>
+                    </div>
+
+                    <!-- Projects List Section -->
+                    <div class="projects-list-section">
+                        <div class="projects-header">
+                            <h3>Your Projects</h3>
+                            <button class="btn btn-secondary" id="refresh-projects-btn">
+                                🔄 Refresh List
+                            </button>
+                        </div>
+                        <div id="projects-list" class="projects-grid">
+                            <!-- Projects will be loaded here dynamically -->
+                            <div class="loading-message">Loading projects...</div>
+                        </div>
+                    </div>
+
+                    <div id="projects-status" class="status-message"></div>
                 </div>
 
-                <div id="export-dialog-status" class="status-message"></div>
+                <!-- PDF Processing Tab -->
+                <div class="tab-content" id="pdf-tab">
+                    <h2>Select a PDF file</h2>
+                    <p class="subtitle">The PDF will be imported into the currently selected project and converted to
+                        images.</p>
+
+                    <div class="upload-section">
+                        <input type="file" id="pdf-upload" accept=".pdf" style="display: none;">
+                        <button class="btn btn-primary" id="pdf-upload-btn">
+                            Upload PDF to current project
+                        </button>
+                    </div>
+
+                    <div class="checkbox-section">
+                        <label>
+                            <input type="checkbox" id="split-pages">
+                            Split scanned pages
+                        </label>
+                        <p class="info-text">Enable if each PDF page contains two actual pages (left and right).</p>
+                    </div>
+
+                    <div class="result-section">
+                        <label>Upload Info</label>
+                        <div id="pdf-selected-info" class="form-control"
+                            style="min-height:40px;display:flex;align-items:center;">
+                            <em>No file uploaded yet</em>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>Note:</strong></p>
+                        <p>When you upload a PDF, the server will automatically place the generated images inside the
+                            project folder. You don't need to set an output name — the project name will be used.</p>
+                    </div>
+
+                    <div id="pdf-status" class="status-message"></div>
+                </div>
+
+                <!-- Model Application Tab -->
+                <div class="tab-content" id="model-tab">
+                    <div class="tab-layout">
+                        <!-- Left Panel - Controls -->
+                        <div class="controls-panel">
+                            <!-- Model Selection -->
+                            <div class="control-group">
+                                <h3>🤖 Model Selection</h3>
+                                <div class="form-group">
+                                    <label>Model</label>
+                                    <select id="model-select" class="form-control">
+                                        <option value="">Select model...</option>
+                                    </select>
+                                    <p class="info-text">Select the YOLO model to apply to project images</p>
+                                </div>
+                            </div>
+
+                            <!-- Model Parameters -->
+                            <div class="control-group">
+                                <h3>⚙️ Model Parameters</h3>
+                                <div class="form-group">
+                                    <label>Confidence Threshold</label>
+                                    <input type="range" id="confidence" min="0.1" max="1.0" step="0.05" value="0.5"
+                                        class="form-range">
+                                    <span id="confidence-value">0.5</span>
+                                    <p class="info-text">Lower values detect more objects but may increase false
+                                        positives</p>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Kernel Size</label>
+                                        <input type="number" id="kernel-size" min="1" max="10" value="2"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Iterations</label>
+                                        <input type="number" id="iterations" min="1" max="50" value="10"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Options -->
+                            <div class="control-group">
+                                <h3>🔧 Advanced Options</h3>
+                                <label>
+                                    <input type="checkbox" id="diagnostic-mode">
+                                    Diagnostic Mode
+                                </label>
+                                <p class="info-text">Process only first 25 images for testing</p>
+                            </div>
+
+                            <!-- Process Button -->
+                            <div class="control-group">
+                                <button class="btn btn-primary btn-block" id="apply-model-btn">
+                                    🚀 Apply Model to Project
+                                </button>
+
+                                <!-- Progress Bar -->
+                                <div class="progress-container" id="model-progress">
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar" id="model-progress-bar">0%</div>
+                                    </div>
+                                    <div class="progress-info" id="model-progress-info">Processing...</div>
+                                </div>
+
+                                <div id="model-status" class="status-message"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel - Preview -->
+                        <div class="preview-panel">
+                            <div id="model-empty-msg" class="empty-message">
+                                <h3>📁 No project selected</h3>
+                                <p>Select a project to preview its images</p>
+                            </div>
+                            <div id="model-gallery" class="image-gallery" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Annotation Tab -->
+                <div class="tab-content" id="annotation-tab">
+                    <div class="tab-layout">
+                        <!-- Left Panel - Image List -->
+                        <div class="controls-panel">
+                            <!-- Image List with Checkboxes -->
+                            <div class="control-group"
+                                style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                                <h3>🖼️ Images (<span id="annotation-image-count">0</span>)</h3>
+                                <div class="annotation-image-list" id="annotation-image-list">
+                                    <!-- Empty state will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="control-group">
+                                <button class="btn btn-primary btn-block" id="annotation-save"
+                                    style="margin-bottom: 8px;">
+                                    💾 Save Current Mask
+                                </button>
+                                <button class="btn btn-primary btn-block" id="extract-masks-btn">
+                                    📤 Extract Cards
+                                </button>
+
+                                <!-- Extraction Progress Bar -->
+                                <div class="progress-container" id="extraction-progress" style="margin-top: 12px;">
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar" id="extraction-progress-bar">0%</div>
+                                    </div>
+                                    <div class="progress-info" id="extraction-progress-info">Extracting...</div>
+                                </div>
+
+                                <div id="annotation-status" class="status-message"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel - Editor -->
+                        <div class="preview-panel">
+                            <div id="annotation-empty-msg" class="empty-message">
+                                <h3>🖼️ No Mask Selected</h3>
+                                <p>Select a project with masks and click a mask to review</p>
+                            </div>
+                            <div id="annotation-editor" style="display: none;">
+                                <div style="text-align: center; margin-bottom: 10px;">
+                                    <strong id="annotation-current-image">No image</strong>
+                                </div>
+                                <canvas id="annotation-canvas"></canvas>
+                                <div class="editor-controls">
+                                    <button class="btn btn-secondary" id="annotation-prev-btn">◀ Prev</button>
+                                    <button class="btn btn-tool active" id="brush-tool" data-tool="brush">🖌️
+                                        Brush</button>
+                                    <button class="btn btn-tool" id="eraser-tool" data-tool="eraser">🧹 Eraser</button>
+                                    <button class="btn btn-tool" id="clear-tool" data-tool="clear">🗑️ Clear</button>
+                                    <label>Size: <input type="range" id="brush-size" min="5" max="50"
+                                            value="20"></label>
+                                    <button class="btn btn-secondary" id="annotation-next-btn">Next ▶</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabular Tab -->
+                <div class="tab-content" id="tabular-tab">
+                    <h2>📊 Tabular Information</h2>
+                    <p class="subtitle">View and edit data associated with extracted cards from current project</p>
+
+                    <div class="navigation-bar">
+                        <div class="button-group">
+                            <button class="btn btn-secondary" id="tabular-prev">◀ Previous</button>
+                            <button class="btn btn-secondary" id="tabular-next">Next ▶</button>
+                        </div>
+                    </div>
+
+                    <div class="tabular-layout">
+                        <!-- Image List Sidebar -->
+                        <div class="tabular-sidebar">
+                            <h3>📋 Images</h3>
+                            <div id="tabular-image-list" class="tabular-image-list"></div>
+                        </div>
+
+                        <!-- Image Display -->
+                        <div class="tabular-image">
+                            <div class="tabular-canvas-wrapper">
+                                <canvas id="tabular-canvas"></canvas>
+                                <div class="zoom-hint">Click to zoom</div>
+                            </div>
+                        </div>
+
+                        <!-- Table Display -->
+                        <div class="tabular-table">
+                            <div class="form-row">
+                                <button class="btn btn-success" id="tabular-mark-reviewed-btn">👁️ Mark as
+                                    Reviewed</button>
+                                <input type="text" id="new-column-name" placeholder="New column name..."
+                                    class="form-control">
+                                <button class="btn btn-secondary" id="add-column-btn">➕ Add Column</button>
+                                <button class="btn btn-primary" id="export-csv-btn">📊 Export Combined CSV</button>
+                            </div>
+                            <div id="tabular-table-container">
+                                <table id="data-table" class="data-table">
+                                    <thead id="table-header"></thead>
+                                    <tbody id="table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tabular-status" class="status-message"></div>
+                </div>
+
+                <!-- Post Processing Tab -->
+                <div class="tab-content" id="postprocess-tab">
+                    <h2>🔍 Post Processing</h2>
+                    <p class="subtitle">Review and classify extracted cards from current project</p>
+
+                    <div class="navigation-bar">
+                        <div class="button-group">
+                            <button class="btn btn-secondary" id="postprocess-prev">◀ Previous</button>
+                            <button class="btn btn-secondary" id="postprocess-next">Next ▶</button>
+                        </div>
+                    </div>
+
+                    <div class="postprocess-layout">
+                        <!-- Left: Image List -->
+                        <div class="postprocess-sidebar">
+                            <h3>🖼️ Cards (<span id="postprocess-image-count">0</span>)</h3>
+                            <div id="postprocess-image-list" class="postprocess-image-list"></div>
+
+                            <!-- Processing Options -->
+                            <div class="postprocess-options">
+                                <h4>⚙️ Options</h4>
+                                <label>
+                                    <input type="checkbox" id="auto-flip-vertical" checked>
+                                    Auto Vertical Flip
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="auto-flip-horizontal" checked>
+                                    Auto Horizontal Flip
+                                </label>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="postprocess-actions">
+                                <button class="btn btn-primary btn-block" id="process-all-btn">🔍 Process All
+                                    Images</button>
+                                <button class="btn btn-primary btn-block" id="export-btn">📦 Export Results</button>
+                                <div class="progress-bar-wrapper" style="margin-top: 1rem;">
+                                    <div class="progress-bar" id="postprocess-progress-bar">0%</div>
+                                </div>
+                                <div id="postprocess-status" class="status-message"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Image Comparison -->
+                        <div class="postprocess-preview">
+                            <div class="image-comparison">
+                                <div class="image-container">
+                                    <h4>Original Image</h4>
+                                    <img id="postprocess-original" class="preview-image" alt="Original">
+                                </div>
+                                <div class="image-container">
+                                    <h4>Processed Image</h4>
+                                    <div class="processed-image-wrapper">
+                                        <img id="postprocess-transformed" class="preview-image" alt="Processed"
+                                            style="display: none;">
+                                        <div id="postprocess-placeholder" class="processed-placeholder">
+                                            <p>🔄 Not processed yet</p>
+                                            <p class="placeholder-hint">Click "Process All Images" to generate processed
+                                                versions</p>
+                                        </div>
+                                    </div>
+                                    <div class="button-group">
+                                        <button class="btn btn-tool" id="flip-vertical-btn">↕️ Flip Vertical</button>
+                                        <button class="btn btn-tool" id="flip-horizontal-btn">↔️ Flip
+                                            Horizontal</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select id="type-select" class="form-control">
+                                            <option value="ENT">ENT</option>
+                                            <option value="FRAG">FRAG</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="dialog-footer">
-                <button class="btn btn-secondary" id="export-cancel">❌ Cancel</button>
-                <button class="btn btn-primary" id="export-confirm">📦 Export ZIP</button>
+        </main>
+
+        <!-- Export Dialog -->
+        <div id="export-dialog" class="dialog-overlay" style="display: none;">
+            <div class="dialog">
+                <div class="dialog-header">
+                    <h2>📦 Export Options</h2>
+                    <p>Configure your export settings</p>
+                </div>
+                <div class="dialog-body">
+                    <div class="form-group">
+                        <h3>🏷️ Basic Settings</h3>
+                        <label>Export Acronym</label>
+                        <input type="text" id="export-acronym" class="form-control"
+                            placeholder="Enter acronym (e.g., OSA_2024)...">
+                        <p class="info-text">Only letters, numbers, and underscores allowed</p>
+                    </div>
+
+                    <div id="export-dialog-status" class="status-message"></div>
+                </div>
+                <div class="dialog-footer">
+                    <button class="btn btn-secondary" id="export-cancel">❌ Cancel</button>
+                    <button class="btn btn-primary" id="export-confirm">📦 Export ZIP</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay" style="display: none;">
-        <div class="spinner"></div>
-        <p id="loading-message">Processing...</p>
-    </div>
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p id="loading-message">Processing...</p>
+        </div>
 
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="toast-container"></div>
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
 
-    <!-- Image Zoom Modal -->
-    <div id="image-modal" class="image-modal">
-        <span class="close-modal">&times;</span>
-        <img id="modal-image" src="" alt="Zoomed image">
-    </div>
+        <!-- Image Zoom Modal -->
+        <div id="image-modal" class="image-modal">
+            <span class="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Zoomed image">
+        </div>
 
     </div> <!-- Close main-container -->
 
@@ -586,4 +619,5 @@
     <script src="/static/js/postprocess-tab.js?v=20251024163500"></script>
     <script src="/static/js/main.js?v=20251024163500"></script>
 </body>
+
 </html>
