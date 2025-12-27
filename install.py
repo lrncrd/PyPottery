@@ -24,6 +24,7 @@ MIN_PYTHON_VERSION = (3, 12)
 BOOTSTRAP_PACKAGES = [
     "customtkinter>=5.2.0",
     "psutil>=5.9.0",
+    "certifi>=2024.0.0",  # SSL certificates for macOS
 ]
 
 
