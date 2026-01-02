@@ -17,7 +17,8 @@ website:
     style: "docked"
     search: true
     contents:
-      - index.qmd
+      - text: "Documentation Home"
+        href: docs_home.qmd
       - intro.qmd
       - suite_installation.qmd
       - requirements.qmd

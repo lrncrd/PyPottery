@@ -13,17 +13,27 @@ title: "Requirements"
 </div>
 
 <!-- Shared Concept Diagram -->
-<div style="text-align: center; margin: 2rem 0;">
-  <div style="display: inline-flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; padding: 1.5rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; max-width: 900px;">
-    <!-- <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryScan</div> -->
-    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryInk</div>
-    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLens</div>
-    <!-- <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryTrace</div> -->
-    <div style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: white; border-radius: 10px; font-weight: 600;">PyPotteryLayout</div>
-  </div>
-  <div style="font-size: 2rem; margin: 0.5rem 0;">⬇️</div>
-  <div style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); color: white; border-radius: 12px; font-weight: 700; font-size: 1.1rem;">
-    🔗 Shared Requirements Environment
+<!-- Shared Concept Diagram -->
+<div class="concept-map-container">
+  <div class="concept-map">
+    <div class="concept-sources">
+      <div class="concept-item bg-ink">
+        <img src="imgs/LogoInk.png" class="concept-logo" alt="Ink">
+        <span>PyPotteryInk</span>
+      </div>
+      <div class="concept-item bg-lens">
+        <img src="imgs/LogoLens.png" class="concept-logo" alt="Lens">
+        <span>PyPotteryLens</span>
+      </div>
+      <div class="concept-item bg-layout">
+        <img src="imgs/LogoLayout.png" class="concept-logo" alt="Layout">
+        <span>PyPotteryLayout</span>
+      </div>
+    </div>
+    <div class="concept-flow-arrow">⬇</div>
+    <div class="concept-platform">
+      🔗 Shared Requirements Environment
+    </div>
   </div>
 </div>
 ```
@@ -36,7 +46,8 @@ The PyPottery ecosystem is built on these foundational technologies:
 <div class="software-grid">
 
   <!-- PyTorch Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%);">
+  <!-- PyTorch Card -->
+  <a href="https://pytorch.org/" class="software-card" style="--card-accent: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ee4c2c 0%, #c74023 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🔥</div>
       <div class="card-title-group">
@@ -52,10 +63,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>GPU-accelerated tensor operations</li>
       <li>TorchVision for image processing</li>
     </ul>
-  </div>
+  </a>
 
   <!-- Transformers Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);">
+  <!-- Transformers Card -->
+  <a href="https://huggingface.co/docs/transformers" class="software-card" style="--card-accent: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ffb800 0%, #ff9500 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🤗</div>
       <div class="card-title-group">
@@ -71,10 +83,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Text recognition (OCR)</li>
       <li>Few-shot learning capabilities</li>
     </ul>
-  </div>
+  </a>
 
   <!-- OpenCV Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%);">
+  <!-- OpenCV Card -->
+  <a href="https://opencv.org/" class="software-card" style="--card-accent: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #5c94fc 0%, #3f7ae5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">👁️</div>
       <div class="card-title-group">
@@ -90,10 +103,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Morphological operations</li>
       <li>Contour detection & analysis</li>
     </ul>
-  </div>
+  </a>
 
   <!-- Ultralytics Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);">
+  <!-- Ultralytics Card -->
+  <a href="https://docs.ultralytics.com/" class="software-card" style="--card-accent: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎯</div>
       <div class="card-title-group">
@@ -109,10 +123,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Instance segmentation</li>
       <li>Custom model training</li>
     </ul>
-  </div>
+  </a>
 
   <!-- SAM2 Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+  <!-- SAM2 Card -->
+  <a href="https://github.com/facebookresearch/segment-anything-2" class="software-card" style="--card-accent: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✂️</div>
       <div class="card-title-group">
@@ -128,10 +143,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Interactive mask editing</li>
       <li>High-quality boundaries</li>
     </ul>
-  </div>
+  </a>
 
   <!-- Diffusers Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #db2777 0%, #be185d 100%);">
+  <!-- Diffusers Card -->
+  <a href="https://huggingface.co/docs/diffusers" class="software-card" style="--card-accent: linear-gradient(135deg, #db2777 0%, #be185d 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #db2777 0%, #be185d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎨</div>
       <div class="card-title-group">
@@ -147,7 +163,7 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Drawing enhancement</li>
       <li>Noise reduction</li>
     </ul>
-  </div>
+  </a>
 
 </div>
 ```
@@ -158,7 +174,8 @@ The PyPottery ecosystem is built on these foundational technologies:
 <div class="software-grid">
 
   <!-- Pandas Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #130754 0%, #3b0764 100%);">
+  <!-- Pandas Card -->
+  <a href="https://pandas.pydata.org/" class="software-card" style="--card-accent: linear-gradient(135deg, #130754 0%, #3b0764 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #130754 0%, #3b0764 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🐼</div>
       <div class="card-title-group">
@@ -174,10 +191,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Data cleaning & transformation</li>
       <li>Excel/CSV export</li>
     </ul>
-  </div>
+  </a>
 
   <!-- Polars Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+  <!-- Polars Card -->
+  <a href="https://pola.rs/" class="software-card" style="--card-accent: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">⚡</div>
       <div class="card-title-group">
@@ -193,10 +211,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Memory efficient</li>
       <li>Lazy evaluation</li>
     </ul>
-  </div>
+  </a>
 
   <!-- PyMuPDF Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+  <!-- PyMuPDF Card -->
+  <a href="https://pymupdf.readthedocs.io/" class="software-card" style="--card-accent: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📄</div>
       <div class="card-title-group">
@@ -212,7 +231,7 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Image extraction</li>
       <li>Text extraction</li>
     </ul>
-  </div>
+  </a>
 
 </div>
 ```
@@ -223,7 +242,8 @@ The PyPottery ecosystem is built on these foundational technologies:
 <div class="software-grid">
 
   <!-- Matplotlib Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%);">
+  <!-- Matplotlib Card -->
+  <a href="https://matplotlib.org/" class="software-card" style="--card-accent: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #11557c 0%, #0d4a6f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📊</div>
       <div class="card-title-group">
@@ -239,10 +259,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Image display & annotation</li>
       <li>Customizable layouts</li>
     </ul>
-  </div>
+  </a>
 
   <!-- ReportLab Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #059669 0%, #047857 100%);">
+  <!-- ReportLab Card -->
+  <a href="https://www.reportlab.com/" class="software-card" style="--card-accent: linear-gradient(135deg, #059669 0%, #047857 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">📑</div>
       <div class="card-title-group">
@@ -258,10 +279,11 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Vector graphics support</li>
       <li>Layout automation</li>
     </ul>
-  </div>
+  </a>
 
   <!-- SVGWrite Card -->
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+  <!-- SVGWrite Card -->
+  <a href="https://svgwrite.readthedocs.io/" class="software-card" style="--card-accent: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
     <div class="card-header">
       <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">✏️</div>
       <div class="card-title-group">
@@ -277,7 +299,7 @@ The PyPottery ecosystem is built on these foundational technologies:
       <li>Path manipulation</li>
       <li>Scalable exports</li>
     </ul>
-  </div>
+  </a>
 
 </div>
 ```
