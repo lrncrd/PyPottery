@@ -1,0 +1,19 @@
+flask
+werkzeug
+ultralytics
+pillow
+scikit-image
+timm
+PyMuPDF
+psutil
+gputil
+reportlab
+pandas
+numpy
+scipy
+openpyxl
+easyocr>=1.7.0
+# PyTorch with CUDA support (if available, otherwise CPU)
+--extra-index-url https://download.pytorch.org/whl/cu126
+torch
+torchvision
