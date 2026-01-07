@@ -952,3 +952,40 @@ body {
         gap: 30px;
     }
 }
+/* Fix for GitHub logo size in intro.qmd */
+.github-main-link svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+    fill: currentColor;
+}
+
+/* GitHub Section Styling */
+.github-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    margin-top: 2rem;
+}
+
+.github-main-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: #24292e;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.github-main-link:hover {
+    background-color: #1a1e22;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    color: white;
+    text-decoration: none;
+}
