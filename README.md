@@ -23,6 +23,9 @@
   <img src="https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-yellow.svg">
 </p>
 
+> [!NOTE]
+> **Under Review**: The **Trace** and **Scan** tools are currently under review. [Trace Repository](https://github.com/lrncrd/PyPotteryTrace) • [Scan Repository](https://github.com/lrncrd/PyPotteryScan)
+
 ---
 
 ## 🏺 About
