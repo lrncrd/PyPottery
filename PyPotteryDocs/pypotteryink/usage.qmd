@@ -47,8 +47,6 @@ The PyPotteryInk interface is divided into four main tabs:
 - **Preprocessing**
 - **Batch Processing**
 
-Additionally, you can toggle **Dark Mode** using the button in the interface.
-
 # Hardware Check
 
 This tab allows you to analyze your PC's hardware to verify compatibility with PyPotteryInk.
@@ -100,7 +98,11 @@ The available elements are:
 - **Contrast Test Values**: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.
 
 Clicking on **🚀 Run Diagnostic** will start the process, and a progress bar will indicate advancement.
-At the end of the process, a gallery will allow you to view the results.
+At the end of the process, a gallery will allow you to view the results. Click any comparison image to open it fullscreen for a closer look.
+
+::: {.callout-note}
+The first time you run a diagnostic or batch process, PyPotteryInk needs to download the required models (the small style model and, once, the ~5GB diffusion backbone). A progress overlay shows live download status so the app doesn't appear stuck.
+:::
 
 # Batch Processing
 
@@ -118,4 +120,4 @@ New parameters include:
 - **Use FP16**: Allows you to apply the model using half-precision (requires CUDA).
 
 Clicking on **🚀 Start Processing** will start the operation. A double progress bar will indicate the processing of patches and drawings.
-The results will be shown in a gallery.
+The results will be shown in a gallery. Click any comparison image to open it fullscreen for a closer look.

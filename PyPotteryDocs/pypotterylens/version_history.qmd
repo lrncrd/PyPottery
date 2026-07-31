@@ -6,14 +6,21 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.1 (July 2026)
+
+**Key Features:**
+
+-   Hardware Eligibility Guardrail: the local AI extraction model now checks your GPU/CPU/RAM before downloading, and blocks the download with a clear explanation on underpowered hardware (see [Requirements](../requirements.qmd))
+-   Fixed local model loading on recent `transformers` versions
+
+## Version History
+
 ### Version 0.2.1 (December 2025)
 
 **Key Features:**
 
 -   Added Pixel
 -   Minor UI improvements
-
-## Version History
 
 ### Version 0.2.0 (December 2025)
 

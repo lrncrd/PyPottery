@@ -10,19 +10,21 @@ Usage:
 """
 
 import os
+import shutil
 import sys
 import subprocess
 import platform
 import argparse
 from pathlib import Path
+from typing import List, Optional
 
 
 # Minimum Python version
 MIN_PYTHON_VERSION = (3, 12)
 
-# Bootstrap dependencies (minimal set needed for launcher GUI)
+# Bootstrap dependencies (minimal set needed for the launcher's web GUI)
 BOOTSTRAP_PACKAGES = [
-    "customtkinter>=5.2.0",
+    "flask>=3.0.0",
     "psutil>=5.9.0",
 ]
 
@@ -37,22 +39,77 @@ def check_python_version():
     print(f"✅ Python {current[0]}.{current[1]} detected")
 
 
-def install_packages(packages: list, upgrade: bool = False):
-    """Install packages using pip"""
+def _find_or_install_uv() -> Optional[Path]:
+    """
+    Find uv (https://github.com/astral-sh/uv) on PATH or common install dirs,
+    installing it via the official installer if it's missing. Returns None on
+    any failure - callers must fall back to plain pip, never hard-fail here.
+    """
+    found = shutil.which("uv")
+    if found:
+        return Path(found)
+
+    candidates = [Path.home() / ".local" / "bin" / "uv", Path.home() / ".cargo" / "bin" / "uv"]
+    if platform.system() == "Windows":
+        candidates.append(Path.home() / ".local" / "bin" / "uv.exe")
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    print("📥 uv not found - installing it for faster package installs...")
+    try:
+        if platform.system() == "Windows":
+            subprocess.run(
+                ["powershell", "-ExecutionPolicy", "Bypass", "-Command",
+                 "irm https://astral.sh/uv/install.ps1 | iex"],
+                capture_output=True, timeout=120
+            )
+        else:
+            subprocess.run(
+                ["sh", "-c", "curl -LsSf https://astral.sh/uv/install.sh | sh"],
+                capture_output=True, timeout=120
+            )
+    except Exception:
+        pass
+
+    found = shutil.which("uv")
+    if found:
+        return Path(found)
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    print("⚠️  Could not install uv - falling back to pip (this is fine, just slower)")
+    return None
+
+
+def install_packages(packages: List[str], upgrade: bool = False, uv_path: Optional[Path] = None):
+    """Install packages, preferring uv (faster) with a pip fallback"""
+    print(f"📦 Installing: {', '.join(packages)}")
+
+    if uv_path:
+        cmd = [str(uv_path), "pip", "install", "--python", sys.executable]
+        if upgrade:
+            cmd.append("--upgrade")
+        cmd.extend(packages)
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            return True
+        print("⚠️  uv install failed, falling back to pip...")
+
     cmd = [sys.executable, "-m", "pip", "install"]
     if upgrade:
         cmd.append("--upgrade")
     cmd.extend(packages)
-    
-    print(f"📦 Installing: {', '.join(packages)}")
-    
+
     result = subprocess.run(cmd, capture_output=True, text=True)
-    
+
     if result.returncode != 0:
         print(f"❌ Installation failed:")
         print(result.stderr)
         return False
-    
+
     return True
 
 
@@ -125,6 +182,8 @@ def print_post_install_info():
 ║  3. Launch and manage applications                            ║
 ║  4. Check for updates automatically                           ║
 ║                                                               ║
+║  The launcher opens in your web browser.                      ║
+║                                                               ║
 ║  To launch again later, run:                                  ║
 ║     python install.py                                         ║
 ║                                                               ║
@@ -168,33 +227,38 @@ Examples:
     
     # Check Python version
     check_python_version()
-    
+
+    # Find (or install) uv for faster package installs - falls back to pip if unavailable
+    uv_path = _find_or_install_uv()
+    if uv_path:
+        print(f"✅ Using uv for package installs: {uv_path}")
+
     # Check/install bootstrap packages
     packages_to_install = []
-    
+
     for package in BOOTSTRAP_PACKAGES:
         pkg_name = package.split(">=")[0].split("==")[0]
         if not check_package_installed(pkg_name) or args.upgrade:
             packages_to_install.append(package)
-    
+
     if packages_to_install:
         print("\n📥 Installing required packages...")
-        if not install_packages(packages_to_install, upgrade=args.upgrade):
+        if not install_packages(packages_to_install, upgrade=args.upgrade, uv_path=uv_path):
             print("❌ Failed to install required packages")
             sys.exit(1)
         print("✅ Packages installed successfully")
     else:
         print("✅ All required packages already installed")
-    
-    # Verify customtkinter works
+
+    # Verify Flask works (the launcher's web UI depends on it)
     print("\n🔍 Verifying installation...")
     try:
-        import customtkinter
-        print(f"✅ CustomTkinter {customtkinter.__version__} ready")
+        import flask
+        print(f"✅ Flask {flask.__version__} ready")
     except ImportError as e:
-        print(f"❌ Failed to import customtkinter: {e}")
+        print(f"❌ Failed to import flask: {e}")
         sys.exit(1)
-    
+
     print_post_install_info()
     
     # Launch GUI

@@ -223,3 +223,17 @@ models/
 apps/
 BK/
 pypottery_env/
+model_cache/
+graphify-out/
+.claude
+launcher/dev_config.py
+
+.gemini
+.impeccable
+PyPotteryDocs/.agent
+
+PyPotteryInk/
+PyPotteryLayout/
+PyPotteryLens/
+PyPotteryScan/
+PyPotteryTrace/

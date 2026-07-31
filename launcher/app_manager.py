@@ -70,12 +70,16 @@ class AppManager:
     Manages PyPottery applications: download, install, launch, and monitor.
     """
     
-    def __init__(self, base_path: Path, python_executable: Path):
+    def __init__(self, base_path: Path, python_executable: Path, developer_mode: bool = False):
         self.base_path = Path(base_path)
         self.apps_path = self.base_path / "apps"
         self.python_executable = Path(python_executable)
         self.is_windows = platform.system() == "Windows"
-        
+        # Developer mode: sub-apps run from their own git checkout at the repo
+        # root (sibling of apps/) instead of a downloaded copy under apps/, so
+        # local edits can be tested without pushing/re-downloading a release.
+        self.developer_mode = developer_mode
+
         # Load app configurations
         self.apps: Dict[str, AppInfo] = {}
         self._load_app_configs()
@@ -113,17 +117,35 @@ class AppManager:
         
         # Check installed status
         self._refresh_installed_status()
-    
+
+    def _app_path(self, app_id: str) -> Path:
+        """Resolve where an app's files live: its git checkout at the repo
+        root in developer mode, or the downloaded copy under apps/ otherwise."""
+        if self.developer_mode:
+            return self.base_path / app_id
+        return self.apps_path / app_id
+
+    def refresh_installed_status(self):
+        """Public re-scan of installed/version state. In developer mode this
+        is the only way to pick up a `git pull`'d VERSION bump without
+        restarting the launcher process (the initial scan only runs once, at
+        AppManager construction time)."""
+        self._refresh_installed_status()
+
     def _refresh_installed_status(self):
         """Check which apps are installed"""
         for app_id, app in self.apps.items():
-            app_path = self.apps_path / app_id
+            app_path = self._app_path(app_id)
             app.installed = app_path.exists() and (app_path / app.entry_script).exists()
-            
-            # Check version file
-            version_file = app_path / ".version"
-            if version_file.exists():
-                app.installed_version = version_file.read_text().strip()
+
+            if self.developer_mode:
+                # Dev checkouts carry a real VERSION file, not the launcher's
+                # download marker - reuse the same detector as _detect_version.
+                app.installed_version = self._detect_version(app_path)
+            else:
+                version_file = app_path / ".version"
+                if version_file.exists():
+                    app.installed_version = version_file.read_text().strip()
     
     def set_status_callback(self, callback: Callable[[str, str], None]):
         """Set callback for status updates: callback(app_id, message)"""
@@ -210,7 +232,13 @@ class AppManager:
             self._report_status(app_id, f"Unknown application: {app_id}")
             self._report_download_progress(app_id, "error", f"Unknown application: {app_id}")
             return False
-        
+
+        if self.developer_mode:
+            message = f"Developer mode: {app.name} runs from its local git checkout - install/update disabled"
+            self._report_status(app_id, message)
+            self._report_download_progress(app_id, "error", message)
+            return False
+
         self._report_status(app_id, f"Downloading {app.name}...")
         self._report_download_progress(app_id, "downloading", f"Starting download of {app.name}...", 0, 0)
         
@@ -267,8 +295,10 @@ class AppManager:
             # Get total size if available
             total_size = int(response.headers.get('Content-Length', 0))
             downloaded = 0
-            chunk_size = 8192  # 8KB chunks
-            
+            chunk_size = 65536  # 64KB chunks
+            last_report_time = 0
+            last_reported_mb = -1.0
+
             with open(temp_zip, "wb") as f:
                 while True:
                     chunk = response.read(chunk_size)
@@ -277,31 +307,37 @@ class AppManager:
                     f.write(chunk)
                     downloaded += len(chunk)
                     
-                    # Report progress
-                    if total_size > 0:
-                        self._report_download_progress(
-                            app_id, "downloading",
-                            f"Downloading... {downloaded / 1024 / 1024:.1f} MB / {total_size / 1024 / 1024:.1f} MB",
-                            downloaded, total_size
-                        )
-                    else:
-                        self._report_download_progress(
-                            app_id, "downloading",
-                            f"Downloading... {downloaded / 1024 / 1024:.1f} MB",
-                            downloaded, downloaded  # Unknown total
-                        )
+                    current_time = time.time()
+                    current_mb = round(downloaded / 1024 / 1024, 1)
+
+                    if (current_time - last_report_time >= 0.12) or (current_mb != last_reported_mb):
+                        last_report_time = current_time
+                        last_reported_mb = current_mb
+                        if total_size > 0:
+                            self._report_download_progress(
+                                app_id, "downloading",
+                                f"Downloading... {current_mb:.1f} MB / {total_size / 1024 / 1024:.1f} MB",
+                                downloaded, total_size
+                            )
+                        else:
+                            self._report_download_progress(
+                                app_id, "downloading",
+                                f"Downloading... {current_mb:.1f} MB",
+                                downloaded, downloaded
+                            )
             
             response.close()
+            self._report_download_progress(app_id, "extracting", "Download complete. Preparing extraction...", 0, 100)
             
             # Remove existing installation
             if app_path.exists():
                 self._report_status(app_id, "Removing old version...")
-                self._report_download_progress(app_id, "extracting", "Removing old version...", 0, 0)
+                self._report_download_progress(app_id, "extracting", "Removing old version...", 0, 100)
                 shutil.rmtree(app_path)
             
             # Extract zip
             self._report_status(app_id, "Extracting files...")
-            self._report_download_progress(app_id, "extracting", "Extracting files...", 0, 0)
+            self._report_download_progress(app_id, "extracting", "Extracting files...", 0, 100)
             
             with zipfile.ZipFile(temp_zip, 'r') as zip_ref:
                 # Get the root folder name in the zip
@@ -372,11 +408,15 @@ class AppManager:
         app = self.apps.get(app_id)
         if not app:
             return False
-        
+
+        if self.developer_mode:
+            self._report_status(app_id, f"Developer mode: {app.name} runs from its local git checkout - uninstall disabled")
+            return False
+
         # Stop if running
         if app_id in self._processes:
             self.stop_app(app_id)
-        
+
         app_path = self.apps_path / app_id
         if app_path.exists():
             shutil.rmtree(app_path)
@@ -421,9 +461,9 @@ class AppManager:
             self._report_status(app_id, f"Port {app.port} is already in use")
             return False
         
-        app_path = self.apps_path / app_id
+        app_path = self._app_path(app_id)
         script_path = app_path / app.entry_script
-        
+
         if not script_path.exists():
             self._report_status(app_id, f"Entry script not found: {script_path}")
             return False
@@ -433,6 +473,11 @@ class AppManager:
         # Set environment
         env = os.environ.copy()
         env["PYPOTTERY_LAUNCHED_FROM_WRAPPER"] = "1"
+        # Shared model cache dir - apps that respect this (PyPotteryInk, PyPotteryLens)
+        # download AI models here instead of into their own folder, so a model already
+        # fetched by one app isn't downloaded again by another. Apps run standalone
+        # (this var unset) keep caching locally, unchanged.
+        env["PYPOTTERY_MODEL_CACHE"] = str(self.base_path / "model_cache")
         # Fix encoding issues on Windows with emoji in print statements
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUTF8"] = "1"
@@ -571,9 +616,9 @@ class AppManager:
         app = self.apps.get(app_id)
         if not app or not app.installed:
             return False
-        
-        app_path = self.apps_path / app_id
-        
+
+        app_path = self._app_path(app_id)
+
         try:
             if self.is_windows:
                 os.startfile(str(app_path))

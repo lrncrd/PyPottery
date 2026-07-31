@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Few-Shot Parser Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .window {
+            width: 750px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .app-body {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            padding: 16px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        /* Left Panel - Available Fields */
+        .fields-panel {
+            width: 130px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fields-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .field-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #374151;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .field-item:hover,
+        .field-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .add-field-btn {
+            margin-top: 8px;
+            padding: 8px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Right Panel - Content */
+        .content-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Navigation */
+        .nav-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 6px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .nav-count {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .reset-btn {
+            padding: 6px 12px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: auto;
+        }
+
+        /* Text Bar */
+        .text-bar {
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #1f2937;
+            background: #fafafa;
+        }
+
+        .text-highlight {
+            background: #dbeafe;
+            border-bottom: 2px solid #3b82f6;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Extracted Data Table */
+        .data-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 6px;
+        }
+
+        .data-table {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 11px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            background: #7c3aed;
+            color: white;
+            font-weight: 600;
+        }
+
+        .table-header div {
+            padding: 6px 10px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row div {
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-label {
+            color: #6b7280;
+            font-size: 10px;
+        }
+
+        .field-label::before {
+            content: "○";
+            margin-right: 4px;
+            color: #d1d5db;
+        }
+
+        .field-label.assigned::before {
+            content: "●";
+            color: #22c55e;
+        }
+
+        .field-value {
+            color: #9ca3af;
+            font-style: italic;
+            font-size: 11px;
+        }
+
+        .field-value.filled {
+            color: #1f2937;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 4px 0;
+            display: none;
+            z-index: 100;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #374151;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item.hover {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        /* Buttons */
+        .tip-text {
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-add {
+            padding: 8px 14px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-add.clicked {
+            transform: scale(0.95);
+        }
+
+        /* Examples Section */
+        .examples-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .examples-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .clear-btn {
+            padding: 4px 10px;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .example-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            font-size: 10px;
+            color: #6b7280;
+            margin-right: 6px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.3s;
+        }
+
+        .example-badge.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-run {
+            padding: 8px 16px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-run.clicked {
+            transform: scale(0.95);
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            z-index: 9999;
+            transition: all 0.4s ease-out;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryScan v0.2.0
+            </div>
+        </div>
+        <div class="app-body">
+            <!-- Left: Available Fields -->
+            <div class="fields-panel">
+                <div class="fields-title">Available Fields</div>
+                <div class="field-item" id="fInventory">Inventory</div>
+                <div class="field-item" id="fSite">Site</div>
+                <div class="field-item" id="fYear">Year</div>
+                <div class="field-item" id="fUS">US</div>
+                <div class="field-item">Area</div>
+                <div class="field-item">Cut</div>
+                <div class="field-item">Sector</div>
+                <div class="field-item">Notes</div>
+                <button class="add-field-btn">+ Add Field</button>
+            </div>
+
+            <!-- Right: Content -->
+            <div class="content-panel">
+                <!-- Navigation -->
+                <div class="nav-row">
+                    <button class="nav-btn">← Previous</button>
+                    <span class="nav-count">1 / 119</span>
+                    <button class="nav-btn">Next →</button>
+                    <button class="reset-btn">Reset</button>
+                </div>
+
+                <!-- Text Bar -->
+                <div class="text-bar" id="textBar">
+                    <span id="t1">MON|</span><span id="tYear">08</span><span id="t2"> US </span><span
+                        id="tUS">1147</span><span id="t3"> lb/1 (N.INV </span><span id="tInv">7</span><span
+                        id="t4">)</span>
+                </div>
+
+                <!-- Extracted Data -->
+                <div class="data-title">Extracted Data</div>
+                <div class="data-table">
+                    <div class="table-header">
+                        <div>FIELD</div>
+                        <div>VALUE</div>
+                    </div>
+                    <div class="table-row">
+                        <div><span class="field-label" id="lInv">Inventory</span></div>
+                        <div><span class="field-value" id="vInv">not assigned</span></div>
+                    </div>
+                    <div class="table-row">
+                        <div><span class="field-label" id="lYear">Year</span></div>
+                        <div><span class="field-value" id="vYear">not assigned</span></div>
+                    </div>
+                    <div class="table-row">
+                        <div><span class="field-label" id="lUS">US</span></div>
+                        <div><span class="field-value" id="vUS">not assigned</span></div>
+                    </div>
+                </div>
+
+                <div class="tip-text">💡 Tip: Select text above and click a field tag to assign values</div>
+
+                <div class="btn-row">
+                    <button class="btn-add" id="btnAdd">✓ Add Few-Shot Example</button>
+                </div>
+
+                <div class="examples-section">
+                    <div>
+                        <span class="examples-title">Added Examples: </span>
+                        <span class="example-badge" id="ex1">Example 1</span>
+                    </div>
+                    <button class="clear-btn">🗑 Clear All Examples</button>
+                </div>
+
+                <button class="btn-run" id="btnRun">✨ Run Parsing</button>
+            </div>
+
+            <!-- Dropdown -->
+            <div class="dropdown" id="dropdown">
+                <div class="dropdown-item" id="ddInventory">Inventory</div>
+                <div class="dropdown-item" id="ddSite">Site</div>
+                <div class="dropdown-item" id="ddYear">Year</div>
+                <div class="dropdown-item" id="ddUS">US</div>
+                <div class="dropdown-item" id="ddArea">Area</div>
+            </div>
+        </div>
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const appWindow = document.getElementById('appWindow');
+        const dropdown = document.getElementById('dropdown');
+        const tYear = document.getElementById('tYear');
+        const tUS = document.getElementById('tUS');
+        const tInv = document.getElementById('tInv');
+        const lInv = document.getElementById('lInv');
+        const lYear = document.getElementById('lYear');
+        const lUS = document.getElementById('lUS');
+        const vInv = document.getElementById('vInv');
+        const vYear = document.getElementById('vYear');
+        const vUS = document.getElementById('vUS');
+        const btnAdd = document.getElementById('btnAdd');
+        const btnRun = document.getElementById('btnRun');
+        const ex1 = document.getElementById('ex1');
+        const fInventory = document.getElementById('fInventory');
+        const fYear = document.getElementById('fYear');
+        const fUS = document.getElementById('fUS');
+        const ddInventory = document.getElementById('ddInventory');
+        const ddYear = document.getElementById('ddYear');
+        const ddUS = document.getElementById('ddUS');
+
+        function getRelativePos(element) {
+            const rect = element.getBoundingClientRect();
+            const winRect = appWindow.getBoundingClientRect();
+            return {
+                top: rect.top - winRect.top,
+                left: rect.left - winRect.left,
+                width: rect.width,
+                height: rect.height
+            };
+        }
+
+        function clearDropdownHover() {
+            document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('hover'));
+        }
+
+        function resetAll() {
+            tYear.className = '';
+            tUS.className = '';
+            tInv.className = '';
+            lInv.classList.remove('assigned');
+            lYear.classList.remove('assigned');
+            lUS.classList.remove('assigned');
+            vInv.textContent = 'not assigned';
+            vInv.classList.remove('filled');
+            vYear.textContent = 'not assigned';
+            vYear.classList.remove('filled');
+            vUS.textContent = 'not assigned';
+            vUS.classList.remove('filled');
+            dropdown.classList.remove('show');
+            clearDropdownHover();
+            btnAdd.classList.remove('clicked');
+            btnRun.classList.remove('clicked');
+            ex1.classList.remove('visible');
+            fInventory.classList.remove('active');
+            fYear.classList.remove('active');
+            fUS.classList.remove('active');
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+        }
+
+        function runAnimation() {
+            resetAll();
+            cursor.style.transition = 'none';
+
+            // ===== STEP 1: Select "7" (Inventory) =====
+            // Move to text
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.4s ease-out';
+                const pos = getRelativePos(tInv);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 5) + 'px';
+            }, 300);
+
+            // Highlight and show dropdown
+            setTimeout(() => {
+                tInv.className = 'text-highlight';
+                const pos = getRelativePos(tInv);
+                dropdown.style.top = (pos.top + 25) + 'px';
+                dropdown.style.left = (pos.left - 20) + 'px';
+                dropdown.classList.add('show');
+            }, 700);
+
+            // Move cursor to "Inventory" in dropdown
+            setTimeout(() => {
+                const pos = getRelativePos(ddInventory);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 30) + 'px';
+            }, 1000);
+
+            // Hover on Inventory
+            setTimeout(() => {
+                ddInventory.classList.add('hover');
+            }, 1300);
+
+            // Click - assign value
+            setTimeout(() => {
+                dropdown.classList.remove('show');
+                clearDropdownHover();
+                fInventory.classList.add('active');
+                lInv.classList.add('assigned');
+                vInv.textContent = '7';
+                vInv.classList.add('filled');
+            }, 1600);
+
+            // ===== STEP 2: Select "08" (Year) =====
+            setTimeout(() => {
+                const pos = getRelativePos(tYear);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 8) + 'px';
+            }, 2000);
+
+            setTimeout(() => {
+                tYear.className = 'text-highlight';
+                const pos = getRelativePos(tYear);
+                dropdown.style.top = (pos.top + 25) + 'px';
+                dropdown.style.left = (pos.left - 20) + 'px';
+                dropdown.classList.add('show');
+            }, 2400);
+
+            // Move to Year in dropdown
+            setTimeout(() => {
+                const pos = getRelativePos(ddYear);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 20) + 'px';
+            }, 2700);
+
+            setTimeout(() => {
+                ddYear.classList.add('hover');
+            }, 3000);
+
+            setTimeout(() => {
+                dropdown.classList.remove('show');
+                clearDropdownHover();
+                fYear.classList.add('active');
+                lYear.classList.add('assigned');
+                vYear.textContent = '08';
+                vYear.classList.add('filled');
+            }, 3300);
+
+            // ===== STEP 3: Select "1147" (US) =====
+            setTimeout(() => {
+                const pos = getRelativePos(tUS);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 15) + 'px';
+            }, 3700);
+
+            setTimeout(() => {
+                tUS.className = 'text-highlight';
+                const pos = getRelativePos(tUS);
+                dropdown.style.top = (pos.top + 25) + 'px';
+                dropdown.style.left = (pos.left - 10) + 'px';
+                dropdown.classList.add('show');
+            }, 4100);
+
+            setTimeout(() => {
+                const pos = getRelativePos(ddUS);
+                cursor.style.top = (pos.top + 8) + 'px';
+                cursor.style.left = (pos.left + 15) + 'px';
+            }, 4400);
+
+            setTimeout(() => {
+                ddUS.classList.add('hover');
+            }, 4700);
+
+            setTimeout(() => {
+                dropdown.classList.remove('show');
+                clearDropdownHover();
+                fUS.classList.add('active');
+                lUS.classList.add('assigned');
+                vUS.textContent = '1147';
+                vUS.classList.add('filled');
+            }, 5000);
+
+            // ===== STEP 4: Click Add Few-Shot Example =====
+            setTimeout(() => {
+                const pos = getRelativePos(btnAdd);
+                cursor.style.top = (pos.top + 12) + 'px';
+                cursor.style.left = (pos.left + 60) + 'px';
+            }, 5400);
+
+            setTimeout(() => {
+                btnAdd.classList.add('clicked');
+            }, 5800);
+
+            setTimeout(() => {
+                btnAdd.classList.remove('clicked');
+                ex1.classList.add('visible');
+            }, 6000);
+
+            // ===== STEP 5: Click Run Parsing =====
+            setTimeout(() => {
+                const pos = getRelativePos(btnRun);
+                cursor.style.top = (pos.top + 12) + 'px';
+                cursor.style.left = (pos.left + 50) + 'px';
+            }, 6400);
+
+            setTimeout(() => {
+                btnRun.classList.add('clicked');
+            }, 6800);
+
+            setTimeout(() => {
+                btnRun.classList.remove('clicked');
+            }, 7100);
+
+            // Move cursor away
+            setTimeout(() => {
+                cursor.style.top = '110%';
+                cursor.style.left = '110%';
+            }, 7500);
+        }
+
+        setInterval(runAnimation, 9500);
+        setTimeout(runAnimation, 500);
+    </script>
+</body>
+
+</html>

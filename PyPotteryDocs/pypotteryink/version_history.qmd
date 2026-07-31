@@ -6,14 +6,21 @@ format: html
 
 ## Latest Release
 
+### Version 2.1.1
+
+- Real download progress bars for both the small style models and the large `sd-turbo` diffusion backbone (~5GB), so first-time setup no longer looks stuck
+- Comparison images are now clickable and open fullscreen
+- Removed Dark Mode
+- Updated `diffusers`/`peft`/`transformers` to their latest compatible versions
+
+
+## Version History
+
 ### Version 2.1.0
 
 - Modified System Requirements Check
 - Added Pixel
 - Minor UI Improvements
-
-
-## Version History
 
 ### Version 2.0.1 (12/12/2025)
 

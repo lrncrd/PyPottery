@@ -38,6 +38,32 @@
             "requires_gpu": false,
             "icon": "🖋️",
             "logo": "imgs/LogoInk.png"
+        },
+        "PyPotteryScan": {
+            "name": "PyPottery Scan",
+            "description": "AI-powered pottery drawing digitization tool with OCR-based text recognition",
+            "repo_owner": "lrncrd",
+            "repo_name": "PyPotteryScan",
+            "entry_script": "app.py",
+            "port": 5002,
+            "min_ram_gb": 16,
+            "recommended_ram_gb": 32,
+            "requires_gpu": false,
+            "icon": "🖨️",
+            "logo": "imgs/LogoScan.png"
+        },
+        "PyPotteryTrace": {
+            "name": "PyPottery Trace",
+            "description": "AI-powered interactive tool for vectorizing pottery drawings using SAM2 segmentation",
+            "repo_owner": "lrncrd",
+            "repo_name": "PyPotteryTrace",
+            "entry_script": "app.py",
+            "port": 5004,
+            "min_ram_gb": 8,
+            "recommended_ram_gb": 16,
+            "requires_gpu": false,
+            "icon": "✏️",
+            "logo": "imgs/LogoTrace.png"
         }
     },
     "pytorch_index_urls": {

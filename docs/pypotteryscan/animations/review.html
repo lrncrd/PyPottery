@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .window {
+            width: 700px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .app-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        /* Review Item Style matching style.css .text-box-review */
+        .text-box-review {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .text-box-review.active {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .text-box-preview {
+            width: 100%;
+            height: 60px;
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-field {
+            height: 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            font-family: monospace;
+            color: #374151;
+            position: relative;
+            background: #fff;
+        }
+
+        .text-field.focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .cursor-bar {
+            width: 2px;
+            height: 20px;
+            background: #2563eb;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            display: none;
+        }
+
+        .text-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .highlight-box {
+            position: absolute;
+            border: 2px solid #f59e0b;
+            /* amber-500 */
+            background: rgba(245, 158, 11, 0.2);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            z-index: 9999;
+            transition: all 0.5s ease-out;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+        }
+
+        /* Animation Keyframes */
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryScan v0.2.0
+            </div>
+        </div>
+        <div class="app-body">
+            <h2 class="text-xl font-bold mb-4 text-gray-800 text-center">✏️ Review & Correct</h2>
+
+            <div class="text-box-review" id="reviewItem1">
+                <div class="text-box-preview">
+                    <!-- Abstract Text Image -->
+                    <div
+                        style="position: absolute; top: 20px; left: 20px; width: 80px; height: 8px; background: #9ca3af;">
+                    </div>
+                    <div class="highlight-box" id="imgHighlight"
+                        style="top: 15px; left: 15px; width: 90px; height: 18px;"></div>
+                </div>
+                <div class="text-field" id="field1">
+                    <span class="text-content">CERAMIC<span class="cursor-bar" id="cursor1"></span></span>
+                </div>
+            </div>
+
+            <div class="text-box-review">
+                <div class="text-box-preview">
+                    <div
+                        style="position: absolute; top: 25px; left: 30px; width: 60px; height: 8px; background: #9ca3af;">
+                    </div>
+                </div>
+                <div class="text-field">
+                    <span class="text-content">TYPE A</span>
+                </div>
+            </div>
+
+            <button class="mx-auto mt-4 px-6 py-2 bg-green-600 text-white rounded-lg font-bold shadow-sm"
+                id="continueBtn">
+                Continue to Export →
+            </button>
+        </div>
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const field1 = document.getElementById('field1');
+        const cursor1 = document.getElementById('cursor1');
+        const imgHighlight = document.getElementById('imgHighlight');
+        const textContent1 = field1.querySelector('.text-content');
+        const reviewItem1 = document.getElementById('reviewItem1');
+        const continueBtn = document.getElementById('continueBtn');
+        const cursor = document.getElementById('cursor');
+        const appWindow = document.getElementById('appWindow');
+
+        function getRelativePos(element) {
+            const rect = element.getBoundingClientRect();
+            const winRect = appWindow.getBoundingClientRect();
+            return {
+                top: rect.top - winRect.top,
+                left: rect.left - winRect.left,
+                width: rect.width,
+                height: rect.height
+            };
+        }
+
+        function runAnimation() {
+            // Reset
+            field1.classList.remove('focus');
+            reviewItem1.classList.remove('active');
+            cursor1.style.display = 'none';
+            imgHighlight.style.display = 'none';
+            textContent1.innerHTML = 'CERAMIC'; // Reset text
+            continueBtn.style.transform = 'scale(1)';
+
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            cursor.style.transition = 'none';
+
+            // Start
+
+            // 0.5s: Move to Field
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                const fieldPos = getRelativePos(field1);
+                cursor.style.top = (fieldPos.top + 20) + 'px';
+                cursor.style.left = (fieldPos.left + 80) + 'px';
+            }, 500);
+
+            // 1.0s: Click Field
+            setTimeout(() => {
+                // Focus Field 1
+                reviewItem1.classList.add('active');
+                field1.classList.add('focus');
+                cursor1.style.display = 'block';
+                imgHighlight.style.display = 'block';
+
+                // Simulate Typing (Correction)
+                // "CERAMIC" -> "CERAMICA"
+                textContent1.innerHTML = 'CERAMIC<span class="cursor-bar" style="display:block"></span>';
+            }, 1000);
+
+            // 1.2s: Move cursor out of way slightly
+            setTimeout(() => {
+                const fieldPos = getRelativePos(field1);
+                cursor.style.top = (fieldPos.top + 50) + 'px';
+                cursor.style.left = (fieldPos.left + 150) + 'px';
+            }, 1200);
+
+            setTimeout(() => {
+                textContent1.innerHTML = 'CERAMIC A<span class="cursor-bar" style="display:block"></span>';
+            }, 1500);
+
+            setTimeout(() => {
+                // Backspace
+                textContent1.innerHTML = 'CERAMIC <span class="cursor-bar" style="display:block"></span>';
+            }, 1800);
+
+            setTimeout(() => {
+                // Backspace
+                textContent1.innerHTML = 'CERAMIC<span class="cursor-bar" style="display:block"></span>';
+            }, 2000);
+
+            setTimeout(() => {
+                // Type 'A'
+                textContent1.innerHTML = 'CERAMICA<span class="cursor-bar" style="display:block"></span>';
+            }, 2400);
+
+            // 3.0s: Move to Continue Button
+            setTimeout(() => {
+                const btnPos = getRelativePos(continueBtn);
+                cursor.style.top = (btnPos.top + 20) + 'px';
+                cursor.style.left = (btnPos.left + 100) + 'px';
+            }, 3000);
+
+            // 3.5s: Click Continue
+            setTimeout(() => {
+                continueBtn.style.transform = 'scale(0.95)';
+            }, 3500);
+
+            setTimeout(() => {
+                // Done
+                field1.classList.remove('focus');
+                reviewItem1.classList.remove('active');
+                cursor1.style.display = 'none';
+                imgHighlight.style.display = 'none';
+                continueBtn.style.transform = 'scale(1)';
+
+                textContent1.innerHTML = 'CERAMICA';
+            }, 4000);
+
+            // 4.5s: Move away
+            setTimeout(() => {
+                cursor.style.top = '110%';
+                cursor.style.left = '110%';
+            }, 4500);
+        }
+
+        setInterval(runAnimation, 6000);
+        setTimeout(runAnimation, 100);
+
+    </script>
+</body>
+
+</html>

@@ -9,6 +9,7 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
+from pathlib import Path
 import shutil
 
 
@@ -50,9 +51,11 @@ class HardwareInfo:
     rocm_available: bool = False  # AMD ROCm
     gpus: List[GPUInfo] = field(default_factory=list)
     
-    # Recommendations
+    # Recommendations & Installed Status
     recommended_pytorch_variant: str = "cpu"
     pytorch_index_url: Optional[str] = None
+    installed_pytorch_version: Optional[str] = None
+    installed_pytorch_device: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization"""
@@ -76,7 +79,9 @@ class HardwareInfo:
                       "memory_total_mb": g.memory_total_mb,
                       "memory_free_mb": g.memory_free_mb} for g in self.gpus],
             "recommended_pytorch_variant": self.recommended_pytorch_variant,
-            "pytorch_index_url": self.pytorch_index_url
+            "pytorch_index_url": self.pytorch_index_url,
+            "installed_pytorch_version": self.installed_pytorch_version,
+            "installed_pytorch_device": self.installed_pytorch_device,
         }
 
 
@@ -307,7 +312,26 @@ def get_pytorch_recommendation(cuda_available: bool, cuda_version: Optional[str]
             return "cpu", None
 
 
-def detect_hardware() -> HardwareInfo:
+def detect_venv_pytorch(python_exe: Optional[Path]) -> tuple:
+    """Inspect virtual environment for installed PyTorch version and active device."""
+    if not python_exe or not python_exe.exists():
+        return None, None
+    
+    cmd = [
+        str(python_exe), "-c",
+        "import torch; dev = 'CUDA (' + (torch.cuda.get_device_name(0) if torch.cuda.is_available() else '') + ')' if torch.cuda.is_available() else ('MPS' if getattr(torch.backends, 'mps', None) and torch.backends.mps.is_available() else 'CPU'); print(f'{torch.__version__}|{dev}')"
+    ]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+        if res.returncode == 0 and "|" in res.stdout:
+            parts = res.stdout.strip().split("|", 1)
+            return parts[0], parts[1]
+    except Exception:
+        pass
+    return None, None
+
+
+def detect_hardware(venv_python_path: Optional[Path] = None) -> HardwareInfo:
     """
     Perform complete hardware detection.
     Returns HardwareInfo dataclass with all system information.
@@ -347,12 +371,14 @@ def detect_hardware() -> HardwareInfo:
         except Exception:
             pass  # Parsing failed, assume compatible
     
-    
     # Get PyTorch recommendation
     variant, index_url = get_pytorch_recommendation(
         cuda_available, cuda_version, mps_available, rocm_available
     )
     
+    # Detect installed PyTorch in virtualenv if path provided
+    installed_ver, installed_dev = detect_venv_pytorch(venv_python_path)
+
     return HardwareInfo(
         os_name=os_name,
         os_version=os_version,
@@ -371,7 +397,9 @@ def detect_hardware() -> HardwareInfo:
         rocm_available=rocm_available,
         gpus=gpus,
         recommended_pytorch_variant=variant,
-        pytorch_index_url=index_url
+        pytorch_index_url=index_url,
+        installed_pytorch_version=installed_ver,
+        installed_pytorch_device=installed_dev,
     )
 
 

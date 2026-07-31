@@ -54,6 +54,7 @@ PyPotteryLayout provides a streamlined interface for organizing your archaeologi
 You can upload your pottery drawings by dragging and dropping them into the upload area or by clicking to select files.
 
 *   **Supported Formats**: PNG, JPG, JPEG, TIF, TIFF, BMP.
+*   A loading overlay with a progress bar is shown while images upload and the preview is generated, so the page never looks stuck during large uploads.
 
 ### Upload Metadata (Optional)
 You can upload an Excel (`.xlsx`) or CSV (`.csv`) file containing data about your pottery (e.g., Inventory Number, Type, Chronology).
@@ -61,9 +62,9 @@ You can upload an Excel (`.xlsx`) or CSV (`.csv`) file containing data about you
 *   **Linking**: The system automatically links metadata to images by matching the **filename** with the first column of your spreadsheet.
 *   **Usage**: This data can be used for **Sorting**, **Grouping**, and generating **Captions**.
 
-::: {.callout-important}
-## Metadata Formatting Requirement
-To ensure proper matching between your images and the metadata file, the **first column** of your Excel or CSV file MUST be named **`ID`** and must contain the **full filename including the extension** (e.g., `bowl_01.jpg`, `plate_02.png`).
+::: {.callout-note}
+## Flexible Filename Matching
+Matching is **extension-insensitive and case-insensitive**: an image named `Bowl_01.png` will correctly match an ID of `bowl_01`, `Bowl_01`, or `Bowl_01.png` in your metadata file. You no longer need the two to match exactly.
 :::
 
 <iframe src="animations/metadata_import.html" scrolling="no" style="width: 100%; height: 380px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
@@ -79,7 +80,9 @@ This section controls the physical appearance of the plate.
     *   **Grid**: Places images in a structured grid (Rows × Columns). Best for systematic catalogues.
     *   **Puzzle**: Uses an algorithm to pack images tightly, minimizing wasted space. Best for varied shapes and sizes.
 *   **Page Size**: Select standard formats (A4, A3, Letter, etc.) or define custom dimensions.
-*   **Scale Factor**: Adjusts the size of the images on the plate (e.g., `0.4` for 40% of original size).
+*   **Scale Factor**: Adjusts the size of the images on the plate. Switch between two input modes:
+    *   **Decimal**: A direct multiplier (e.g., `0.4` for 40% of original size).
+    *   **Ratio (1:N)**: Enter the scale as a ratio (e.g., `1:2`), which is automatically converted to the equivalent decimal factor.
 *   **Margins (px)**: Sets the white space around the edges of the page.
 *   **Spacing (px)**: Sets the gap between individual images.
 *   **Grid Rows / Columns** (Grid Mode only): Defines the structure of the grid.
@@ -96,6 +99,7 @@ Organize how images appear on the plates.
         *   **New Page**: Forces a page break.
         *   **Divider**: Draws a horizontal line between groups on the same page.
     *   **Divider Thickness/Width**: Customizes the appearance of the separator line.
+*   **Show sort value as chapter title**: Prints the current Primary Sort value once at the top of each group, like a book chapter heading. It's right-aligned in the page's top margin so it never overlaps the artwork. **Title Font Size** controls its size. For reliable one-per-group results, enable this together with **Page Break on Primary Change** (in Puzzle mode this is required for the title to appear once per group instead of only once for the whole document).
 
 # 4. Annotations
 
@@ -119,6 +123,17 @@ Add necessary information to your plates.
 *   **Start Number**: The number for the first page.
 *   **Prefix**: Text to appear before the number (e.g., "Pl.", "Tav.", "Fig.").
 *   **Position**: Choose where the number appears (Top/Bottom, Left/Center/Right).
+
+::: {.callout-note}
+When **Show Margin Border** is enabled, the table number label is now automatically inset from the border line instead of overlapping it.
+:::
+
+### Object Numbering
+Each image can also carry its own individual number, positioned relative to that image rather than the page:
+
+*   **Below (Center)**: Placed below the image, centered.
+*   **Bottom Left**: Overlaid inside the image's bottom-left corner.
+*   **Bottom Right**: Overlaid inside the image's bottom-right corner.
 
 # 5. Export
 

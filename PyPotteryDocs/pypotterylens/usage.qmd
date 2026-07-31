@@ -160,6 +160,11 @@ This tab allows you to insert tabular information for the images.
 Each record is indicated by an ID visible on the canvas. To add a column, write the name and click **➕ Add Column**.
 Once the information is entered, you can click on **👁️ Mark as Reviewed**. The inserted columns are persistent across the project's images.
 
+::: {.callout-tip}
+## AI-Assisted Extraction (optional)
+This tab can optionally use a local vision-language model (Gemma) to help fill in tabular fields automatically. Because this model runs entirely on your machine, PyPotteryLens first checks that your hardware is capable enough - see [Hardware Requirements](../requirements.qmd) for the exact thresholds. If your machine doesn't qualify, the option is disabled and the interface explains why, instead of attempting a slow or unstable download.
+:::
+
 ## Post Processing
 
 Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).

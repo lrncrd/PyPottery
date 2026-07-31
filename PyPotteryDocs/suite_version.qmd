@@ -6,13 +6,19 @@ format: html
 
 ## Latest Release
 
+### Version 1.1.0 (31/07/2026)
+
+- Added **Developer Mode**: run sub-apps directly from their local git checkout instead of a downloaded copy, for contributors working on the source
+- The launcher now shuts itself down (and stops any running app) automatically when its browser tab is closed
+- Live "Check Updates" now correctly refreshes installed version numbers when running from a local git checkout
+
+
+## Version History
+
 ### Version 1.0.2 (27/12/2025)
 
 - Improved upgrade process
 - Minor UI improvements
-
-
-## Version History
 
 ### Version 1.0.1 (11/12/2025)
 

@@ -19,9 +19,9 @@ elif command -v python &> /dev/null; then
 else
     echo "[ERROR] Python not found"
     echo "Please install Python 3.9+ using your package manager:"
-    echo "  Ubuntu/Debian: sudo apt install python3 python3-pip python3-venv python3-tk"
-    echo "  macOS: brew install python python-tk"
-    echo "  Fedora: sudo dnf install python3 python3-pip python3-tkinter"
+    echo "  Ubuntu/Debian: sudo apt install python3 python3-pip python3-venv"
+    echo "  macOS: brew install python"
+    echo "  Fedora: sudo dnf install python3 python3-pip"
     exit 1
 fi
 
@@ -37,15 +37,8 @@ fi
 
 echo "[OK] Found Python $PYTHON_VERSION"
 
-# Check for tkinter
-$PYTHON_CMD -c "import tkinter" 2>/dev/null
-if [ $? -ne 0 ]; then
-    echo "[ERROR] tkinter not found"
-    echo "Please install tkinter:"
-    echo "  Ubuntu/Debian: sudo apt install python3-tk"
-    echo "  macOS: brew install python-tk"
-    echo "  Fedora: sudo dnf install python3-tkinter"
-    exit 1
+if ! command -v uv &> /dev/null; then
+    echo "[INFO] uv not found - it will be installed automatically for faster setup"
 fi
 
 # Run the install script

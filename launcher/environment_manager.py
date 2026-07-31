@@ -38,9 +38,32 @@ class EnvironmentManager:
         self.is_windows = platform.system() == "Windows"
         self.is_macos = platform.system() == "Darwin"
         self.is_linux = platform.system() == "Linux"
-        
+
         # Progress callback
         self._progress_callback: Optional[Callable[[InstallProgress], None]] = None
+
+        # uv (https://github.com/astral-sh/uv) is much faster than venv+pip.
+        # Used when available; every uv-based code path below falls back to
+        # plain venv/pip on any failure, so this is never a hard requirement.
+        self.uv_path: Optional[Path] = self._detect_uv()
+
+    def _detect_uv(self) -> Optional[Path]:
+        """Find the uv executable if installed, checking PATH and common install dirs."""
+        found = shutil.which("uv")
+        if found:
+            return Path(found)
+
+        candidates = [
+            Path.home() / ".local" / "bin" / "uv",
+            Path.home() / ".cargo" / "bin" / "uv",
+        ]
+        if self.is_windows:
+            candidates.append(Path.home() / ".local" / "bin" / "uv.exe")
+
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+        return None
     
     @property
     def python_executable(self) -> Path:
@@ -96,21 +119,34 @@ class EnvironmentManager:
                 self._report_progress("venv", "Virtual environment already exists", 10)
                 return True
         
+        if self.uv_path:
+            try:
+                cmd = [str(self.uv_path), "venv", str(self.venv_path), "--python", sys.executable]
+                if force_recreate:
+                    cmd.append("--clear")
+                subprocess.run(cmd, check=True, capture_output=True)
+                self._report_progress("venv", "Virtual environment created successfully (uv)", 10)
+                return True
+            except Exception as e:
+                self._report_progress(
+                    "venv", f"uv venv failed ({e}), falling back to standard venv...", 5
+                )
+
         try:
             # Create venv using subprocess to avoid in-process issues (especially on macOS)
             # which can cause SIGABRT when ensurepip runs in a threaded GUI context
             cmd = [sys.executable, "-m", "venv", str(self.venv_path)]
-            
+
             if force_recreate:
                 cmd.append("--clear")
-            
+
             # Run venv creation as external process
             # This isolates the process and prevents signal handlers from conflicting
             subprocess.run(cmd, check=True, capture_output=True)
-            
-            self._report_progress("venv", "Virtual environment created successfully", 10)
+
+            self._report_progress("venv", "Virtual environment created successfully (pip)", 10)
             return True
-            
+
         except subprocess.CalledProcessError as e:
             error_msg = e.stderr.decode() if e.stderr else str(e)
             self._report_progress("venv", f"Failed to create venv: {error_msg}", 0, is_error=True)
@@ -163,7 +199,36 @@ class EnvironmentManager:
             return False, "Installation timed out"
         except Exception as e:
             return False, str(e)
-    
+
+    def _run_pip(self, args: List[str], capture_output: bool = False) -> Tuple[bool, str]:
+        """
+        Run a pip-style command (install/list/...) against the venv, preferring
+        uv (much faster) with an automatic fallback to plain pip on any failure.
+        """
+        if self.uv_path:
+            cmd = [str(self.uv_path), "pip"] + args + ["--python", str(self.python_executable)]
+            try:
+                if capture_output:
+                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+                    if result.returncode == 0:
+                        return True, result.stdout + result.stderr
+                else:
+                    process = subprocess.Popen(
+                        cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1
+                    )
+                    output_lines = []
+                    for line in process.stdout:
+                        output_lines.append(line)
+                    process.wait()
+                    if process.returncode == 0:
+                        return True, "".join(output_lines)
+            except subprocess.TimeoutExpired:
+                return False, "Installation timed out"
+            except Exception:
+                pass  # fall through to the pip-based path below
+
+        return self.run_pip_command(args, capture_output=capture_output)
+
     def install_pytorch(self, hardware_info: HardwareInfo) -> bool:
         """
         Install PyTorch with correct variant based on hardware.
@@ -185,13 +250,14 @@ class EnvironmentManager:
         if hardware_info.pytorch_index_url:
             cmd.extend(["--index-url", hardware_info.pytorch_index_url])
         
+        backend = "uv" if self.uv_path else "pip"
         self._report_progress(
-            "pytorch", 
-            f"Installing PyTorch ({hardware_info.recommended_pytorch_variant})...", 
+            "pytorch",
+            f"Installing PyTorch ({hardware_info.recommended_pytorch_variant}) via {backend}...",
             20
         )
-        
-        success, output = self.run_pip_command(cmd)
+
+        success, output = self._run_pip(cmd)
         
         if success:
             self._report_progress("pytorch", "PyTorch installed successfully", 40)
@@ -250,7 +316,7 @@ class EnvironmentManager:
                     progress
                 )
                 
-                success, output = self.run_pip_command(["install"] + batch)
+                success, output = self._run_pip(["install"] + batch)
                 if not success:
                     self._report_progress("dependencies", f"Installation failed: {output}", progress, is_error=True)
                     return False
@@ -265,12 +331,12 @@ class EnvironmentManager:
     
     def install_package(self, package: str) -> bool:
         """Install a single package"""
-        success, output = self.run_pip_command(["install", package])
+        success, output = self._run_pip(["install", package])
         return success
-    
+
     def get_installed_packages(self) -> dict:
         """Get dictionary of installed packages and versions"""
-        success, output = self.run_pip_command(["list", "--format=json"], capture_output=True)
+        success, output = self._run_pip(["list", "--format=json"], capture_output=True)
         if success:
             try:
                 packages = json.loads(output)
@@ -338,10 +404,12 @@ print(f"Tensor test passed: {x.shape}")
         if not self.create_venv():
             return False
         
-        # Step 2: Upgrade pip
-        self._report_progress("venv", "Upgrading pip...", 12)
-        self.run_pip_command(["install", "--upgrade", "pip"])
-        
+        # Step 2: Upgrade pip - only meaningful for a pip-based venv; uv-created
+        # venvs have no pip binary at all, so skip this step for them.
+        if not self.uv_path:
+            self._report_progress("venv", "Upgrading pip...", 12)
+            self.run_pip_command(["install", "--upgrade", "pip"])
+
         # Step 3: Install PyTorch
         if not self.install_pytorch(hardware_info):
             return False

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PyPottery Suite Launcher</title>
+  <link rel="icon" href="/assets/icon_app.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!-- Splash / Loading Screen Overlay -->
+<div id="splash-screen" class="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo-container">
+      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="splash-logo" onerror="this.style.display='none'">
+      <div class="splash-logo-halo"></div>
+    </div>
+    <h1 class="splash-title">PyPottery <span class="splash-accent">Suite</span></h1>
+    <p class="splash-subtitle">Archaeological Pottery Documentation Tools</p>
+    <div class="splash-progress-container">
+      <div class="splash-track"><div id="splash-bar" class="splash-fill"></div></div>
+      <p id="splash-status" class="splash-status-text">Initializing system &amp; detecting hardware...</p>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="app-layout">
+
+  <!-- Top Warm Navigation Bar -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="logo-wrapper">
+        <img class="logo" src="/assets/imgs/Logo.png" alt="PyPottery Logo" onerror="this.style.display='none'">
+      </div>
+      <div class="brand-info">
+        <h1 class="brand-title">PyPottery <span class="brand-accent">Suite</span></h1>
+        <div class="brand-meta">
+          <span class="version-badge" id="launcher-version">v1.0</span>
+          <span class="system-status-chip" id="system-status-chip">
+            <span class="status-dot-pulse"></span> Launcher Ready
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button id="btn-check-updates" class="btn btn-outline btn-icon-text">
+        <span class="btn-icon">🔄</span>
+        <span>Check Updates</span>
+      </button>
+      <button id="btn-quit" class="btn btn-danger-soft btn-icon-text">
+        <span class="btn-icon">⏻</span>
+        <span>Quit</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- Notification Banners -->
+    <div id="banner-driver-warning" class="banner banner-warning hidden">
+      <div class="banner-icon">⚠️</div>
+      <div class="banner-content">
+        <strong class="banner-title">GPU Driver Notice</strong>
+        <span id="banner-driver-warning-text"></span>
+      </div>
+      <button class="banner-dismiss" data-dismiss="banner-driver-warning" title="Dismiss">✕</button>
+    </div>
+
+    <div id="banner-launcher-update" class="banner banner-info hidden">
+      <div class="banner-icon">🏺</div>
+      <div class="banner-content">
+        <strong class="banner-title">Update Available</strong>
+        <span id="banner-launcher-update-text">A new version of PyPottery Launcher is available.</span>
+      </div>
+      <div class="banner-actions">
+        <button id="btn-launcher-update-confirm" class="btn btn-primary btn-sm">Update &amp; Restart</button>
+        <button class="banner-dismiss btn btn-ghost btn-sm" data-dismiss="banner-launcher-update">Later</button>
+      </div>
+    </div>
+
+    <div id="banner-launcher-update-progress" class="banner banner-info hidden">
+      <div class="banner-icon spinner">⏳</div>
+      <div class="banner-content" style="width: 100%;">
+        <div class="banner-header-line">
+          <span id="banner-launcher-update-progress-text">Updating launcher...</span>
+        </div>
+        <div class="progress-track"><div id="launcher-update-progress-bar" class="progress-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- Dashboard Top Row: Hardware Specs & Environment Status -->
+    <div class="dashboard-grid">
+      
+      <!-- System Specs Card -->
+      <section class="card hardware-panel" id="hardware-panel">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon">⚙️</span>
+            <h2 class="card-title">System &amp; Hardware Specs</h2>
+          </div>
+          <span class="card-tag">Specs</span>
+        </div>
+        <div class="hw-grid">
+          <div class="hw-card">
+            <span class="hw-icon">💻</span>
+            <div class="hw-details">
+              <span class="hw-label">Operating System</span>
+              <span class="hw-value" data-hw="os">Detecting...</span>
+            </div>
+          </div>
+          <div class="hw-card">
+            <span class="hw-icon">🧠</span>
+            <div class="hw-details">
+              <span class="hw-label">Processor (CPU)</span>
+              <span class="hw-value" data-hw="cpu">Detecting...</span>
+            </div>
+          </div>
+          <div class="hw-card">
+            <span class="hw-icon">📊</span>
+            <div class="hw-details">
+              <span class="hw-label">System Memory</span>
+              <span class="hw-value" data-hw="ram">Detecting...</span>
+              <div class="ram-track-mini"><div id="ram-bar-fill" class="ram-fill-mini" style="width: 0%;"></div></div>
+            </div>
+          </div>
+          <div class="hw-card">
+            <span class="hw-icon">🎮</span>
+            <div class="hw-details">
+              <span class="hw-label">GPU Acceleration</span>
+              <span class="hw-value" data-hw="gpu">Detecting...</span>
+            </div>
+          </div>
+          <div class="hw-card hw-card-full">
+            <span class="hw-icon">🔥</span>
+            <div class="hw-details">
+              <span class="hw-label">PyTorch Backend</span>
+              <span class="hw-value" data-hw="pytorch">Detecting...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Python Environment Card -->
+      <section class="card environment-panel" id="environment-panel">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-icon">🐍</span>
+            <h2 class="card-title">Python Environment</h2>
+          </div>
+          <div class="env-header-right">
+            <span id="env-status-text" class="env-status-badge">Checking...</span>
+            <span id="env-verified-check" class="card-verified-check hidden" title="Environment Ready & Verified">✓</span>
+          </div>
+        </div>
+        <p class="panel-subtitle">Isolated Python execution environment for pottery documentation tools and AI models.</p>
+        
+        <div class="env-progress-block">
+          <div class="progress-track-large"><div id="env-progress-bar" class="progress-fill-glow"></div></div>
+          <p id="env-progress-label" class="progress-label">Ready for operation</p>
+        </div>
+
+        <div class="env-actions">
+          <button id="btn-env-setup" class="btn btn-primary">
+            <span>Setup Environment</span>
+          </button>
+          <button id="btn-env-verify" class="btn btn-outline">
+            <span>Verify Dependencies</span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Applications Section -->
+    <section class="apps-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🏺 Archaeological Suite Applications</h2>
+          <p class="section-description">Specialized AI tools for pottery documentation, vectorization, digital inking, and layout synthesis.</p>
+        </div>
+      </div>
+      <div id="apps-list" class="apps-grid">
+        <div class="apps-loading-skeleton">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Downloaded AI Models -->
+    <section class="card model-cache-panel" id="model-cache-panel">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-icon">🗃️</span>
+          <h2 class="card-title">Downloaded AI Models</h2>
+        </div>
+        <div class="card-header-actions">
+          <span class="env-status-badge" id="model-cache-total">0 MB total</span>
+          <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache">🔄</button>
+        </div>
+      </div>
+      <p class="panel-subtitle">AI models are downloaded once and shared across every tool in the suite, so reinstalling or updating an app never re-downloads them. Remove anything you no longer need to free up disk space — the owning app fetches it again next time it's needed.</p>
+      <div id="model-cache-list" class="model-cache-list">
+        <p class="apps-empty">No models downloaded yet. They'll appear here once a tool downloads one.</p>
+      </div>
+    </section>
+
+    <!-- Terminal & Activity Log Panel -->
+    <section class="card console-panel" id="console-panel">
+      <div class="console-header">
+        <div class="console-title-group">
+          <span class="console-dot" id="console-dot">●</span>
+          <span class="console-title">System &amp; Application Logs</span>
+          <span class="console-last-msg" id="console-last-msg">Ready</span>
+        </div>
+        <div class="console-actions">
+          <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log">📋 Copy</button>
+          <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen">🗑️ Clear</button>
+          <button id="btn-console-toggle" class="btn btn-outline btn-xs">Show Logs</button>
+        </div>
+      </div>
+      <div class="console-body hidden" id="console-body">
+        <div class="console-toolbar">
+          <div class="log-filter-chips">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="info">Info</button>
+            <button class="filter-chip" data-filter="success">Success</button>
+            <button class="filter-chip" data-filter="warning">Warnings</button>
+            <button class="filter-chip" data-filter="error">Errors</button>
+          </div>
+          <span class="log-count" id="log-count">0 entries</span>
+        </div>
+        <pre id="console-log" class="console-stream"></pre>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p id="footer-text">PyPottery Suite Launcher • Developed with 🏺 for Pottery Archaeology • <a href="https://github.com/lrncrd" target="_blank" rel="noopener">github.com/lrncrd</a></p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- Interactive Premium Installer Hub Modal -->
+<div id="installer-modal" class="installer-modal-overlay hidden">
+  <div class="installer-modal">
+    <!-- Header -->
+    <div class="installer-header">
+      <div class="installer-app-info">
+        <div class="installer-logo-box" id="installer-logo-box">
+          <span class="emoji-icon">🏺</span>
+        </div>
+        <div>
+          <h3 class="installer-app-name" id="installer-app-name">Installing Application</h3>
+          <p class="installer-app-subtitle" id="installer-app-subtitle">Archaeological Suite Installation</p>
+        </div>
+      </div>
+      <button class="installer-close-btn" id="btn-installer-close" title="Minimize / Close">✕</button>
+    </div>
+
+    <!-- Stepper Pipeline -->
+    <div class="installer-stepper">
+      <div class="step-item" id="step-download">
+        <div class="step-circle">1</div>
+        <span class="step-label" id="step-1-label">Download</span>
+      </div>
+      <div class="step-connector" id="conn-1"></div>
+      <div class="step-item" id="step-extract">
+        <div class="step-circle">2</div>
+        <span class="step-label" id="step-2-label">Unpack &amp; Setup</span>
+      </div>
+      <div class="step-connector" id="conn-2"></div>
+      <div class="step-item" id="step-finalize">
+        <div class="step-circle">3</div>
+        <span class="step-label" id="step-3-label">Ready</span>
+      </div>
+    </div>
+
+    <!-- Hero Progress Ring & Status -->
+    <div class="installer-hero-progress">
+      <div class="progress-ring-container">
+        <svg class="progress-ring" width="110" height="110">
+          <circle class="progress-ring-bg" stroke="#e8e3d8" stroke-width="7" fill="transparent" r="46" cx="55" cy="55"/>
+          <circle id="installer-ring-bar" class="progress-ring-fill" stroke="url(#terracotta-gradient)" stroke-width="7" stroke-dasharray="289.02" stroke-dashoffset="289.02" stroke-linecap="round" fill="transparent" r="46" cx="55" cy="55"/>
+          <defs>
+            <linearGradient id="terracotta-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ea580c"/>
+              <stop offset="100%" stop-color="#0d9488"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="progress-percent-text" id="installer-percent-text">0%</span>
+      </div>
+      <div class="installer-status-block">
+        <p class="installer-status-title" id="installer-status-title">Preparing installation...</p>
+        <p class="installer-status-detail" id="installer-status-detail">Connecting to PyPottery repository...</p>
+      </div>
+    </div>
+
+    <!-- Embedded Terminal Output Box -->
+    <div class="installer-console-box">
+      <div class="installer-console-header">
+        <span class="console-dot info">●</span>
+        <span>Installation Live Stream</span>
+      </div>
+      <div class="installer-console-log" id="installer-console-log"></div>
+    </div>
+
+    <!-- Actions Footer (Shown when installation finishes or errors) -->
+    <div class="installer-footer" id="installer-footer">
+      <button class="btn btn-primary hidden" id="btn-installer-done">✨ Complete Setup</button>
+      <button class="btn btn-success btn-glow hidden" id="btn-installer-launch">🚀 Launch App Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Info Guide Button -->
+<button id="btn-floating-guide" class="btn-floating-guide" title="Workflow Guide & Documentation">
+  <span class="floating-icon">💡</span>
+  <span class="floating-label">Workflow Guide</span>
+</button>
+
+<!-- Workflow Guide Modal -->
+<div id="guide-modal" class="installer-modal-overlay hidden">
+  <div class="guide-modal-card">
+    <div class="installer-header">
+      <div class="installer-title-group">
+        <div class="installer-logo-box">
+          <span class="emoji-icon">📖</span>
+        </div>
+        <div>
+          <h2 class="installer-app-name">The Bibliographic Way</h2>
+          <p class="installer-app-subtitle">Workflow: PDF Literature ➔ PyPottery Lens ➔ Digital Vessel Cards</p>
+        </div>
+      </div>
+      <button class="installer-close-btn" id="btn-guide-close" title="Close Guide">✕</button>
+    </div>
+
+    <div class="guide-body">
+      <div class="workflow-section">
+        <div class="workflow-header-block">
+          <span class="workflow-badge">Bibliographic Workflow</span>
+          <h3 class="workflow-title">PDF ➔ PyPottery Lens ➔ Vessel Cards</h3>
+          <p class="workflow-desc">
+            Transform legacy archaeological publications, excavation monographs, and typological PDF catalogs into structured digital vessel cards ready for research, cataloging, and analysis.
+          </p>
+        </div>
+
+        <!-- 3-Step Detailed Pipeline -->
+        <div class="pipeline-timeline">
+          <!-- Step 1: PDF -->
+          <div class="pipeline-card">
+            <div class="pipeline-node-col">
+              <div class="pipeline-node-icon">📄</div>
+              <div class="pipeline-node-line"></div>
+            </div>
+            <div class="pipeline-card-content">
+              <div class="pipeline-card-header">
+                <span class="pipeline-step-num">Step 01</span>
+                <span class="pipeline-tool-tag">Source Literature</span>
+              </div>
+              <h4 class="pipeline-card-title">PDF Document Ingestion</h4>
+              <p class="pipeline-card-desc">
+                Start with any archaeological publication in PDF format — excavation reports, monographs, journal articles, or scanned plate catalogs. Multi-page documents are indexed and segmented into individual page figures for analysis.
+              </p>
+              <div class="pipeline-tags">
+                <span class="ptag">PDF / Scanned Monographs</span>
+                <span class="ptag">Plate Indexing</span>
+                <span class="ptag">Publication Metadata</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: PyPottery Lens -->
+          <div class="pipeline-card">
+            <div class="pipeline-node-col">
+              <div class="pipeline-node-icon">🔍</div>
+              <div class="pipeline-node-line"></div>
+            </div>
+            <div class="pipeline-card-content highlight-card">
+              <div class="pipeline-card-header">
+                <span class="pipeline-step-num">Step 02</span>
+                <span class="pipeline-tool-tag tool-lens">PyPottery Lens</span>
+              </div>
+              <h4 class="pipeline-card-title">PyPottery Lens Processing</h4>
+              <p class="pipeline-card-desc">
+                PyPottery Lens analyzes the PDF pages using computer vision AI models. It automatically detects and isolates individual vessel profile drawings, section cuts, rim orientations, scale bars (cm/m), figure captions, and artifact labels.
+              </p>
+              <div class="pipeline-tags">
+                <span class="ptag">AI Profile Extraction</span>
+                <span class="ptag">Automatic Scale Bar Detection</span>
+                <span class="ptag">Section & Rim Alignment</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Vessel Cards -->
+          <div class="pipeline-card">
+            <div class="pipeline-node-col">
+              <div class="pipeline-node-icon">🏺</div>
+            </div>
+            <div class="pipeline-card-content">
+              <div class="pipeline-card-header">
+                <span class="pipeline-step-num">Step 03</span>
+                <span class="pipeline-tool-tag tool-3d">Digital Output</span>
+              </div>
+              <h4 class="pipeline-card-title">Digital Vessel Cards Generation</h4>
+              <p class="pipeline-card-desc">
+                Every extracted ceramic drawing is transformed into a standardized, structured "Digital Vessel Card". Each card bundles the isolated profile image, scale measurements, catalog references, and archaeological context — ready to launch into vector inking, profiling, or database export.
+              </p>
+              <div class="pipeline-tags">
+                <span class="ptag">Standardized Vessel Cards</span>
+                <span class="ptag">Calibrated Measurements</span>
+                <span class="ptag">Ready for Suite Analysis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+
+
+
+

@@ -117,6 +117,11 @@ Download folder doesn't allow running the app. Move it to a different location (
 
 Once the launcher opens, you'll see a clean interface with all available PyPottery applications.
 
+::: {.callout-note}
+## The launcher runs in your browser
+Just like the PyPottery apps it manages, the launcher itself opens as a page in your default web browser (instead of a separate desktop window). Closing that browser tab shuts down the launcher and any app it's currently running - simply reopen it from `PyPottery.bat` / `PyPottery Launcher.app` when you want to start again.
+:::
+
 ```{=html}
 <div style="text-align: center; margin: 2rem 0;">
   <iframe src="animations/launcher_demo.html" width="100%" height="850" style="border: none; border-radius: 12px; max-width: 950px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"></iframe>
@@ -185,11 +190,16 @@ Once an app is downloaded, click the **"Launch"** button to start it. The app wi
     <strong style="color: #1e40af;">How Apps Work</strong>
   </div>
   <p style="margin: 0; color: #1e40af;">
-    PyPottery apps run as local web servers. When you click "Launch", a browser window opens 
+    PyPottery apps run as local web servers. When you click "Launch", a browser window opens
     with the app interface. The launcher shows the running status and allows you to stop the app.
   </p>
 </div>
 ```
+
+::: {.callout-tip}
+## For Developers: Developer Mode
+If you're working from a git checkout of a PyPottery app instead of a downloaded release, the launcher supports a **Developer Mode**: copy `launcher/dev_config.example.py` to `launcher/dev_config.py` and set `DEVELOPER_MODE = True`. With it enabled, Launch and Open Folder point at the app's local git checkout at the repo root instead of the downloaded copy in `apps/`, and Install/Update/Uninstall are disabled for those apps (you manage them yourself with `git pull`).
+:::
 
 ## Troubleshooting
 

@@ -104,23 +104,27 @@ class UpdateChecker:
         except (URLError, json.JSONDecodeError):
             return None
     
-    def get_latest_release(self, owner: str, repo: str, 
-                           include_prerelease: bool = False) -> Optional[ReleaseInfo]:
+    def get_latest_release(self, owner: str, repo: str,
+                           include_prerelease: bool = False,
+                           force_refresh: bool = False) -> Optional[ReleaseInfo]:
         """
         Get the latest release for a repository.
-        
+
         Args:
             owner: GitHub repository owner
             repo: Repository name
             include_prerelease: Include pre-release versions
-            
+            force_refresh: Bypass the cache and hit the GitHub API directly -
+                for an explicit user-initiated check, where a stale answer
+                (up to CACHE_DURATION_HOURS old) would defeat the point of asking.
+
         Returns:
             ReleaseInfo or None if no releases found
         """
         repo_key = f"{owner}/{repo}"
-        
+
         # Check cache first
-        if self._is_cache_valid(repo_key):
+        if not force_refresh and self._is_cache_valid(repo_key):
             cached = self._cache["releases"].get(repo_key)
             if cached:
                 return ReleaseInfo(**cached)
@@ -245,22 +249,24 @@ class UpdateChecker:
                 return 1
             return 0
     
-    def check_for_update(self, owner: str, repo: str, 
-                         current_version: Optional[str]) -> UpdateInfo:
+    def check_for_update(self, owner: str, repo: str,
+                         current_version: Optional[str],
+                         force_refresh: bool = False) -> UpdateInfo:
         """
         Check if an update is available for an application.
-        
+
         Args:
             owner: GitHub repository owner
             repo: Repository name
             current_version: Currently installed version
-            
+            force_refresh: Bypass the cache (see get_latest_release)
+
         Returns:
             UpdateInfo with update status
         """
         app_id = repo
-        
-        release = self.get_latest_release(owner, repo)
+
+        release = self.get_latest_release(owner, repo, force_refresh=force_refresh)
         
         if not release:
             return UpdateInfo(
@@ -291,22 +297,24 @@ class UpdateChecker:
         )
     
     def check_all_updates(self, apps: Dict[str, Tuple[str, str, Optional[str]]],
-                          callback: Optional[callable] = None) -> Dict[str, UpdateInfo]:
+                          callback: Optional[callable] = None,
+                          force_refresh: bool = False) -> Dict[str, UpdateInfo]:
         """
         Check updates for multiple applications.
-        
+
         Args:
             apps: Dict of {app_id: (owner, repo, current_version)}
             callback: Optional callback(app_id, update_info) for each result
-            
+            force_refresh: Bypass the cache (see get_latest_release)
+
         Returns:
             Dict of {app_id: UpdateInfo}
         """
         results = {}
-        
+
         for app_id, (owner, repo, current_version) in apps.items():
             try:
-                update_info = self.check_for_update(owner, repo, current_version)
+                update_info = self.check_for_update(owner, repo, current_version, force_refresh=force_refresh)
                 results[app_id] = update_info
                 
                 if callback:

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annotation Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .window {
+            width: 700px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            height: 40px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .app-body {
+            flex: 1;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f9fafb;
+            border-left: 1px solid #e5e7eb;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            order: 2;
+        }
+
+        .main-area {
+            flex: 1;
+            padding: 24px;
+            position: relative;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            order: 1;
+        }
+
+        .canvas-container {
+            flex: 1;
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Generic Plate/Sherd Image Placeholder */
+        .pottery-shape {
+            position: relative;
+            width: 320px;
+            height: 240px;
+            background-color: #e5e7eb;
+            background-image: radial-gradient(circle at 50% 50%, #d1d5db 2px, transparent 2.5px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pottery-label {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #6b7280;
+            font-family: monospace;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: none;
+        }
+
+        .input-group {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .input-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .input-fake {
+            height: 24px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .drawings-list {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .drawing-item {
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            border-bottom: 1px solid #f3f4f6;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+            background: #f9fafb;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .drawing-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .drawing-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drawing-icon {
+            width: 24px;
+            height: 24px;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .text-annotation-item {
+            margin-left: 32px;
+            background: #e0e7ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .text-annotation-item.visible {
+            opacity: 1;
+            height: 24px;
+            margin-top: 4px;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            z-index: 9999;
+            /* High z-index */
+            transition: all 0.5s ease-out;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            pointer-events: none;
+        }
+
+        .selection-box {
+            position: absolute;
+            border: 2px solid #2563eb;
+            background: rgba(37, 99, 235, 0.1);
+            display: none;
+            border-radius: 4px;
+        }
+
+        .text-box {
+            position: absolute;
+            border: 2px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            display: none;
+            border-radius: 4px;
+        }
+
+        .annotation-tag {
+            position: absolute;
+            background: #2563eb;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            top: -20px;
+            left: 0;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.3s, transform 0.3s;
+            white-space: nowrap;
+        }
+
+        .text-tag {
+            position: absolute;
+            background: #f59e0b;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            top: -20px;
+            left: 0;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.3s, transform 0.3s;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="window" id="appWindow">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryScan v0.2.0
+            </div>
+        </div>
+        <div class="app-body">
+            <div class="main-area">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex gap-2">
+                        <div class="px-3 py-1 bg-gray-200 rounded text-xs font-bold text-gray-600">← Prev</div>
+                        <div class="px-3 py-1 bg-gray-100 rounded text-xs font-bold text-gray-800">1 / 1</div>
+                        <div class="px-3 py-1 bg-gray-200 rounded text-xs font-bold text-gray-600">Next →</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn-primary" id="newDrawingBtn">
+                            <span>+</span> Drawing
+                        </button>
+                        <button class="btn-danger">Clear</button>
+                    </div>
+                </div>
+
+                <div class="canvas-container" id="canvasContainer">
+                    <div class="pottery-shape">
+                        <div class="pottery-label">Plate_001.jpg</div>
+                    </div>
+
+                    <div class="selection-box" id="selectionBox">
+                        <div class="annotation-tag">Drawing #1</div>
+                    </div>
+
+                    <div class="text-box" id="textBox">
+                        <div class="text-tag">Text #1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="text-sm font-bold text-gray-700 mb-2">📝 Image Metadata</div>
+                <div class="input-group">
+                    <span class="input-label">Table/Plate</span>
+                    <div class="input-fake" style="width: 60%;"></div>
+                </div>
+                <div class="input-group">
+                    <span class="input-label">Context</span>
+                    <div class="input-fake" style="width: 80%;"></div>
+                </div>
+
+                <div class="text-sm font-bold text-gray-700 mt-4 mb-2">🖼️ Drawings</div>
+                <div class="drawings-list" id="drawingsList">
+                    <div class="text-xs text-gray-400 text-center mt-4" id="emptyText">No drawings yet</div>
+
+                    <div class="drawing-item" id="newItem">
+                        <div class="drawing-header">
+                            <div class="drawing-icon">1</div>
+                            <div class="flex-1">
+                                <div class="h-2 bg-gray-200 rounded w-16 mb-1"></div>
+                                <div class="h-2 bg-gray-100 rounded w-10"></div>
+                            </div>
+                            <div class="w-6 h-6 bg-indigo-100 rounded flex items-center justify-center text-indigo-600 font-bold text-xs cursor-pointer"
+                                id="addTextBtn">T</div>
+                        </div>
+                        <div class="text-annotation-item" id="textItem">
+                            <span>📝</span> Text Area 1
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full py-2 bg-green-600 text-white rounded-md text-sm font-bold mt-auto">
+                    Finish & Process →
+                </button>
+            </div>
+        </div>
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const selectionBox = document.getElementById('selectionBox');
+        const textBox = document.getElementById('textBox');
+        const newItem = document.getElementById('newItem');
+        const textItem = document.getElementById('textItem');
+        const newDrawingBtn = document.getElementById('newDrawingBtn');
+        const addTextBtn = document.getElementById('addTextBtn');
+        const emptyText = document.getElementById('emptyText');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const appWindow = document.getElementById('appWindow');
+
+        // Helper to get relative coordinates
+        function getRelativePos(element) {
+            const rect = element.getBoundingClientRect();
+            const winRect = appWindow.getBoundingClientRect();
+            return {
+                top: rect.top - winRect.top,
+                left: rect.left - winRect.left,
+                width: rect.width,
+                height: rect.height
+            };
+        }
+
+        function reset() {
+            selectionBox.style.display = 'none';
+            selectionBox.style.width = '0';
+            selectionBox.style.height = '0';
+
+            textBox.style.display = 'none';
+            textBox.style.width = '0';
+            textBox.style.height = '0';
+
+            newItem.classList.remove('visible');
+            newItem.style.display = 'none';
+            textItem.classList.remove('visible');
+
+            emptyText.style.display = 'block';
+
+            newDrawingBtn.style.transform = 'scale(1)';
+            newDrawingBtn.style.backgroundColor = '#2563eb';
+
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            cursor.style.transition = 'none';
+        }
+
+        function runAnimation() {
+            reset();
+
+            // Get window rect for calculations
+            const winRect = appWindow.getBoundingClientRect();
+
+            // --- STEP 1: CREATE DRAWING ---
+
+            // 0.5s: Move to "New Drawing" button
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                const btnPos = getRelativePos(newDrawingBtn);
+                cursor.style.top = (btnPos.top + 15) + 'px';
+                cursor.style.left = (btnPos.left + 40) + 'px';
+            }, 500);
+
+            // 1.0s: Click
+            setTimeout(() => {
+                newDrawingBtn.style.transform = 'scale(0.95)';
+                newDrawingBtn.style.backgroundColor = '#1d4ed8';
+            }, 1000);
+
+            // 1.3s: Release & Move to Canvas for Drawing
+            // Define Drawing Box Coordinates relative to Canvas Container
+            const drawStartX = 60; // Relative to canvas
+            const drawStartY = 40;
+            const drawWidth = 280;
+            const drawHeight = 200;
+
+            setTimeout(() => {
+                newDrawingBtn.style.transform = 'scale(1)';
+                newDrawingBtn.style.backgroundColor = '#2563eb';
+
+                const canvasPos = getRelativePos(canvasContainer);
+                // Move cursor to start position (Top-Left of box)
+                cursor.style.top = (canvasPos.top + drawStartY) + 'px';
+                cursor.style.left = (canvasPos.left + drawStartX) + 'px';
+            }, 1300);
+
+            // 1.8s: Start Dragging Drawing Box
+            setTimeout(() => {
+                selectionBox.style.display = 'block';
+                selectionBox.style.left = drawStartX + 'px';
+                selectionBox.style.top = drawStartY + 'px';
+                selectionBox.style.width = '0px';
+                selectionBox.style.height = '0px';
+
+                // Animate width/height
+                selectionBox.style.transition = 'width 1.2s linear, height 1.2s linear';
+                selectionBox.style.width = drawWidth + 'px';
+                selectionBox.style.height = drawHeight + 'px';
+
+                // Move cursor with it (To Bottom-Right of box)
+                cursor.style.transition = 'top 1.2s linear, left 1.2s linear';
+                const canvasPos = getRelativePos(canvasContainer);
+                cursor.style.top = (canvasPos.top + drawStartY + drawHeight) + 'px';
+                cursor.style.left = (canvasPos.left + drawStartX + drawWidth) + 'px';
+            }, 1800);
+
+            // 3.0s: End Dragging Drawing Box
+            setTimeout(() => {
+                selectionBox.querySelector('.annotation-tag').style.opacity = '1';
+                selectionBox.querySelector('.annotation-tag').style.transform = 'translateY(0)';
+
+                emptyText.style.display = 'none';
+                newItem.style.display = 'flex';
+                void newItem.offsetWidth;
+                newItem.classList.add('visible');
+            }, 3000);
+
+            // --- STEP 2: ADD TEXT ---
+
+            // 3.5s: Move to "Add Text" button
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                const btnPos = getRelativePos(addTextBtn);
+                cursor.style.top = (btnPos.top + 10) + 'px';
+                cursor.style.left = (btnPos.left + 10) + 'px';
+            }, 3500);
+
+            // 4.0s: Click "Add Text"
+            setTimeout(() => {
+                addTextBtn.style.transform = 'scale(0.9)';
+            }, 4000);
+
+            // 4.3s: Release & Move to Canvas for Text Box
+            // Define Text Box Coordinates
+            const textStartX = 140;
+            const textStartY = 100;
+            const textWidth = 120;
+            const textHeight = 40;
+
+            setTimeout(() => {
+                addTextBtn.style.transform = 'scale(1)';
+
+                const canvasPos = getRelativePos(canvasContainer);
+                cursor.style.top = (canvasPos.top + textStartY) + 'px';
+                cursor.style.left = (canvasPos.left + textStartX) + 'px';
+            }, 4300);
+
+            // 4.8s: Start Dragging Text Box
+            setTimeout(() => {
+                textBox.style.display = 'block';
+                textBox.style.left = textStartX + 'px';
+                textBox.style.top = textStartY + 'px';
+                textBox.style.width = '0px';
+                textBox.style.height = '0px';
+
+                // Animate width/height
+                textBox.style.transition = 'width 1.0s linear, height 1.0s linear';
+                textBox.style.width = textWidth + 'px';
+                textBox.style.height = textHeight + 'px';
+
+                // Move cursor with it
+                cursor.style.transition = 'top 1.0s linear, left 1.0s linear';
+                const canvasPos = getRelativePos(canvasContainer);
+                cursor.style.top = (canvasPos.top + textStartY + textHeight) + 'px';
+                cursor.style.left = (canvasPos.left + textStartX + textWidth) + 'px';
+            }, 4800);
+
+            // 5.8s: End Dragging Text Box
+            setTimeout(() => {
+                textBox.querySelector('.text-tag').style.opacity = '1';
+                textBox.querySelector('.text-tag').style.transform = 'translateY(0)';
+
+                textItem.classList.add('visible');
+            }, 5800);
+
+            // 6.5s: Move away
+            setTimeout(() => {
+                cursor.style.transition = 'all 0.5s ease-out';
+                cursor.style.top = '110%';
+                cursor.style.left = '110%';
+            }, 6500);
+        }
+
+        setInterval(runAnimation, 8000);
+        // Initial run
+        setTimeout(runAnimation, 100); 
+    </script>
+</body>
+
+</html>

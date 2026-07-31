@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metadata Import Animation</title>
+    <style>
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* Excel-like Table */
+        .excel-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            width: 320px;
+        }
+
+        .excel-header {
+            background: #217346;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px 4px 0 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .excel-header svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #d4d4d4;
+            padding: 8px 10px;
+            text-align: left;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        th {
+            background: #f0f0f0;
+            font-weight: 600;
+        }
+
+        th.id-col {
+            background: #e6f2ff;
+            border-color: #0d6efd;
+        }
+
+        td.id-col {
+            background: #f8f9fa;
+        }
+
+        td.match {
+            background: #d1e7dd !important;
+            border-color: #198754;
+        }
+
+        /* Images Panel */
+        .images-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            width: 280px;
+        }
+
+        .images-header {
+            background: #667eea;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px 4px 0 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .file-list {
+            padding: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .file-item.match {
+            background: #d1e7dd;
+            box-shadow: 0 0 0 2px #198754;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+        }
+
+        .file-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Legend */
+        .legend {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .legend strong {
+            color: #856404;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Excel Panel -->
+        <div class="excel-panel">
+            <div class="excel-header">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M21.17 3.25Q21.5 3.25 21.76 3.5 22 3.74 22 4.08V19.92Q22 20.26 21.76 20.5 21.5 20.75 21.17 20.75H7.83Q7.5 20.75 7.24 20.5 7 20.26 7 19.92V17H2.83Q2.5 17 2.24 16.76 2 16.5 2 16.17V7.83Q2 7.5 2.24 7.24 2.5 7 2.83 7H7V4.08Q7 3.74 7.24 3.5 7.5 3.25 7.83 3.25M7 13.06L8.18 15.28H9.97L8 12.06L9.93 8.89H8.22L7.13 10.9L7.09 10.96Q7.05 11.06 6.95 11.25L6.9 11.2 6.86 11.11 5.96 9.47Q5.89 9.34 5.82 9.21L5.77 9.09 5.68 8.89H3.88L5.89 12.08L3.76 15.28H5.53L6.68 13.23Q6.73 13.14 6.78 13.05 6.83 12.95 6.86 12.88 6.93 12.74 6.95 12.68H7Q7.03 12.79 7.06 12.88M8 17V19H20V17M20 15V5H8V7H8.74Q8.97 7 9.16 7.12 9.35 7.24 9.44 7.43L10.24 9H11V15H10.24L9.44 16.57Q9.35 16.76 9.16 16.88 8.97 17 8.74 17M12 15H20V9H12Z" />
+                </svg>
+                metadata.xlsx
+            </div>
+            <table>
+                <tr>
+                    <th class="id-col">ID</th>
+                    <th>Type</th>
+                    <th>Period</th>
+                </tr>
+                <tr>
+                    <td class="id-col" id="row1">bowl_01.jpg</td>
+                    <td>Bowl</td>
+                    <td>Iron Age</td>
+                </tr>
+                <tr>
+                    <td class="id-col" id="row2">plate_02.png</td>
+                    <td>Plate</td>
+                    <td>Roman</td>
+                </tr>
+                <tr>
+                    <td class="id-col" id="row3">jar_03.tif</td>
+                    <td>Jar</td>
+                    <td>Medieval</td>
+                </tr>
+            </table>
+            <div class="legend">
+                <strong>⚠️ Important:</strong> The <code>ID</code> column must contain the <u>full filename with
+                    extension</u>.
+            </div>
+        </div>
+
+        <!-- Images Panel -->
+        <div class="images-panel">
+            <div class="images-header">📁 Uploaded Images</div>
+            <div class="file-list">
+                <div class="file-item" id="file1">
+                    <span class="file-icon">🖼️</span>
+                    <span class="file-name">bowl_01.jpg</span>
+                </div>
+                <div class="file-item" id="file2">
+                    <span class="file-icon">🖼️</span>
+                    <span class="file-name">plate_02.png</span>
+                </div>
+                <div class="file-item" id="file3">
+                    <span class="file-icon">🖼️</span>
+                    <span class="file-name">jar_03.tif</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rows = [document.getElementById('row1'), document.getElementById('row2'), document.getElementById('row3')];
+        const files = [document.getElementById('file1'), document.getElementById('file2'), document.getElementById('file3')];
+
+        async function runAnimation() {
+            // Reset
+            rows.forEach(r => r.classList.remove('match'));
+            files.forEach(f => f.classList.remove('match'));
+
+            await new Promise(r => setTimeout(r, 500));
+
+            // Highlight all matches simultaneously
+            for (let i = 0; i < 3; i++) {
+                rows[i].classList.add('match');
+                files[i].classList.add('match');
+            }
+
+            // Hold for a moment
+            await new Promise(r => setTimeout(r, 3000));
+        }
+
+        setInterval(runAnimation, 5000);
+        setTimeout(runAnimation, 100);
+    </script>
+</body>
+
+</html>

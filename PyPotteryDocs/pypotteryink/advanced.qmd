@@ -8,7 +8,7 @@ toc: true
   <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
   <br>
   <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 2.1.0
+    version 2.1.1
   </span>
 </div>
 
@@ -144,6 +144,10 @@ The comparison images (@fig-result) help us verify the quality of our results:
 ![](images_docs/comparison_2.jpg){width=80%}
 
 Side-by-side comparison showing the transformation from pencil drawing to inked version.
+:::
+
+::: {.callout-tip}
+In the web interface, comparison images like this one are clickable - click any thumbnail to open it fullscreen for closer inspection.
 :::
 
 ## Best Practices and Troubleshooting

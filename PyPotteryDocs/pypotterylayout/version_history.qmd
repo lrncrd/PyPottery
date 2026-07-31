@@ -6,14 +6,24 @@ format: html
 
 ## Latest Release
 
-### v0.3.1 (December 2025)
+### Version 0.3.2 (July 2026)
+
+- **New features**:
+  - Flexible filename↔metadata matching: extension and case are now ignored when linking images to metadata rows
+  - Scale can now be entered as a ratio (e.g., `1:2`) in addition to a decimal factor
+  - "Show sort value as chapter title": prints the current Primary Sort value once per group, right-aligned in the page margin
+  - Table number label is now inset from the page border when Show Margin Border is enabled
+  - "Bottom Right" added as an Object Numbering position
+  - Loading overlay shown while images are uploading, so the app no longer looks stuck on large batches
+
+
+## Version History
+
+### Version 0.3.1 (December 2025)
 
 - **New features**:
   - Added Pixel
   - Object numbering
-
-
-## Version History
 
 ### Version 0.3.0 (December 2025)
 
