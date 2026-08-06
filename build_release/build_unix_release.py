@@ -88,6 +88,97 @@ def create_icns(png_path: Path, dest_icns: Path):
             print(f"   ⚠️ Failed to generate ICNS: {e}")
 
 
+def create_dmg(app_dir: Path, release_dir: Path, package_base_name: str,
+                volume_name: str = "PyPottery Launcher") -> None:
+    """
+    Package the .app bundle into a compressed .dmg with the app icon and an
+    Applications alias side by side, so people install it the standard macOS
+    way (drag app onto Applications). This also fixes Gatekeeper's "App
+    Translocation" for anyone who follows the drag prompt, since translocation
+    only affects an app launched from its original, unmoved location - it's
+    what caused "Read-only file system" errors when the .zip build was
+    extracted and launched in place instead of being moved first.
+
+    macOS-only (needs hdiutil/osascript); no-ops with a warning elsewhere,
+    e.g. when cross-building a macOS package from a Linux/Windows host.
+    """
+    print("\n💿 Step 5: Building .dmg installer...")
+
+    dmg_path = release_dir / f"{package_base_name}.dmg"
+    if dmg_path.exists():
+        dmg_path.unlink()
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            staging = Path(tmpdir) / "dmg_staging"
+            staging.mkdir()
+            shutil.copytree(app_dir, staging / app_dir.name)
+            os.symlink("/Applications", staging / "Applications")
+
+            rw_dmg = Path(tmpdir) / "rw.dmg"
+            subprocess.run([
+                "hdiutil", "create", "-volname", volume_name,
+                "-srcfolder", str(staging), "-ov", "-format", "UDRW",
+                str(rw_dmg)
+            ], check=True, capture_output=True, text=True)
+
+            attach = subprocess.run(
+                ["hdiutil", "attach", "-readwrite", "-noverify", "-noautoopen", str(rw_dmg)],
+                check=True, capture_output=True, text=True
+            )
+            lines = attach.stdout.strip().splitlines()
+            device = lines[0].split("\t")[0].strip() if lines else None
+            mount_point = f"/Volumes/{volume_name}"
+            for line in lines:
+                parts = line.split("\t")
+                if len(parts) >= 3 and parts[2].strip().startswith("/Volumes/"):
+                    mount_point = parts[2].strip()
+
+            try:
+                applescript = f'''
+                tell application "Finder"
+                    tell disk "{volume_name}"
+                        open
+                        set current view of container window to icon view
+                        set toolbar visible of container window to false
+                        set statusbar visible of container window to false
+                        set the bounds of container window to {{200, 120, 760, 460}}
+                        set viewOptions to the icon view options of container window
+                        set arrangement of viewOptions to not arranged
+                        set icon size of viewOptions to 96
+                        set position of item "{app_dir.name}" of container window to {{140, 180}}
+                        set position of item "Applications" of container window to {{480, 180}}
+                        close
+                        open
+                        update without registering applications
+                        delay 1
+                    end tell
+                end tell
+                '''
+                subprocess.run(["osascript", "-e", applescript], check=True, capture_output=True, text=True)
+            except subprocess.CalledProcessError as e:
+                print(f"   ⚠️ Could not style DMG window (continuing anyway): {e.stderr}")
+
+            subprocess.run(["sync"], check=False)
+            if device:
+                subprocess.run(["hdiutil", "detach", device, "-quiet"], check=True, capture_output=True)
+            else:
+                subprocess.run(["hdiutil", "detach", mount_point, "-quiet"], check=True, capture_output=True)
+
+            subprocess.run([
+                "hdiutil", "convert", str(rw_dmg), "-format", "UDZO",
+                "-imagekey", "zlib-level=9", "-o", str(dmg_path)
+            ], check=True, capture_output=True, text=True)
+
+        size_mb = dmg_path.stat().st_size / (1024 * 1024)
+        print(f"   ✓ Created {dmg_path.name} ({size_mb:.1f} MB)")
+
+    except FileNotFoundError:
+        print("   ⚠️ 'hdiutil'/'osascript' not found (these are macOS-only tools) - skipping .dmg build")
+    except subprocess.CalledProcessError as e:
+        print(f"   ⚠️ Failed to build .dmg: {e.stderr if hasattr(e, 'stderr') else e}")
+
+
 def _build_single_platform(platform_name: str, release_dir: Path, project_root: Path) -> Path:
     """
     Build the release package for exactly one platform. Raises on failure -
@@ -215,6 +306,34 @@ def _build_single_platform(platform_name: str, release_dir: Path, project_root: 
 
 # Calculate resources path relative to this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+APP_BUNDLE="$( cd "$DIR/../.." && pwd )"
+
+# macOS Gatekeeper "App Translocation": an app carrying the quarantine flag
+# (downloaded via browser/Slack/AirDrop/etc.) that is launched from its
+# original, unmoved location gets silently run from a read-only random mount
+# under .../AppTranslocation/.../d/. Everything the launcher needs to write
+# (the Python venv, downloaded sub-apps) lives inside the bundle itself, so
+# that read-only mount breaks setup with "Read-only file system" errors.
+# Detect it and self-relocate to /Applications before doing anything else -
+# translocation only applies to the original copy, not one moved elsewhere.
+if [[ "$APP_BUNDLE" == *"/AppTranslocation/"* ]]; then
+    APP_NAME="$(basename "$APP_BUNDLE")"
+    TARGET="/Applications/$APP_NAME"
+
+    if osascript -e 'display dialog "PyPottery Launcher deve essere spostato nella cartella Applicazioni per poter scrivere i propri file (ambiente Python, app scaricate). Vuoi spostarlo ora?" with title "PyPottery Launcher" buttons {"Annulla", "Sposta in Applicazioni"} default button "Sposta in Applicazioni" cancel button "Annulla"' >/dev/null 2>&1; then
+        rm -rf "$TARGET" 2>/dev/null
+        if ditto "$APP_BUNDLE" "$TARGET" 2>/dev/null; then
+            xattr -cr "$TARGET" 2>/dev/null
+            open "$TARGET"
+        else
+            osascript -e 'display alert "Spostamento non riuscito" message "Trascina manualmente PyPottery Launcher.app nella cartella Applicazioni, poi riaprilo da lì." as critical'
+        fi
+    else
+        osascript -e 'display alert "Impossibile continuare" message "Trascina PyPottery Launcher.app nella cartella Applicazioni, poi riaprilo da lì." as critical'
+    fi
+    exit 0
+fi
+
 RESOURCES="$DIR/../Resources"
 PYTHON="$RESOURCES/python/bin/python3"
 
@@ -286,6 +405,13 @@ fi
 
     size_mb = zip_path.stat().st_size / (1024 * 1024)
     print(f"✅ {platform_name}: {zip_path.name} ({size_mb:.1f} MB)")
+
+    # The .zip stays the canonical artifact (it's what the launcher's own
+    # self-updater downloads, see updater.py), but for macOS also build a
+    # .dmg - that's the one to hand a colleague, since it prompts the
+    # familiar drag-to-Applications install instead of hitting translocation.
+    if is_macos:
+        create_dmg(app_dir, release_dir, package_base_name)
 
     return zip_path
 
