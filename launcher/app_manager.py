@@ -372,7 +372,13 @@ class AppManager:
                 final_version = detected_version
             elif not final_version:
                 final_version = "main"
-            
+
+            # Strip a leading 'v'/'V' - GitHub tag names carry one (e.g. "v3.0.1")
+            # but the UI already prepends "v" when displaying installed_version,
+            # so keeping it here would render as "vv3.0.1".
+            if final_version not in ("main", "master") and final_version.lower().startswith("v") and final_version[1:2].isdigit():
+                final_version = final_version[1:]
+
             # Save version info
             version_file = app_path / ".version"
             version_file.write_text(final_version)
