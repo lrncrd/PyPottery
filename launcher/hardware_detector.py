@@ -197,17 +197,15 @@ def detect_nvidia_cuda() -> tuple:
                             driver_version=parts[0]
                         ))
             
-            # Get CUDA version
+            # Get CUDA version. Older drivers print "CUDA Version: 12.6";
+            # newer ones (found on driver 610.47) print "CUDA UMD Version: 13.3"
+            # instead - match either.
             result = subprocess.run([nvidia_smi], capture_output=True, text=True, timeout=10)
             if result.returncode == 0:
-                for line in result.stdout.split("\n"):
-                    if "CUDA Version" in line:
-                        # Extract version like "CUDA Version: 12.6"
-                        import re
-                        match = re.search(r"CUDA Version:\s*(\d+\.\d+)", line)
-                        if match:
-                            cuda_version = match.group(1)
-                        break
+                import re
+                match = re.search(r"CUDA(?:\s+\w+)?\s+Version:\s*(\d+\.\d+)", result.stdout)
+                if match:
+                    cuda_version = match.group(1)
         except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
             pass
     

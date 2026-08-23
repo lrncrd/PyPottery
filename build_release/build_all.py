@@ -40,15 +40,16 @@ def main():
         traceback.print_exc()
     print()
     
-    # Build Windows release (requires Windows for embedded Python)
+    # Build Windows releases (requires Windows for embedded Python)
     if current_os == "Windows":
-        print("📦 Building Windows release...")
+        print("📦 Building Windows releases...")
         print("-" * 50)
         try:
-            from build_windows_release import create_release_package
-            win_zip = create_release_package()
-            if win_zip and win_zip.exists():
-                releases.append(("Windows", win_zip))
+            from build_windows_release import build_all_windows_packages
+            win_packages = build_all_windows_packages()
+            for name, path in win_packages.items():
+                if path and path.exists():
+                    releases.append((f"Windows ({name})", path))
         except Exception as e:
             print(f"   ⚠️ Windows build failed: {e}")
     else:

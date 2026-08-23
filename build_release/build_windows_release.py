@@ -1,19 +1,84 @@
 """
-Build Windows Release Package for PyPottery Suite Launcher
+Build Windows Release Packages for PyPottery Suite Launcher
 
-Uses WinPython - a complete portable Python distribution with tkinter included.
+Produces two independent artifacts:
+
+1. WinPython package - a portable WinPython distribution + PyPottery.bat,
+   optionally wrapped into an installer .exe via NSIS (Start Menu shortcut,
+   uninstaller). This is the one to hand out normally.
+2. PyInstaller package - the launcher compiled into a native PyPottery.exe
+   (--onedir: a folder next to the exe, no temp-extraction on every launch,
+   no antivirus false-positive risk that --onefile carries). Smaller, no
+   installer, just extract and double-click.
+
+Each is built independently - one failing doesn't stop the other (see main()).
+
+IMPORTANT for the PyInstaller package: run this script with an interpreter
+that has only the launcher's runtime deps installed (flask, psutil) - NOT
+the project's heavy ML dev env (torch, opencv, etc.). Building from an env
+like that doesn't just balloon the output size; a conda environment carrying
+multiple packages that each bundle their own OpenSSL DLLs can make
+PyInstaller pick a mismatched libssl/libcrypto pair, which breaks
+`import ssl` in the frozen exe with a DLL load error - and since that
+happens deep in a background thread, it fails *silently* (vendor asset
+download, update checks and sub-app downloads all go through https and just
+quietly do nothing). Verified experimentally: same code, same PyInstaller
+version - broken when built from the project's conda env, fine when built
+from a clean `python -m venv`. Create one and run this script with its
+python.exe; missing flask/psutil/pyinstaller are auto-installed into it.
+The WinPython package is unaffected either way - it downloads its own
+portable Python and doesn't use the invoking interpreter for anything.
 """
 
-import os
 import re
-import sys
 import shutil
-import zipfile
-import urllib.request
 import subprocess
+import sys
 import tempfile
+import urllib.request
+import zipfile
 from pathlib import Path
 from typing import Optional
+
+# ============================================================================
+# Shared
+# ============================================================================
+
+APP_NAME = "PyPottery"
+
+
+def _read_launcher_version(project_root: Path) -> str:
+    """Pull the canonical version string straight out of web_server.py rather
+    than hand-duplicating it in the build script, where it would drift."""
+    web_server_py = project_root / "launcher" / "web_server.py"
+    try:
+        content = web_server_py.read_text(encoding="utf-8")
+        match = re.search(r'LAUNCHER_VERSION\s*=\s*["\']([^"\']+)["\']', content)
+        if match:
+            return match.group(1)
+    except OSError:
+        pass
+    return "0.0.0"
+
+
+def download_file(url: str, dest: Path, desc: str = ""):
+    """Download file with progress"""
+    print(f"📥 Downloading {desc or url}...")
+
+    def report_progress(block_num, block_size, total_size):
+        downloaded = block_num * block_size
+        if total_size > 0:
+            percent = min(100, downloaded * 100 // total_size)
+            bar = "█" * (percent // 2) + "░" * (50 - percent // 2)
+            print(f"\r   [{bar}] {percent}%", end="", flush=True)
+
+    urllib.request.urlretrieve(url, dest, report_progress)
+    print()
+
+
+# ============================================================================
+# Package 1: WinPython + NSIS installer
+# ============================================================================
 
 # Configuration - WinPython (portable, complete with tkinter)
 PYTHON_VERSION = "3.12.10"
@@ -86,20 +151,6 @@ SectionEnd
 """
 
 
-def _read_launcher_version(project_root: Path) -> str:
-    """Pull the canonical version string straight out of web_server.py rather
-    than hand-duplicating it in the build script, where it would drift."""
-    web_server_py = project_root / "launcher" / "web_server.py"
-    try:
-        content = web_server_py.read_text(encoding="utf-8")
-        match = re.search(r'LAUNCHER_VERSION\s*=\s*["\']([^"\']+)["\']', content)
-        if match:
-            return match.group(1)
-    except OSError:
-        pass
-    return "0.0.0"
-
-
 def build_windows_installer(package_dir: Path, release_dir: Path, version: str) -> Optional[Path]:
     """
     Wrap the portable package_dir into a proper Windows installer .exe (NSIS):
@@ -111,7 +162,7 @@ def build_windows_installer(package_dir: Path, release_dir: Path, version: str) 
     Windows machine needed - same tool many CI pipelines use for this).
     Skips gracefully with a warning if `makensis` isn't installed.
     """
-    print("\n📦 Step 7: Building installer .exe (NSIS)...")
+    print("\n📦 Step 6: Building installer .exe (NSIS)...")
 
     makensis = shutil.which("makensis")
     if not makensis:
@@ -154,60 +205,42 @@ def build_windows_installer(package_dir: Path, release_dir: Path, version: str) 
     return out_path
 
 
-def download_file(url: str, dest: Path, desc: str = ""):
-    """Download file with progress"""
-    print(f"📥 Downloading {desc or url}...")
-    
-    def report_progress(block_num, block_size, total_size):
-        downloaded = block_num * block_size
-        if total_size > 0:
-            percent = min(100, downloaded * 100 // total_size)
-            bar = "█" * (percent // 2) + "░" * (50 - percent // 2)
-            print(f"\r   [{bar}] {percent}%", end="", flush=True)
-    
-    urllib.request.urlretrieve(url, dest, report_progress)
-    print()
-
-
-def create_release_package():
-    """Create the release package"""
-    script_dir = Path(__file__).parent
-    project_root = script_dir.parent
-    release_dir = script_dir / "release"
+def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
+    """Build the WinPython portable package (+ NSIS installer if available)."""
     package_dir = release_dir / "PyPottery-Launcher"
     python_dir = package_dir / "python"
     launcher_dir = package_dir / "launcher"
-    
+
     print("=" * 60)
-    print("🏗️  PyPottery Suite Launcher - Windows Release Builder")
+    print("🏗️  Package 1/2: WinPython + installer")
     print("=" * 60)
-    
+
     # Clean previous build
     if package_dir.exists():
         print("\n🧹 Cleaning previous build...")
         shutil.rmtree(package_dir)
-    
+
     # Create directories
     release_dir.mkdir(parents=True, exist_ok=True)
     package_dir.mkdir()
     launcher_dir.mkdir()
-    
+
     # 1. Download and extract WinPython
     print(f"\n📦 Step 1: Downloading WinPython {PYTHON_VERSION}...")
-    
+
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
         winpython_zip = tmpdir / "winpython.zip"
         download_file(WINPYTHON_URL, winpython_zip, f"WinPython {PYTHON_VERSION}")
-        
+
         print("   Extracting WinPython (this may take a moment)...")
         extract_dir = tmpdir / "extracted"
         extract_dir.mkdir()
-        
+
         # Extract the zip file
         with zipfile.ZipFile(winpython_zip, 'r') as zf:
             zf.extractall(extract_dir)
-        
+
         # Find the python folder inside
         # WinPython extracts to WPy64-XXXXX/python/ or WPy64-XXXXX/python-X.X.X.amd64/
         winpython_root = None
@@ -219,7 +252,7 @@ def create_release_package():
                         winpython_root = subdir
                         break
                 break
-        
+
         if winpython_root and winpython_root.exists():
             shutil.copytree(winpython_root, python_dir)
             print(f"   ✓ Python extracted from {winpython_root.name}")
@@ -235,33 +268,25 @@ def create_release_package():
             else:
                 contents = list(extract_dir.rglob("*"))[:20]
                 raise Exception(f"Could not find Python in WinPython. First 20 items: {contents}")
-    
+
     # NOTE: We're now outside the tempdir context - Python is in its final location
     python_exe = python_dir / "python.exe"
-    
-    # 2. Verify tkinter works
-    print("\n📦 Step 2: Verifying tkinter...")
-    result = subprocess.run(
-        [str(python_exe), "-c", "import tkinter; print('OK')"],
-        capture_output=True,
-        text=True
-    )
-    if result.returncode == 0:
-        print("   ✓ tkinter works!")
-    else:
-        print(f"   ⚠️ tkinter test: {result.stderr[:100]}")
-    
-    # 3. Install additional packages (now Python is in final location)
-    print("\n📦 Step 3: Installing launcher dependencies...")
-    
+
+    # 2. Install additional packages (now Python is in final location)
+    print("\n📦 Step 2: Installing launcher dependencies...")
+
     # Force install to this Python's site-packages
     site_packages = python_dir / "Lib" / "site-packages"
-    
-    packages = ["customtkinter", "pillow", "psutil", "requests", "packaging"]
+
+    # The launcher itself is a Flask app opened in the browser (see gui.py) -
+    # werkzeug comes along as flask's dependency. psutil is a soft dependency
+    # (hardware_detector.py imports it lazily inside a try/except) - without
+    # it the app still runs, it just silently reports fake 8GB/4GB RAM.
+    packages = ["flask", "psutil"]
     for pkg in packages:
         print(f"   Installing {pkg}...", end=" ", flush=True)
         result = subprocess.run(
-            [str(python_exe), "-m", "pip", "install", pkg, 
+            [str(python_exe), "-m", "pip", "install", pkg,
              "--target", str(site_packages),
              "--upgrade", "--no-warn-script-location"],
             capture_output=True,
@@ -271,10 +296,10 @@ def create_release_package():
             print("✓")
         else:
             print(f"⚠️ {result.stderr[:80] if result.stderr else 'unknown error'}")
-    
-    # 4. Copy launcher files
-    print("\n📦 Step 4: Copying launcher files...")
-    
+
+    # 3. Copy launcher files
+    print("\n📦 Step 3: Copying launcher files...")
+
     src_launcher = project_root / "launcher"
     for item in src_launcher.iterdir():
         if item.name == "__pycache__":
@@ -285,7 +310,7 @@ def create_release_package():
         else:
             shutil.copy2(item, dest)
     print("   ✓ Copied launcher module")
-    
+
     # Copy images
     imgs_src = project_root / "imgs"
     if imgs_src.exists():
@@ -296,21 +321,21 @@ def create_release_package():
     icon_src = project_root / "icon_app.ico"
     if icon_src.exists():
         shutil.copy2(icon_src, package_dir / "icon_app.ico")
-        
+
     icon_png_src = project_root / "icon_app.png"
     if icon_png_src.exists():
         shutil.copy2(icon_png_src, package_dir / "icon_app.png")
     print("   ✓ Copied application icons")
-    
+
     # Copy requirements.txt (needed for environment setup)
     requirements_src = project_root / "requirements.txt"
     if requirements_src.exists():
         shutil.copy2(requirements_src, package_dir / "requirements.txt")
         print("   ✓ Copied requirements.txt")
-    
-    # 5. Create launcher batch file
-    print("\n📦 Step 5: Creating launcher...")
-    
+
+    # 4. Create launcher batch file
+    print("\n📦 Step 4: Creating launcher...")
+
     launcher_bat = package_dir / "PyPottery.bat"
     launcher_bat.write_text(r'''@echo off
 title PyPottery Suite Launcher
@@ -319,7 +344,7 @@ REM Use pythonw.exe for windowless GUI launch, START so this window closes immed
 start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launcher.gui import main; main()"
 ''', encoding='utf-8')
     print("   ✓ Created PyPottery.bat")
-    
+
     # README
     readme = package_dir / "README.txt"
     readme.write_text(r'''
@@ -339,9 +364,9 @@ start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launch
     More info: https://github.com/lrncrd/PyPottery
 ''', encoding='utf-8')
     print("   ✓ Created README.txt")
-    
-    # 6. Create zip
-    print("\n📦 Step 6: Creating distribution package...")
+
+    # 5. Create zip
+    print("\n📦 Step 5: Creating distribution package...")
 
     version = _read_launcher_version(project_root)
     zip_name = f"PyPottery-Launcher-Windows-v{version}"
@@ -358,13 +383,10 @@ start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launch
 
     size_mb = zip_path.stat().st_size / (1024 * 1024)
 
-    # 7. Installer .exe (NSIS) - the one to actually hand out; the zip above
+    # 6. Installer .exe (NSIS) - the one to actually hand out; the zip above
     # stays around too since it's what the launcher's self-updater consumes.
     installer_path = build_windows_installer(package_dir, release_dir, version)
 
-    print("\n" + "=" * 60)
-    print("✅ BUILD COMPLETE!")
-    print("=" * 60)
     print(f"\n📁 Zip: {zip_path} ({size_mb:.1f} MB)")
     if installer_path:
         installer_size_mb = installer_path.stat().st_size / (1024 * 1024)
@@ -379,14 +401,275 @@ start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launch
     return installer_path or zip_path
 
 
-if __name__ == "__main__":
+# ============================================================================
+# Package 2: PyInstaller standalone exe
+# ============================================================================
+
+# Packages PyInstaller would otherwise pull in because hardware_detector.py
+# has an optional `try: import torch / except ImportError: pass` (used only
+# to enrich GPU info if PyTorch happens to already be importable). None of
+# this is a real launcher dependency - it's the heavy ML stack the *sub-apps*
+# use, which happens to be installed in a dev env used to run the suite
+# itself. Left unexcluded, the onedir build balloons from ~30MB to ~900MB.
+EXCLUDED_MODULES = [
+    "torch", "torchvision", "torchaudio", "transformers", "cv2", "scipy",
+    "pandas", "matplotlib", "bitsandbytes", "sympy", "numpy", "PIL",
+    "pygments", "rich", "sam2", "ultralytics", "timm", "accelerate",
+    "diffusers", "peft", "safetensors", "tokenizers", "huggingface_hub",
+    "polars", "GPUtil", "cairocffi", "cairosvg", "reportlab", "openpyxl",
+    "fitz", "seaborn", "skimage", "rectpack", "win32com", "pythoncom",
+    "pywintypes", "tensorboard", "IPython", "numba", "llvmlite",
+]
+
+
+def _warn_if_heavy_env():
+    """
+    Best-effort heads-up, not a hard block: importlib.util.find_spec() only
+    checks whether a package is installed, it doesn't import it, so this is
+    cheap and side-effect-free. See the module docstring for why building
+    from an env like this is a real (and silent) problem, not just bloat.
+    """
+    import importlib.util
+    heavy = [m for m in ("torch", "cv2", "transformers") if importlib.util.find_spec(m)]
+    if heavy:
+        print(f"   [!] WARNING: this interpreter also has {', '.join(heavy)} installed - "
+              f"building from here risks a broken 'import ssl' in the frozen exe "
+              f"(silently breaks all https downloads). Prefer a clean venv with "
+              f"just flask+psutil+pyinstaller. See this file's module docstring.")
+
+
+def _ensure_runtime_deps():
+    """
+    flask is the launcher's hard dependency; psutil is a soft one - only
+    ever imported lazily inside hardware_detector.py's try/except blocks, so
+    a build without it doesn't crash, it just silently reports fake 8GB/4GB
+    RAM and wrong CPU core counts instead of real values. Both need to be
+    importable from *this* interpreter so PyInstaller's static analysis
+    picks them up.
+    """
+    print("\n📦 Step 1: Checking runtime dependencies (flask, psutil)...")
+    missing = [
+        pkg for pkg in ("flask", "psutil")
+        if subprocess.run(
+            [sys.executable, "-c", f"import {pkg}"], capture_output=True
+        ).returncode != 0
+    ]
+    if not missing:
+        print("   ✓ flask and psutil already available")
+        return
+
+    print(f"   Installing {', '.join(missing)}...")
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--quiet", *missing],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Could not install {', '.join(missing)}:\n{result.stderr}")
+    print(f"   ✓ Installed {', '.join(missing)}")
+
+
+def _ensure_pyinstaller():
+    print("\n📦 Step 2: Checking PyInstaller...")
+    result = subprocess.run(
+        [sys.executable, "-m", "PyInstaller", "--version"],
+        capture_output=True, text=True
+    )
+    if result.returncode == 0:
+        print(f"   ✓ PyInstaller {result.stdout.strip()} available")
+        return
+
+    print("   Installing PyInstaller...")
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--quiet", "pyinstaller"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Could not install PyInstaller:\n{result.stderr}")
+    print("   ✓ PyInstaller installed")
+
+
+def _run_pyinstaller(project_root: Path, work_dir: Path) -> Path:
+    print("\n📦 Step 3: Building with PyInstaller (--onedir)...")
+
+    dist_path = work_dir / "dist"
+    build_path = work_dir / "build"
+    spec_path = work_dir
+
+    args = [
+        sys.executable, "-m", "PyInstaller",
+        "--name", APP_NAME,
+        "--onedir",
+        "--windowed",
+        "--noconfirm",
+        "--icon", str(project_root / "icon_app.ico"),
+        "--add-data", f"{project_root / 'launcher' / 'templates'};launcher/templates",
+        "--add-data", f"{project_root / 'launcher' / 'static'};launcher/static",
+        "--add-data", f"{project_root / 'launcher' / 'config'};launcher/config",
+        "--add-data", f"{project_root / 'requirements.txt'};.",
+        "--distpath", str(dist_path),
+        "--workpath", str(build_path),
+        "--specpath", str(spec_path),
+    ]
+    for module in EXCLUDED_MODULES:
+        args.extend(["--exclude-module", module])
+    args.append(str(project_root / "launcher" / "gui.py"))
+
+    result = subprocess.run(args, cwd=project_root)
+    if result.returncode != 0:
+        raise RuntimeError("PyInstaller build failed - see output above")
+
+    package_dir = dist_path / APP_NAME
+    if not package_dir.exists():
+        raise RuntimeError(f"Expected output not found: {package_dir}")
+
+    size_mb = sum(f.stat().st_size for f in package_dir.rglob("*") if f.is_file()) / (1024 * 1024)
+    print(f"   ✓ Built {package_dir.name}/ ({size_mb:.1f} MB)")
+    return package_dir
+
+
+def _copy_base_path_assets(project_root: Path, package_dir: Path):
+    """
+    Copy imgs/ and the app icons next to PyPottery.exe (package_dir), not
+    through --add-data - PyInstaller always extracts --add-data files into
+    _internal/, but web_server.py's /assets/<path> route serves them from
+    state.base_path, which gui.py resolves to package_dir itself (the folder
+    the exe lives in). Bundling them via --add-data would land them in the
+    wrong place and 404.
+    """
+    print("\n📦 Step 4: Copying imgs/ and app icons next to the exe...")
+
+    imgs_src = project_root / "imgs"
+    if imgs_src.exists():
+        shutil.copytree(imgs_src, package_dir / "imgs", dirs_exist_ok=True)
+        print("   ✓ Copied imgs/")
+
+    for icon_name in ("icon_app.ico", "icon_app.png"):
+        icon_src = project_root / icon_name
+        if icon_src.exists():
+            shutil.copy2(icon_src, package_dir / icon_name)
+    print("   ✓ Copied application icons")
+
+
+def _write_exe_readme(package_dir: Path):
+    readme = package_dir / "README.txt"
+    readme.write_text(r'''
+    PyPottery Suite Launcher
+    ========================
+
+    QUICK START
+    -----------
+    Double-click "PyPottery.exe" to launch!
+    (Keep the "_internal" folder next to it - it holds the app's files.)
+
+    REQUIREMENTS
+    ------------
+    - Windows 10/11 (64-bit)
+    - Internet connection (for app downloads)
+    - 8GB RAM minimum
+
+    More info: https://github.com/lrncrd/PyPottery
+''', encoding='utf-8')
+    print("   ✓ Created README.txt")
+
+
+def create_pyinstaller_package(project_root: Path, release_dir: Path) -> Path:
+    """Build the PyInstaller standalone exe package."""
+    work_dir = release_dir / "_pyinstaller_work"
+
+    print("=" * 60)
+    print("🏗️  Package 2/2: PyInstaller standalone exe")
+    print("=" * 60)
+
+    if work_dir.exists():
+        print("\n🧹 Cleaning previous build...")
+        shutil.rmtree(work_dir)
+    release_dir.mkdir(parents=True, exist_ok=True)
+
+    _warn_if_heavy_env()
+    _ensure_runtime_deps()
+    _ensure_pyinstaller()
+    package_dir = _run_pyinstaller(project_root, work_dir)
+    _copy_base_path_assets(project_root, package_dir)
+
+    print("\n📦 Step 5: Finalizing package...")
+    _write_exe_readme(package_dir)
+
+    version = _read_launcher_version(project_root)
+    zip_name = f"PyPottery-Launcher-Windows-EXE-v{version}"
+    zip_path = release_dir / f"{zip_name}.zip"
+    if zip_path.exists():
+        zip_path.unlink()
+
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for file_path in package_dir.rglob('*'):
+            if file_path.is_file():
+                arcname = Path(APP_NAME) / file_path.relative_to(package_dir)
+                zf.write(file_path, arcname)
+
+    size_mb = zip_path.stat().st_size / (1024 * 1024)
+    print(f"   ✓ Created {zip_path.name} ({size_mb:.1f} MB)")
+
+    shutil.rmtree(work_dir)
+
+    print(f"\n📁 Zip: {zip_path} ({size_mb:.1f} MB)")
+    print(f"\n💡 Users extract the zip and double-click PyPottery.exe - no "
+          f"installer, no separate Python required.")
+
+    return zip_path
+
+
+# ============================================================================
+# Entry point
+# ============================================================================
+
+def build_all_windows_packages() -> dict:
+    """
+    Build both Windows packages, isolating one's failure from the other.
+    Returns {name: path} for whichever succeeded (empty dict if both failed).
+    """
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent
+    release_dir = script_dir / "release"
+
+    results = {}
+
     try:
-        create_release_package()
-    except KeyboardInterrupt:
-        print("\n\n❌ Build cancelled.")
-        sys.exit(1)
+        results["WinPython + installer"] = create_winpython_package(project_root, release_dir)
     except Exception as e:
-        print(f"\n\n❌ Build failed: {e}")
+        print(f"\n❌ WinPython package failed: {e}")
         import traceback
         traceback.print_exc()
+
+    print()
+
+    try:
+        results["PyInstaller exe"] = create_pyinstaller_package(project_root, release_dir)
+    except Exception as e:
+        print(f"\n❌ PyInstaller package failed: {e}")
+        import traceback
+        traceback.print_exc()
+
+    return results
+
+
+def main():
+    results = build_all_windows_packages()
+
+    print("\n" + "=" * 60)
+    if results:
+        print("✅ BUILD COMPLETE!")
+        print("=" * 60)
+        for name, path in results.items():
+            print(f"   • {name}: {path}")
+    else:
+        print("❌ Both packages failed - see errors above")
+        print("=" * 60)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\n❌ Build cancelled.")
         sys.exit(1)

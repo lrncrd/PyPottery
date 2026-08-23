@@ -15,10 +15,11 @@ python build_all.py
 ```bash
 python build_windows_release.py
 ```
-Creates `release/PyPottery-Launcher-Windows-v1.0.0.zip` containing:
-- Python 3.12 Embeddable (~15MB)
-- Pre-installed launcher dependencies
-- Ready-to-run batch file
+Builds **two independent packages** in one run (one failing doesn't stop the other):
+- `release/PyPottery-Launcher-Windows-v1.0.0.zip` (+ `PyPottery-Launcher-Setup.exe` if `makensis`/NSIS is installed) - a portable WinPython distribution + `PyPottery.bat`, optionally wrapped into a proper installer with Start Menu shortcut and uninstaller.
+- `release/PyPottery-Launcher-Windows-EXE-v1.0.0.zip` - the launcher compiled into a native `PyPottery.exe` via PyInstaller (`--onedir`). Smaller, no installer, just extract and double-click.
+
+**Run this from a clean Python env** (just `flask`+`psutil`, e.g. a fresh `python -m venv`) for the PyInstaller build - not the project's heavy ML dev env. See the module docstring in `build_windows_release.py` for why (a real, silent bug otherwise: broken `https://` downloads in the frozen exe).
 
 ### Unix (macOS/Linux) Release
 ```bash

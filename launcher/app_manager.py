@@ -83,7 +83,15 @@ class AppManager:
         # Offline Web Assets Manager
         from .vendor_assets_manager import VendorAssetsManager
         self.vendor_assets_manager = VendorAssetsManager(self.base_path)
-        threading.Thread(target=self.vendor_assets_manager.ensure_vendor_assets, daemon=True).start()
+
+        def _prepare_vendor_assets():
+            self.vendor_assets_manager.ensure_vendor_assets()
+            # sync_to_app() normally populates a sub-app's static/vendor when
+            # it's launched - the launcher's own UI needs the same treatment,
+            # since nothing else ever populates launcher/static/vendor.
+            self.vendor_assets_manager.sync_to_app(Path(__file__).parent)
+
+        threading.Thread(target=_prepare_vendor_assets, daemon=True).start()
 
         # Load app configurations
         self.apps: Dict[str, AppInfo] = {}
