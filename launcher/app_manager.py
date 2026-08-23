@@ -80,6 +80,11 @@ class AppManager:
         # local edits can be tested without pushing/re-downloading a release.
         self.developer_mode = developer_mode
 
+        # Offline Web Assets Manager
+        from .vendor_assets_manager import VendorAssetsManager
+        self.vendor_assets_manager = VendorAssetsManager(self.base_path)
+        threading.Thread(target=self.vendor_assets_manager.ensure_vendor_assets, daemon=True).start()
+
         # Load app configurations
         self.apps: Dict[str, AppInfo] = {}
         self._load_app_configs()
@@ -470,10 +475,9 @@ class AppManager:
         app_path = self._app_path(app_id)
         script_path = app_path / app.entry_script
 
-        if not script_path.exists():
-            self._report_status(app_id, f"Entry script not found: {script_path}")
-            return False
-        
+        self._report_status(app_id, f"Syncing offline web assets for {app.name}...")
+        self.vendor_assets_manager.sync_to_app(app_path)
+
         self._report_status(app_id, f"Starting {app.name}...")
         
         # Set environment

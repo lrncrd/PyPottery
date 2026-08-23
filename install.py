@@ -259,6 +259,17 @@ Examples:
         print(f"❌ Failed to import flask: {e}")
         sys.exit(1)
 
+    # Download and cache offline web assets (Bootstrap, Icons, Fonts)
+    print("\n📦 Ensuring offline web assets (Bootstrap, Icons, Fonts)...")
+    try:
+        from launcher.vendor_assets_manager import VendorAssetsManager
+        base_dir = Path(__file__).parent
+        v_mgr = VendorAssetsManager(base_dir)
+        v_mgr.ensure_vendor_assets()
+        print("✅ Offline web assets ready")
+    except Exception as e:
+        print(f"⚠️ Could not setup offline assets: {e}")
+
     print_post_install_info()
     
     # Launch GUI

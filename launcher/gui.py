@@ -46,10 +46,38 @@ def _get_port() -> int:
     return _find_available_port(DEFAULT_PORT)
 
 
+def get_base_path() -> Path:
+    """
+    Get base directory for user data, virtual environments, downloaded sub-apps,
+    and model caches.
+
+    If running inside an AppImage, attempt to use the directory where the .AppImage
+    file resides so all installation data stays right alongside it. If that directory
+    is not writable (e.g. /usr/bin), fallback to ~/.local/share/pypottery.
+    """
+    appimage_path = os.environ.get("APPIMAGE")
+    if appimage_path:
+        appimage_dir = Path(appimage_path).parent
+        if os.access(appimage_dir, os.W_OK):
+            return appimage_dir
+        user_dir = Path.home() / ".local" / "share" / "pypottery"
+        user_dir.mkdir(parents=True, exist_ok=True)
+        return user_dir
+
+    bundle_dir = Path(__file__).parent.parent
+    if not os.access(bundle_dir, os.W_OK):
+        user_dir = Path.home() / ".local" / "share" / "pypottery"
+        user_dir.mkdir(parents=True, exist_ok=True)
+        return user_dir
+
+    return bundle_dir
+
+
 def main():
     """Main entry point"""
-    base_path = Path(__file__).parent.parent
+    base_path = get_base_path()
     state = LauncherState(base_path)
+
     flask_app = create_app(state)
 
     port = _get_port()

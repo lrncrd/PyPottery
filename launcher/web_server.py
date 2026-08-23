@@ -99,7 +99,9 @@ class LauncherState:
 
     def __init__(self, base_path: Path):
         self.base_path = Path(base_path).resolve()
-        self.requirements_file = self.base_path / "requirements.txt"
+        req = self.base_path / "requirements.txt"
+        bundle_req = Path(__file__).parent.parent / "requirements.txt"
+        self.requirements_file = bundle_req if (not req.exists() and bundle_req.exists()) else req
         self.launcher_version = LAUNCHER_VERSION
 
         self.event_bus = EventBus()

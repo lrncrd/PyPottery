@@ -26,6 +26,9 @@ PYTHON_STANDALONE_URLS = {
     "linux-x86_64": f"https://github.com/indygreg/python-build-standalone/releases/download/20241016/cpython-{PYTHON_VERSION}+20241016-x86_64-unknown-linux-gnu-install_only.tar.gz",
 }
 
+APPIMAGETOOL_URL = "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+
+
 LAUNCHER_PACKAGES = [
     "flask",
     "psutil",
@@ -179,7 +182,147 @@ def create_dmg(app_dir: Path, release_dir: Path, package_base_name: str,
         print(f"   ⚠️ Failed to build .dmg: {e.stderr if hasattr(e, 'stderr') else e}")
 
 
+def create_appimage(package_root: Path, release_dir: Path, package_base_name: str) -> None:
+    """
+    Package the Linux build directory into a standalone .AppImage file.
+    AppImage is the Linux equivalent of macOS .dmg / .app bundle:
+    a single portable executable that runs on almost any Linux distribution
+    without installation or root privileges.
+    """
+    print("\n💿 Step 5: Building .AppImage container...")
+    appimage_path = release_dir / f"{package_base_name}.AppImage"
+    if appimage_path.exists():
+        appimage_path.unlink()
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            appdir = tmp_path / "PyPottery.AppDir"
+            shutil.copytree(package_root, appdir)
+
+            # 1. Create AppRun (Entry point script for AppImage)
+            app_run = appdir / "AppRun"
+            app_run_content = """#!/bin/bash
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PYTHON="$HERE/python/bin/python3"
+
+if [ "$1" = "--uninstall-desktop" ]; then
+    rm -f "$HOME/.local/share/applications/pypottery.desktop"
+    rm -f "$HOME/.local/share/icons/hicolor/512x512/apps/pypottery.png"
+    rm -f "$HOME/.local/share/icons/hicolor/256x256/apps/pypottery.png"
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database "$HOME/.local/share/applications" >/dev/null 2>&1 || true
+    fi
+    echo "✅ PyPottery desktop shortcut removed."
+    exit 0
+fi
+
+# Auto-register application menu shortcut on Linux if running from AppImage
+if [ -n "$APPIMAGE" ]; then
+    DESKTOP_DIR="$HOME/.local/share/applications"
+    ICON_DIR_512="$HOME/.local/share/icons/hicolor/512x512/apps"
+    ICON_DIR_256="$HOME/.local/share/icons/hicolor/256x256/apps"
+    mkdir -p "$DESKTOP_DIR" "$ICON_DIR_512" "$ICON_DIR_256" 2>/dev/null || true
+
+    if [ -f "$HERE/icon_app.png" ]; then
+        cp "$HERE/icon_app.png" "$ICON_DIR_512/pypottery.png" 2>/dev/null || true
+        cp "$HERE/icon_app.png" "$ICON_DIR_256/pypottery.png" 2>/dev/null || true
+    fi
+
+    cat << EOF > "$DESKTOP_DIR/pypottery.desktop"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyPottery Launcher
+Comment=Digitizing Archaeological Pottery Documentation
+Exec="$APPIMAGE"
+TryExec="$APPIMAGE"
+Icon=pypottery
+Terminal=false
+Categories=Science;Graphics;
+EOF
+    chmod +x "$DESKTOP_DIR/pypottery.desktop" 2>/dev/null || true
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database "$DESKTOP_DIR" >/dev/null 2>&1 || true
+    fi
+    if command -v gio >/dev/null 2>&1; then
+        gio set -t string "$APPIMAGE" metadata::custom-icon "file://$ICON_DIR_512/pypottery.png" 2>/dev/null || true
+    fi
+fi
+
+# Check deps (just enough to start the web launcher)
+if ! "$PYTHON" -c "import flask" 2>/dev/null; then
+    echo "Installing dependencies..."
+    "$PYTHON" -m pip install --upgrade pip --quiet
+    "$PYTHON" -m pip install flask psutil --quiet
+fi
+
+exec "$PYTHON" -c "import sys; sys.path.insert(0, '$HERE'); from launcher.gui import main; main()"
+"""
+            app_run.write_text(app_run_content, encoding='utf-8')
+            app_run.chmod(0o755)
+
+            # 2. Create desktop entry file
+            desktop_file = appdir / "pypottery.desktop"
+            desktop_content = """[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyPottery Launcher
+Comment=Digitizing Archaeological Pottery Documentation
+Exec=AppRun
+Icon=pypottery
+Terminal=false
+Categories=Science;Graphics;
+"""
+            desktop_file.write_text(desktop_content, encoding='utf-8')
+
+            # 3. Copy icons
+            icon_src = package_root / "icon_app.png"
+            if icon_src.exists():
+                shutil.copy2(icon_src, appdir / "pypottery.png")
+                dot_icon = appdir / ".DirIcon"
+                if dot_icon.exists() or dot_icon.is_symlink():
+                    dot_icon.unlink()
+                os.symlink("pypottery.png", dot_icon)
+
+            # 4. Locate or download appimagetool
+            appimagetool_bin = shutil.which("appimagetool")
+            tool_cmd = []
+
+            if appimagetool_bin:
+                tool_cmd = [appimagetool_bin]
+            else:
+                downloaded_tool = tmp_path / "appimagetool"
+                download_file(APPIMAGETOOL_URL, downloaded_tool, "appimagetool")
+                downloaded_tool.chmod(0o755)
+                tool_cmd = [str(downloaded_tool), "--appimage-extract-and-run"]
+
+            # 5. Run appimagetool
+            env = os.environ.copy()
+            env["ARCH"] = "x86_64"
+
+            res = subprocess.run(
+                tool_cmd + [str(appdir), str(appimage_path)],
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True
+            )
+
+        if appimage_path.exists():
+            size_mb = appimage_path.stat().st_size / (1024 * 1024)
+            print(f"   ✓ Created {appimage_path.name} ({size_mb:.1f} MB)")
+        else:
+            print("   ⚠️ appimagetool finished but AppImage file was not generated.")
+
+    except Exception as e:
+        print(f"   ⚠️ Could not build AppImage: {e}")
+        if hasattr(e, 'stderr') and e.stderr:
+            print(f"      {e.stderr}")
+
+
 def _build_single_platform(platform_name: str, release_dir: Path, project_root: Path) -> Path:
+
     """
     Build the release package for exactly one platform. Raises on failure -
     callers are responsible for isolating one platform's failure from the rest
@@ -388,7 +531,47 @@ fi
 "$PYTHON" -c "import sys; sys.path.insert(0, '$SCRIPT_DIR'); from launcher.gui import main; main()"
 """, encoding='utf-8')
         run_sh.chmod(0o755)
-        print("   ✓ Scripts created")
+
+        install_desktop_sh = package_root / "install_desktop.sh"
+        install_desktop_sh.write_text("""#!/bin/bash
+# Install PyPottery application shortcut for Linux desktop (GNOME, KDE, XFCE)
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DESKTOP_DIR="$HOME/.local/share/applications"
+ICON_DIR_512="$HOME/.local/share/icons/hicolor/512x512/apps"
+ICON_DIR_256="$HOME/.local/share/icons/hicolor/256x256/apps"
+
+mkdir -p "$DESKTOP_DIR"
+mkdir -p "$ICON_DIR_512"
+mkdir -p "$ICON_DIR_256"
+
+if [ -f "$SCRIPT_DIR/icon_app.png" ]; then
+    cp "$SCRIPT_DIR/icon_app.png" "$ICON_DIR_512/pypottery.png"
+    cp "$SCRIPT_DIR/icon_app.png" "$ICON_DIR_256/pypottery.png"
+fi
+
+cat << EOF > "$DESKTOP_DIR/pypottery.desktop"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyPottery Launcher
+Comment=Digitizing Archaeological Pottery Documentation
+Exec="$SCRIPT_DIR/PyPottery.sh"
+Icon=pypottery
+Terminal=false
+Categories=Science;Graphics;
+EOF
+
+chmod +x "$DESKTOP_DIR/pypottery.desktop"
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "$DESKTOP_DIR" >/dev/null 2>&1 || true
+fi
+
+echo "✅ PyPottery launcher shortcut created in $DESKTOP_DIR/pypottery.desktop"
+""", encoding='utf-8')
+        install_desktop_sh.chmod(0o755)
+
+        print("   ✓ Scripts created (including install_desktop.sh)")
 
     # 5. Zip Package
     print("\n📦 Step 4: Compressing...")
@@ -410,8 +593,12 @@ fi
     # self-updater downloads, see updater.py), but for macOS also build a
     # .dmg - that's the one to hand a colleague, since it prompts the
     # familiar drag-to-Applications install instead of hitting translocation.
+    # For Linux, also build a .AppImage - the Linux equivalent of a .dmg.
     if is_macos:
         create_dmg(app_dir, release_dir, package_base_name)
+    else:
+        create_appimage(package_root, release_dir, package_base_name)
+
 
     return zip_path
 

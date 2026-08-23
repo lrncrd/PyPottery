@@ -228,12 +228,14 @@ graphify-out/
 .claude
 launcher/dev_config.py
 
-.gemini
-.impeccable
-PyPotteryDocs/.agent
+shared_assets/
+**/static/vendor/
 
 PyPotteryInk/
 PyPotteryLayout/
 PyPotteryLens/
 PyPotteryScan/
 PyPotteryTrace/
+ArchaeoVision/
+.gemini/
+PyPotteryDocs/.agent
