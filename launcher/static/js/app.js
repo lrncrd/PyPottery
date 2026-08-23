@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   const TAG_STYLE = {
-    info: { icon: "ℹ️", color: "#38bdf8" },
-    success: { icon: "✓", color: "#34d399" },
-    error: { icon: "✕", color: "#f87171" },
-    warning: { icon: "⚠️", color: "#fbbf24" },
-    progress: { icon: "⏳", color: "#c084fc" },
+    info: { icon: '<i class="bi bi-info-circle"></i>', color: "#38bdf8" },
+    success: { icon: '<i class="bi bi-check-circle"></i>', color: "#34d399" },
+    error: { icon: '<i class="bi bi-x-circle"></i>', color: "#f87171" },
+    warning: { icon: '<i class="bi bi-exclamation-triangle"></i>', color: "#fbbf24" },
+    progress: { icon: '<i class="bi bi-arrow-repeat"></i>', color: "#c084fc" },
   };
 
   const els = {
@@ -74,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
     launcherUpdateProgressText: document.getElementById("banner-launcher-update-progress-text"),
     launcherUpdateProgressBar: document.getElementById("launcher-update-progress-bar"),
     toastContainer: document.getElementById("toast-container"),
+    quoteDayBadge: document.getElementById("quote-day-badge"),
+    heroQuoteText: document.getElementById("hero-quote-text"),
+    btnNextQuote: document.getElementById("btn-next-quote"),
   };
 
   const store = {
@@ -115,8 +118,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = document.createElement("div");
     toast.className = `toast toast-${type}`;
     
-    const icons = { info: "ℹ️", success: "🎉", warning: "⚠️", error: "🚨" };
-    const icon = icons[type] || "ℹ️";
+    const icons = {
+      info: '<i class="bi bi-info-circle-fill"></i>',
+      success: '<i class="bi bi-check-circle-fill"></i>',
+      warning: '<i class="bi bi-exclamation-triangle-fill"></i>',
+      error: '<i class="bi bi-x-circle-fill"></i>'
+    };
+    const icon = icons[type] || '<i class="bi bi-info-circle-fill"></i>';
     
     toast.innerHTML = `
       <span class="toast-icon">${icon}</span>
@@ -157,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     els.consoleLog.appendChild(line);
     els.consoleLog.scrollTop = els.consoleLog.scrollHeight;
 
-    els.consoleLastMsg.textContent = `${style.icon} ${entry.message}`;
+    els.consoleLastMsg.textContent = entry.message;
     const dotClass = ["error", "success", "warning"].includes(entry.tag) ? entry.tag : "info";
     els.consoleDot.className = `console-dot ${dotClass}`;
   }
@@ -232,21 +240,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let gpuText;
     if (hw.cuda_available && hw.gpus && hw.gpus.length) {
-      gpuText = `⚡ ${hw.gpus[0].name} (CUDA ${hw.cuda_version})`;
+      gpuText = `${hw.gpus[0].name} (CUDA ${hw.cuda_version})`;
     } else if (hw.mps_available) {
-      gpuText = "⚡ Apple Silicon (MPS)";
+      gpuText = "Apple Silicon (MPS Acceleration)";
     } else if (hw.rocm_available) {
-      gpuText = "⚡ AMD GPU (ROCm)";
+      gpuText = "AMD GPU (ROCm Acceleration)";
     } else {
-      gpuText = "💻 CPU Mode";
+      gpuText = "CPU Mode";
     }
     if (els.hwGpu) els.hwGpu.textContent = gpuText;
 
     let pytorchText;
     if (hw.installed_pytorch_version) {
-      pytorchText = `✅ PyTorch v${hw.installed_pytorch_version} (${hw.installed_pytorch_device || 'Active'})`;
+      pytorchText = `PyTorch v${hw.installed_pytorch_version} (${hw.installed_pytorch_device || 'Active'})`;
     } else {
-      pytorchText = `⚠️ Not Installed (Recommended: ${hw.recommended_pytorch_variant || 'CPU'})`;
+      pytorchText = `Not Installed (Recommended: ${hw.recommended_pytorch_variant || 'CPU'})`;
     }
     if (els.hwPytorch) els.hwPytorch.textContent = pytorchText;
 
@@ -269,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     els.envStatusText.classList.remove("ready", "error");
     if (exists) {
-      els.envStatusText.textContent = "✅ Active & Ready";
+      els.envStatusText.innerHTML = '<i class="bi bi-check2-circle"></i> Active & Ready';
       els.envStatusText.classList.add("ready");
       els.btnEnvSetup.innerHTML = "<span>Reinstall Environment</span>";
       els.envProgressBar.style.width = "100%";
@@ -279,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (els.envVerifiedCheck) els.envVerifiedCheck.classList.remove("hidden");
       if (els.btnEnvVerify) els.btnEnvVerify.classList.remove("hidden");
     } else {
-      els.envStatusText.textContent = "⚠️ Not Configured";
+      els.envStatusText.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Not Configured';
       els.envStatusText.classList.add("error");
       els.btnEnvSetup.innerHTML = "<span>Setup Environment</span>";
       els.envProgressBar.style.width = "0%";
@@ -411,9 +419,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function statusBadge(app) {
-    if (app.is_running) return { text: "RUNNING", cls: "running", dot: "🟢" };
-    if (app.installed) return { text: "INSTALLED", cls: "ready", dot: "🏺" };
-    return { text: "NOT INSTALLED", cls: "", dot: "⚪" };
+    if (app.is_running) return { text: "RUNNING", cls: "running", dot: "●" };
+    if (app.installed) return { text: "INSTALLED", cls: "ready", dot: "●" };
+    return { text: "NOT INSTALLED", cls: "", dot: "○" };
   }
 
   function appCardHtml(app) {
@@ -447,25 +455,25 @@ document.addEventListener("DOMContentLoaded", () => {
       progressHtml = `
         <div class="app-progress-box" style="border-color: rgba(225,29,72,0.3)">
           <div class="progress-info-line" style="color:var(--danger)">
-            <span>⚠️ ${escapeHtml(dl.message || "Installation error")}</span>
+            <span><i class="bi bi-exclamation-circle-fill"></i> ${escapeHtml(dl.message || "Installation error")}</span>
           </div>
         </div>`;
     }
 
     const openBrowserBtn = isRunning
-      ? `<a href="http://localhost:${app.port}" target="_blank" class="btn btn-outline btn-sm" title="Open web interface in new tab">🌐 Open Web</a>`
+      ? `<a href="http://localhost:${app.port}" target="_blank" class="btn btn-outline btn-sm" title="Open web interface in new tab"><i class="bi bi-box-arrow-up-right"></i> Open Web</a>`
       : "";
 
     const updateBtnHtml = app.update_available
-      ? `<button class="btn btn-outline btn-icon-only" data-action="update" data-app-id="${app.id}" title="${app.installed ? 'Update Application' : 'Install application first to enable updates'}" ${!app.installed || isLocked ? 'disabled' : ''}>⬆</button>`
+      ? `<button class="btn btn-outline btn-icon-only" data-action="update" data-app-id="${app.id}" title="${app.installed ? 'Update Application' : 'Install application first to enable updates'}" ${!app.installed || isLocked ? 'disabled' : ''}><i class="bi bi-arrow-up-circle"></i></button>`
       : "";
 
     const badgePillHtml = isLocked && !app.installed
-      ? `<span class="status-badge-pill locked">🔒 REQUIRES ENV</span>`
+      ? `<span class="status-badge-pill locked"><i class="bi bi-lock-fill"></i> REQUIRES ENV</span>`
       : `<span class="status-badge-pill ${badge.cls}">${badge.dot} ${badge.text}</span>`;
 
     const lockBannerHtml = isLocked && !app.installed
-      ? `<div class="card-lock-banner">🔒 Setup Python Environment to unlock</div>`
+      ? `<div class="card-lock-banner"><i class="bi bi-lock-fill"></i> Setup Python Environment to unlock</div>`
       : "";
 
     return `
@@ -481,10 +489,10 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <p class="app-desc">${escapeHtml(app.description)}</p>
             <div class="app-chips">
-              <span class="chip">🔌 Port ${app.port}</span>
-              <span class="chip">💾 ${app.min_ram_gb}GB RAM</span>
-              ${app.requires_gpu ? `<span class="chip chip-gpu">⚡ GPU</span>` : ""}
-              ${app.developer_mode ? `<span class="chip chip-dev" title="Running from the local git checkout at the repo root - install/update disabled">🛠️ DEV MODE</span>` : ""}
+              <span class="chip"><i class="bi bi-ethernet"></i> Port ${app.port}</span>
+              <span class="chip"><i class="bi bi-memory"></i> ${app.min_ram_gb}GB RAM</span>
+              ${app.requires_gpu ? `<span class="chip chip-gpu"><i class="bi bi-gpu-card"></i> GPU</span>` : ""}
+              ${app.developer_mode ? `<span class="chip chip-dev" title="Running from the local git checkout at the repo root - install/update disabled"><i class="bi bi-code-slash"></i> DEV MODE</span>` : ""}
               ${versionText ? `<span class="chip">${escapeHtml(versionText)}</span>` : ""}
             </div>
             ${lockBannerHtml}
@@ -501,13 +509,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   : action.action === 'none'
                     ? `disabled title='Clone ${escapeHtml(app.repo_name)} into the repo root to enable it in developer mode'`
                     : ""}>
-                ${action.action === 'launch' ? '🚀 ' : action.action === 'stop' ? '⏹️ ' : action.action === 'none' ? '🔍 ' : '📥 '}${action.label}
+                ${action.action === 'launch' ? '<i class="bi bi-play-fill"></i> ' : action.action === 'stop' ? '<i class="bi bi-stop-fill"></i> ' : action.action === 'none' ? '<i class="bi bi-search"></i> ' : '<i class="bi bi-download"></i> '}${action.label}
               </button>
               ${openBrowserBtn}
             </div>
             <div class="app-actions-right">
               ${updateBtnHtml}
-              <button class="btn btn-quiet btn-icon-only" data-action="folder" data-app-id="${app.id}" title="Open Application Directory" ${!app.installed || isLocked ? "disabled" : ""}>📂</button>
+              <button class="btn btn-quiet btn-icon-only" data-action="folder" data-app-id="${app.id}" title="Open Application Directory" ${!app.installed || isLocked ? "disabled" : ""}><i class="bi bi-folder2-open"></i></button>
             </div>
           </div>
         </div>
@@ -548,18 +556,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Toast feedback on status changes
     if (previous) {
       if (!previous.is_running && app.is_running) {
-        showToast(`🎉 ${app.name} is now running on port ${app.port}`, "success", 5000);
+        showToast(`${app.name} is now running on port ${app.port}`, "success", 5000);
       } else if (previous.is_running && !app.is_running) {
-        showToast(`⏹️ ${app.name} has been stopped`, "info", 3000);
+        showToast(`${app.name} has been stopped`, "info", 3000);
       } else if (!previous.installed && app.installed) {
-        showToast(`🏺 ${app.name} installed successfully!`, "success", 5000);
+        showToast(`${app.name} installed successfully!`, "success", 5000);
       }
     }
 
     renderApps();
   }
-
-  // ---- Interactive Installer Hub Controller ----
 
   // ---- Interactive Installer Hub Controller ----
 
@@ -577,7 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (app.logo_path) {
         els.installerLogoBox.innerHTML = `<img src="/assets/${app.logo_path}" alt="${escapeHtml(app.name)}">`;
       } else {
-        els.installerLogoBox.innerHTML = `<span class="emoji-icon">${app.icon || '🏺'}</span>`;
+        els.installerLogoBox.innerHTML = `<i class="bi bi-box-seam" style="font-size: 1.6rem; color: var(--primary);"></i>`;
       }
     }
 
@@ -602,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (els.installerAppName) els.installerAppName.textContent = "Setting Up Python Environment";
     if (els.installerAppSubtitle) els.installerAppSubtitle.textContent = "Configuring isolated virtualenv, PyTorch backend & AI libraries";
-    if (els.installerLogoBox) els.installerLogoBox.innerHTML = `<span class="emoji-icon">🐍</span>`;
+    if (els.installerLogoBox) els.installerLogoBox.innerHTML = `<i class="bi bi-terminal-split" style="font-size: 1.6rem; color: var(--primary);"></i>`;
 
     setStepperLabels("Virtualenv", "PyTorch & AI", "Ready");
     resetInstallerStepper();
@@ -874,6 +880,139 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ---- Daily Day-of-Week & Time-of-Day Greetings ----
+
+  const LATE_NIGHT_GREETINGS = [
+    "Working late tonight? Don't forget to take a break!",
+    "Burning the midnight oil? Remember to get some rest!",
+    "Late night session! Working hard tonight?",
+    "Still up? Make sure to get some sleep soon!",
+  ];
+
+  const EARLY_MORNING_GREETINGS = [
+    "Up already? You're an early bird today!",
+    "Up before the sun? Good morning, early bird!",
+    "Early start today! Hope you have a wonderful day ahead.",
+    "Up bright and early! Have a great start to your day.",
+  ];
+
+  const DAY_GREETINGS = {
+    0: { // Sunday
+      morning: "Good morning! Happy Sunday — have a peaceful day ahead.",
+      afternoon: "Good afternoon! Happy Sunday — enjoy the rest of your weekend.",
+      evening: "Good evening! Happy Sunday — getting ready for the week ahead.",
+    },
+    1: { // Monday
+      morning: "Good morning! Happy Monday — have a great week ahead.",
+      afternoon: "Good afternoon! Happy Monday — hope your week is off to a great start.",
+      evening: "Good evening! Happy Monday — hope you had a productive day.",
+    },
+    2: { // Tuesday
+      morning: "Good morning! Happy Tuesday — hope you have a wonderful day.",
+      afternoon: "Good afternoon! Happy Tuesday — hope your day is going well.",
+      evening: "Good evening! Happy Tuesday — have a relaxing evening.",
+    },
+    3: { // Wednesday
+      morning: "Good morning! Happy Wednesday — have a great day ahead.",
+      afternoon: "Good afternoon! Happy Wednesday — halfway through the week!",
+      evening: "Good evening! Happy Wednesday — have a pleasant evening.",
+    },
+    4: { // Thursday
+      morning: "Good morning! Happy Thursday — almost the weekend!",
+      afternoon: "Good afternoon! Happy Thursday — almost Friday!",
+      evening: "Good evening! Happy Thursday — Friday is just around the corner.",
+    },
+    5: { // Friday
+      morning: "Good morning! Happy Friday — have a fantastic day!",
+      afternoon: "Good afternoon! Happy Friday — have a great weekend ahead!",
+      evening: "Good evening! Happy Friday — time to enjoy the weekend!",
+    },
+    6: { // Saturday
+      morning: "Good morning! Happy Saturday — enjoy your weekend!",
+      afternoon: "Good afternoon! Happy Saturday — enjoy the rest of your day.",
+      evening: "Good evening! Happy Saturday — have a wonderful night.",
+    },
+  };
+
+  function renderDailyGreeting() {
+    const msgEl = document.getElementById("hero-greeting-msg");
+    if (!msgEl) return;
+
+    const now = new Date();
+    const dayIdx = now.getDay();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const timeDecimal = hours + minutes / 60;
+
+    let greeting = "";
+
+    // Very late night: 23:00 - 04:59
+    if (timeDecimal >= 23 || timeDecimal < 5) {
+      const idx = now.getDate() % LATE_NIGHT_GREETINGS.length;
+      greeting = LATE_NIGHT_GREETINGS[idx];
+    }
+    // Very early morning: 05:00 - 07:29
+    else if (timeDecimal >= 5 && timeDecimal < 7.5) {
+      const idx = now.getDate() % EARLY_MORNING_GREETINGS.length;
+      greeting = EARLY_MORNING_GREETINGS[idx];
+    }
+    // Standard Morning: 07:30 - 11:59
+    else if (timeDecimal >= 7.5 && timeDecimal < 12) {
+      greeting = DAY_GREETINGS[dayIdx]?.morning || "Good morning! Have a wonderful day.";
+    }
+    // Afternoon: 12:00 - 17:59
+    else if (timeDecimal >= 12 && timeDecimal < 18) {
+      greeting = DAY_GREETINGS[dayIdx]?.afternoon || "Good afternoon! Hope your day is going well.";
+    }
+    // Evening: 18:00 - 22:59
+    else {
+      greeting = DAY_GREETINGS[dayIdx]?.evening || "Good evening! Have a pleasant night.";
+    }
+
+    msgEl.textContent = greeting;
+  }
+
+  // ---- Live Wikiquote Pop-Culture Quotes ----
+
+  function renderPopQuote(data) {
+    const textEl = document.getElementById("pop-quote-text");
+    const sourceEl = document.getElementById("pop-quote-source");
+    const quoteContainer = document.getElementById("hero-pop-quote");
+    if (!textEl || !sourceEl || !data || !data.quote) return;
+
+    if (quoteContainer) {
+      quoteContainer.style.opacity = "0";
+      setTimeout(() => {
+        textEl.textContent = `“${data.quote}”`;
+        sourceEl.textContent = `— ${data.source}`;
+        quoteContainer.style.opacity = "1";
+      }, 150);
+    } else {
+      textEl.textContent = `“${data.quote}”`;
+      sourceEl.textContent = `— ${data.source}`;
+    }
+  }
+
+  async function fetchWikiquote(forceRefresh = false) {
+    try {
+      const url = forceRefresh ? "/api/quote/wikiquote?refresh=1" : "/api/quote/wikiquote";
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        renderPopQuote(data);
+      }
+    } catch (e) {
+      // Ignore network errors
+    }
+  }
+
+  const quoteEl = document.getElementById("hero-pop-quote");
+  if (quoteEl) {
+    quoteEl.style.cursor = "pointer";
+    quoteEl.setAttribute("title", "Click for another quote from Wikiquote");
+    quoteEl.addEventListener("click", () => fetchWikiquote(true));
+  }
+
 
   if (els.btnLauncherUpdateConfirm) {
     els.btnLauncherUpdateConfirm.addEventListener("click", () => {
@@ -995,6 +1134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- Initial State Hydration ----
 
   async function init() {
+    renderDailyGreeting();
     const startTime = Date.now();
     updateSplash(25, "Initializing system components...");
     await delay(350);
@@ -1009,12 +1149,18 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSplash(85, "Loading archaeological tools & models...");
       if (els.launcherVersion) els.launcherVersion.textContent = `v${state.launcher_version}`;
       if (state.hardware) renderHardware(state.hardware);
+      if (state.pop_quote) {
+        renderPopQuote(state.pop_quote);
+      } else {
+        fetchWikiquote();
+      }
       renderEnvStatus(!!(state.env && state.env.exists));
       setApps(state.apps || []);
       (state.console || []).forEach(appendConsoleEntry);
       if (state.models) renderModelCache(state.models);
     } catch (e) {
       // Backend hydration fallback
+      fetchWikiquote();
     }
 
     connectEvents();

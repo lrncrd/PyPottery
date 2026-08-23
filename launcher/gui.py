@@ -89,7 +89,7 @@ def main():
 
     threading.Thread(target=_open_browser, daemon=True).start()
 
-    print(f"PyPottery Suite Launcher running at {url}")
+    print(f"PyPottery Suite Launcher v{state.launcher_version} running at {url}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -24,6 +24,7 @@ from .environment_manager import EnvironmentManager, InstallProgress
 from .hardware_detector import HardwareInfo, detect_hardware
 from .update_checker import UpdateChecker
 from .updater import LauncherUpdater
+from .wikiquote_fetcher import fetch_live_wikiquote
 
 try:
     # Gitignored, local-only switch - see dev_config.example.py. Missing on a
@@ -452,6 +453,7 @@ def create_app(state: LauncherState) -> Flask:
             "launcher_version": state.launcher_version,
             "developer_mode": DEVELOPER_MODE,
             "hardware": state.hardware_info.to_dict(),
+            "pop_quote": fetch_live_wikiquote(),
             "env": {
                 "exists": bool(state.env_manager and state.env_manager.venv_exists()),
                 "python_executable": (
@@ -462,6 +464,12 @@ def create_app(state: LauncherState) -> Flask:
             "console": list(state.console_log),
             "models": model_cache_snapshot(state),
         })
+
+    @app.route("/api/quote/wikiquote")
+    @app.route("/api/quote/pop")
+    def get_wikiquote_route():
+        force_refresh = request.args.get("refresh") in ("1", "true")
+        return jsonify(fetch_live_wikiquote(force_refresh=force_refresh))
 
     @app.route("/api/hardware")
     def get_hardware():

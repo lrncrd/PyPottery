@@ -202,7 +202,17 @@ body {
 }
 
 .card-icon {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.card-icon i {
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
 .card-title {
@@ -291,6 +301,121 @@ body {
   display: none !important;
 }
 
+/* Hero Front Matter & ASCII Banner */
+.hero-frontmatter {
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffdfa 100%);
+  border: 1px solid var(--border-light);
+  border-top: 3px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px 18px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.hero-frontmatter::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.08) 0%, rgba(234, 88, 12, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-ascii-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 0;
+  scrollbar-width: thin;
+}
+
+.hero-ascii-art {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(9.5px, 1.28vw, 13.5px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: 0;
+  color: #c2410c;
+  display: block;
+  white-space: pre;
+  user-select: none;
+  margin: 0 auto;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.hero-ascii-art:hover {
+  transform: translateY(-1px);
+}
+
+.hero-greeting-text {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.4;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-light);
+  width: 100%;
+  max-width: 680px;
+}
+
+.greeting-sparkle {
+  color: var(--primary);
+  font-size: 0.85rem;
+  animation: sparkleTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.hero-pop-quote {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 740px;
+  margin-top: 2px;
+  transition: opacity 0.3s ease;
+}
+
+.pop-quote-text {
+  color: var(--text-dim);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.pop-quote-source {
+  color: var(--primary);
+  font-size: 0.77rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 /* Dashboard Top Grid */
 .dashboard-grid {
   display: grid;
@@ -327,8 +452,23 @@ body {
 }
 
 .hw-icon {
-  font-size: 1.15rem;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
   flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.hw-icon i {
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--primary);
 }
 
 .hw-details {
@@ -661,8 +801,16 @@ body {
   background: var(--bg-subtle);
   border: 1px solid var(--border-light);
   color: var(--text-dim);
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chip i {
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .chip.chip-gpu {
@@ -1020,14 +1168,25 @@ body {
 }
 
 .toast.toast-info { border-left: 4px solid var(--primary); }
+.toast.toast-info .toast-icon { color: var(--primary); }
+
 .toast.toast-success { border-left: 4px solid var(--teal); }
+.toast.toast-success .toast-icon { color: var(--teal); }
+
 .toast.toast-warning { border-left: 4px solid var(--warning); }
+.toast.toast-warning .toast-icon { color: var(--warning); }
+
 .toast.toast-error { border-left: 4px solid var(--danger); }
+.toast.toast-error .toast-icon { color: var(--danger); }
 
 .toast-icon {
   font-size: 1.1rem;
   flex-shrink: 0;
   margin-top: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .toast-message {
@@ -1523,6 +1682,11 @@ body {
   animation: checkPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.card-verified-check i {
+  line-height: 1;
+  font-size: 0.95rem;
+}
+
 @keyframes checkPop {
   0% { opacity: 0; transform: scale(0.3) rotate(-30deg); }
   70% { transform: scale(1.15) rotate(10deg); }
@@ -1752,9 +1916,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
+  color: var(--primary);
   z-index: 2;
   transition: all 0.3s ease;
+}
+
+.pipeline-node-icon i {
+  line-height: 1;
+}
+
+.pipeline-node-icon.tool-lens-node {
+  color: #0d9488;
+  border-color: #0d9488;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.2);
 }
 
 .pipeline-node-line {

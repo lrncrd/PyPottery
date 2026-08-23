@@ -16,11 +16,25 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/lrncrd/PyPottery/releases/latest">
+    <img src="https://img.shields.io/github/v/release/lrncrd/PyPottery?label=version&color=blue" alt="Latest Release">
+  </a>
+  <a href="https://github.com/lrncrd/PyPottery/releases">
+    <img src="https://img.shields.io/github/downloads/lrncrd/PyPottery/total?label=downloads&color=success" alt="Total Downloads">
+  </a>
+  <a href="https://github.com/lrncrd/PyPottery/stargazers">
+    <img src="https://img.shields.io/github/stars/lrncrd/PyPottery?color=yellow" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/lrncrd/PyPottery/commits">
+    <img src="https://img.shields.io/github/last-commit/lrncrd/PyPottery?color=orange" alt="Last Commit">
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white" alt="Python 3.12">
-  <img src="https://img.shields.io/badge/License-Apache 2.0-green" alt="Open Source">
-  <img src="https://img.shields.io/badge/Platform-All-purple?" alt="All">
-  <img src="https://img.shields.io/badge/version-1.0.2-blue.svg">
-  <img src="https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-yellow.svg">
+  <img src="https://img.shields.io/badge/License-Apache%202.0-green" alt="Apache 2.0 License">
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-purple" alt="Platforms">
+  <img src="https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-yellow.svg" alt="GPU support">
 </p>
 
 > [!NOTE]
@@ -109,20 +123,20 @@ The easiest way to get started! Download the pre-packaged launcher with everythi
 
 <p align="center">
   <a href="https://github.com/lrncrd/PyPottery/releases/latest">
-    <img src="https://img.shields.io/badge/Download-PyPottery%20Launcher-667eea?style=for-the-badge&logo=windows&logoColor=white" alt="Download Launcher">
+    <img src="https://img.shields.io/badge/Download-PyPottery%20Launcher-667eea?style=for-the-badge&logoColor=white" alt="Download Launcher">
   </a>
 </p>
 
-| Platform | Status |
-|----------|--------|
-| **Windows 10/11** (64-bit) | ✅ Available |
-| **macOS** | ✅ Available |
-| **Linux** | 🚧 Coming Soon |
+| Platform | Status | Install |
+|----------|--------|---------|
+| **Windows 10/11** (64-bit) | ✅ Available | Run `PyPottery-Launcher-Setup.exe` — normal setup wizard, Start Menu shortcut included |
+| **macOS** | ✅ Available | Open the `.dmg` and drag PyPottery Launcher into **Applications** |
+| **Linux** | 🚧 Coming Soon | — |
 
 **Installation:**
-1. Download the ZIP file from [Releases](https://github.com/lrncrd/PyPottery/releases/latest)
-2. Extract to a folder of your choice
-3. See [Installation](https://lrncrd.github.io/PyPottery/suite_installation.html)
+1. Grab the installer for your OS from [Releases](https://github.com/lrncrd/PyPottery/releases/latest)
+2. Run it (Windows) or drag-to-Applications (macOS) — no Python install required
+3. See [Installation Guide](https://lrncrd.github.io/PyPottery/suite_installation.html) for details
 
 ### Option 2: Manual Installation
 
@@ -133,7 +147,7 @@ For advanced users who want more control, each tool can be installed separately.
 ## 📋 Requirements
 
 - **Python 3.12** (for manual installation)
-- **Operating System:** Windows 10/11 (macOS/Linux coming soon)
+- **Operating System:** Windows 10/11 or macOS (Linux coming soon)
 - **RAM:** 8 GB minimum, 16 GB recommended
 - **GPU:** Optional but recommended (NVIDIA CUDA or Apple Silicon)
 

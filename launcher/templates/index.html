@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -48,11 +49,11 @@
     
     <div class="header-actions">
       <button id="btn-check-updates" class="btn btn-outline btn-icon-text">
-        <span class="btn-icon">🔄</span>
+        <span class="btn-icon"><i class="bi bi-arrow-repeat"></i></span>
         <span>Check Updates</span>
       </button>
       <button id="btn-quit" class="btn btn-danger-soft btn-icon-text">
-        <span class="btn-icon">⏻</span>
+        <span class="btn-icon"><i class="bi bi-power"></i></span>
         <span>Quit</span>
       </button>
     </div>
@@ -63,16 +64,16 @@
 
     <!-- Notification Banners -->
     <div id="banner-driver-warning" class="banner banner-warning hidden">
-      <div class="banner-icon">⚠️</div>
+      <div class="banner-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
       <div class="banner-content">
         <strong class="banner-title">GPU Driver Notice</strong>
         <span id="banner-driver-warning-text"></span>
       </div>
-      <button class="banner-dismiss" data-dismiss="banner-driver-warning" title="Dismiss">✕</button>
+      <button class="banner-dismiss" data-dismiss="banner-driver-warning" title="Dismiss"><i class="bi bi-x-lg"></i></button>
     </div>
 
     <div id="banner-launcher-update" class="banner banner-info hidden">
-      <div class="banner-icon">🏺</div>
+      <div class="banner-icon"><i class="bi bi-arrow-up-circle-fill"></i></div>
       <div class="banner-content">
         <strong class="banner-title">Update Available</strong>
         <span id="banner-launcher-update-text">A new version of PyPottery Launcher is available.</span>
@@ -84,7 +85,7 @@
     </div>
 
     <div id="banner-launcher-update-progress" class="banner banner-info hidden">
-      <div class="banner-icon spinner">⏳</div>
+      <div class="banner-icon spinner"><i class="bi bi-arrow-repeat"></i></div>
       <div class="banner-content" style="width: 100%;">
         <div class="banner-header-line">
           <span id="banner-launcher-update-progress-text">Updating launcher...</span>
@@ -93,6 +94,27 @@
       </div>
     </div>
 
+    <!-- Front Matter / ASCII Hero Banner & Daily Greeting -->
+    <section class="card hero-frontmatter" id="hero-frontmatter">
+      <div class="hero-ascii-wrapper">
+        <pre class="hero-ascii-art" id="hero-ascii-art" aria-label="PyPottery ASCII Banner">
+    ____        ____        __  __                  
+   / __ \__  __/ __ \____  / /_/ /____  _______  __ 
+  / /_/ / / / / /_/ / __ \/ __/ __/ _ \/ ___/ / / / 
+ / ____/ /_/ / ____/ /_/ / /_/ /_/  __/ /  / /_/ /  
+/_/    \__, /_/    \____/\__/\__/\___/_/   \__, /   
+      /____/                              /____/    </pre>
+      </div>
+      <p class="hero-greeting-text" id="hero-greeting-text">
+        <span class="greeting-sparkle">✦</span>
+        <span id="hero-greeting-msg">Good afternoon! Happy Friday — have a great weekend ahead!</span>
+      </p>
+      <div class="hero-pop-quote" id="hero-pop-quote" title="Click for another quote from Wikiquote">
+        <span class="pop-quote-text" id="pop-quote-text">“It belongs in a museum!”</span>
+        <span class="pop-quote-source" id="pop-quote-source">— Indiana Jones and the Last Crusade (Wikiquote)</span>
+      </div>
+    </section>
+
     <!-- Dashboard Top Row: Hardware Specs & Environment Status -->
     <div class="dashboard-grid">
       
@@ -100,28 +122,28 @@
       <section class="card hardware-panel" id="hardware-panel">
         <div class="card-header">
           <div class="card-title-group">
-            <span class="card-icon">⚙️</span>
+            <span class="card-icon"><i class="bi bi-motherboard"></i></span>
             <h2 class="card-title">System &amp; Hardware Specs</h2>
           </div>
           <span class="card-tag">Specs</span>
         </div>
         <div class="hw-grid">
           <div class="hw-card">
-            <span class="hw-icon">💻</span>
+            <span class="hw-icon" title="Operating System"><i class="bi bi-display"></i></span>
             <div class="hw-details">
               <span class="hw-label">Operating System</span>
               <span class="hw-value" data-hw="os">Detecting...</span>
             </div>
           </div>
           <div class="hw-card">
-            <span class="hw-icon">🧠</span>
+            <span class="hw-icon" title="Processor (CPU)"><i class="bi bi-cpu"></i></span>
             <div class="hw-details">
               <span class="hw-label">Processor (CPU)</span>
               <span class="hw-value" data-hw="cpu">Detecting...</span>
             </div>
           </div>
           <div class="hw-card">
-            <span class="hw-icon">📊</span>
+            <span class="hw-icon" title="System Memory"><i class="bi bi-memory"></i></span>
             <div class="hw-details">
               <span class="hw-label">System Memory</span>
               <span class="hw-value" data-hw="ram">Detecting...</span>
@@ -129,14 +151,14 @@
             </div>
           </div>
           <div class="hw-card">
-            <span class="hw-icon">🎮</span>
+            <span class="hw-icon" title="GPU Acceleration"><i class="bi bi-gpu-card"></i></span>
             <div class="hw-details">
               <span class="hw-label">GPU Acceleration</span>
               <span class="hw-value" data-hw="gpu">Detecting...</span>
             </div>
           </div>
           <div class="hw-card hw-card-full">
-            <span class="hw-icon">🔥</span>
+            <span class="hw-icon" title="PyTorch Acceleration Engine"><i class="bi bi-lightning-charge"></i></span>
             <div class="hw-details">
               <span class="hw-label">PyTorch Backend</span>
               <span class="hw-value" data-hw="pytorch">Detecting...</span>
@@ -149,12 +171,12 @@
       <section class="card environment-panel" id="environment-panel">
         <div class="card-header">
           <div class="card-title-group">
-            <span class="card-icon">🐍</span>
+            <span class="card-icon"><i class="bi bi-terminal-split"></i></span>
             <h2 class="card-title">Python Environment</h2>
           </div>
           <div class="env-header-right">
             <span id="env-status-text" class="env-status-badge">Checking...</span>
-            <span id="env-verified-check" class="card-verified-check hidden" title="Environment Ready & Verified">✓</span>
+            <span id="env-verified-check" class="card-verified-check hidden" title="Environment Ready & Verified"><i class="bi bi-check-circle-fill"></i></span>
           </div>
         </div>
         <p class="panel-subtitle">Isolated Python execution environment for pottery documentation tools and AI models.</p>
@@ -180,7 +202,7 @@
     <section class="apps-section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">🏺 Archaeological Suite Applications</h2>
+          <h2 class="section-title"><i class="bi bi-collection" style="color: var(--primary); margin-right: 6px;"></i> Archaeological Suite Applications</h2>
           <p class="section-description">Specialized AI tools for pottery documentation, vectorization, digital inking, and layout synthesis.</p>
         </div>
       </div>
@@ -197,12 +219,14 @@
     <section class="card model-cache-panel" id="model-cache-panel">
       <div class="card-header">
         <div class="card-title-group">
-          <span class="card-icon">🗃️</span>
+          <span class="card-icon"><i class="bi bi-database"></i></span>
           <h2 class="card-title">Downloaded AI Models</h2>
         </div>
         <div class="card-header-actions">
           <span class="env-status-badge" id="model-cache-total">0 MB total</span>
-          <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache">🔄</button>
+          <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
         </div>
       </div>
       <p class="panel-subtitle">AI models are downloaded once and shared across every tool in the suite, so reinstalling or updating an app never re-downloads them. Remove anything you no longer need to free up disk space — the owning app fetches it again next time it's needed.</p>
@@ -216,12 +240,12 @@
       <div class="console-header">
         <div class="console-title-group">
           <span class="console-dot" id="console-dot">●</span>
-          <span class="console-title">System &amp; Application Logs</span>
+          <span class="console-title"><i class="bi bi-terminal" style="color: var(--primary); margin-right: 6px;"></i> System &amp; Application Logs</span>
           <span class="console-last-msg" id="console-last-msg">Ready</span>
         </div>
         <div class="console-actions">
-          <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log">📋 Copy</button>
-          <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen">🗑️ Clear</button>
+          <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log"><i class="bi bi-clipboard"></i> Copy</button>
+          <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen"><i class="bi bi-trash3"></i> Clear</button>
           <button id="btn-console-toggle" class="btn btn-outline btn-xs">Show Logs</button>
         </div>
       </div>
@@ -255,14 +279,14 @@
     <div class="installer-header">
       <div class="installer-app-info">
         <div class="installer-logo-box" id="installer-logo-box">
-          <span class="emoji-icon">🏺</span>
+          <i class="bi bi-box-seam" style="font-size: 1.6rem; color: var(--primary);"></i>
         </div>
         <div>
           <h3 class="installer-app-name" id="installer-app-name">Installing Application</h3>
           <p class="installer-app-subtitle" id="installer-app-subtitle">Archaeological Suite Installation</p>
         </div>
       </div>
-      <button class="installer-close-btn" id="btn-installer-close" title="Minimize / Close">✕</button>
+      <button class="installer-close-btn" id="btn-installer-close" title="Minimize / Close"><i class="bi bi-x-lg"></i></button>
     </div>
 
     <!-- Stepper Pipeline -->
@@ -315,15 +339,15 @@
 
     <!-- Actions Footer (Shown when installation finishes or errors) -->
     <div class="installer-footer" id="installer-footer">
-      <button class="btn btn-primary hidden" id="btn-installer-done">✨ Complete Setup</button>
-      <button class="btn btn-success btn-glow hidden" id="btn-installer-launch">🚀 Launch App Now</button>
+      <button class="btn btn-primary hidden" id="btn-installer-done"><i class="bi bi-check-lg"></i> Complete Setup</button>
+      <button class="btn btn-success btn-glow hidden" id="btn-installer-launch"><i class="bi bi-box-arrow-up-right"></i> Launch App Now</button>
     </div>
   </div>
 </div>
 
 <!-- Floating Info Guide Button -->
 <button id="btn-floating-guide" class="btn-floating-guide" title="Workflow Guide & Documentation">
-  <span class="floating-icon">💡</span>
+  <span class="floating-icon"><i class="bi bi-compass"></i></span>
   <span class="floating-label">Workflow Guide</span>
 </button>
 
@@ -333,14 +357,14 @@
     <div class="installer-header">
       <div class="installer-title-group">
         <div class="installer-logo-box">
-          <span class="emoji-icon">📖</span>
+          <i class="bi bi-journal-bookmark" style="font-size: 1.4rem; color: var(--primary);"></i>
         </div>
         <div>
           <h2 class="installer-app-name">The Bibliographic Way</h2>
           <p class="installer-app-subtitle">Workflow: PDF Literature ➔ PyPottery Lens ➔ Digital Vessel Cards</p>
         </div>
       </div>
-      <button class="installer-close-btn" id="btn-guide-close" title="Close Guide">✕</button>
+      <button class="installer-close-btn" id="btn-guide-close" title="Close Guide"><i class="bi bi-x-lg"></i></button>
     </div>
 
     <div class="guide-body">
@@ -358,7 +382,7 @@
           <!-- Step 1: PDF -->
           <div class="pipeline-card">
             <div class="pipeline-node-col">
-              <div class="pipeline-node-icon">📄</div>
+              <div class="pipeline-node-icon"><i class="bi bi-file-earmark-pdf"></i></div>
               <div class="pipeline-node-line"></div>
             </div>
             <div class="pipeline-card-content">
@@ -381,7 +405,7 @@
           <!-- Step 2: PyPottery Lens -->
           <div class="pipeline-card">
             <div class="pipeline-node-col">
-              <div class="pipeline-node-icon">🔍</div>
+              <div class="pipeline-node-icon tool-lens-node"><i class="bi bi-search"></i></div>
               <div class="pipeline-node-line"></div>
             </div>
             <div class="pipeline-card-content highlight-card">
@@ -396,7 +420,7 @@
               <div class="pipeline-tags">
                 <span class="ptag">AI Profile Extraction</span>
                 <span class="ptag">Automatic Scale Bar Detection</span>
-                <span class="ptag">Section & Rim Alignment</span>
+                <span class="ptag">Section &amp; Rim Alignment</span>
               </div>
             </div>
           </div>
@@ -404,7 +428,7 @@
           <!-- Step 3: Vessel Cards -->
           <div class="pipeline-card">
             <div class="pipeline-node-col">
-              <div class="pipeline-node-icon">🏺</div>
+              <div class="pipeline-node-icon"><i class="bi bi-card-heading"></i></div>
             </div>
             <div class="pipeline-card-content">
               <div class="pipeline-card-header">

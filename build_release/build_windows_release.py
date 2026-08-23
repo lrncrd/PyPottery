@@ -5,6 +5,7 @@ Uses WinPython - a complete portable Python distribution with tkinter included.
 """
 
 import os
+import re
 import sys
 import shutil
 import zipfile
@@ -12,11 +13,145 @@ import urllib.request
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import Optional
 
 # Configuration - WinPython (portable, complete with tkinter)
 PYTHON_VERSION = "3.12.10"
 # WinPython "dot" version - minimal but includes tkinter (from latest stable release)
 WINPYTHON_URL = "https://github.com/winpython/winpython/releases/download/16.6.20250620final/Winpython64-3.12.10.1dot.zip"
+
+# NSIS script template for the installer .exe. Placeholders (__TOKEN__) are
+# substituted rather than using str.format/f-strings, since the template is
+# dense with NSIS's own "${VAR}" syntax which would otherwise have to be
+# escaped everywhere.
+NSIS_TEMPLATE = r"""
+!define APPNAME "PyPottery Launcher"
+!define COMPANY "lrncrd"
+!define VERSION "__VERSION__"
+!define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\PyPotteryLauncher"
+
+Name "${APPNAME}"
+OutFile "__OUTFILE__"
+InstallDir "$LOCALAPPDATA\${APPNAME}"
+; Per-user install (no UAC prompt) and, crucially, a directory the app can
+; keep writing to at runtime (Python venv, downloaded sub-apps) - unlike
+; Program Files, which requires admin rights and would reproduce on Windows
+; the same "can't write next to myself" class of bug the macOS build hit.
+RequestExecutionLevel user
+SetCompressor /SOLID lzma
+
+!include "MUI2.nsh"
+
+!define MUI_ABORTWARNING
+__MUI_ICON__
+
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+
+!insertmacro MUI_LANGUAGE "English"
+
+Section "Install"
+    SetOutPath "$INSTDIR"
+    File /r "__SRCDIR__\*.*"
+
+    CreateDirectory "$SMPROGRAMS\${APPNAME}"
+    CreateShortcut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\PyPottery.bat" "" __SHORTCUT_ICON__
+    CreateShortcut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\PyPottery.bat" "" __SHORTCUT_ICON__
+    CreateShortcut "$SMPROGRAMS\${APPNAME}\Uninstall ${APPNAME}.lnk" "$INSTDIR\Uninstall.exe"
+
+    WriteUninstaller "$INSTDIR\Uninstall.exe"
+
+    WriteRegStr HKCU "${UNINST_KEY}" "DisplayName" "${APPNAME}"
+    WriteRegStr HKCU "${UNINST_KEY}" "UninstallString" "$INSTDIR\Uninstall.exe"
+    WriteRegStr HKCU "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
+    WriteRegStr HKCU "${UNINST_KEY}" "DisplayVersion" "${VERSION}"
+    WriteRegStr HKCU "${UNINST_KEY}" "Publisher" "${COMPANY}"
+    WriteRegDWORD HKCU "${UNINST_KEY}" "NoModify" 1
+    WriteRegDWORD HKCU "${UNINST_KEY}" "NoRepair" 1
+SectionEnd
+
+Section "Uninstall"
+    Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
+    Delete "$SMPROGRAMS\${APPNAME}\Uninstall ${APPNAME}.lnk"
+    RMDir "$SMPROGRAMS\${APPNAME}"
+    Delete "$DESKTOP\${APPNAME}.lnk"
+    RMDir /r "$INSTDIR"
+    DeleteRegKey HKCU "${UNINST_KEY}"
+SectionEnd
+"""
+
+
+def _read_launcher_version(project_root: Path) -> str:
+    """Pull the canonical version string straight out of web_server.py rather
+    than hand-duplicating it in the build script, where it would drift."""
+    web_server_py = project_root / "launcher" / "web_server.py"
+    try:
+        content = web_server_py.read_text(encoding="utf-8")
+        match = re.search(r'LAUNCHER_VERSION\s*=\s*["\']([^"\']+)["\']', content)
+        if match:
+            return match.group(1)
+    except OSError:
+        pass
+    return "0.0.0"
+
+
+def build_windows_installer(package_dir: Path, release_dir: Path, version: str) -> Optional[Path]:
+    """
+    Wrap the portable package_dir into a proper Windows installer .exe (NSIS):
+    installs per-user under %LOCALAPPDATA%, adds Start Menu / Desktop
+    shortcuts, and registers an uninstaller in Add/Remove Programs - instead
+    of "extract this zip and find PyPottery.bat yourself".
+
+    Compiled cross-platform via `makensis` (works from macOS/Linux, no
+    Windows machine needed - same tool many CI pipelines use for this).
+    Skips gracefully with a warning if `makensis` isn't installed.
+    """
+    print("\n📦 Step 7: Building installer .exe (NSIS)...")
+
+    makensis = shutil.which("makensis")
+    if not makensis:
+        print("   ⚠️ 'makensis' not found (install via 'brew install makensis' "
+              "or see https://nsis.sourceforge.net/) - skipping installer .exe, "
+              "the .zip is still available")
+        return None
+
+    out_name = "PyPottery-Launcher-Setup.exe"
+    out_path = release_dir / out_name
+    icon_path = package_dir / "icon_app.ico"
+
+    nsi_content = NSIS_TEMPLATE
+    nsi_content = nsi_content.replace("__VERSION__", version)
+    nsi_content = nsi_content.replace("__OUTFILE__", str(out_path))
+    nsi_content = nsi_content.replace("__SRCDIR__", str(package_dir))
+
+    if icon_path.exists():
+        nsi_content = nsi_content.replace("__MUI_ICON__", f'!define MUI_ICON "{icon_path}"')
+        nsi_content = nsi_content.replace("__SHORTCUT_ICON__", f'"$INSTDIR\\icon_app.ico"')
+    else:
+        nsi_content = nsi_content.replace("__MUI_ICON__", "")
+        nsi_content = nsi_content.replace("__SHORTCUT_ICON__", "")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        nsi_path = Path(tmpdir) / "installer.nsi"
+        nsi_path.write_text(nsi_content, encoding="utf-8")
+
+        result = subprocess.run(
+            [makensis, str(nsi_path)],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            print("   ⚠️ NSIS compilation failed, skipping installer .exe:")
+            print(f"   {result.stdout}\n{result.stderr}")
+            return None
+
+    size_mb = out_path.stat().st_size / (1024 * 1024)
+    print(f"   ✓ Created {out_path.name} ({size_mb:.1f} MB)")
+    return out_path
 
 
 def download_file(url: str, dest: Path, desc: str = ""):
@@ -207,29 +342,41 @@ start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launch
     
     # 6. Create zip
     print("\n📦 Step 6: Creating distribution package...")
-    
-    zip_name = "PyPottery-Launcher-Windows-v1.0.2"
+
+    version = _read_launcher_version(project_root)
+    zip_name = f"PyPottery-Launcher-Windows-v{version}"
     zip_path = release_dir / f"{zip_name}.zip"
-    
+
     if zip_path.exists():
         zip_path.unlink()
-    
+
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
         for file_path in package_dir.rglob('*'):
             if file_path.is_file():
                 arcname = file_path.relative_to(release_dir)
                 zf.write(file_path, arcname)
-    
+
     size_mb = zip_path.stat().st_size / (1024 * 1024)
-    
+
+    # 7. Installer .exe (NSIS) - the one to actually hand out; the zip above
+    # stays around too since it's what the launcher's self-updater consumes.
+    installer_path = build_windows_installer(package_dir, release_dir, version)
+
     print("\n" + "=" * 60)
     print("✅ BUILD COMPLETE!")
     print("=" * 60)
-    print(f"\n📁 Output: {zip_path}")
-    print(f"📊 Size: {size_mb:.1f} MB")
-    print(f"\n💡 Users just extract and run PyPottery.bat")
-    
-    return zip_path
+    print(f"\n📁 Zip: {zip_path} ({size_mb:.1f} MB)")
+    if installer_path:
+        installer_size_mb = installer_path.stat().st_size / (1024 * 1024)
+        print(f"📁 Installer: {installer_path} ({installer_size_mb:.1f} MB)")
+        print(f"\n💡 Hand out the .exe - it installs with a normal setup wizard "
+              f"(Start Menu shortcut, uninstaller). The .zip is the portable "
+              f"fallback/self-update artifact.")
+    else:
+        print(f"\n💡 Users extract the zip and run PyPottery.bat "
+              f"(installer .exe was skipped - see warning above)")
+
+    return installer_path or zip_path
 
 
 if __name__ == "__main__":
