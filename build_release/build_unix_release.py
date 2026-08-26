@@ -388,6 +388,16 @@ def _build_single_platform(platform_name: str, release_dir: Path, project_root: 
     # 2. Copy Launcher Files
     print("\n📦 Step 2: Copying launcher files...")
 
+    # Ensure offline vendor assets (Bootstrap, Icons, Fonts) are present and synced
+    try:
+        sys.path.insert(0, str(project_root))
+        from launcher.vendor_assets_manager import VendorAssetsManager
+        v_mgr = VendorAssetsManager(project_root)
+        v_mgr.ensure_vendor_assets()
+        v_mgr.sync_to_app(project_root / "launcher")
+    except Exception as e:
+        print(f"   ⚠️ Vendor assets build warning: {e}")
+
     # Copy launcher module
     src_launcher = project_root / "launcher"
     if launcher_dest.exists():

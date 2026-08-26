@@ -62,16 +62,27 @@ document.addEventListener("DOMContentLoaded", () => {
     btnModelsRefresh: document.getElementById("btn-models-refresh"),
     btnCheckUpdates: document.getElementById("btn-check-updates"),
     btnQuit: document.getElementById("btn-quit"),
-    btnFloatingGuide: document.getElementById("btn-floating-guide"),
-    guideModal: document.getElementById("guide-modal"),
-    btnGuideClose: document.getElementById("btn-guide-close"),
+    btnChangelog: document.getElementById("btn-changelog"),
+    changelogModal: document.getElementById("changelog-modal"),
+    btnChangelogClose: document.getElementById("btn-changelog-close"),
+    changelogModalBody: document.getElementById("changelog-modal-body"),
+    btnAbout: document.getElementById("btn-about"),
+    aboutModal: document.getElementById("about-modal"),
+    btnAboutClose: document.getElementById("btn-about-close"),
+    aboutVersionBadge: document.getElementById("about-version-badge"),
+    disclaimerModal: document.getElementById("disclaimer-modal"),
+    btnAcceptDisclaimer: document.getElementById("btn-accept-disclaimer"),
     driverWarningBanner: document.getElementById("banner-driver-warning"),
     driverWarningText: document.getElementById("banner-driver-warning-text"),
     launcherUpdateBanner: document.getElementById("banner-launcher-update"),
+    launcherUpdateBadge: document.getElementById("banner-launcher-update-badge"),
     launcherUpdateText: document.getElementById("banner-launcher-update-text"),
+    launcherUpdateNotes: document.getElementById("banner-launcher-update-notes"),
+    btnLauncherUpdateNotesToggle: document.getElementById("btn-launcher-update-notes-toggle"),
     btnLauncherUpdateConfirm: document.getElementById("btn-launcher-update-confirm"),
     launcherUpdateProgressBanner: document.getElementById("banner-launcher-update-progress"),
     launcherUpdateProgressText: document.getElementById("banner-launcher-update-progress-text"),
+    launcherUpdateProgressPct: document.getElementById("banner-launcher-update-progress-pct"),
     launcherUpdateProgressBar: document.getElementById("launcher-update-progress-bar"),
     toastContainer: document.getElementById("toast-container"),
     quoteDayBadge: document.getElementById("quote-day-badge"),
@@ -630,24 +641,125 @@ document.addEventListener("DOMContentLoaded", () => {
     store.activeInstallerAppId = null;
   }
 
-  // ---- Workflow Guide Modal Controller ----
-  if (els.btnFloatingGuide && els.guideModal) {
-    els.btnFloatingGuide.addEventListener("click", () => {
-      els.guideModal.classList.remove("hidden");
+  // ---- Changelog Modal Controller ----
+  async function loadChangelog() {
+    if (!els.changelogModalBody) return;
+    els.changelogModalBody.innerHTML = `
+      <div class="changelog-loading">
+        <div class="spinner"><i class="bi bi-arrow-repeat"></i></div>
+        <p>Loading latest release notes from GitHub...</p>
+      </div>
+    `;
+
+    try {
+      const resp = await fetch("/api/changelog");
+      const data = await resp.json();
+      renderChangelog(data);
+    } catch (err) {
+      els.changelogModalBody.innerHTML = `
+        <div class="changelog-item-card">
+          <p class="text-danger"><i class="bi bi-exclamation-triangle"></i> Failed to load changelog: ${escapeHtml(err.message)}</p>
+        </div>
+      `;
+    }
+  }
+
+  function renderChangelog(data) {
+    if (!els.changelogModalBody) return;
+    let html = "";
+
+    const keys = Object.keys(data);
+    const sortedKeys = [];
+    if (keys.includes("launcher")) sortedKeys.push("launcher");
+    keys.forEach(k => { if (k !== "launcher") sortedKeys.push(k); });
+
+    sortedKeys.forEach((key) => {
+      const item = data[key];
+      const published = item.published_at
+        ? new Date(item.published_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+        : "";
+
+      html += `
+        <div class="changelog-item-card">
+          <div class="changelog-item-header">
+            <div class="changelog-item-title-group">
+              <span class="changelog-item-icon">${item.icon || '🏺'}</span>
+              <h3 class="changelog-item-title">${escapeHtml(item.name)}</h3>
+            </div>
+            <div class="changelog-item-meta">
+              <span class="version-badge">v${escapeHtml(item.latest_version)}</span>
+              ${published ? `<span class="changelog-date"><i class="bi bi-calendar3"></i> ${published}</span>` : ''}
+            </div>
+          </div>
+          <div class="changelog-notes">${escapeHtml(item.release_notes || 'No release notes available.')}</div>
+          ${item.html_url ? `
+            <a href="${item.html_url}" target="_blank" rel="noopener noreferrer" class="changelog-link-btn">
+              <span>View full release on GitHub</span> <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+          ` : ''}
+        </div>
+      `;
+    });
+
+    els.changelogModalBody.innerHTML = html || "<p class='text-dim'>No release information available.</p>";
+  }
+
+  if (els.btnChangelog && els.changelogModal) {
+    els.btnChangelog.addEventListener("click", () => {
+      els.changelogModal.classList.remove("hidden");
+      loadChangelog();
     });
   }
 
-  if (els.btnGuideClose && els.guideModal) {
-    els.btnGuideClose.addEventListener("click", () => {
-      els.guideModal.classList.add("hidden");
+  if (els.btnChangelogClose && els.changelogModal) {
+    els.btnChangelogClose.addEventListener("click", () => {
+      els.changelogModal.classList.add("hidden");
     });
   }
 
-  if (els.guideModal) {
-    els.guideModal.addEventListener("click", (e) => {
-      if (e.target === els.guideModal) {
-        els.guideModal.classList.add("hidden");
+  if (els.changelogModal) {
+    els.changelogModal.addEventListener("click", (e) => {
+      if (e.target === els.changelogModal) {
+        els.changelogModal.classList.add("hidden");
       }
+    });
+  }
+
+  // ---- About / Info Modal Controller ----
+  if (els.btnAbout && els.aboutModal) {
+    els.btnAbout.addEventListener("click", () => {
+      if (els.aboutVersionBadge && els.launcherVersion) {
+        els.aboutVersionBadge.textContent = els.launcherVersion.textContent || "v1.1.0";
+      }
+      els.aboutModal.classList.remove("hidden");
+    });
+  }
+
+  if (els.btnAboutClose && els.aboutModal) {
+    els.btnAboutClose.addEventListener("click", () => {
+      els.aboutModal.classList.add("hidden");
+    });
+  }
+
+  if (els.aboutModal) {
+    els.aboutModal.addEventListener("click", (e) => {
+      if (e.target === els.aboutModal) {
+        els.aboutModal.classList.add("hidden");
+      }
+    });
+  }
+
+  // ---- Disclaimer Modal Overlay Controller (Forced acceptance on first run) ----
+  if (els.disclaimerModal) {
+    if (localStorage.getItem("pypottery_disclaimer_accepted") !== "1") {
+      els.disclaimerModal.classList.remove("hidden");
+    }
+  }
+
+  if (els.btnAcceptDisclaimer && els.disclaimerModal) {
+    els.btnAcceptDisclaimer.addEventListener("click", () => {
+      els.disclaimerModal.classList.add("hidden");
+      localStorage.setItem("pypottery_disclaimer_accepted", "1");
     });
   }
 
@@ -1014,17 +1126,73 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  if (els.btnLauncherUpdateNotesToggle) {
+    els.btnLauncherUpdateNotesToggle.addEventListener("click", () => {
+      if (els.launcherUpdateNotes) {
+        els.launcherUpdateNotes.classList.toggle("hidden");
+      }
+    });
+  }
+
   if (els.btnLauncherUpdateConfirm) {
     els.btnLauncherUpdateConfirm.addEventListener("click", () => {
       if (!store.pendingUpdateVersion) return;
       if (els.launcherUpdateBanner) els.launcherUpdateBanner.classList.add("hidden");
-      if (els.launcherUpdateProgressBanner) els.launcherUpdateProgressBanner.classList.remove("hidden");
+      if (els.launcherUpdateProgressBanner) {
+        els.launcherUpdateProgressBanner.classList.remove("hidden");
+        if (els.launcherUpdateProgressText) {
+          els.launcherUpdateProgressText.textContent = "Starting launcher update...";
+        }
+        if (els.launcherUpdateProgressPct) {
+          els.launcherUpdateProgressPct.textContent = "0%";
+        }
+        if (els.launcherUpdateProgressBar) {
+          els.launcherUpdateProgressBar.style.width = "0%";
+          els.launcherUpdateProgressBar.classList.remove("error");
+        }
+      }
       fetch("/api/launcher/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ version: store.pendingUpdateVersion }),
       });
     });
+  }
+
+  let restartPollActive = false;
+  function pollForLauncherRestart() {
+    if (restartPollActive) return;
+    restartPollActive = true;
+
+    if (els.launcherUpdateProgressText) {
+      els.launcherUpdateProgressText.textContent = "Restarting launcher... Reconnecting automatically...";
+    }
+
+    let attempts = 0;
+    const maxAttempts = 60; // Up to 60 seconds
+    const interval = setInterval(async () => {
+      attempts++;
+      try {
+        const res = await fetch("/api/state?t=" + Date.now(), { cache: "no-store" });
+        if (res.ok) {
+          clearInterval(interval);
+          if (els.launcherUpdateProgressText) {
+            els.launcherUpdateProgressText.textContent = "Reconnected! Reloading page...";
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        }
+      } catch (e) {
+        // Still restarting / offline
+        if (attempts >= maxAttempts) {
+          clearInterval(interval);
+          if (els.launcherUpdateProgressText) {
+            els.launcherUpdateProgressText.textContent = "Restart complete. Please reload this page.";
+          }
+        }
+      }
+    }, 1000);
   }
 
   // ---- Server-Sent Events (SSE) Dispatch ----
@@ -1080,8 +1248,17 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "launcher_update_available":
         store.pendingUpdateVersion = data.update.latest_version;
+        if (els.launcherUpdateBadge) {
+          els.launcherUpdateBadge.textContent = `v${data.update.latest_version}`;
+        }
         if (els.launcherUpdateText) {
-          els.launcherUpdateText.textContent = `A new version of PyPottery Launcher (${data.update.latest_version}) is available.`;
+          els.launcherUpdateText.textContent = `A new version of PyPottery Launcher (v${data.update.latest_version}) is available.`;
+        }
+        if (data.update.release_notes && els.launcherUpdateNotes) {
+          els.launcherUpdateNotes.textContent = data.update.release_notes;
+          if (els.btnLauncherUpdateNotesToggle) {
+            els.btnLauncherUpdateNotesToggle.classList.remove("hidden");
+          }
         }
         if (els.launcherUpdateBanner) els.launcherUpdateBanner.classList.remove("hidden");
         showToast(`Update available: PyPottery Launcher v${data.update.latest_version}`, "info", 6000);
@@ -1089,9 +1266,15 @@ document.addEventListener("DOMContentLoaded", () => {
       case "launcher_update_progress":
         if (els.launcherUpdateProgressBanner) els.launcherUpdateProgressBanner.classList.remove("hidden");
         if (els.launcherUpdateProgressText) els.launcherUpdateProgressText.textContent = data.message;
+        const pct = Math.round(data.percent || 0);
+        if (els.launcherUpdateProgressPct) els.launcherUpdateProgressPct.textContent = `${pct}%`;
         if (els.launcherUpdateProgressBar) {
-          els.launcherUpdateProgressBar.style.width = `${data.percent || 0}%`;
+          els.launcherUpdateProgressBar.style.width = `${pct}%`;
           els.launcherUpdateProgressBar.classList.toggle("error", !!data.error);
+        }
+
+        if (data.stage === "restarting" || (pct >= 100 && !data.error)) {
+          pollForLauncherRestart();
         }
         break;
       default:

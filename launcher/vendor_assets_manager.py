@@ -10,6 +10,28 @@ from pathlib import Path
 from typing import Optional
 
 
+import ssl
+import urllib.error
+
+
+def _open_url_resilient(url_or_req, timeout: int = 20):
+    """
+    Open URL with automatic SSL context handling (standard certs, certifi, unverified fallback).
+    Prevents silent failures on macOS when Python root certs are not configured.
+    """
+    try:
+        return urllib.request.urlopen(url_or_req, timeout=timeout)
+    except urllib.error.URLError as e:
+        # Check if SSL verification failed
+        if isinstance(e.reason, ssl.SSLCertVerificationError) or "certificate verify failed" in str(e):
+            ctx = ssl._create_unverified_context()
+            return urllib.request.urlopen(url_or_req, timeout=timeout, context=ctx)
+        raise
+    except ssl.SSLCertVerificationError:
+        ctx = ssl._create_unverified_context()
+        return urllib.request.urlopen(url_or_req, timeout=timeout, context=ctx)
+
+
 class VendorAssetsManager:
     """
     Manages offline vendor web assets (CSS, JS, Fonts) for PyPottery Suite.
@@ -17,7 +39,7 @@ class VendorAssetsManager:
     """
 
     def __init__(self, base_path: Path):
-        self.base_path = Path(base_path)
+        self.base_path = Path(base_path).resolve()
         self.shared_vendor_path = self.base_path / "shared_assets" / "vendor"
 
     def ensure_vendor_assets(self) -> bool:
@@ -54,17 +76,17 @@ class VendorAssetsManager:
             # 1. Download Bootstrap 5 CSS & JS
             print("  [Vendor] Downloading Bootstrap 5 CSS & JS...")
             req = urllib.request.Request('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', headers=headers)
-            with urllib.request.urlopen(req) as resp, open(self.shared_vendor_path / "bootstrap" / "css" / "bootstrap.min.css", 'wb') as f:
+            with _open_url_resilient(req, timeout=20) as resp, open(self.shared_vendor_path / "bootstrap" / "css" / "bootstrap.min.css", 'wb') as f:
                 f.write(resp.read())
 
             req = urllib.request.Request('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', headers=headers)
-            with urllib.request.urlopen(req) as resp, open(self.shared_vendor_path / "bootstrap" / "js" / "bootstrap.bundle.min.js", 'wb') as f:
+            with _open_url_resilient(req, timeout=20) as resp, open(self.shared_vendor_path / "bootstrap" / "js" / "bootstrap.bundle.min.js", 'wb') as f:
                 f.write(resp.read())
 
             # 2. Download Bootstrap Icons v1.11.3
             print("  [Vendor] Downloading Bootstrap Icons v1.11.3...")
             req = urllib.request.Request('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css', headers=headers)
-            with urllib.request.urlopen(req) as resp:
+            with _open_url_resilient(req, timeout=20) as resp:
                 css_content = resp.read().decode('utf-8')
                 css_content = css_content.replace('url("fonts/', 'url("./fonts/').replace('url(fonts/', 'url(./fonts/')
                 with open(self.shared_vendor_path / "bootstrap-icons" / "bootstrap-icons.min.css", 'w', encoding='utf-8') as f:
@@ -72,7 +94,7 @@ class VendorAssetsManager:
 
             for font_name in ['bootstrap-icons.woff2', 'bootstrap-icons.woff']:
                 req = urllib.request.Request(f'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/{font_name}', headers=headers)
-                with urllib.request.urlopen(req) as resp, open(self.shared_vendor_path / "bootstrap-icons" / "fonts" / font_name, 'wb') as f:
+                with _open_url_resilient(req, timeout=20) as resp, open(self.shared_vendor_path / "bootstrap-icons" / "fonts" / font_name, 'wb') as f:
                     f.write(resp.read())
 
             # 3. Download Plus Jakarta Sans Fonts
@@ -84,7 +106,7 @@ class VendorAssetsManager:
 
             for fname, url in font_files.items():
                 req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req) as resp, open(self.shared_vendor_path / "fonts" / "files" / fname, 'wb') as f:
+                with _open_url_resilient(req, timeout=20) as resp, open(self.shared_vendor_path / "fonts" / "files" / fname, 'wb') as f:
                     f.write(resp.read())
 
             fonts_css = '''/* Local Plus Jakarta Sans Font Definition */

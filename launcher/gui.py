@@ -76,6 +76,15 @@ def get_base_path() -> Path:
 def main():
     """Main entry point"""
     base_path = get_base_path()
+
+    # Ensure offline vendor assets (Bootstrap, Icons, Fonts) are present and synced
+    try:
+        from launcher.vendor_assets_manager import VendorAssetsManager
+        v_mgr = VendorAssetsManager(base_path)
+        v_mgr.sync_to_app(Path(__file__).parent)
+    except Exception as e:
+        print(f"⚠️ Vendor assets setup warning: {e}")
+
     state = LauncherState(base_path)
 
     flask_app = create_app(state)

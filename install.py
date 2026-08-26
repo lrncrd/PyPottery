@@ -266,7 +266,8 @@ Examples:
         base_dir = Path(__file__).parent
         v_mgr = VendorAssetsManager(base_dir)
         v_mgr.ensure_vendor_assets()
-        print("✅ Offline web assets ready")
+        v_mgr.sync_to_app(base_dir / "launcher")
+        print("✅ Offline web assets ready and synced to launcher")
     except Exception as e:
         print(f"⚠️ Could not setup offline assets: {e}")
 

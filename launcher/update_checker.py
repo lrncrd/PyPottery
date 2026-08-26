@@ -286,10 +286,15 @@ class UpdateChecker:
         else:
             update_available = True  # Not installed = update available
         
+        # Clean version string (strip leading 'v'/'V' if followed by a digit)
+        clean_latest = release.tag_name
+        if clean_latest and clean_latest.lower().startswith("v") and len(clean_latest) > 1 and clean_latest[1].isdigit():
+            clean_latest = clean_latest[1:]
+
         return UpdateInfo(
             app_id=app_id,
             current_version=current_version,
-            latest_version=release.tag_name,
+            latest_version=clean_latest,
             update_available=update_available,
             release_notes=release.body or "",
             download_url=release.html_url,

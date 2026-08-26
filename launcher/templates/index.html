@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PyPottery Suite Launcher</title>
-  <!-- Local Offline Vendor Assets -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
+  <!-- Local Offline Vendor Assets with CDN Fallback -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.min.css') }}" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';">
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/fonts/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -46,11 +46,19 @@
     </div>
     
     <div class="header-actions">
-      <button id="btn-check-updates" class="btn btn-outline btn-icon-text">
+      <button id="btn-changelog" class="btn btn-outline btn-icon-text" title="View Changelog &amp; Release Notes">
+        <span class="btn-icon"><i class="bi bi-journal-text"></i></span>
+        <span>Changelog</span>
+      </button>
+      <button id="btn-check-updates" class="btn btn-outline btn-icon-text" title="Check for Application &amp; Launcher Updates">
         <span class="btn-icon"><i class="bi bi-arrow-repeat"></i></span>
         <span>Check Updates</span>
       </button>
-      <button id="btn-quit" class="btn btn-danger-soft btn-icon-text">
+      <button id="btn-about" class="btn btn-outline btn-icon-text" title="About PyPottery Suite &amp; Author">
+        <span class="btn-icon"><i class="bi bi-info-circle"></i></span>
+        <span>Info</span>
+      </button>
+      <button id="btn-quit" class="btn btn-danger-soft btn-icon-text" title="Quit PyPottery Launcher">
         <span class="btn-icon"><i class="bi bi-power"></i></span>
         <span>Quit</span>
       </button>
@@ -73,11 +81,16 @@
     <div id="banner-launcher-update" class="banner banner-info hidden">
       <div class="banner-icon"><i class="bi bi-arrow-up-circle-fill"></i></div>
       <div class="banner-content">
-        <strong class="banner-title">Update Available</strong>
+        <div class="banner-header-line">
+          <strong class="banner-title">PyPottery Launcher Update Available</strong>
+          <span class="version-badge" id="banner-launcher-update-badge">v...</span>
+        </div>
         <span id="banner-launcher-update-text">A new version of PyPottery Launcher is available.</span>
+        <div id="banner-launcher-update-notes" class="banner-notes hidden"></div>
       </div>
       <div class="banner-actions">
-        <button id="btn-launcher-update-confirm" class="btn btn-primary btn-sm">Update &amp; Restart</button>
+        <button id="btn-launcher-update-notes-toggle" class="btn btn-outline btn-sm hidden"><i class="bi bi-file-text"></i> Changelog</button>
+        <button id="btn-launcher-update-confirm" class="btn btn-primary btn-sm"><i class="bi bi-arrow-up-circle"></i> Update &amp; Restart</button>
         <button class="banner-dismiss btn btn-ghost btn-sm" data-dismiss="banner-launcher-update">Later</button>
       </div>
     </div>
@@ -85,8 +98,9 @@
     <div id="banner-launcher-update-progress" class="banner banner-info hidden">
       <div class="banner-icon spinner"><i class="bi bi-arrow-repeat"></i></div>
       <div class="banner-content" style="width: 100%;">
-        <div class="banner-header-line">
+        <div class="banner-header-line" style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span id="banner-launcher-update-progress-text">Updating launcher...</span>
+          <span id="banner-launcher-update-progress-pct" style="font-weight: 600; font-size: 0.85rem;">0%</span>
         </div>
         <div class="progress-track"><div id="launcher-update-progress-bar" class="progress-fill"></div></div>
       </div>
@@ -343,109 +357,124 @@
   </div>
 </div>
 
-<!-- Floating Info Guide Button -->
-<button id="btn-floating-guide" class="btn-floating-guide" title="Workflow Guide & Documentation">
-  <span class="floating-icon"><i class="bi bi-compass"></i></span>
-  <span class="floating-label">Workflow Guide</span>
-</button>
-
-<!-- Workflow Guide Modal -->
-<div id="guide-modal" class="installer-modal-overlay hidden">
-  <div class="guide-modal-card">
-    <div class="installer-header">
-      <div class="installer-title-group">
-        <div class="installer-logo-box">
-          <i class="bi bi-journal-bookmark" style="font-size: 1.4rem; color: var(--primary);"></i>
+<!-- Changelog & Release Notes Modal -->
+<div id="changelog-modal" class="installer-modal-overlay hidden">
+  <div class="changelog-modal-card">
+    <div class="changelog-modal-header">
+      <div class="changelog-header-info">
+        <div class="changelog-header-icon">
+          <i class="bi bi-journal-text"></i>
         </div>
-        <div>
-          <h2 class="installer-app-name">The Bibliographic Way</h2>
-          <p class="installer-app-subtitle">Workflow: PDF Literature ➔ PyPottery Lens ➔ Digital Vessel Cards</p>
+        <div class="changelog-header-titles">
+          <h2 class="changelog-modal-title">Changelog &amp; Release Notes</h2>
+          <p class="changelog-modal-subtitle">Updates and version history across the PyPottery Suite</p>
         </div>
       </div>
-      <button class="installer-close-btn" id="btn-guide-close" title="Close Guide"><i class="bi bi-x-lg"></i></button>
+      <button class="changelog-close-btn" id="btn-changelog-close" title="Close"><i class="bi bi-x-lg"></i></button>
     </div>
+    <div class="changelog-modal-body" id="changelog-modal-body">
+      <div class="changelog-loading">
+        <div class="spinner"><i class="bi bi-arrow-repeat"></i></div>
+        <p>Loading latest release notes from GitHub...</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <div class="guide-body">
-      <div class="workflow-section">
-        <div class="workflow-header-block">
-          <span class="workflow-badge">Bibliographic Workflow</span>
-          <h3 class="workflow-title">PDF ➔ PyPottery Lens ➔ Vessel Cards</h3>
-          <p class="workflow-desc">
-            Transform legacy archaeological publications, excavation monographs, and typological PDF catalogs into structured digital vessel cards ready for research, cataloging, and analysis.
-          </p>
-        </div>
+<!-- About & Info Premium Modal -->
+<div id="about-modal" class="installer-modal-overlay hidden">
+  <div class="about-modal-card about-card-compact">
+    <button class="about-close-btn" id="btn-about-close" title="Close"><i class="bi bi-x-lg"></i></button>
+    
+    <!-- Ambient Dynamic Glowing Aura -->
+    <div class="about-ambient-orb about-ambient-orb-top"></div>
+    <div class="about-ambient-orb about-ambient-orb-bottom"></div>
 
-        <!-- 3-Step Detailed Pipeline -->
-        <div class="pipeline-timeline">
-          <!-- Step 1: PDF -->
-          <div class="pipeline-card">
-            <div class="pipeline-node-col">
-              <div class="pipeline-node-icon"><i class="bi bi-file-earmark-pdf"></i></div>
-              <div class="pipeline-node-line"></div>
-            </div>
-            <div class="pipeline-card-content">
-              <div class="pipeline-card-header">
-                <span class="pipeline-step-num">Step 01</span>
-                <span class="pipeline-tool-tag">Source Literature</span>
-              </div>
-              <h4 class="pipeline-card-title">PDF Document Ingestion</h4>
-              <p class="pipeline-card-desc">
-                Start with any archaeological publication in PDF format — excavation reports, monographs, journal articles, or scanned plate catalogs. Multi-page documents are indexed and segmented into individual page figures for analysis.
-              </p>
-              <div class="pipeline-tags">
-                <span class="ptag">PDF / Scanned Monographs</span>
-                <span class="ptag">Plate Indexing</span>
-                <span class="ptag">Publication Metadata</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 2: PyPottery Lens -->
-          <div class="pipeline-card">
-            <div class="pipeline-node-col">
-              <div class="pipeline-node-icon tool-lens-node"><i class="bi bi-search"></i></div>
-              <div class="pipeline-node-line"></div>
-            </div>
-            <div class="pipeline-card-content highlight-card">
-              <div class="pipeline-card-header">
-                <span class="pipeline-step-num">Step 02</span>
-                <span class="pipeline-tool-tag tool-lens">PyPottery Lens</span>
-              </div>
-              <h4 class="pipeline-card-title">PyPottery Lens Processing</h4>
-              <p class="pipeline-card-desc">
-                PyPottery Lens analyzes the PDF pages using computer vision AI models. It automatically detects and isolates individual vessel profile drawings, section cuts, rim orientations, scale bars (cm/m), figure captions, and artifact labels.
-              </p>
-              <div class="pipeline-tags">
-                <span class="ptag">AI Profile Extraction</span>
-                <span class="ptag">Automatic Scale Bar Detection</span>
-                <span class="ptag">Section &amp; Rim Alignment</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 3: Vessel Cards -->
-          <div class="pipeline-card">
-            <div class="pipeline-node-col">
-              <div class="pipeline-node-icon"><i class="bi bi-card-heading"></i></div>
-            </div>
-            <div class="pipeline-card-content">
-              <div class="pipeline-card-header">
-                <span class="pipeline-step-num">Step 03</span>
-                <span class="pipeline-tool-tag tool-3d">Digital Output</span>
-              </div>
-              <h4 class="pipeline-card-title">Digital Vessel Cards Generation</h4>
-              <p class="pipeline-card-desc">
-                Every extracted ceramic drawing is transformed into a standardized, structured "Digital Vessel Card". Each card bundles the isolated profile image, scale measurements, catalog references, and archaeological context — ready to launch into vector inking, profiling, or database export.
-              </p>
-              <div class="pipeline-tags">
-                <span class="ptag">Standardized Vessel Cards</span>
-                <span class="ptag">Calibrated Measurements</span>
-                <span class="ptag">Ready for Suite Analysis</span>
-              </div>
-            </div>
-          </div>
+    <div class="about-modal-body-centered">
+      
+      <!-- Animated Floating Logo Stage -->
+      <div class="about-logo-stage">
+        <div class="about-logo-halo-ring"></div>
+        <div class="about-logo-disc">
+          <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="about-logo-img" onerror="this.src='/assets/icon_app.png'">
         </div>
       </div>
+
+      <!-- Suite Title -->
+      <h2 class="about-hero-title">PyPottery <span class="about-accent">Suite</span></h2>
+
+      <!-- Version Chip -->
+      <div class="about-version-pill">
+        <span class="about-live-dot"></span>
+        <span id="about-version-badge">v1.1.0</span>
+      </div>
+
+      <!-- Divider Glow -->
+      <div class="about-divider-glow"></div>
+
+      <!-- Author Profile Showcase Card (Linked to GitHub) -->
+      <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer" class="about-author-link-card" title="Open Lorenzo Cardarelli GitHub Profile">
+        <div class="about-avatar-container">
+          <div class="about-avatar-glow-ring"></div>
+          <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" class="about-avatar-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="about-avatar-fallback" style="display:none;"><i class="bi bi-person-fill"></i></div>
+        </div>
+        <div class="about-author-text">
+          <span class="about-author-label">Created by</span>
+          <h3 class="about-author-heading">Lorenzo Cardarelli</h3>
+          <span class="about-author-handle"><i class="bi bi-github"></i> @lrncrd <i class="bi bi-box-arrow-up-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Action Links: Website & Ko-fi Support -->
+      <div class="about-actions-grid">
+        <a href="https://lrncrd.github.io/PyPottery/" target="_blank" rel="noopener noreferrer" class="about-action-btn about-btn-web" title="Official Website &amp; Documentation">
+          <i class="bi bi-globe2"></i>
+          <span>Website &amp; Docs</span>
+          <i class="bi bi-box-arrow-up-right external-icon"></i>
+        </a>
+
+        <a href="https://ko-fi.com/lrncrd" target="_blank" rel="noopener noreferrer" class="about-action-btn about-btn-kofi" title="Support development on Ko-fi">
+          <i class="bi bi-cup-hot-fill"></i>
+          <span>Support on Ko-fi</span>
+          <i class="bi bi-heart-fill heart-icon"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Open Source Disclaimer Modal Overlay (AS-IS) -->
+<div id="disclaimer-modal" class="installer-modal-overlay hidden">
+  <div class="disclaimer-modal-card">
+    <div class="disclaimer-modal-body">
+      
+      <!-- Icon Stage -->
+      <div class="disclaimer-icon-wrapper">
+        <i class="bi bi-shield-exclamation"></i>
+      </div>
+
+      <span class="disclaimer-tag">Open Source Notice</span>
+      <h2 class="disclaimer-title">Terms &amp; Disclaimer</h2>
+
+      <div class="disclaimer-textbox">
+        <p class="disclaimer-highlight">
+          <strong>PyPottery Suite is provided "AS IS"</strong>, without warranty of any kind, express or implied.
+        </p>
+        <p class="disclaimer-p">
+          This software is developed for research and archaeological documentation purposes. In no event shall the author or contributors be liable for any direct, indirect, incidental, or consequential damages (including loss of data or work interruption) arising out of the use or inability to use this suite.
+        </p>
+        <p class="disclaimer-p">
+          By proceeding, you acknowledge that you use this software at your own risk and responsibility.
+        </p>
+      </div>
+
+      <button id="btn-accept-disclaimer" class="btn btn-primary btn-lg disclaimer-accept-btn">
+        <i class="bi bi-check2-circle"></i>
+        <span>I Understand &amp; Agree</span>
+      </button>
+
     </div>
   </div>
 </div>

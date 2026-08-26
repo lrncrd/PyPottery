@@ -300,6 +300,16 @@ def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
     # 3. Copy launcher files
     print("\n📦 Step 3: Copying launcher files...")
 
+    # Ensure offline vendor assets (Bootstrap, Icons, Fonts) are present and synced
+    try:
+        sys.path.insert(0, str(project_root))
+        from launcher.vendor_assets_manager import VendorAssetsManager
+        v_mgr = VendorAssetsManager(project_root)
+        v_mgr.ensure_vendor_assets()
+        v_mgr.sync_to_app(project_root / "launcher")
+    except Exception as e:
+        print(f"   ⚠️ Vendor assets build warning: {e}")
+
     src_launcher = project_root / "launcher"
     for item in src_launcher.iterdir():
         if item.name == "__pycache__":

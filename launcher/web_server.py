@@ -23,7 +23,7 @@ from .app_manager import AppInfo, AppManager, DownloadProgress
 from .environment_manager import EnvironmentManager, InstallProgress
 from .hardware_detector import HardwareInfo, detect_hardware
 from .update_checker import UpdateChecker
-from .updater import LauncherUpdater
+from .updater import LauncherProgress, LauncherUpdater
 from .wikiquote_fetcher import fetch_live_wikiquote
 
 try:
@@ -369,7 +369,8 @@ def _check_for_updates(state: LauncherState, force_refresh: bool = False):
             "lrncrd", "PyPottery", state.launcher_version, force_refresh=force_refresh
         )
         if launcher_update.update_available:
-            state.log(f"Launcher update available: {launcher_update.latest_version}", "warning")
+            clean_lv = str(launcher_update.latest_version).lstrip("v")
+            state.log(f"Launcher update available: v{clean_lv}", "warning")
             state.emit({
                 "type": "launcher_update_available",
                 "update": dataclasses.asdict(launcher_update),
@@ -393,7 +394,8 @@ def _check_for_updates(state: LauncherState, force_refresh: bool = False):
             app.update_available = update_info.update_available
             if update_info.update_available:
                 updates_available += 1
-                state.log(f"{app.name}: Update available v{update_info.latest_version}", "warning")
+                clean_v = str(update_info.latest_version).lstrip("v")
+                state.log(f"{app.name}: Update available v{clean_v}", "warning")
 
         if updates_available == 0:
             state.log("All applications are up to date", "success")
@@ -483,6 +485,37 @@ def create_app(state: LauncherState) -> Flask:
     def list_apps():
         return jsonify(state.apps_snapshot())
 
+    @app.route("/api/changelog")
+    def get_changelog():
+        releases_data = {}
+        # 1. Launcher release info
+        launcher_release = state.update_checker.get_latest_release("lrncrd", "PyPottery")
+        releases_data["launcher"] = {
+            "name": "PyPottery Launcher",
+            "icon": "🏺",
+            "current_version": str(state.launcher_version).lstrip("v"),
+            "latest_version": str(launcher_release.tag_name).lstrip("v") if launcher_release else str(state.launcher_version).lstrip("v"),
+            "release_notes": launcher_release.body if launcher_release and launcher_release.body else "PyPottery Suite unified launcher.",
+            "published_at": launcher_release.published_at if launcher_release else "",
+            "html_url": launcher_release.html_url if launcher_release else "https://github.com/lrncrd/PyPottery",
+        }
+        # 2. Sub-apps release info
+        if state.app_manager:
+            for app_id, app in state.app_manager.apps.items():
+                rel = state.update_checker.get_latest_release(app.repo_owner, app.repo_name)
+                curr_v = str(app.installed_version).lstrip("v") if app.installed_version else "Not installed"
+                latest_v = str(rel.tag_name).lstrip("v") if rel and rel.tag_name else "unknown"
+                releases_data[app_id] = {
+                    "name": app.name,
+                    "icon": app.icon,
+                    "current_version": curr_v,
+                    "latest_version": latest_v,
+                    "release_notes": rel.body if rel and rel.body else "No release notes available for this release.",
+                    "published_at": rel.published_at if rel else "",
+                    "html_url": rel.html_url if rel else f"https://github.com/{app.repo_owner}/{app.repo_name}",
+                }
+        return jsonify(releases_data)
+
     @app.route("/api/apps/<app_id>/install", methods=["POST"])
     def install_app(app_id):
         if not state.app_manager or app_id not in state.app_manager.apps:
@@ -516,7 +549,8 @@ def create_app(state: LauncherState) -> Flask:
             return jsonify(success=False, error="No update available"), 409
 
         def worker():
-            state.log(f"Updating {app_info.name} to v{app_info.latest_version}...", "info")
+            clean_v = str(app_info.latest_version).lstrip("v")
+            state.log(f"Updating {app_info.name} to v{clean_v}...", "info")
             success = state.app_manager.download_app(app_id, app_info.latest_version)
             if success:
                 state.log(f"{app_info.name} updated successfully!", "success")
@@ -657,27 +691,59 @@ def create_app(state: LauncherState) -> Flask:
             return jsonify(success=False, error="version required"), 400
 
         def worker():
-            state.log(f"Updating launcher to {version}...", "progress")
+            clean_v = str(version).lstrip("v")
+            state.log(f"Updating launcher to v{clean_v}...", "info")
 
-            def progress(msg, percent):
-                state.emit({"type": "launcher_update_progress", "message": msg, "percent": percent})
-
-            download_url = f"https://github.com/lrncrd/PyPottery/archive/refs/tags/{version}.zip"
-            success = state.updater.update(download_url, progress)
-
-            if success:
+            def progress_cb(prog: LauncherProgress):
                 state.emit({
                     "type": "launcher_update_progress",
-                    "message": "Update complete! Restarting...",
-                    "percent": 100,
+                    "stage": prog.stage,
+                    "message": prog.message,
+                    "bytes_downloaded": prog.bytes_downloaded,
+                    "bytes_total": prog.bytes_total,
+                    "percent": prog.percent,
+                    "error": prog.error,
                 })
-                time.sleep(1)
-                state.updater.restart()
+                state.log(prog.message, "error" if prog.error else "info")
+
+            success = state.updater.update(version, progress_callback=progress_cb)
+
+            if success:
+                state.log("Launcher update successful! Preparing to restart...", "success")
+                state.emit({
+                    "type": "launcher_update_progress",
+                    "stage": "restarting",
+                    "message": "Update complete! Restarting launcher...",
+                    "percent": 100,
+                    "error": False,
+                })
+
+                # Give frontend a moment to receive SSE event and initiate polling
+                time.sleep(1.5)
+
+                # Stop all sub-apps gracefully before restarting
+                if state.app_manager:
+                    state.app_manager.stop_all_apps()
+
+                python_exe = (
+                    state.env_manager.python_executable
+                    if (state.env_manager and state.env_manager.venv_exists())
+                    else None
+                )
+
+                # Spawn new launcher instance
+                state.updater.spawn_new_instance(python_executable=python_exe)
+
+                # Cleanly shut down current server
+                state.stop_event.set()
+                if state.server is not None:
+                    state.server.shutdown()
             else:
                 state.log("Launcher update failed", "error")
                 state.emit({
                     "type": "launcher_update_progress",
-                    "message": "Update failed",
+                    "stage": "error",
+                    "message": "Launcher update failed. Check console log for details.",
                     "percent": 0,
                     "error": True,
                 })
