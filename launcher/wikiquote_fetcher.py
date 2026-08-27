@@ -21,14 +21,6 @@ USER_AGENT = "PyPotteryLauncher/1.1 (https://github.com/lrncrd; contact@pypotter
 
 # Pop culture, classic film, sci-fi, anime, and cult TV series articles on Wikiquote
 POP_CULTURE_SOURCES = [
-    # Italian Cult Series: Boris
-    {"lang": "it", "title": "Boris", "source": "Boris"},
-    {"lang": "it", "title": "Boris_(prima_stagione)", "source": "Boris (Stagione 1)"},
-    {"lang": "it", "title": "Boris_(seconda_stagione)", "source": "Boris (Stagione 2)"},
-    {"lang": "it", "title": "Boris_(terza_stagione)", "source": "Boris (Stagione 3)"},
-    {"lang": "it", "title": "Boris_(quarta_stagione)", "source": "Boris (Stagione 4)"},
-    {"lang": "it", "title": "Boris_-_Il_film", "source": "Boris - Il film"},
-
     # Cult Animation & Anime
     {"lang": "en", "title": "Neon Genesis Evangelion", "source": "Neon Genesis Evangelion"},
     {"lang": "en", "title": "Futurama/Season 1", "source": "Futurama"},
@@ -68,7 +60,6 @@ POP_CULTURE_SOURCES = [
     {"lang": "en", "title": "Toy Story", "source": "Toy Story"},
     {"lang": "en", "title": "Finding Nemo", "source": "Finding Nemo"},
     {"lang": "en", "title": "Spider-Man (2002 film)", "source": "Spider-Man"},
-    {"lang": "en", "title": "The Dark Knight (film)", "source": "The Dark Knight"},
     {"lang": "en", "title": "Fight Club (film)", "source": "Fight Club"},
     {"lang": "en", "title": "Pulp Fiction", "source": "Pulp Fiction"},
     {"lang": "en", "title": "The Truman Show", "source": "The Truman Show"},
@@ -233,28 +224,28 @@ def fetch_live_wikiquote(force_refresh: bool = False) -> dict:
     # Offline fallback
     fallbacks = [
         {
-            "quote": "A cazzo di cane, maestro! Conto su di lei. A cazzo di cane!",
-            "source": "Boris (Stagione 1)",
-            "origin": "Wikiquote",
-            "url": "https://it.wikiquote.org/wiki/Boris_(prima_stagione)",
-        },
-        {
-            "quote": "Facciamoli scopare, così, de botto, senza senso. — Genio!",
-            "source": "Boris (Stagione 1)",
-            "origin": "Wikiquote",
-            "url": "https://it.wikiquote.org/wiki/Boris_(prima_stagione)",
-        },
-        {
-            "quote": "Non siatemi italiani, che oggi spacchiamo tutto!",
-            "source": "Boris (Stagione 1)",
-            "origin": "Wikiquote",
-            "url": "https://it.wikiquote.org/wiki/Boris_(prima_stagione)",
-        },
-        {
             "quote": "Bender : I'm a bender. I bend girders, that's all I'm programmed to do.",
             "source": "Futurama",
             "origin": "Wikiquote",
             "url": "https://en.wikiquote.org/wiki/Futurama",
+        },
+        {
+            "quote": "There is no spoon.",
+            "source": "The Matrix",
+            "origin": "Wikiquote",
+            "url": "https://en.wikiquote.org/wiki/The_Matrix_(film)",
+        },
+        {
+            "quote": "Don't Panic.",
+            "source": "The Hitchhiker's Guide to the Galaxy",
+            "origin": "Wikiquote",
+            "url": "https://en.wikiquote.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy_(radio_series)",
+        },
+        {
+            "quote": "Roads? Where we're going, we don't need roads.",
+            "source": "Back to the Future",
+            "origin": "Wikiquote",
+            "url": "https://en.wikiquote.org/wiki/Back_to_the_Future",
         },
     ]
     return random.choice(fallbacks)
