@@ -138,6 +138,9 @@ def create_dmg(app_dir: Path, release_dir: Path, package_base_name: str,
                     mount_point = parts[2].strip()
 
             try:
+                # Symmetrical window geometry (600x360 px):
+                # Center X is 300. Left icon at 150, Right icon at 450 (equidistant 150px from sides and 300px apart).
+                # Vertical center at Y=160 accommodates macOS window titlebar and icon text labels.
                 applescript = f'''
                 tell application "Finder"
                     tell disk "{volume_name}"
@@ -145,12 +148,13 @@ def create_dmg(app_dir: Path, release_dir: Path, package_base_name: str,
                         set current view of container window to icon view
                         set toolbar visible of container window to false
                         set statusbar visible of container window to false
-                        set the bounds of container window to {{200, 120, 760, 460}}
+                        set the bounds of container window to {{250, 150, 850, 510}}
                         set viewOptions to the icon view options of container window
                         set arrangement of viewOptions to not arranged
-                        set icon size of viewOptions to 96
-                        set position of item "{app_dir.name}" of container window to {{140, 180}}
-                        set position of item "Applications" of container window to {{480, 180}}
+                        set icon size of viewOptions to 100
+                        set text size of viewOptions to 12
+                        set position of item "{app_dir.name}" of container window to {{150, 160}}
+                        set position of item "Applications" of container window to {{450, 160}}
                         close
                         open
                         update without registering applications
