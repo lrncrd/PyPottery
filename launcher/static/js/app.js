@@ -72,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
     aboutVersionBadge: document.getElementById("about-version-badge"),
     disclaimerModal: document.getElementById("disclaimer-modal"),
     btnAcceptDisclaimer: document.getElementById("btn-accept-disclaimer"),
+    firstSetupModal: document.getElementById("first-setup-modal"),
+    btnFirstSetupStart: document.getElementById("btn-first-setup-start"),
     driverWarningBanner: document.getElementById("banner-driver-warning"),
     driverWarningText: document.getElementById("banner-driver-warning-text"),
     launcherUpdateBanner: document.getElementById("banner-launcher-update"),
@@ -96,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     downloadProgress: {},  // app_id -> {stage, message, percent}
     pendingUpdateVersion: null,
     envExists: false,
+    isEnvSetupMandatory: false,
     consoleEntries: [],    // raw log entries
     activeInstallerAppId: null,
     installerLogs: {},     // app_id -> log string lines array
@@ -284,6 +287,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderEnvStatus(exists) {
     store.envExists = exists;
+
+    if (els.firstSetupModal) {
+      if (exists) {
+        els.firstSetupModal.classList.add("hidden");
+      } else {
+        const disclaimerOpen = els.disclaimerModal && !els.disclaimerModal.classList.contains("hidden");
+        const installerOpen = els.installerModal && !els.installerModal.classList.contains("hidden");
+        if (!disclaimerOpen && !installerOpen) {
+          els.firstSetupModal.classList.remove("hidden");
+        }
+      }
+    }
+
     if (!els.envStatusText) return;
 
     els.envStatusText.classList.remove("ready", "error");
@@ -320,9 +336,18 @@ document.addEventListener("DOMContentLoaded", () => {
     handleEnvProgressEvent(progress);
   }
 
+  if (els.btnFirstSetupStart) {
+    els.btnFirstSetupStart.addEventListener("click", () => {
+      if (els.firstSetupModal) els.firstSetupModal.classList.add("hidden");
+      openEnvInstallerModal(true);
+      showToast("Starting Python environment setup...", "info", 3000);
+      fetch("/api/env/setup", { method: "POST" });
+    });
+  }
+
   if (els.btnEnvSetup) {
     els.btnEnvSetup.addEventListener("click", () => {
-      openEnvInstallerModal();
+      openEnvInstallerModal(false);
       showToast("Setting up Python environment...", "info", 3000);
       fetch("/api/env/setup", { method: "POST" });
     });
@@ -613,8 +638,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (els.installerModal) els.installerModal.classList.remove("hidden");
   }
 
-  function openEnvInstallerModal() {
+  function openEnvInstallerModal(isMandatory = false) {
     store.activeInstallerAppId = "env";
+    store.isEnvSetupMandatory = !!isMandatory;
     if (!store.installerLogs["env"]) store.installerLogs["env"] = [];
 
     if (els.installerAppName) els.installerAppName.textContent = "Setting Up Python Environment";
@@ -630,15 +656,25 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (els.btnInstallerLaunch) els.btnInstallerLaunch.classList.add("hidden");
     if (els.btnInstallerDone) els.btnInstallerDone.classList.add("hidden");
-    if (els.btnInstallerClose) els.btnInstallerClose.classList.remove("hidden");
+    if (els.btnInstallerClose) {
+      if (isMandatory) {
+        els.btnInstallerClose.classList.add("hidden");
+      } else {
+        els.btnInstallerClose.classList.remove("hidden");
+      }
+    }
 
     renderInstallerLogs("env");
     if (els.installerModal) els.installerModal.classList.remove("hidden");
   }
 
   function closeInstallerModal() {
+    if (store.isEnvSetupMandatory && !store.envExists) {
+      return;
+    }
     if (els.installerModal) els.installerModal.classList.add("hidden");
     store.activeInstallerAppId = null;
+    store.isEnvSetupMandatory = false;
   }
 
   // ---- Changelog Modal Controller ----
@@ -760,6 +796,9 @@ document.addEventListener("DOMContentLoaded", () => {
     els.btnAcceptDisclaimer.addEventListener("click", () => {
       els.disclaimerModal.classList.add("hidden");
       localStorage.setItem("pypottery_disclaimer_accepted", "1");
+      if (!store.envExists && els.firstSetupModal) {
+        els.firstSetupModal.classList.remove("hidden");
+      }
     });
   }
 
@@ -916,16 +955,35 @@ document.addEventListener("DOMContentLoaded", () => {
         if (els.btnInstallerClose) els.btnInstallerClose.classList.remove("hidden");
         if (els.btnInstallerDone) {
           els.btnInstallerDone.classList.remove("hidden");
-          els.btnInstallerDone.textContent = "✨ Complete Setup";
-          els.btnInstallerDone.onclick = closeInstallerModal;
+          els.btnInstallerDone.innerHTML = '<i class="bi bi-rocket-takeoff-fill"></i> Enter PyPottery Suite';
+          els.btnInstallerDone.onclick = () => {
+            store.isEnvSetupMandatory = false;
+            if (els.firstSetupModal) els.firstSetupModal.classList.add("hidden");
+            closeInstallerModal();
+            renderEnvStatus(true);
+            showToast("PyPottery Suite is ready to use!", "success", 4000);
+          };
         }
       } else if (progress.is_error) {
         if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Environment Setup Error ⚠️";
-        if (els.btnInstallerClose) els.btnInstallerClose.classList.remove("hidden");
+        if (els.btnInstallerClose) {
+          if (!store.isEnvSetupMandatory) els.btnInstallerClose.classList.remove("hidden");
+        }
         if (els.btnInstallerDone) {
           els.btnInstallerDone.classList.remove("hidden");
-          els.btnInstallerDone.textContent = "Close";
-          els.btnInstallerDone.onclick = closeInstallerModal;
+          if (store.isEnvSetupMandatory) {
+            els.btnInstallerDone.innerHTML = '<i class="bi bi-arrow-repeat"></i> Retry Setup';
+            els.btnInstallerDone.onclick = () => {
+              resetInstallerStepper();
+              updateInstallerProgressRing(0);
+              if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Retrying setup...";
+              showToast("Retrying Python environment setup...", "info", 3000);
+              fetch("/api/env/setup", { method: "POST" });
+            };
+          } else {
+            els.btnInstallerDone.textContent = "Close";
+            els.btnInstallerDone.onclick = closeInstallerModal;
+          }
         }
       }
     }
@@ -1356,6 +1414,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     await hideSplash();
+
+    // After splash screen hides, if disclaimer is already accepted and environment is missing, show setup modal
+    const disclaimerAccepted = localStorage.getItem("pypottery_disclaimer_accepted") === "1" || !els.disclaimerModal;
+    if (disclaimerAccepted && !store.envExists && els.firstSetupModal) {
+      els.firstSetupModal.classList.remove("hidden");
+    }
   }
 
   init();

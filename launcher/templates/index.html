@@ -479,6 +479,29 @@
   </div>
 </div>
 
+<!-- Mandatory First-Time Setup Fullscreen Modal (Blocks Launcher until Installed) -->
+<div id="first-setup-modal" class="installer-modal-overlay hidden" data-blocking="true">
+  <div class="first-setup-modal-card first-setup-minimal">
+    <div class="first-setup-body">
+      
+      <!-- Minimalist Icon Stage -->
+      <div class="first-setup-icon-wrapper">
+        <i class="bi bi-stars"></i>
+      </div>
+
+      <h2 class="first-setup-title">Initial Setup Required</h2>
+      <p class="first-setup-subtitle">
+        Configure the Python environment and AI backend to start using PyPottery Suite.
+      </p>
+
+      <button id="btn-first-setup-start" class="btn btn-primary btn-lg first-setup-btn btn-pulse">
+        <i class="bi bi-lightning-charge-fill"></i>
+        <span>Install Environment Now</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Floating Toast Container -->
 <div id="toast-container" class="toast-container"></div>
 

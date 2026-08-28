@@ -48,21 +48,59 @@ class EnvironmentManager:
         self.uv_path: Optional[Path] = self._detect_uv()
 
     def _detect_uv(self) -> Optional[Path]:
-        """Find the uv executable if installed, checking PATH and common install dirs."""
+        """Find the uv executable if installed, checking PATH, venv, and common install dirs."""
         found = shutil.which("uv")
         if found:
             return Path(found)
 
+        venv_uv = (self.venv_path / "Scripts" / "uv.exe") if self.is_windows else (self.venv_path / "bin" / "uv")
+        if venv_uv.exists():
+            return venv_uv
+
         candidates = [
+            Path("/opt/homebrew/bin/uv"),
+            Path("/usr/local/bin/uv"),
             Path.home() / ".local" / "bin" / "uv",
             Path.home() / ".cargo" / "bin" / "uv",
+            Path.home() / "Library" / "Application Support" / "uv" / "bin" / "uv",
         ]
         if self.is_windows:
-            candidates.append(Path.home() / ".local" / "bin" / "uv.exe")
+            candidates.extend([
+                Path.home() / ".local" / "bin" / "uv.exe",
+                Path.home() / "AppData" / "Local" / "Programs" / "uv" / "uv.exe",
+            ])
 
         for candidate in candidates:
             if candidate.exists():
                 return candidate
+        return None
+
+    def ensure_uv(self) -> Optional[Path]:
+        """
+        Ensure uv is available. If not detected globally, installs it inside
+        the virtual environment using pip, so that all subsequent dependency
+        and PyTorch installations benefit from uv's high performance.
+        """
+        self.uv_path = self._detect_uv()
+        if self.uv_path:
+            return self.uv_path
+
+        venv_uv = (self.venv_path / "Scripts" / "uv.exe") if self.is_windows else (self.venv_path / "bin" / "uv")
+        if venv_uv.exists():
+            self.uv_path = venv_uv
+            return self.uv_path
+
+        if self.venv_exists() and self.pip_executable.exists():
+            try:
+                self._report_progress("venv", "Installing uv via pip for ultra-fast setup...", 11)
+                success, _ = self.run_pip_command(["install", "uv", "--quiet"], capture_output=True)
+                if success and venv_uv.exists():
+                    self.uv_path = venv_uv
+                    self._report_progress("venv", "uv package installer ready (fast mode active)", 13)
+                    return self.uv_path
+            except Exception:
+                pass
+
         return None
     
     @property
@@ -404,11 +442,9 @@ print(f"Tensor test passed: {x.shape}")
         if not self.create_venv():
             return False
         
-        # Step 2: Upgrade pip - only meaningful for a pip-based venv; uv-created
-        # venvs have no pip binary at all, so skip this step for them.
+        # Step 2: Ensure uv is ready for maximum installation speed
         if not self.uv_path:
-            self._report_progress("venv", "Upgrading pip...", 12)
-            self.run_pip_command(["install", "--upgrade", "pip"])
+            self.ensure_uv()
 
         # Step 3: Install PyTorch
         if not self.install_pytorch(hardware_info):
