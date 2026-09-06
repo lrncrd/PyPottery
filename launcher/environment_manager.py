@@ -241,15 +241,19 @@ class EnvironmentManager:
     def _run_pip(self, args: List[str], capture_output: bool = False) -> Tuple[bool, str]:
         """
         Run a pip-style command (install/list/...) against the venv, preferring
-        uv (much faster) with an automatic fallback to plain pip on any failure.
+        uv (much faster). Falls back to plain pip only if uv itself can't be
+        launched (missing/corrupted binary) - if uv runs and fails for a real
+        reason (bad args, network, ...), that failure is returned directly
+        instead of silently retried with pip: a venv uv itself created doesn't
+        ship pip.exe, so retrying there just replaces a meaningful error with
+        a confusing "file not found" one.
         """
         if self.uv_path:
             cmd = [str(self.uv_path), "pip"] + args + ["--python", str(self.python_executable)]
             try:
                 if capture_output:
                     result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
-                    if result.returncode == 0:
-                        return True, result.stdout + result.stderr
+                    return result.returncode == 0, result.stdout + result.stderr
                 else:
                     process = subprocess.Popen(
                         cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1
@@ -258,12 +262,11 @@ class EnvironmentManager:
                     for line in process.stdout:
                         output_lines.append(line)
                     process.wait()
-                    if process.returncode == 0:
-                        return True, "".join(output_lines)
+                    return process.returncode == 0, "".join(output_lines)
             except subprocess.TimeoutExpired:
                 return False, "Installation timed out"
-            except Exception:
-                pass  # fall through to the pip-based path below
+            except OSError:
+                pass  # uv itself couldn't be launched - fall back to pip below
 
         return self.run_pip_command(args, capture_output=capture_output)
 
@@ -278,17 +281,32 @@ class EnvironmentManager:
             True if successful
         """
         self._report_progress("pytorch", "Installing PyTorch...", 15)
-        
+
         # Base packages
         packages = ["torch", "torchvision", "torchaudio"]
-        
+        backend = "uv" if self.uv_path else "pip"
+
+        # Uninstall any previous build first. Without this, switching variant
+        # later (e.g. CPU -> CUDA or CUDA -> CPU) can silently no-op: pip/uv
+        # won't reinstall an already-satisfied unpinned package, and a plain
+        # --upgrade only works one direction (a CUDA build's "+cuXXX" local
+        # version segment sorts higher than the bare CPU version per PEP 440,
+        # so CPU->CUDA upgrades fine but CUDA->CPU does nothing). Uninstalling
+        # first sidesteps that comparison entirely - exits cleanly even if
+        # nothing is installed yet.
+        # NOTE: `-y` is pip-only syntax (skips its confirmation prompt) - uv
+        # doesn't prompt and rejects the flag outright, so it's only added
+        # for the plain-pip backend.
+        self._report_progress("pytorch", "Removing any existing PyTorch installation...", 16)
+        uninstall_args = ["uninstall"] + packages if backend == "uv" else ["uninstall", "-y"] + packages
+        self._run_pip(uninstall_args)
+
         # Build pip command
         cmd = ["install"] + packages
-        
+
         if hardware_info.pytorch_index_url:
             cmd.extend(["--index-url", hardware_info.pytorch_index_url])
-        
-        backend = "uv" if self.uv_path else "pip"
+
         self._report_progress(
             "pytorch",
             f"Installing PyTorch ({hardware_info.recommended_pytorch_variant}) via {backend}...",

@@ -112,6 +112,11 @@ class LauncherState:
         self.auto_shutdown_timer: Optional[threading.Timer] = None
         self.auto_shutdown_lock = threading.Lock()
 
+        # True while an env setup/reinstall is actively running - guards
+        # _fire() in _schedule_auto_shutdown from tearing down the launcher
+        # mid-install over a few seconds of dropped SSE connectivity.
+        self.install_in_progress = False
+
         self.hardware_info: Optional[HardwareInfo] = None
         self.env_manager: Optional[EnvironmentManager] = None
         self.app_manager: Optional[AppManager] = None
@@ -420,6 +425,13 @@ def _schedule_auto_shutdown(state: LauncherState):
         # reload) - only shut down if the launcher is still tab-less.
         if state.event_bus.subscriber_count() > 0:
             return
+        if state.install_in_progress:
+            # A setup/reinstall is running - don't kill it over a few
+            # seconds of dropped SSE connectivity (laptop sleep, a proxy's
+            # idle timeout, a backgrounded tab being throttled). Re-check
+            # again after another grace window instead of shutting down.
+            _schedule_auto_shutdown(state)
+            return
         print("No browser tab connected - shutting down launcher and all running apps")
         state.log("No browser tab connected - shutting down launcher and all running apps", "warning")
         if state.app_manager:
@@ -599,28 +611,47 @@ def create_app(state: LauncherState) -> Flask:
     def env_setup():
         if not state.env_manager:
             return jsonify(success=False, error="Not initialized"), 409
+        if not state.hardware_info:
+            return jsonify(success=False, error="Hardware detection still in progress - try again in a moment"), 409
         if not state.requirements_file.exists():
             state.log(f"Requirements file not found: {state.requirements_file}", "error")
             return jsonify(success=False, error="Requirements file not found"), 400
 
+        # Optional override: {"pytorch_variant": "cpu"} forces a CPU-only
+        # install regardless of what auto-detection recommended (Windows UI
+        # toggle). Anything else (missing body, "auto", ...) keeps today's
+        # fully-automatic behavior. state.hardware_info itself is left
+        # untouched - it stays the source of truth for detected hardware.
+        body = request.get_json(silent=True) or {}
+        pytorch_variant = body.get("pytorch_variant", "auto")
+        effective_hw = (
+            dataclasses.replace(state.hardware_info, recommended_pytorch_variant="cpu", pytorch_index_url=None)
+            if pytorch_variant == "cpu"
+            else state.hardware_info
+        )
+
         def worker():
-            state.log("Starting environment setup...", "info")
-            success = state.env_manager.full_install(state.hardware_info, state.requirements_file)
-            if success:
-                state.log("Environment setup complete!", "success")
-                state.app_manager = AppManager(
-                    state.base_path, state.env_manager.python_executable, developer_mode=DEVELOPER_MODE
-                )
-                state.app_manager.set_status_callback(
-                    lambda app_id, message: _on_app_status(state, app_id, message)
-                )
-                state.app_manager.set_download_callback(
-                    lambda progress: _on_download_progress(state, progress)
-                )
-            else:
-                state.log("Environment setup failed", "error")
-            state.emit({"type": "env_status", "exists": state.env_manager.venv_exists()})
-            state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+            state.install_in_progress = True
+            try:
+                state.log("Starting environment setup...", "info")
+                success = state.env_manager.full_install(effective_hw, state.requirements_file)
+                if success:
+                    state.log("Environment setup complete!", "success")
+                    state.app_manager = AppManager(
+                        state.base_path, state.env_manager.python_executable, developer_mode=DEVELOPER_MODE
+                    )
+                    state.app_manager.set_status_callback(
+                        lambda app_id, message: _on_app_status(state, app_id, message)
+                    )
+                    state.app_manager.set_download_callback(
+                        lambda progress: _on_download_progress(state, progress)
+                    )
+                else:
+                    state.log("Environment setup failed", "error")
+                state.emit({"type": "env_status", "exists": state.env_manager.venv_exists()})
+                state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+            finally:
+                state.install_in_progress = False
 
         threading.Thread(target=worker, daemon=True).start()
         return jsonify(success=True), 202

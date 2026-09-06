@@ -628,6 +628,85 @@ body {
   gap: 10px;
 }
 
+.confirm-modal-card {
+  background: linear-gradient(175deg, #ffffff 0%, #fdfbf7 60%, #f7f2ea 100%);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 420px;
+  padding: 30px 26px;
+  box-shadow: 0 30px 90px -15px rgba(28, 25, 23, 0.5), 0 0 0 1px rgba(234, 88, 12, 0.1);
+  border: 1px solid var(--border-light);
+  animation: modalPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.confirm-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(234, 88, 12, 0.12);
+  border: 2px solid rgba(234, 88, 12, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--primary);
+  margin: 0 auto 14px;
+}
+
+.confirm-modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.confirm-modal-message {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirm-modal-actions .btn {
+  flex: 1;
+}
+
+.env-variant-toggle {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  background: #f7f4ee;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md, 8px);
+}
+
+.env-variant-toggle .toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.env-variant-toggle input[type="checkbox"]:disabled + span {
+  color: var(--text-dim);
+}
+
+.env-variant-toggle .hint-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
 /* Model Cache Panel */
 .card-header-actions {
   display: flex;

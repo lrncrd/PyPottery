@@ -198,6 +198,14 @@
           <p id="env-progress-label" class="progress-label">Ready for operation</p>
         </div>
 
+        <div id="env-variant-toggle" class="env-variant-toggle hidden">
+          <label class="toggle-row">
+            <input type="checkbox" id="chk-gpu-variant">
+            <span>Enable GPU (CUDA) acceleration</span>
+          </label>
+          <span id="env-variant-hint" class="hint-text"></span>
+        </div>
+
         <div class="env-actions">
           <button id="btn-env-setup" class="btn btn-primary">
             <span>Setup Environment</span>
@@ -494,10 +502,31 @@
         Configure the Python environment and AI backend to start using PyPottery Suite.
       </p>
 
+      <div id="env-variant-toggle-first" class="env-variant-toggle hidden">
+        <label class="toggle-row">
+          <input type="checkbox" id="chk-gpu-variant-first">
+          <span>Enable GPU (CUDA) acceleration</span>
+        </label>
+        <span id="env-variant-hint-first" class="hint-text"></span>
+      </div>
+
       <button id="btn-first-setup-start" class="btn btn-primary btn-lg first-setup-btn btn-pulse">
         <i class="bi bi-lightning-charge-fill"></i>
         <span>Install Environment Now</span>
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- GPU/CPU PyTorch Variant Confirm Modal -->
+<div id="gpu-variant-modal" class="installer-modal-overlay hidden">
+  <div class="confirm-modal-card">
+    <div class="confirm-modal-icon"><i class="bi bi-gpu-card"></i></div>
+    <h2 id="gpu-variant-modal-title" class="confirm-modal-title">GPU Acceleration</h2>
+    <p id="gpu-variant-modal-message" class="confirm-modal-message"></p>
+    <div class="confirm-modal-actions">
+      <button id="btn-gpu-variant-cancel" class="btn btn-outline">Go Back</button>
+      <button id="btn-gpu-variant-confirm" class="btn btn-primary">Reinstall with CUDA</button>
     </div>
   </div>
 </div>

@@ -48,6 +48,17 @@ document.addEventListener("DOMContentLoaded", () => {
     envProgressLabel: document.getElementById("env-progress-label"),
     btnEnvSetup: document.getElementById("btn-env-setup"),
     btnEnvVerify: document.getElementById("btn-env-verify"),
+    envVariantToggle: document.getElementById("env-variant-toggle"),
+    chkGpuVariant: document.getElementById("chk-gpu-variant"),
+    envVariantHint: document.getElementById("env-variant-hint"),
+    envVariantToggleFirst: document.getElementById("env-variant-toggle-first"),
+    chkGpuVariantFirst: document.getElementById("chk-gpu-variant-first"),
+    envVariantHintFirst: document.getElementById("env-variant-hint-first"),
+    gpuVariantModal: document.getElementById("gpu-variant-modal"),
+    gpuVariantModalTitle: document.getElementById("gpu-variant-modal-title"),
+    gpuVariantModalMessage: document.getElementById("gpu-variant-modal-message"),
+    btnGpuVariantCancel: document.getElementById("btn-gpu-variant-cancel"),
+    btnGpuVariantConfirm: document.getElementById("btn-gpu-variant-confirm"),
     appsList: document.getElementById("apps-list"),
     consoleLog: document.getElementById("console-log"),
     consoleDot: document.getElementById("console-dot"),
@@ -104,6 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
     installerLogs: {},     // app_id -> log string lines array
     activeLogFilter: "all",
     models: [],            // cached model entries (see /api/models)
+    hw: null,               // last hardware payload received via SSE
+    pytorchVariantTouched: false, // true once the user manually toggles the GPU checkbox
   };
 
   const MODEL_KIND_ICON = {
@@ -241,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderHardware(hw) {
     if (!hw) return;
+    store.hw = hw;
     if (els.hwOs) els.hwOs.textContent = `${hw.os_name} (${hw.architecture})`;
     if (els.hwCpu) els.hwCpu.textContent = `${hw.cpu_name} (${hw.cpu_cores} cores)`;
     
@@ -275,6 +289,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!hw.cuda_compatible && hw.driver_warning) {
       showDriverWarning(hw.driver_warning);
     }
+
+    updateVariantToggleUI(hw);
+  }
+
+  // GPU (CUDA) vs CPU-only PyTorch toggle - Windows only. Lets the user opt
+  // out of the heavy CUDA download; not offered as a way to force CUDA onto
+  // hardware that doesn't have a CUDA-capable GPU.
+  function updateVariantToggleUI(hw) {
+    const isWindows = hw.os_name === "Windows";
+    const checkboxes = [els.chkGpuVariant, els.chkGpuVariantFirst];
+    const wrappers = [els.envVariantToggle, els.envVariantToggleFirst];
+    const hints = [els.envVariantHint, els.envVariantHintFirst];
+
+    wrappers.forEach((el) => {
+      if (el) el.classList.toggle("hidden", !isWindows);
+    });
+    if (!isWindows) return;
+
+    const hintText = hw.cuda_available
+      ? ""
+      : "No CUDA-capable GPU detected - GPU acceleration isn't available on this machine.";
+
+    checkboxes.forEach((cb, i) => {
+      if (!cb) return;
+      cb.disabled = !hw.cuda_available;
+      if (!store.pytorchVariantTouched) cb.checked = !!hw.cuda_available;
+      if (hints[i]) hints[i].textContent = hintText;
+    });
   }
 
   function showDriverWarning(message) {
@@ -336,20 +378,103 @@ document.addEventListener("DOMContentLoaded", () => {
     handleEnvProgressEvent(progress);
   }
 
+  // Generic themed confirm modal (replaces native alert()/confirm() so it
+  // matches the rest of the app's dialogs). One "confirm" and one "cancel"
+  // button; callbacks are rewired per-use since only one instance exists.
+  let _gpuVariantModalHandlers = null;
+  function showGpuVariantModal({ title, message, confirmText, onConfirm, onCancel }) {
+    if (!els.gpuVariantModal) return;
+    els.gpuVariantModalTitle.textContent = title;
+    els.gpuVariantModalMessage.textContent = message;
+    els.btnGpuVariantConfirm.textContent = confirmText;
+    els.gpuVariantModal.classList.remove("hidden");
+
+    if (_gpuVariantModalHandlers) {
+      els.btnGpuVariantConfirm.removeEventListener("click", _gpuVariantModalHandlers.confirm);
+      els.btnGpuVariantCancel.removeEventListener("click", _gpuVariantModalHandlers.cancel);
+    }
+    const close = () => els.gpuVariantModal.classList.add("hidden");
+    const confirmHandler = () => { close(); if (onConfirm) onConfirm(); };
+    const cancelHandler = () => { close(); if (onCancel) onCancel(); };
+    _gpuVariantModalHandlers = { confirm: confirmHandler, cancel: cancelHandler };
+    els.btnGpuVariantConfirm.addEventListener("click", confirmHandler);
+    els.btnGpuVariantCancel.addEventListener("click", cancelHandler);
+  }
+
+  function getWantsGpu() {
+    const cb = els.chkGpuVariant || els.chkGpuVariantFirst;
+    return cb ? cb.checked : true;
+  }
+
+  function setGpuCheckboxes(checked) {
+    if (els.chkGpuVariant) els.chkGpuVariant.checked = checked;
+    if (els.chkGpuVariantFirst) els.chkGpuVariantFirst.checked = checked;
+  }
+
+  function postEnvSetup(wantsGpu) {
+    // Never send a literal "cuda"/cuXXX string - the backend already owns
+    // the CUDA-version-to-index-url mapping. The frontend only ever sends a
+    // binary "force CPU" vs "let the backend auto-detect" signal.
+    return fetch("/api/env/setup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pytorch_variant: wantsGpu ? "auto" : "cpu" }),
+    });
+  }
+
+  function startEnvSetup(wantsGpu) {
+    openEnvInstallerModal(false);
+    showToast("Setting up Python environment...", "info", 3000);
+    postEnvSetup(wantsGpu);
+  }
+
+  // Keep the panel and first-setup-modal GPU checkboxes mirrored - both
+  // exist in the DOM at all times, just conditionally hidden (see
+  // updateVariantToggleUI above).
+  [els.chkGpuVariant, els.chkGpuVariantFirst].forEach((cb) => {
+    if (!cb) return;
+    cb.addEventListener("change", () => {
+      store.pytorchVariantTouched = true;
+      const checked = cb.checked;
+      setGpuCheckboxes(checked);
+
+      // Checking the box only changes what the *next* install will use -
+      // if PyTorch is already installed CPU-only, offer to reinstall now
+      // (or let the user back out, which reverts the checkbox).
+      if (checked && store.envExists && !store.hw?.installed_pytorch_device?.startsWith("CUDA")) {
+        showGpuVariantModal({
+          title: "Enable GPU Acceleration",
+          message: "PyTorch is currently installed CPU-only. Reinstall now to enable GPU-accelerated (CUDA) PyTorch.",
+          confirmText: "Reinstall with CUDA",
+          onConfirm: () => startEnvSetup(true),
+          onCancel: () => setGpuCheckboxes(false),
+        });
+      }
+    });
+  });
+
   if (els.btnFirstSetupStart) {
     els.btnFirstSetupStart.addEventListener("click", () => {
       if (els.firstSetupModal) els.firstSetupModal.classList.add("hidden");
       openEnvInstallerModal(true);
       showToast("Starting Python environment setup...", "info", 3000);
-      fetch("/api/env/setup", { method: "POST" });
+      postEnvSetup(getWantsGpu());
     });
   }
 
   if (els.btnEnvSetup) {
     els.btnEnvSetup.addEventListener("click", () => {
-      openEnvInstallerModal(false);
-      showToast("Setting up Python environment...", "info", 3000);
-      fetch("/api/env/setup", { method: "POST" });
+      const wantsGpu = getWantsGpu();
+      if (store.envExists && store.hw?.installed_pytorch_device?.startsWith("CUDA") && !wantsGpu) {
+        showGpuVariantModal({
+          title: "Switch to CPU-only?",
+          message: "This will replace your existing GPU-accelerated PyTorch with a CPU-only version.",
+          confirmText: "Reinstall CPU-only",
+          onConfirm: () => startEnvSetup(false),
+        });
+        return;
+      }
+      startEnvSetup(wantsGpu);
     });
   }
 
