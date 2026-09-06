@@ -193,7 +193,16 @@ def initialize_state(state: LauncherState):
         state.log(f"Using Python: {state.env_manager.python_executable}", "info")
     else:
         state.log("Python environment not found - please run Setup", "warning")
-        python_exe = Path(sys.executable)
+        # Placeholder until Setup creates pypottery_env - AppManager won't
+        # actually launch anything with this before then. Route through
+        # env_manager.base_python() rather than sys.executable directly:
+        # in the frozen exe, sys.executable is PyPottery.exe itself, and
+        # handing that to a subprocess.Popen() call would relaunch the
+        # whole app instead of failing cleanly.
+        try:
+            python_exe = Path(state.env_manager.base_python())
+        except RuntimeError:
+            python_exe = Path(sys.executable)
 
     state.app_manager = AppManager(state.base_path, python_exe, developer_mode=DEVELOPER_MODE)
     state.app_manager.set_status_callback(lambda app_id, message: _on_app_status(state, app_id, message))

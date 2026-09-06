@@ -15,6 +15,7 @@ from typing import Optional, Callable, List, Tuple
 from dataclasses import dataclass
 
 from .hardware_detector import HardwareInfo, detect_hardware
+from .process_utils import no_window_kwargs
 
 
 @dataclass
@@ -136,7 +137,31 @@ class EnvironmentManager:
     def venv_exists(self) -> bool:
         """Check if virtual environment exists"""
         return self.python_executable.exists()
-    
+
+    def base_python(self) -> str:
+        """
+        Real Python interpreter to use as the base for creating pypottery_env.
+
+        Under normal execution (running from source, or the WinPython
+        package's own python.exe) sys.executable already is a real
+        interpreter. But inside the PyInstaller-frozen exe, sys.executable
+        is PyPottery.exe itself - passing that to `venv`/uv would just
+        relaunch the whole app as a second instance instead of creating a
+        venv (and even if it didn't, the resulting "venv" would be a copy
+        of the frozen exe, not a working Python). The exe package bundles a
+        real portable Python next to itself for exactly this, see
+        build_windows_release.py's create_pyinstaller_package().
+        """
+        if getattr(sys, "frozen", False):
+            bundled = self.base_path / "python_runtime" / "python.exe"
+            if bundled.exists():
+                return str(bundled)
+            raise RuntimeError(
+                f"Bundled Python runtime not found (expected at {bundled}). "
+                "Reinstall PyPottery or use the WinPython package instead."
+            )
+        return sys.executable
+
     def create_venv(self, force_recreate: bool = False) -> bool:
         """
         Create virtual environment.
@@ -159,10 +184,10 @@ class EnvironmentManager:
         
         if self.uv_path:
             try:
-                cmd = [str(self.uv_path), "venv", str(self.venv_path), "--python", sys.executable]
+                cmd = [str(self.uv_path), "venv", str(self.venv_path), "--python", self.base_python()]
                 if force_recreate:
                     cmd.append("--clear")
-                subprocess.run(cmd, check=True, capture_output=True)
+                subprocess.run(cmd, check=True, capture_output=True, **no_window_kwargs())
                 self._report_progress("venv", "Virtual environment created successfully (uv)", 10)
                 return True
             except Exception as e:
@@ -173,14 +198,14 @@ class EnvironmentManager:
         try:
             # Create venv using subprocess to avoid in-process issues (especially on macOS)
             # which can cause SIGABRT when ensurepip runs in a threaded GUI context
-            cmd = [sys.executable, "-m", "venv", str(self.venv_path)]
+            cmd = [self.base_python(), "-m", "venv", str(self.venv_path)]
 
             if force_recreate:
                 cmd.append("--clear")
 
             # Run venv creation as external process
             # This isolates the process and prevents signal handlers from conflicting
-            subprocess.run(cmd, check=True, capture_output=True)
+            subprocess.run(cmd, check=True, capture_output=True, **no_window_kwargs())
 
             self._report_progress("venv", "Virtual environment created successfully (pip)", 10)
             return True
@@ -212,7 +237,8 @@ class EnvironmentManager:
                     cmd,
                     capture_output=True,
                     text=True,
-                    timeout=600  # 10 minute timeout for large packages
+                    timeout=600,  # 10 minute timeout for large packages
+                    **no_window_kwargs(),
                 )
                 output = result.stdout + result.stderr
                 return result.returncode == 0, output
@@ -223,7 +249,8 @@ class EnvironmentManager:
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,
-                    bufsize=1
+                    bufsize=1,
+                    **no_window_kwargs(),
                 )
                 output_lines = []
                 for line in process.stdout:
@@ -252,11 +279,14 @@ class EnvironmentManager:
             cmd = [str(self.uv_path), "pip"] + args + ["--python", str(self.python_executable)]
             try:
                 if capture_output:
-                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+                    result = subprocess.run(
+                        cmd, capture_output=True, text=True, timeout=600, **no_window_kwargs()
+                    )
                     return result.returncode == 0, result.stdout + result.stderr
                 else:
                     process = subprocess.Popen(
-                        cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1
+                        cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+                        **no_window_kwargs(),
                     )
                     output_lines = []
                     for line in process.stdout:
@@ -434,7 +464,8 @@ print(f"Tensor test passed: {x.shape}")
                 [str(self.python_executable), "-c", test_script],
                 capture_output=True,
                 text=True,
-                timeout=30
+                timeout=30,
+                **no_window_kwargs(),
             )
             
             if result.returncode == 0:

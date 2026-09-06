@@ -12,6 +12,8 @@ from typing import Optional, List, Dict, Any
 from pathlib import Path
 import shutil
 
+from .process_utils import no_window_kwargs
+
 
 @dataclass
 class GPUInfo:
@@ -120,7 +122,7 @@ def get_cpu_info() -> tuple:
     elif platform.system() == "Darwin":
         try:
             result = subprocess.run(["sysctl", "-n", "machdep.cpu.brand_string"],
-                                    capture_output=True, text=True)
+                                    capture_output=True, text=True, **no_window_kwargs())
             if result.returncode == 0:
                 cpu_name = result.stdout.strip()
         except:
@@ -179,9 +181,9 @@ def detect_nvidia_cuda() -> tuple:
         try:
             # Get CUDA version from nvidia-smi
             result = subprocess.run(
-                [nvidia_smi, "--query-gpu=driver_version,name,memory.total,memory.free", 
+                [nvidia_smi, "--query-gpu=driver_version,name,memory.total,memory.free",
                  "--format=csv,noheader,nounits"],
-                capture_output=True, text=True, timeout=10
+                capture_output=True, text=True, timeout=10, **no_window_kwargs()
             )
             if result.returncode == 0:
                 cuda_available = True
@@ -200,7 +202,7 @@ def detect_nvidia_cuda() -> tuple:
             # Get CUDA version. Older drivers print "CUDA Version: 12.6";
             # newer ones (found on driver 610.47) print "CUDA UMD Version: 13.3"
             # instead - match either.
-            result = subprocess.run([nvidia_smi], capture_output=True, text=True, timeout=10)
+            result = subprocess.run([nvidia_smi], capture_output=True, text=True, timeout=10, **no_window_kwargs())
             if result.returncode == 0:
                 import re
                 match = re.search(r"CUDA(?:\s+\w+)?\s+Version:\s*(\d+\.\d+)", result.stdout)
@@ -258,7 +260,7 @@ def detect_amd_rocm() -> bool:
     rocm_smi = shutil.which("rocm-smi")
     if rocm_smi:
         try:
-            result = subprocess.run([rocm_smi], capture_output=True, timeout=10)
+            result = subprocess.run([rocm_smi], capture_output=True, timeout=10, **no_window_kwargs())
             if result.returncode == 0:
                 return True
         except:
@@ -320,7 +322,7 @@ def detect_venv_pytorch(python_exe: Optional[Path]) -> tuple:
         "import torch; dev = 'CUDA (' + (torch.cuda.get_device_name(0) if torch.cuda.is_available() else '') + ')' if torch.cuda.is_available() else ('MPS' if getattr(torch.backends, 'mps', None) and torch.backends.mps.is_available() else 'CPU'); print(f'{torch.__version__}|{dev}')"
     ]
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=5, **no_window_kwargs())
         if res.returncode == 0 and "|" in res.stdout:
             parts = res.stdout.strip().split("|", 1)
             return parts[0], parts[1]

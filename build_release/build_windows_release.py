@@ -9,7 +9,11 @@ Produces two independent artifacts:
 2. PyInstaller package - the launcher compiled into a native PyPottery.exe
    (--onedir: a folder next to the exe, no temp-extraction on every launch,
    no antivirus false-positive risk that --onefile carries). Smaller, no
-   installer, just extract and double-click.
+   installer, just extract and double-click. Also bundles a copy of the
+   same portable Python used by package 1, under python_runtime/ - the
+   frozen exe's own sys.executable is PyPottery.exe itself, not a real
+   interpreter, so it can't be used to create the pypottery_env venv at
+   runtime (see EnvironmentManager._base_python()).
 
 Each is built independently - one failing doesn't stop the other (see main()).
 
@@ -205,28 +209,21 @@ def build_windows_installer(package_dir: Path, release_dir: Path, version: str) 
     return out_path
 
 
-def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
-    """Build the WinPython portable package (+ NSIS installer if available)."""
-    package_dir = release_dir / "PyPottery-Launcher"
-    python_dir = package_dir / "python"
-    launcher_dir = package_dir / "launcher"
+def _download_portable_python(dest_dir: Path) -> Path:
+    """
+    Download the portable WinPython distribution and extract just its
+    python/ folder - a real, standalone python.exe with the full stdlib,
+    none of the embeddable-package's ensurepip/venv quirks - into dest_dir.
 
-    print("=" * 60)
-    print("🏗️  Package 1/2: WinPython + installer")
-    print("=" * 60)
-
-    # Clean previous build
-    if package_dir.exists():
-        print("\n🧹 Cleaning previous build...")
-        shutil.rmtree(package_dir)
-
-    # Create directories
-    release_dir.mkdir(parents=True, exist_ok=True)
-    package_dir.mkdir()
-    launcher_dir.mkdir()
-
-    # 1. Download and extract WinPython
-    print(f"\n📦 Step 1: Downloading WinPython {PYTHON_VERSION}...")
+    Shared by both Windows packages: the WinPython package uses this as the
+    launcher's own interpreter; the PyInstaller package bundles a copy purely
+    so the frozen exe has a *real* Python to hand to `venv`/uv when it builds
+    the pypottery_env venv at runtime. Its own sys.executable is PyPottery.exe
+    itself, not a real interpreter - using that would make `-m venv` just
+    relaunch the whole app as a second instance instead of creating a venv
+    (see EnvironmentManager._base_python() in environment_manager.py).
+    """
+    print(f"   Downloading WinPython {PYTHON_VERSION} (portable Python)...")
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
@@ -254,15 +251,14 @@ def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
                 break
 
         if winpython_root and winpython_root.exists():
-            shutil.copytree(winpython_root, python_dir)
+            shutil.copytree(winpython_root, dest_dir)
             print(f"   ✓ Python extracted from {winpython_root.name}")
         else:
             # Fallback: find python.exe directly
             print("   Trying alternative extraction...")
             for item in extract_dir.rglob("python.exe"):
                 print(f"   Found: {item}")
-                python_dir_src = item.parent
-                shutil.copytree(python_dir_src, python_dir)
+                shutil.copytree(item.parent, dest_dir)
                 print(f"   ✓ Python extracted")
                 break
             else:
@@ -270,7 +266,32 @@ def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
                 raise Exception(f"Could not find Python in WinPython. First 20 items: {contents}")
 
     # NOTE: We're now outside the tempdir context - Python is in its final location
-    python_exe = python_dir / "python.exe"
+    return dest_dir / "python.exe"
+
+
+def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
+    """Build the WinPython portable package (+ NSIS installer if available)."""
+    package_dir = release_dir / "PyPottery-Launcher"
+    python_dir = package_dir / "python"
+    launcher_dir = package_dir / "launcher"
+
+    print("=" * 60)
+    print("🏗️  Package 1/2: WinPython + installer")
+    print("=" * 60)
+
+    # Clean previous build
+    if package_dir.exists():
+        print("\n🧹 Cleaning previous build...")
+        shutil.rmtree(package_dir)
+
+    # Create directories
+    release_dir.mkdir(parents=True, exist_ok=True)
+    package_dir.mkdir()
+    launcher_dir.mkdir()
+
+    # 1. Download and extract WinPython
+    print(f"\n📦 Step 1: Downloading WinPython {PYTHON_VERSION}...")
+    python_exe = _download_portable_python(python_dir)
 
     # 2. Install additional packages (now Python is in final location)
     print("\n📦 Step 2: Installing launcher dependencies...")
@@ -569,7 +590,9 @@ def _write_exe_readme(package_dir: Path):
     QUICK START
     -----------
     Double-click "PyPottery.exe" to launch!
-    (Keep the "_internal" folder next to it - it holds the app's files.)
+    (Keep the "_internal" and "python_runtime" folders next to it - they
+    hold the app's files and the bundled Python used to set up sub-apps'
+    environments.)
 
     REQUIREMENTS
     ------------
@@ -601,7 +624,10 @@ def create_pyinstaller_package(project_root: Path, release_dir: Path) -> Path:
     package_dir = _run_pyinstaller(project_root, work_dir)
     _copy_base_path_assets(project_root, package_dir)
 
-    print("\n📦 Step 5: Finalizing package...")
+    print("\n📦 Step 5: Bundling portable Python runtime (for pypottery_env creation)...")
+    _download_portable_python(package_dir / "python_runtime")
+
+    print("\n📦 Step 6: Finalizing package...")
     _write_exe_readme(package_dir)
 
     version = _read_launcher_version(project_root)

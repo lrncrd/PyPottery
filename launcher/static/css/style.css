@@ -690,14 +690,79 @@ body {
 .env-variant-toggle .toggle-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 0.85rem;
   color: var(--text-main);
   cursor: pointer;
 }
 
-.env-variant-toggle input[type="checkbox"]:disabled + span {
+.env-variant-toggle .toggle-row:has(input:disabled) {
+  cursor: not-allowed;
+}
+
+.env-variant-toggle .toggle-row:has(input:disabled) .toggle-label {
   color: var(--text-dim);
+}
+
+/* iOS-style toggle switch, replaces the plain checkbox */
+.env-variant-toggle .switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.env-variant-toggle .switch input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.env-variant-toggle .switch-track {
+  position: absolute;
+  inset: 0;
+  background: #d8d2c4;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.env-variant-toggle .switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.env-variant-toggle .switch input:checked ~ .switch-track {
+  background: var(--primary);
+}
+
+.env-variant-toggle .switch input:checked ~ .switch-track .switch-thumb {
+  transform: translateX(16px);
+}
+
+.env-variant-toggle .switch input:focus-visible ~ .switch-track {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.env-variant-toggle .switch input:disabled ~ .switch-track {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.env-variant-toggle .switch input:disabled {
+  cursor: not-allowed;
 }
 
 .env-variant-toggle .hint-text {
