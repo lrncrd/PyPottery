@@ -136,8 +136,9 @@ Section "Install"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
     WriteRegStr HKCU "${UNINST_KEY}" "DisplayName" "${APPNAME}"
-    WriteRegStr HKCU "${UNINST_KEY}" "UninstallString" "$INSTDIR\Uninstall.exe"
+    WriteRegStr HKCU "${UNINST_KEY}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
     WriteRegStr HKCU "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
+    WriteRegStr HKCU "${UNINST_KEY}" "DisplayIcon" '"$INSTDIR\icon_app.ico"'
     WriteRegStr HKCU "${UNINST_KEY}" "DisplayVersion" "${VERSION}"
     WriteRegStr HKCU "${UNINST_KEY}" "Publisher" "${COMPANY}"
     WriteRegDWORD HKCU "${UNINST_KEY}" "NoModify" 1
@@ -145,11 +146,32 @@ Section "Install"
 SectionEnd
 
 Section "Uninstall"
+    ; Best-effort graceful shutdown of a running instance first - it may hold
+    ; files under $INSTDIR open (its own venv/DLLs, a spawned sub-app's own
+    ; files), which would otherwise make RMDir /r below leave remnants.
+    nsExec::ExecToLog 'powershell -NoProfile -ExecutionPolicy Bypass -File "$INSTDIR\stop_running_instance.ps1"'
+
     Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
     Delete "$SMPROGRAMS\${APPNAME}\Uninstall ${APPNAME}.lnk"
     RMDir "$SMPROGRAMS\${APPNAME}"
     Delete "$DESKTOP\${APPNAME}.lnk"
-    RMDir /r "$INSTDIR"
+
+    ; A file can be transiently locked at the exact moment RMDir /r reaches
+    ; it - antivirus real-time scanning is the usual culprit on Windows -
+    ; and NSIS doesn't retry on its own, so a single miss leaves that file
+    ; (and its parent directory) behind. Same reasoning as
+    ; _rename_with_retry() in app_manager.py; retry a few times.
+    StrCpy $0 0
+    retry_rmdir:
+        RMDir /r "$INSTDIR"
+        IfFileExists "$INSTDIR\*.*" 0 rmdir_done
+        IntOp $0 $0 + 1
+        IntCmp $0 5 rmdir_done retry_wait rmdir_done
+        retry_wait:
+        Sleep 500
+        Goto retry_rmdir
+    rmdir_done:
+
     DeleteRegKey HKCU "${UNINST_KEY}"
 SectionEnd
 """
@@ -375,6 +397,34 @@ REM Use pythonw.exe for windowless GUI launch, START so this window closes immed
 start "" python\pythonw.exe -c "import sys; sys.path.insert(0, '.'); from launcher.gui import main; main()"
 ''', encoding='utf-8')
     print("   ✓ Created PyPottery.bat")
+
+    # Best-effort graceful shutdown helper, invoked by the NSIS uninstaller
+    # before it deletes the install directory - a running launcher (or a
+    # sub-app it spawned) holds files open under here, which would otherwise
+    # make RMDir /r leave partial remnants behind. Reads the same lock-file
+    # format written by launcher/instance_lock.py (byte 0 is a locking
+    # sentinel, the JSON payload starts at offset 1) and calls the existing
+    # /api/shutdown route, which already stops every sub-app and releases the
+    # lock (see gui.py's _stop_everything()). Silently does nothing if the
+    # launcher isn't running - the uninstall proceeds either way.
+    stop_script = package_dir / "stop_running_instance.ps1"
+    stop_script.write_text(r'''$ErrorActionPreference = "SilentlyContinue"
+$lockFile = Join-Path $PSScriptRoot ".pypottery.lock"
+if (Test-Path $lockFile) {
+    try {
+        $raw = [System.IO.File]::ReadAllText($lockFile)
+        if ($raw.Length -gt 1) {
+            $info = $raw.Substring(1) | ConvertFrom-Json
+            if ($info.port) {
+                Invoke-WebRequest -Uri "http://127.0.0.1:$($info.port)/api/shutdown" `
+                    -Method Post -TimeoutSec 3 -UseBasicParsing | Out-Null
+                Start-Sleep -Milliseconds 1500
+            }
+        }
+    } catch {}
+}
+''', encoding='utf-8')
+    print("   ✓ Created stop_running_instance.ps1")
 
     # README
     readme = package_dir / "README.txt"

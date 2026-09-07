@@ -33,6 +33,13 @@ class LauncherProgress:
 PRESERVED_PATHS: Set[str] = {
     "apps",
     "model_cache",
+    # The user's actual environment and its bundled interpreter: multi-GB
+    # downloads that an update has no business touching.
+    "pypottery_env",
+    "python",
+    "python_runtime",
+    "logs",
+    "shared_assets",
     ".venv",
     "env",
     "venv",
@@ -56,6 +63,25 @@ class LauncherUpdater:
     def __init__(self, base_path: Path):
         self.base_path = Path(base_path).resolve()
         self.launcher_path = self.base_path / "launcher"
+
+    def can_self_update(self) -> bool:
+        """
+        Whether replacing the source files on disk actually updates this build.
+
+        It doesn't for any packaged flavour: a PyInstaller exe runs code baked
+        into the executable, an AppImage runs from a read-only mount, and a
+        macOS .app is replaced as a whole by the user. Overwriting files there
+        either does nothing or leaves a half-updated install, so those builds
+        send the user to the download page instead.
+        """
+        if getattr(sys, "frozen", False) or os.environ.get("APPIMAGE"):
+            return False
+        if sys.platform == "darwin" and ".app/Contents/" in str(Path(__file__).resolve()):
+            return False
+        return (self.launcher_path / "gui.py").exists()
+
+    def release_page_url(self, repo_owner: str = "lrncrd", repo_name: str = "PyPottery") -> str:
+        return f"https://github.com/{repo_owner}/{repo_name}/releases/latest"
 
     def update(
         self,

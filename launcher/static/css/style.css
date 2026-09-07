@@ -596,6 +596,12 @@ body {
   border-color: #fecdd3;
 }
 
+.env-status-badge.warning {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
 .env-progress-block {
   margin-bottom: 16px;
 }

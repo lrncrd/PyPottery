@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     splashScreen: document.getElementById("splash-screen"),
     splashBar: document.getElementById("splash-bar"),
     splashStatus: document.getElementById("splash-status"),
+    terminatedScreen: document.getElementById("terminated-screen"),
     installerModal: document.getElementById("installer-modal"),
     installerLogoBox: document.getElementById("installer-logo-box"),
     installerAppName: document.getElementById("installer-app-name"),
@@ -67,7 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
     btnConsoleToggle: document.getElementById("btn-console-toggle"),
     btnConsoleClear: document.getElementById("btn-console-clear"),
     btnConsoleCopy: document.getElementById("btn-console-copy"),
+    btnOpenLogs: document.getElementById("btn-open-logs"),
+    btnAboutDataFolder: document.getElementById("btn-about-data-folder"),
     logCount: document.getElementById("log-count"),
+    connectionLostBanner: document.getElementById("banner-connection-lost"),
+    btnConnectionRetry: document.getElementById("btn-connection-retry"),
     modelCacheList: document.getElementById("model-cache-list"),
     modelCacheTotal: document.getElementById("model-cache-total"),
     btnModelsRefresh: document.getElementById("btn-models-refresh"),
@@ -117,7 +122,48 @@ document.addEventListener("DOMContentLoaded", () => {
     models: [],            // cached model entries (see /api/models)
     hw: null,               // last hardware payload received via SSE
     pytorchVariantTouched: false, // true once the user manually toggles the GPU checkbox
+    envState: null,         // full /api/env/status payload: status, ready, reason...
+    envReady: false,        // environment finished installing and still runs
+    lastEnvSetupVariant: null, // what the user last asked for, so Retry doesn't change it
+    envSetupFailed: false,  // lets the mandatory first-run modal be dismissed after an error
+    lastEventAt: Date.now(), // watchdog for a silently dropped SSE connection
+    connectionLost: false,
   };
+
+  // Every fetch in this file goes through here. Bare fetch() calls silently
+  // swallow both HTTP errors and a dead server, which is how "click Launch,
+  // nothing happens, forever" used to look.
+  async function api(path, { method = "GET", body = null, quiet = false } = {}) {
+    let response;
+    try {
+      response = await fetch(path, {
+        method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+    } catch (err) {
+      if (!quiet) showToast("Cannot reach the launcher - is it still running?", "error", 6000);
+      markConnectionLost();
+      return { ok: false, status: 0, data: null, error: String(err) };
+    }
+
+    let data = null;
+    try {
+      data = await response.json();
+    } catch (err) {
+      data = null;
+    }
+
+    if (!response.ok || (data && data.success === false)) {
+      const message = (data && data.error) || `Request failed (${response.status})`;
+      if (!quiet) {
+        showToast(message, response.status === 409 ? "warning" : "error", 6000);
+      }
+      return { ok: false, status: response.status, data, error: message };
+    }
+
+    return { ok: true, status: response.status, data, error: null };
+  }
 
   const MODEL_KIND_ICON = {
     "huggingface-model": "🤗",
@@ -327,11 +373,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- Environment Panel ----
 
-  function renderEnvStatus(exists) {
-    store.envExists = exists;
+  function renderEnvStatus(envState) {
+    // Back-compat: a couple of call sites still pass a bare boolean.
+    if (typeof envState === "boolean") {
+      envState = { status: envState ? "ready" : "absent", ready: envState };
+    }
+    store.envState = envState;
+    store.envExists = envState.ready; // legacy alias, some code still reads this
+    store.envReady = envState.ready;
+
+    const isReady = envState.status === "ready";
+    const needsSetup = envState.status === "absent";
+    const needsRepair = envState.status === "broken" || envState.status === "incomplete";
 
     if (els.firstSetupModal) {
-      if (exists) {
+      if (isReady) {
         els.firstSetupModal.classList.add("hidden");
       } else {
         const disclaimerOpen = els.disclaimerModal && !els.disclaimerModal.classList.contains("hidden");
@@ -344,8 +400,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!els.envStatusText) return;
 
-    els.envStatusText.classList.remove("ready", "error");
-    if (exists) {
+    els.envStatusText.classList.remove("ready", "error", "warning");
+    if (isReady) {
       els.envStatusText.innerHTML = '<i class="bi bi-check2-circle"></i> Active & Ready';
       els.envStatusText.classList.add("ready");
       els.btnEnvSetup.innerHTML = "<span>Reinstall Environment</span>";
@@ -355,6 +411,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (els.environmentPanel) els.environmentPanel.classList.remove("env-needs-setup");
       if (els.envVerifiedCheck) els.envVerifiedCheck.classList.remove("hidden");
       if (els.btnEnvVerify) els.btnEnvVerify.classList.remove("hidden");
+    } else if (needsRepair) {
+      els.envStatusText.innerHTML = '<i class="bi bi-tools"></i> Incomplete - needs repair';
+      els.envStatusText.classList.add("warning");
+      els.btnEnvSetup.innerHTML = "<span>Repair Environment</span>";
+      els.envProgressBar.style.width = "0%";
+      els.envProgressLabel.textContent = envState.reason || "The environment needs to be rebuilt.";
+
+      if (els.environmentPanel) els.environmentPanel.classList.add("env-needs-setup");
+      if (els.envVerifiedCheck) els.envVerifiedCheck.classList.add("hidden");
+      if (els.btnEnvVerify) els.btnEnvVerify.classList.add("hidden");
     } else {
       els.envStatusText.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Not Configured';
       els.envStatusText.classList.add("error");
@@ -381,12 +447,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Generic themed confirm modal (replaces native alert()/confirm() so it
   // matches the rest of the app's dialogs). One "confirm" and one "cancel"
   // button; callbacks are rewired per-use since only one instance exists.
+  // Originally built just for the GPU/CPU variant prompts, now reused for
+  // anything needing a themed yes/no (e.g. uninstalling an app) - the
+  // element ids kept their original "gpu-variant" names to avoid an
+  // unrelated HTML/CSS rename, but the function itself is fully generic.
   let _gpuVariantModalHandlers = null;
-  function showGpuVariantModal({ title, message, confirmText, onConfirm, onCancel }) {
+  function showConfirmModal({ title, message, confirmText, cancelText = "Go Back", danger = false, onConfirm, onCancel }) {
     if (!els.gpuVariantModal) return;
     els.gpuVariantModalTitle.textContent = title;
     els.gpuVariantModalMessage.textContent = message;
     els.btnGpuVariantConfirm.textContent = confirmText;
+    els.btnGpuVariantCancel.textContent = cancelText;
+    els.btnGpuVariantConfirm.classList.toggle("btn-primary", !danger);
+    els.btnGpuVariantConfirm.classList.toggle("btn-danger", danger);
     els.gpuVariantModal.classList.remove("hidden");
 
     if (_gpuVariantModalHandlers) {
@@ -400,6 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
     els.btnGpuVariantConfirm.addEventListener("click", confirmHandler);
     els.btnGpuVariantCancel.addEventListener("click", cancelHandler);
   }
+  const showGpuVariantModal = showConfirmModal;
 
   function getWantsGpu() {
     const cb = els.chkGpuVariant || els.chkGpuVariantFirst;
@@ -415,11 +489,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Never send a literal "cuda"/cuXXX string - the backend already owns
     // the CUDA-version-to-index-url mapping. The frontend only ever sends a
     // binary "force CPU" vs "let the backend auto-detect" signal.
-    return fetch("/api/env/setup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pytorch_variant: wantsGpu ? "auto" : "cpu" }),
-    });
+    // Remembered so Retry-after-error can reuse the same choice instead of
+    // silently reverting to "auto" (a plain retry used to post no body at
+    // all, which meant a CPU-only pick got upgraded to CUDA behind the
+    // user's back the moment something else failed).
+    store.lastEnvSetupVariant = wantsGpu;
+    return api("/api/env/setup", { method: "POST", body: { pytorch_variant: wantsGpu ? "auto" : "cpu" } });
   }
 
   function startEnvSetup(wantsGpu) {
@@ -481,7 +556,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (els.btnEnvVerify) {
     els.btnEnvVerify.addEventListener("click", () => {
       showToast("Verifying Python environment dependencies...", "info", 3000);
-      fetch("/api/env/verify", { method: "POST" });
+      api("/api/env/verify", { method: "POST" });
     });
   }
 
@@ -629,6 +704,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `<button class="btn btn-outline btn-icon-only" data-action="update" data-app-id="${app.id}" title="${app.installed ? 'Update Application' : 'Install application first to enable updates'}" ${!app.installed || isLocked ? 'disabled' : ''}><i class="bi bi-arrow-up-circle"></i></button>`
       : "";
 
+    const uninstallBtnHtml = app.developer_mode ? "" : `<button class="btn btn-quiet btn-icon-only" data-action="uninstall" data-app-id="${app.id}" title="${isRunning ? 'Stop the app before uninstalling' : 'Uninstall'}" ${!app.installed || isRunning ? "disabled" : ""}><i class="bi bi-trash3"></i></button>`;
+
     const badgePillHtml = isLocked && !app.installed
       ? `<span class="status-badge-pill locked"><i class="bi bi-lock-fill"></i> REQUIRES ENV</span>`
       : `<span class="status-badge-pill ${badge.cls}">${badge.dot} ${badge.text}</span>`;
@@ -677,6 +754,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="app-actions-right">
               ${updateBtnHtml}
               <button class="btn btn-quiet btn-icon-only" data-action="folder" data-app-id="${app.id}" title="Open Application Directory" ${!app.installed || isLocked ? "disabled" : ""}><i class="bi bi-folder2-open"></i></button>
+              ${uninstallBtnHtml}
             </div>
           </div>
         </div>
@@ -794,12 +872,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeInstallerModal() {
-    if (store.isEnvSetupMandatory && !store.envExists) {
+    // The first-run setup is normally undismissable until it succeeds - but
+    // that must never trap the user behind a failed install with no way out.
+    if (store.isEnvSetupMandatory && !store.envReady && !store.envSetupFailed) {
       return;
     }
     if (els.installerModal) els.installerModal.classList.add("hidden");
     store.activeInstallerAppId = null;
     store.isEnvSetupMandatory = false;
+    store.envSetupFailed = false;
+  }
+
+  // Reopen the installer modal for whatever the backend says is still
+  // running, so reloading the page mid-install shows real progress instead
+  // of a misleading "Setup Environment" button.
+  function rejoinActiveJobs(jobs) {
+    for (const job of jobs) {
+      if (job.key === "env") {
+        openEnvInstallerModal(store.isEnvSetupMandatory);
+        if (job.progress) handleEnvProgressEvent(job.progress);
+      } else if (job.key.startsWith("app:")) {
+        const appId = job.key.slice("app:".length);
+        if (store.apps[appId]) {
+          openInstallerModal(appId);
+          if (job.progress) handleInstallerProgressEvent(job.progress);
+        }
+      }
+    }
   }
 
   // ---- Changelog Modal Controller ----
@@ -815,6 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const resp = await fetch("/api/changelog");
       const data = await resp.json();
+      if (!resp.ok) throw new Error(data && data.error ? data.error : `HTTP ${resp.status}`);
       renderChangelog(data);
     } catch (err) {
       els.changelogModalBody.innerHTML = `
@@ -1031,7 +1131,7 @@ document.addEventListener("DOMContentLoaded", () => {
           els.btnInstallerLaunch.classList.remove("hidden");
           els.btnInstallerLaunch.onclick = () => {
             closeInstallerModal();
-            fetch(`/api/apps/${appId}/launch`, { method: "POST" });
+            api(`/api/apps/${appId}/launch`, { method: "POST" });
           };
         }
         if (els.btnInstallerDone) {
@@ -1061,7 +1161,34 @@ document.addEventListener("DOMContentLoaded", () => {
       updateInstallerProgressRing(percent);
       if (els.installerStatusDetail) els.installerStatusDetail.textContent = message;
 
-      if (stage === "venv") {
+      // is_error must win over stage: the backend reports a failure with
+      // whatever stage it happened during ("venv", "pytorch", ...), so
+      // checking stage first here meant a failed install just sat showing
+      // "Installing PyTorch..." forever - no error, no Close, no Retry, and
+      // on first run the Close button starts out hidden, so there was no way
+      // out of the modal at all.
+      if (progress.is_error) {
+        store.envSetupFailed = true;
+        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Environment Setup Error ⚠️";
+        if (els.btnInstallerClose) els.btnInstallerClose.classList.remove("hidden");
+        if (els.btnInstallerDone) {
+          els.btnInstallerDone.classList.remove("hidden");
+          els.btnInstallerDone.innerHTML = '<i class="bi bi-arrow-repeat"></i> Retry Setup';
+          els.btnInstallerDone.onclick = () => {
+            store.envSetupFailed = false;
+            resetInstallerStepper();
+            updateInstallerProgressRing(0);
+            if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Retrying setup...";
+            showToast("Retrying Python environment setup...", "info", 3000);
+            // Reuse whatever the user actually chose last time (or the live
+            // toggle state, if they haven't touched it) - a bare retry used
+            // to silently drop back to "auto" (CUDA), undoing a CPU-only
+            // choice without telling anyone.
+            const wantsGpu = store.lastEnvSetupVariant != null ? store.lastEnvSetupVariant : getWantsGpu();
+            postEnvSetup(wantsGpu);
+          };
+        }
+      } else if (stage === "venv") {
         if (els.stepDownload) els.stepDownload.className = "step-item active";
         if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Setting up Python virtual environment...";
       } else if (stage === "pytorch" || stage === "dependencies") {
@@ -1083,32 +1210,12 @@ document.addEventListener("DOMContentLoaded", () => {
           els.btnInstallerDone.innerHTML = '<i class="bi bi-rocket-takeoff-fill"></i> Enter PyPottery Suite';
           els.btnInstallerDone.onclick = () => {
             store.isEnvSetupMandatory = false;
+            store.envSetupFailed = false;
             if (els.firstSetupModal) els.firstSetupModal.classList.add("hidden");
             closeInstallerModal();
-            renderEnvStatus(true);
+            renderEnvStatus({ status: "ready", ready: true });
             showToast("PyPottery Suite is ready to use!", "success", 4000);
           };
-        }
-      } else if (progress.is_error) {
-        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Environment Setup Error ⚠️";
-        if (els.btnInstallerClose) {
-          if (!store.isEnvSetupMandatory) els.btnInstallerClose.classList.remove("hidden");
-        }
-        if (els.btnInstallerDone) {
-          els.btnInstallerDone.classList.remove("hidden");
-          if (store.isEnvSetupMandatory) {
-            els.btnInstallerDone.innerHTML = '<i class="bi bi-arrow-repeat"></i> Retry Setup';
-            els.btnInstallerDone.onclick = () => {
-              resetInstallerStepper();
-              updateInstallerProgressRing(0);
-              if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Retrying setup...";
-              showToast("Retrying Python environment setup...", "info", 3000);
-              fetch("/api/env/setup", { method: "POST" });
-            };
-          } else {
-            els.btnInstallerDone.textContent = "Close";
-            els.btnInstallerDone.onclick = closeInstallerModal;
-          }
         }
       }
     }
@@ -1129,20 +1236,37 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (action === "install") {
       openInstallerModal(appId);
       showToast(`Starting installation of ${app ? app.name : appId}...`, "info", 4000);
-      fetch(`/api/apps/${appId}/install`, { method: "POST" });
+      api(`/api/apps/${appId}/install`, { method: "POST" }).then(({ ok }) => {
+        if (!ok) closeInstallerModal();
+      });
     } else if (action === "update") {
       if (!app || !app.installed) return;
       openInstallerModal(appId);
       showToast(`Updating ${app ? app.name : appId}...`, "info", 4000);
-      fetch(`/api/apps/${appId}/update`, { method: "POST" });
+      api(`/api/apps/${appId}/update`, { method: "POST" }).then(({ ok }) => {
+        if (!ok) closeInstallerModal();
+      });
     } else if (action === "launch") {
       showToast(`Launching ${app ? app.name : appId}...`, "info", 3000);
-      fetch(`/api/apps/${appId}/launch`, { method: "POST" });
+      api(`/api/apps/${appId}/launch`, { method: "POST" });
     } else if (action === "stop") {
       showToast(`Stopping ${app ? app.name : appId}...`, "warning", 3000);
-      fetch(`/api/apps/${appId}/stop`, { method: "POST" });
+      api(`/api/apps/${appId}/stop`, { method: "POST" });
     } else if (action === "folder") {
-      fetch(`/api/apps/${appId}/folder`, { method: "POST" });
+      api(`/api/apps/${appId}/folder`, { method: "POST" });
+    } else if (action === "uninstall") {
+      if (!app || !app.installed) return;
+      showConfirmModal({
+        title: `Uninstall ${app.name}?`,
+        message: `This removes ${app.name} and its files from disk. Any AI models it downloaded to the shared model cache are kept. This cannot be undone.`,
+        confirmText: "Uninstall",
+        cancelText: "Cancel",
+        danger: true,
+        onConfirm: () => {
+          showToast(`Uninstalling ${app.name}...`, "warning", 3000);
+          api(`/api/apps/${appId}/uninstall`, { method: "POST" });
+        },
+      });
     }
   });
 
@@ -1151,19 +1275,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (els.btnCheckUpdates) {
     els.btnCheckUpdates.addEventListener("click", () => {
       showToast("Checking for updates...", "info", 3000);
-      fetch("/api/updates/check", { method: "POST" });
+      api("/api/updates/check", { method: "POST" });
     });
   }
 
   if (els.btnQuit) {
     els.btnQuit.addEventListener("click", () => {
-      if (!confirm("Quit PyPottery Suite Launcher? All running applications will be stopped.")) return;
-      fetch("/api/shutdown", { method: "POST" }).finally(() => {
-        document.body.innerHTML = `
-          <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;color:#1c1917;background:#fbf9f5;text-align:center;">
-            <h2 style="font-size:1.8rem;margin-bottom:12px;color:#c2410c;">Launcher Terminated 🏺</h2>
-            <p style="color:#78716c;">PyPottery Suite launcher has been closed. You can close this browser tab.</p>
-          </div>`;
+      showConfirmModal({
+        title: "Quit Launcher",
+        message: "Quit PyPottery Suite Launcher? All running applications will be stopped.",
+        confirmText: "Quit",
+        cancelText: "Cancel",
+        danger: true,
+        onConfirm: () => {
+          api("/api/shutdown", { method: "POST", quiet: true }).finally(() => {
+            if (els.terminatedScreen) els.terminatedScreen.classList.remove("hidden");
+          });
+        },
       });
     });
   }
@@ -1318,9 +1446,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (els.btnLauncherUpdateConfirm) {
-    els.btnLauncherUpdateConfirm.addEventListener("click", () => {
+    els.btnLauncherUpdateConfirm.addEventListener("click", async () => {
       if (!store.pendingUpdateVersion) return;
       if (els.launcherUpdateBanner) els.launcherUpdateBanner.classList.add("hidden");
+
+      const { ok, data } = await api("/api/launcher/update", {
+        method: "POST", body: { version: store.pendingUpdateVersion }, quiet: true,
+      });
+
+      if (!ok && data && data.code === "manual_update") {
+        // A packaged build (frozen exe, AppImage, .app) can't rewrite itself
+        // from the inside - the old code would just keep running. Point the
+        // user at the download instead of quietly doing nothing.
+        showToast(
+          "This build updates by downloading the new version - opening the release page.",
+          "info", 6000,
+        );
+        if (data.release_url) window.open(data.release_url, "_blank", "noopener");
+        return;
+      }
+      if (!ok) {
+        showToast((data && data.error) || "Could not start the update", "error", 6000);
+        return;
+      }
+
       if (els.launcherUpdateProgressBanner) {
         els.launcherUpdateProgressBanner.classList.remove("hidden");
         if (els.launcherUpdateProgressText) {
@@ -1334,11 +1483,6 @@ document.addEventListener("DOMContentLoaded", () => {
           els.launcherUpdateProgressBar.classList.remove("error");
         }
       }
-      fetch("/api/launcher/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ version: store.pendingUpdateVersion }),
-      });
     });
   }
 
@@ -1370,6 +1514,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Still restarting / offline
         if (attempts >= maxAttempts) {
           clearInterval(interval);
+          restartPollActive = false; // otherwise a retried update can never poll again without a full reload
           if (els.launcherUpdateProgressText) {
             els.launcherUpdateProgressText.textContent = "Restart complete. Please reload this page.";
           }
@@ -1403,7 +1548,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showDriverWarning(data.message);
         break;
       case "env_status":
-        renderEnvStatus(!!data.exists);
+        renderEnvStatus(data);
         break;
       case "env_progress":
         renderEnvProgress(data);
@@ -1446,6 +1591,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (els.launcherUpdateBanner) els.launcherUpdateBanner.classList.remove("hidden");
         showToast(`Update available: PyPottery Launcher v${data.update.latest_version}`, "info", 6000);
         break;
+      case "init_failed":
+        showToast(
+          `Launcher initialization failed: ${data.message || "unknown error"}. See the log file for details.`,
+          "error", 8000,
+        );
+        break;
+      case "job_finished":
+        // Another tab (or this one, after a reload) finished a job - re-sync
+        // so a stale "still installing" state doesn't linger.
+        api("/api/state", { quiet: true }).then(({ ok, data: s }) => {
+          if (ok && s) {
+            renderEnvStatus(s.env || { status: "absent", ready: false });
+            setApps(s.apps || []);
+          }
+        });
+        break;
+      case "ping":
+        break;
       case "launcher_update_progress":
         if (els.launcherUpdateProgressBanner) els.launcherUpdateProgressBanner.classList.remove("hidden");
         if (els.launcherUpdateProgressText) els.launcherUpdateProgressText.textContent = data.message;
@@ -1465,9 +1628,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // The server sends a real "ping" event every 25s (not just an SSE comment,
+  // which never reaches JS at all) specifically so this watchdog can tell
+  // "quiet" apart from "the launcher died" - EventSource's own onerror only
+  // fires after the browser has already given up retrying for a while.
+  const SSE_WATCHDOG_MS = 45000;
+  let _sseSource = null;
+  let _sseWatchdogTimer = null;
+
+  function markConnectionLost() {
+    if (store.connectionLost) return;
+    store.connectionLost = true;
+    if (els.connectionLostBanner) els.connectionLostBanner.classList.remove("hidden");
+  }
+
+  function markConnectionRestored() {
+    if (!store.connectionLost) return;
+    store.connectionLost = false;
+    if (els.connectionLostBanner) els.connectionLostBanner.classList.add("hidden");
+    // The connection may have been down for a while - re-sync everything
+    // rather than trusting whatever events happened to arrive after.
+    api("/api/state", { quiet: true }).then(({ ok, data: s }) => {
+      if (!ok || !s) return;
+      renderEnvStatus(s.env || { status: "absent", ready: false });
+      setApps(s.apps || []);
+      if (s.hardware) renderHardware(s.hardware);
+      if (s.models) renderModelCache(s.models);
+      rejoinActiveJobs(s.jobs || []);
+    });
+  }
+
   function connectEvents() {
+    if (_sseSource) {
+      _sseSource.close();
+    }
+
     const source = new EventSource("/api/events");
+    _sseSource = source;
+
     source.onmessage = (evt) => {
+      store.lastEventAt = Date.now();
+      markConnectionRestored();
       try {
         handleEvent(JSON.parse(evt.data));
       } catch (e) {
@@ -1475,8 +1676,40 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
     source.onerror = () => {
-      // EventSource auto-reconnects
+      // The browser's built-in EventSource reconnect can take a while to
+      // kick in (and won't retry at all once the connection is CLOSED) - the
+      // watchdog below is what actually surfaces the problem to the user.
     };
+
+    if (_sseWatchdogTimer) clearInterval(_sseWatchdogTimer);
+    _sseWatchdogTimer = setInterval(() => {
+      const silent = Date.now() - store.lastEventAt;
+      if (silent > SSE_WATCHDOG_MS) {
+        markConnectionLost();
+        if (source.readyState === EventSource.CLOSED) {
+          connectEvents(); // native reconnect gave up - force a fresh attempt
+        }
+      }
+    }, 5000);
+  }
+
+  if (els.btnConnectionRetry) {
+    els.btnConnectionRetry.addEventListener("click", () => {
+      store.lastEventAt = Date.now(); // don't immediately re-trigger the watchdog
+      connectEvents();
+    });
+  }
+
+  if (els.btnOpenLogs) {
+    els.btnOpenLogs.addEventListener("click", () => {
+      api("/api/logs/open", { method: "POST" });
+    });
+  }
+
+  if (els.btnAboutDataFolder) {
+    els.btnAboutDataFolder.addEventListener("click", () => {
+      api("/api/data-folder/open", { method: "POST" });
+    });
   }
 
   // ---- Splash Screen Controller ----
@@ -1520,10 +1753,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         fetchWikiquote();
       }
-      renderEnvStatus(!!(state.env && state.env.exists));
+      renderEnvStatus(state.env || { status: "absent", ready: false });
       setApps(state.apps || []);
       (state.console || []).forEach(appendConsoleEntry);
       if (state.models) renderModelCache(state.models);
+      rejoinActiveJobs(state.jobs || []);
     } catch (e) {
       // Backend hydration fallback
       fetchWikiquote();

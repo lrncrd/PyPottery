@@ -4,7 +4,9 @@ Checks GitHub releases for new versions of applications
 """
 
 import json
+import logging
 import os
+import time
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple
 from dataclasses import dataclass
@@ -12,6 +14,8 @@ from datetime import datetime, timedelta
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 import threading
+
+logger = logging.getLogger("launcher.updates")
 
 
 @dataclass
@@ -56,6 +60,19 @@ class UpdateChecker:
         
         # GitHub API token (optional, for higher rate limits)
         self._github_token = os.environ.get("GITHUB_TOKEN")
+
+        # Unauthenticated GitHub API access is capped at 60 requests/hour per
+        # IP - with a launcher, five sub-apps and their releases all sharing
+        # one address, that's easy to exhaust. Once hit, remember the reset
+        # time and stop making requests until then instead of re-raising and
+        # retrying (and getting rate-limited again) on every single check.
+        self._rate_limited_until: Optional[float] = None
+
+    def rate_limit_reset_at(self) -> Optional[float]:
+        """Unix timestamp update checks resume at, or None if not limited."""
+        if self._rate_limited_until and self._rate_limited_until > time.time():
+            return self._rate_limited_until
+        return None
     
     def _load_cache(self) -> Dict:
         """Load cached release information"""
@@ -85,14 +102,17 @@ class UpdateChecker:
     
     def _make_request(self, url: str) -> Optional[Dict]:
         """Make HTTP request to GitHub API"""
+        if self.rate_limit_reset_at() is not None:
+            return None  # Backing off - see rate_limit_reset_at()
+
         headers = {
             "User-Agent": "PyPottery-Launcher",
             "Accept": "application/vnd.github.v3+json"
         }
-        
+
         if self._github_token:
             headers["Authorization"] = f"token {self._github_token}"
-        
+
         try:
             request = Request(url, headers=headers)
             with urlopen(request, timeout=15) as response:
@@ -100,6 +120,20 @@ class UpdateChecker:
         except HTTPError as e:
             if e.code == 404:
                 return None  # Repo or release not found
+            if e.code in (403, 429):
+                # GitHub's unauthenticated rate limit. X-RateLimit-Reset is a
+                # Unix timestamp for when it clears; fall back to an hour out
+                # if the header is missing for some reason.
+                reset_header = e.headers.get("X-RateLimit-Reset") if e.headers else None
+                try:
+                    self._rate_limited_until = float(reset_header) if reset_header else time.time() + 3600
+                except (TypeError, ValueError):
+                    self._rate_limited_until = time.time() + 3600
+                logger.warning(
+                    "GitHub API rate limit hit - pausing update checks until %s",
+                    datetime.fromtimestamp(self._rate_limited_until).strftime("%H:%M:%S"),
+                )
+                return None
             raise
         except (URLError, json.JSONDecodeError):
             return None

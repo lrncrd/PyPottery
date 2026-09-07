@@ -26,6 +26,19 @@
   </div>
 </div>
 
+<!-- Shutdown confirmation overlay - same visual language as the splash
+     screen above, shown once the launcher process has actually exited -->
+<div id="terminated-screen" class="splash-screen hidden">
+  <div class="splash-content">
+    <div class="splash-logo-container">
+      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="splash-logo" onerror="this.style.display='none'">
+      <div class="splash-logo-halo"></div>
+    </div>
+    <h1 class="splash-title">Launcher <span class="splash-accent">Terminated</span> 🏺</h1>
+    <p class="splash-subtitle">PyPottery Suite launcher has been closed. You can close this browser tab.</p>
+  </div>
+</div>
+
 <div id="app" class="app-layout">
 
   <!-- Top Warm Navigation Bar -->
@@ -69,6 +82,15 @@
   <main class="main-container">
 
     <!-- Notification Banners -->
+    <div id="banner-connection-lost" class="banner banner-warning hidden">
+      <div class="banner-icon"><i class="bi bi-wifi-off"></i></div>
+      <div class="banner-content">
+        <strong class="banner-title">Connection Lost</strong>
+        <span>The launcher stopped responding - it may have gone to sleep or been closed. Reconnecting...</span>
+      </div>
+      <button id="btn-connection-retry" class="btn btn-outline btn-sm"><i class="bi bi-arrow-clockwise"></i> Retry Now</button>
+    </div>
+
     <div id="banner-driver-warning" class="banner banner-warning hidden">
       <div class="banner-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
       <div class="banner-content">
@@ -268,6 +290,7 @@
         </div>
         <div class="console-actions">
           <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log"><i class="bi bi-clipboard"></i> Copy</button>
+          <button id="btn-open-logs" class="btn btn-outline btn-xs" title="Open the logs folder"><i class="bi bi-folder2-open"></i> Open logs folder</button>
           <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen"><i class="bi bi-trash3"></i> Clear</button>
           <button id="btn-console-toggle" class="btn btn-outline btn-xs">Show Logs</button>
         </div>
@@ -450,6 +473,11 @@
           <span>Support on Ko-fi</span>
           <i class="bi bi-heart-fill heart-icon"></i>
         </a>
+
+        <button id="btn-about-data-folder" class="about-action-btn about-btn-web" title="Contains the Python environment, installed apps and models - delete manually to remove them">
+          <i class="bi bi-folder2-open"></i>
+          <span>Show Data Folder</span>
+        </button>
       </div>
 
     </div>
@@ -532,7 +560,7 @@
     <p id="gpu-variant-modal-message" class="confirm-modal-message"></p>
     <div class="confirm-modal-actions">
       <button id="btn-gpu-variant-cancel" class="btn btn-outline">Go Back</button>
-      <button id="btn-gpu-variant-confirm" class="btn btn-primary">Reinstall with CUDA</button>
+      <button id="btn-gpu-variant-confirm" class="btn btn-primary">Confirm</button>
     </div>
   </div>
 </div>

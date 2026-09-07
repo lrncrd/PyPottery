@@ -265,8 +265,14 @@ def detect_amd_rocm() -> bool:
                 return True
         except:
             pass
-    
-    # Check for HIP runtime
+
+    # HIP_PATH/opt/rocm as a fallback signal - but PyTorch publishes no ROCm
+    # wheels for Windows at all, and AMD's HIP SDK sets HIP_PATH there anyway
+    # (it's used for DirectML/other workloads), so trusting it on Windows
+    # just sends a real GPU down a "rocm" install that has nowhere to
+    # download from and hard-fails. Only meaningful on Linux.
+    if platform.system() == "Windows":
+        return False
     hip_path = os.environ.get("HIP_PATH") or os.path.exists("/opt/rocm")
     return bool(hip_path)
 
@@ -280,21 +286,25 @@ def get_pytorch_recommendation(cuda_available: bool, cuda_version: Optional[str]
         major_minor = cuda_version.split(".")[:2]
         cuda_key = "".join(major_minor)
         
-        # Available CUDA versions for PyTorch
+        # Available CUDA versions for PyTorch. "128" covers Blackwell/RTX
+        # 50-series GPUs (sm_120) - without it they got a cu126 wheel that
+        # installs cleanly and then fails at runtime with "no kernel image
+        # is available for execution."
         cuda_map = {
+            "128": ("cu128", "https://download.pytorch.org/whl/cu128"),
             "126": ("cu126", "https://download.pytorch.org/whl/cu126"),
             "124": ("cu124", "https://download.pytorch.org/whl/cu124"),
             "121": ("cu121", "https://download.pytorch.org/whl/cu121"),
             "118": ("cu118", "https://download.pytorch.org/whl/cu118"),
         }
-        
+
         # Find best match (prefer exact, then lower)
-        for key in ["126", "124", "121", "118"]:
+        for key in ["128", "126", "124", "121", "118"]:
             if int(cuda_key) >= int(key):
                 return cuda_map[key]
-        
+
         # Fallback to latest
-        return "cu126", "https://download.pytorch.org/whl/cu126"
+        return "cu128", "https://download.pytorch.org/whl/cu128"
     
     elif mps_available:
         # Apple Silicon uses default PyPI (MPS is auto-enabled)

@@ -7,6 +7,7 @@ logic over HTTP + Server-Sent Events, for the browser-based launcher UI.
 import collections
 import dataclasses
 import json
+import logging
 import os
 import queue
 import shutil
@@ -21,7 +22,10 @@ from flask import Flask, Response, abort, jsonify, request, send_from_directory
 
 from .app_manager import AppInfo, AppManager, DownloadProgress
 from .environment_manager import EnvironmentManager, InstallProgress
+from .error_messages import classify
 from .hardware_detector import HardwareInfo, detect_hardware
+from .logging_setup import app_log_dir, get_log_dir, guarded
+from .process_utils import open_path, resource_path
 from .update_checker import UpdateChecker
 from .updater import LauncherProgress, LauncherUpdater
 from .wikiquote_fetcher import fetch_live_wikiquote
@@ -59,6 +63,18 @@ CACHE_CATEGORY_APPS = {
     "transformers": "PyPottery Lens",
     "scan": "PyPottery Scan",
     "sam2": "PyPottery Trace",
+}
+
+logger = logging.getLogger("launcher.web")
+
+# Console tags -> log levels, so everything the user sees in the UI console
+# also lands in the log file at a sensible severity.
+_TAG_LEVELS = {
+    "error": logging.ERROR,
+    "warning": logging.WARNING,
+    "success": logging.INFO,
+    "info": logging.INFO,
+    "progress": logging.INFO,
 }
 
 
@@ -99,8 +115,9 @@ class LauncherState:
 
     def __init__(self, base_path: Path):
         self.base_path = Path(base_path).resolve()
+        self.resource_path = resource_path().resolve()
         req = self.base_path / "requirements.txt"
-        bundle_req = Path(__file__).parent.parent / "requirements.txt"
+        bundle_req = self.resource_path / "requirements.txt"
         self.requirements_file = bundle_req if (not req.exists() and bundle_req.exists()) else req
         self.launcher_version = LAUNCHER_VERSION
 
@@ -112,10 +129,14 @@ class LauncherState:
         self.auto_shutdown_timer: Optional[threading.Timer] = None
         self.auto_shutdown_lock = threading.Lock()
 
-        # True while an env setup/reinstall is actively running - guards
-        # _fire() in _schedule_auto_shutdown from tearing down the launcher
-        # mid-install over a few seconds of dropped SSE connectivity.
-        self.install_in_progress = False
+        # Long-running work, keyed by "env" / "app:<id>" / "launcher_update".
+        # Serves three purposes: it stops the same install being started twice
+        # (two tabs, an impatient double-click), it keeps the auto-shutdown
+        # timer from killing the launcher mid-install, and it lets a reloaded
+        # page pick the running job back up instead of offering to start it
+        # again.
+        self.jobs = {}
+        self.jobs_lock = threading.Lock()
 
         self.hardware_info: Optional[HardwareInfo] = None
         self.env_manager: Optional[EnvironmentManager] = None
@@ -127,6 +148,52 @@ class LauncherState:
         # can stop it from a background thread (never from the serving thread).
         self.server = None
 
+    # ---- Job tracking -------------------------------------------------
+
+    @property
+    def install_in_progress(self) -> bool:
+        with self.jobs_lock:
+            return bool(self.jobs)
+
+    def try_start_job(self, key: str, kind: str, label: str) -> bool:
+        """Claim the slot for this piece of work. False if it's already taken."""
+        with self.jobs_lock:
+            if key in self.jobs:
+                return False
+            self.jobs[key] = {
+                "key": key, "kind": kind, "label": label,
+                "started_at": time.time(), "progress": None,
+            }
+        self.emit({"type": "job_started", "job": {"key": key, "kind": kind, "label": label}})
+        return True
+
+    def update_job(self, key: str, progress: dict):
+        """Remember the latest progress so a reloaded tab can catch up."""
+        with self.jobs_lock:
+            job = self.jobs.get(key)
+            if job is not None:
+                job["progress"] = progress
+
+    def finish_job(self, key: str):
+        with self.jobs_lock:
+            self.jobs.pop(key, None)
+        self.emit({"type": "job_finished", "job": {"key": key}})
+
+    def jobs_snapshot(self) -> list:
+        with self.jobs_lock:
+            return [dict(job) for job in self.jobs.values()]
+
+    def busy_response(self, key: str):
+        """409 payload for a request that collided with running work."""
+        with self.jobs_lock:
+            job = self.jobs.get(key)
+            label = job["label"] if job else "Another operation"
+        return {
+            "success": False,
+            "code": "busy",
+            "error": f"{label} is already running. Wait for it to finish.",
+        }
+
     def log(self, message: str, tag: str = "info"):
         entry = {
             "type": "console",
@@ -136,6 +203,7 @@ class LauncherState:
         }
         self.console_log.append(entry)
         self.event_bus.publish(entry)
+        logger.log(_TAG_LEVELS.get(tag, logging.INFO), "%s", message)
 
     def emit(self, event: dict):
         self.event_bus.publish(event)
@@ -179,7 +247,9 @@ def initialize_state(state: LauncherState):
     state.env_manager = EnvironmentManager(state.base_path)
     state.env_manager.set_progress_callback(lambda p: _on_env_progress(state, p))
 
-    python_exe = state.env_manager.python_executable if state.env_manager.venv_exists() else None
+    # python_available(), not venv_exists(): even a half-installed environment
+    # can tell us which PyTorch build is in there.
+    python_exe = state.env_manager.python_executable if state.env_manager.python_available() else None
     state.hardware_info = detect_hardware(python_exe)
     state.log("Hardware detection complete", "success")
     state.emit({"type": "hardware", "hardware": state.hardware_info.to_dict()})
@@ -188,11 +258,15 @@ def initialize_state(state: LauncherState):
         state.log("Incompatible NVIDIA driver detected", "warning")
         state.emit({"type": "driver_warning", "message": state.hardware_info.driver_warning})
 
-    if state.env_manager.venv_exists():
+    env_state = state.env_manager.env_state()
+    if env_state["status"] == "ready":
         state.log("Python environment found", "success")
         state.log(f"Using Python: {state.env_manager.python_executable}", "info")
     else:
-        state.log("Python environment not found - please run Setup", "warning")
+        if env_state["status"] == "absent":
+            state.log("Python environment not found - please run Setup", "warning")
+        else:
+            state.log(f"{env_state['reason']} - use Repair Environment", "warning")
         # Placeholder until Setup creates pypottery_env - AppManager won't
         # actually launch anything with this before then. Route through
         # env_manager.base_python() rather than sys.executable directly:
@@ -208,10 +282,12 @@ def initialize_state(state: LauncherState):
     state.app_manager.set_status_callback(lambda app_id, message: _on_app_status(state, app_id, message))
     state.app_manager.set_download_callback(lambda progress: _on_download_progress(state, progress))
 
-    state.emit({"type": "env_status", "exists": state.env_manager.venv_exists()})
+    state.emit({"type": "env_status", **env_state})
     state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
 
-    threading.Thread(target=_monitor_apps, args=(state,), daemon=True).start()
+    threading.Thread(
+        target=guarded(_monitor_apps, "monitor_apps"), args=(state,), daemon=True
+    ).start()
 
     _check_for_updates(state)
 
@@ -236,7 +312,7 @@ def _on_env_progress(state: LauncherState, progress: InstallProgress):
     state.log(progress.message, "error" if progress.is_error else "progress")
 
     if progress.stage == "complete" or progress.percent >= 100:
-        python_exe = state.env_manager.python_executable if state.env_manager and state.env_manager.venv_exists() else None
+        python_exe = state.env_manager.python_executable if state.env_manager and state.env_manager.python_available() else None
         state.hardware_info = detect_hardware(python_exe)
         state.emit({"type": "hardware", "hardware": state.hardware_info.to_dict()})
 
@@ -390,7 +466,21 @@ def _check_for_updates(state: LauncherState, force_refresh: bool = False):
                 "update": dataclasses.asdict(launcher_update),
             })
     except Exception as e:
-        state.log(f"Failed to check launcher updates: {e}", "error")
+        state.log(f"Failed to check launcher updates: {classify(e).message}", "error")
+
+    # _make_request() swallows a 403/429 and returns None rather than raising
+    # (see UpdateChecker), so a rate limit doesn't show up as an exception -
+    # without this check, check_all_updates() below would just come back
+    # empty and log the misleading "All applications are up to date".
+    reset_at = state.update_checker.rate_limit_reset_at()
+    if reset_at is not None:
+        when = datetime.fromtimestamp(reset_at).strftime("%H:%M")
+        state.log(
+            f"GitHub has temporarily rate-limited update checks from this computer - "
+            f"will try again after {when}.",
+            "warning",
+        )
+        return
 
     def worker():
         apps = {
@@ -418,7 +508,12 @@ def _check_for_updates(state: LauncherState, force_refresh: bool = False):
 
         state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
 
-    threading.Thread(target=worker, daemon=True).start()
+    def _failed(exc: Exception):
+        state.log(f"Update check failed: {classify(exc).message}", "error")
+
+    threading.Thread(
+        target=guarded(worker, "update_check", _failed), daemon=True
+    ).start()
 
 
 def _cancel_auto_shutdown(state: LauncherState):
@@ -434,14 +529,17 @@ def _schedule_auto_shutdown(state: LauncherState):
         # reload) - only shut down if the launcher is still tab-less.
         if state.event_bus.subscriber_count() > 0:
             return
+        # Work in progress outranks a missing tab. The disconnect may be a
+        # laptop waking up, a proxy's idle timeout or a throttled background
+        # tab - none of which are a reason to abort an install or kill a
+        # sub-app that's in the middle of a job. Re-check after another grace
+        # window instead of shutting down.
         if state.install_in_progress:
-            # A setup/reinstall is running - don't kill it over a few
-            # seconds of dropped SSE connectivity (laptop sleep, a proxy's
-            # idle timeout, a backgrounded tab being throttled). Re-check
-            # again after another grace window instead of shutting down.
             _schedule_auto_shutdown(state)
             return
-        print("No browser tab connected - shutting down launcher and all running apps")
+        if state.app_manager and state.app_manager.get_running_apps():
+            _schedule_auto_shutdown(state)
+            return
         state.log("No browser tab connected - shutting down launcher and all running apps", "warning")
         if state.app_manager:
             state.app_manager.stop_all_apps()
@@ -472,22 +570,29 @@ def create_app(state: LauncherState) -> Flask:
     @app.route("/api/state")
     def get_state():
         if state.hardware_info is None:
-            python_exe = state.env_manager.python_executable if state.env_manager and state.env_manager.venv_exists() else None
+            python_exe = state.env_manager.python_executable if state.env_manager and state.env_manager.python_available() else None
             state.hardware_info = detect_hardware(python_exe)
         return jsonify({
             "launcher_version": state.launcher_version,
             "developer_mode": DEVELOPER_MODE,
             "hardware": state.hardware_info.to_dict(),
-            "pop_quote": fetch_live_wikiquote(),
-            "env": {
-                "exists": bool(state.env_manager and state.env_manager.venv_exists()),
-                "python_executable": (
-                    str(state.env_manager.python_executable) if state.env_manager else None
-                ),
-            },
+            # Deliberately not fetched here: this route is hit on every
+            # splash-screen load, SSE reconnect and job-finished re-sync, and
+            # wikiquote.org can be slow or unreachable - the frontend already
+            # falls back to its own async /api/quote/wikiquote call when
+            # pop_quote is absent, so blocking every /api/state on it just
+            # to save that one extra request was pure latency for nothing.
+            "env": (
+                state.env_manager.env_state() if state.env_manager
+                else {"status": "absent", "ready": False, "exists": False,
+                      "reason": "Launcher still initializing", "python_executable": None}
+            ),
             "apps": state.apps_snapshot(),
             "console": list(state.console_log),
             "models": model_cache_snapshot(state),
+            # Lets a reloaded tab rejoin work that's already running instead of
+            # offering to start it a second time.
+            "jobs": state.jobs_snapshot(),
         })
 
     @app.route("/api/quote/wikiquote")
@@ -552,12 +657,25 @@ def create_app(state: LauncherState) -> Flask:
                 else None
             )
 
-        def worker():
-            state.log(f"Installing {app_info.name}...", "info")
-            state.app_manager.download_app(app_id, version)
-            state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+        job_key = f"app:{app_id}"
+        if not state.try_start_job(job_key, "app_install", f"Installing {app_info.name}"):
+            return jsonify(**state.busy_response(job_key)), 409
 
-        threading.Thread(target=worker, daemon=True).start()
+        def worker():
+            try:
+                state.log(f"Installing {app_info.name}...", "info")
+                if not state.app_manager.download_app(app_id, version):
+                    state.log(f"{app_info.name} installation failed", "error")
+                state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+            finally:
+                state.finish_job(job_key)
+
+        def _failed(exc: Exception):
+            state.log(f"Installing {app_info.name}: {classify(exc).message}", "error")
+
+        threading.Thread(
+            target=guarded(worker, f"install:{app_id}", _failed), daemon=True
+        ).start()
         return jsonify(success=True), 202
 
     @app.route("/api/apps/<app_id>/update", methods=["POST"])
@@ -569,24 +687,74 @@ def create_app(state: LauncherState) -> Flask:
         if not app_info.update_available:
             return jsonify(success=False, error="No update available"), 409
 
-        def worker():
-            clean_v = str(app_info.latest_version).lstrip("v")
-            state.log(f"Updating {app_info.name} to v{clean_v}...", "info")
-            success = state.app_manager.download_app(app_id, app_info.latest_version)
-            if success:
-                state.log(f"{app_info.name} updated successfully!", "success")
-            state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+        job_key = f"app:{app_id}"
+        if not state.try_start_job(job_key, "app_update", f"Updating {app_info.name}"):
+            return jsonify(**state.busy_response(job_key)), 409
 
-        threading.Thread(target=worker, daemon=True).start()
+        def worker():
+            try:
+                clean_v = str(app_info.latest_version).lstrip("v")
+                state.log(f"Updating {app_info.name} to v{clean_v}...", "info")
+                success = state.app_manager.download_app(app_id, app_info.latest_version)
+                if success:
+                    state.log(f"{app_info.name} updated successfully!", "success")
+                else:
+                    state.log(f"{app_info.name} update failed - the previous version is untouched", "error")
+                state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+            finally:
+                state.finish_job(job_key)
+
+        def _failed(exc: Exception):
+            state.log(f"Updating {app_info.name}: {classify(exc).message}", "error")
+
+        threading.Thread(
+            target=guarded(worker, f"update:{app_id}", _failed), daemon=True
+        ).start()
+        return jsonify(success=True), 202
+
+    @app.route("/api/apps/<app_id>/uninstall", methods=["POST"])
+    def uninstall_app(app_id):
+        if not state.app_manager or app_id not in state.app_manager.apps:
+            return jsonify(success=False, error="Unknown application"), 404
+
+        app_info = state.app_manager.apps[app_id]
+        if not app_info.installed:
+            return jsonify(success=False, error="Not installed"), 409
+
+        job_key = f"app:{app_id}"
+        if not state.try_start_job(job_key, "app_uninstall", f"Uninstalling {app_info.name}"):
+            return jsonify(**state.busy_response(job_key)), 409
+
+        def worker():
+            try:
+                success = state.app_manager.uninstall_app(app_id)
+                if not success:
+                    state.log(f"{app_info.name} could not be fully removed", "error")
+                state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
+            finally:
+                state.finish_job(job_key)
+
+        def _failed(exc: Exception):
+            state.log(f"Uninstalling {app_info.name}: {classify(exc).message}", "error")
+
+        threading.Thread(
+            target=guarded(worker, f"uninstall:{app_id}", _failed), daemon=True
+        ).start()
         return jsonify(success=True), 202
 
     @app.route("/api/apps/<app_id>/launch", methods=["POST"])
     def launch_app(app_id):
-        if not state.env_manager or not state.env_manager.venv_exists():
-            state.log("Please set up environment first", "error")
-            return jsonify(success=False, error="Environment not set up"), 409
+        if not state.env_manager:
+            return jsonify(success=False, error="Not initialized"), 409
+        env = state.env_manager.env_state()
+        if not env["ready"]:
+            state.log(env["reason"], "error")
+            return jsonify(success=False, code=env["status"], error=env["reason"]), 409
         if not state.app_manager:
             return jsonify(success=False, error="Not initialized"), 409
+        job_key = f"app:{app_id}"
+        if state.jobs.get(job_key):
+            return jsonify(**state.busy_response(job_key)), 409
 
         ok = state.app_manager.launch_app(app_id)
         app_info = state.app_manager.apps.get(app_id)
@@ -609,12 +777,10 @@ def create_app(state: LauncherState) -> Flask:
 
     @app.route("/api/env/status")
     def env_status():
-        return jsonify({
-            "exists": bool(state.env_manager and state.env_manager.venv_exists()),
-            "python_executable": (
-                str(state.env_manager.python_executable) if state.env_manager else None
-            ),
-        })
+        if not state.env_manager:
+            return jsonify({"status": "absent", "ready": False, "exists": False,
+                            "reason": "Launcher still initializing", "python_executable": None})
+        return jsonify(state.env_manager.env_state())
 
     @app.route("/api/env/setup", methods=["POST"])
     def env_setup():
@@ -639,11 +805,24 @@ def create_app(state: LauncherState) -> Flask:
             else state.hardware_info
         )
 
+        # A venv that exists but isn't usable (interpreter missing, a dangling
+        # symlink left by an AppImage's temporary mount, an install that died
+        # halfway) has to be torn down first: creating "over" it silently
+        # keeps the broken parts.
+        env_state = state.env_manager.env_state()
+        force_recreate = bool(body.get("repair")) or env_state["status"] in ("broken", "incomplete")
+
+        if not state.try_start_job("env", "env_setup", "Environment setup"):
+            return jsonify(**state.busy_response("env")), 409
+
         def worker():
-            state.install_in_progress = True
             try:
                 state.log("Starting environment setup...", "info")
-                success = state.env_manager.full_install(effective_hw, state.requirements_file)
+                if force_recreate and env_state["status"] != "absent":
+                    state.log("Existing environment is incomplete - rebuilding it from scratch", "warning")
+                success = state.env_manager.full_install(
+                    effective_hw, state.requirements_file, force_recreate=force_recreate
+                )
                 if success:
                     state.log("Environment setup complete!", "success")
                     state.app_manager = AppManager(
@@ -657,17 +836,28 @@ def create_app(state: LauncherState) -> Flask:
                     )
                 else:
                     state.log("Environment setup failed", "error")
-                state.emit({"type": "env_status", "exists": state.env_manager.venv_exists()})
+                state.emit({"type": "env_status", **state.env_manager.env_state()})
                 state.emit({"type": "apps_refresh", "apps": state.apps_snapshot()})
             finally:
-                state.install_in_progress = False
+                state.finish_job("env")
 
-        threading.Thread(target=worker, daemon=True).start()
+        def _failed(exc: Exception):
+            # full_install itself catches most things; this covers the rest so
+            # the modal doesn't spin forever on an unexpected crash.
+            state.env_manager._report_progress(
+                "dependencies", classify(exc).message, 0, is_error=True
+            )
+
+        threading.Thread(
+            target=guarded(worker, "env_setup", _failed), daemon=True
+        ).start()
         return jsonify(success=True), 202
 
     @app.route("/api/env/verify", methods=["POST"])
     def env_verify():
-        if not state.env_manager or not state.env_manager.venv_exists():
+        # python_available(), not venv_exists(): verifying a suspect
+        # environment is precisely what this is for.
+        if not state.env_manager or not state.env_manager.python_available():
             state.log("Environment not set up", "error")
             return jsonify(success=False, error="Environment not set up"), 409
 
@@ -678,8 +868,44 @@ def create_app(state: LauncherState) -> Flask:
             for line in message.strip().split("\n"):
                 state.log(f"  {line}", "info")
         else:
-            state.log(f"PyTorch verification failed: {message}", "error")
+            # The raw output here is a Python traceback - useful in the log,
+            # unreadable in the UI.
+            logger.error("PyTorch verification failed:\n%s", message)
+            state.log(
+                "PyTorch verification failed - the environment looks incomplete. "
+                "Try Repair Environment (details in the log file).",
+                "error",
+            )
         return jsonify(success=success, message=message)
+
+    @app.route("/api/logs/open", methods=["POST"])
+    def open_logs():
+        log_dir = get_log_dir()
+        if not log_dir:
+            return jsonify(success=False, error="No log directory available"), 404
+        return jsonify(success=open_path(log_dir), path=str(log_dir))
+
+    @app.route("/api/data-folder/open", methods=["POST"])
+    def open_data_folder():
+        return jsonify(success=open_path(state.base_path), path=str(state.base_path))
+
+    @app.route("/api/logs/tail")
+    def tail_logs():
+        """Last lines of the log, for when the user can't reach the folder."""
+        log_dir = get_log_dir()
+        log_file = (log_dir / "launcher.log") if log_dir else None
+        if not log_file or not log_file.exists():
+            return jsonify(success=False, error="No log file yet"), 404
+        try:
+            limit = max(1, min(int(request.args.get("n", 300)), 2000))
+        except ValueError:
+            limit = 300
+        try:
+            with open(log_file, "r", encoding="utf-8", errors="replace") as handle:
+                lines = collections.deque(handle, maxlen=limit)
+        except OSError as e:
+            return jsonify(success=False, error=str(e)), 500
+        return jsonify(success=True, path=str(log_file), lines=[line.rstrip() for line in lines])
 
     @app.route("/api/models")
     def list_models():
@@ -720,7 +946,10 @@ def create_app(state: LauncherState) -> Flask:
     def updates_check():
         if not state.app_manager:
             return jsonify(success=False, error="Not initialized"), 409
-        threading.Thread(target=_check_for_updates, args=(state,), kwargs={"force_refresh": True}, daemon=True).start()
+        threading.Thread(
+            target=guarded(_check_for_updates, "updates_check"),
+            args=(state,), kwargs={"force_refresh": True}, daemon=True,
+        ).start()
         return jsonify(success=True), 202
 
     @app.route("/api/launcher/update", methods=["POST"])
@@ -729,6 +958,20 @@ def create_app(state: LauncherState) -> Flask:
         version = body.get("version")
         if not version:
             return jsonify(success=False, error="version required"), 400
+
+        # A frozen exe, an AppImage or a .app bundle can't rewrite itself from
+        # the inside: the old code would keep running and the "update" would
+        # silently do nothing (or make the launcher vanish). Say so instead.
+        if not state.updater.can_self_update():
+            return jsonify(
+                success=False,
+                code="manual_update",
+                error="This build updates by downloading the new version.",
+                release_url=state.updater.release_page_url(),
+            ), 409
+
+        if not state.try_start_job("launcher_update", "launcher_update", "Launcher update"):
+            return jsonify(**state.busy_response("launcher_update")), 409
 
         def worker():
             clean_v = str(version).lstrip("v")
@@ -767,17 +1010,32 @@ def create_app(state: LauncherState) -> Flask:
 
                 python_exe = (
                     state.env_manager.python_executable
-                    if (state.env_manager and state.env_manager.venv_exists())
+                    if (state.env_manager and state.env_manager.python_available())
                     else None
                 )
 
-                # Spawn new launcher instance
-                state.updater.spawn_new_instance(python_executable=python_exe)
+                # Only shut ourselves down once the replacement is actually
+                # running - otherwise the launcher just disappears and the
+                # user is left staring at "Restart complete, reload the page".
+                if state.updater.spawn_new_instance(python_executable=python_exe):
+                    state.finish_job("launcher_update")
+                    state.stop_event.set()
+                    if state.server is not None:
+                        state.server.shutdown()
+                    return
 
-                # Cleanly shut down current server
-                state.stop_event.set()
-                if state.server is not None:
-                    state.server.shutdown()
+                state.log(
+                    "Update installed, but the launcher could not restart itself - "
+                    "close this window and start PyPottery again.",
+                    "warning",
+                )
+                state.emit({
+                    "type": "launcher_update_progress",
+                    "stage": "error",
+                    "message": "Update installed. Please close and reopen PyPottery to finish.",
+                    "percent": 100,
+                    "error": True,
+                })
             else:
                 state.log("Launcher update failed", "error")
                 state.emit({
@@ -787,8 +1045,21 @@ def create_app(state: LauncherState) -> Flask:
                     "percent": 0,
                     "error": True,
                 })
+            state.finish_job("launcher_update")
 
-        threading.Thread(target=worker, daemon=True).start()
+        def _failed(exc: Exception):
+            state.finish_job("launcher_update")
+            state.emit({
+                "type": "launcher_update_progress",
+                "stage": "error",
+                "message": classify(exc).message,
+                "percent": 0,
+                "error": True,
+            })
+
+        threading.Thread(
+            target=guarded(worker, "launcher_update", _failed), daemon=True
+        ).start()
         return jsonify(success=True), 202
 
     @app.route("/api/shutdown", methods=["POST"])
@@ -818,7 +1089,10 @@ def create_app(state: LauncherState) -> Flask:
                         event = q.get(timeout=25)
                         yield f"data: {json.dumps(event)}\n\n"
                     except queue.Empty:
-                        yield ": keepalive\n\n"
+                        # A real event, not an SSE comment: the browser can
+                        # time it and tell "quiet" apart from "the launcher
+                        # died" - a comment reaches no JS handler.
+                        yield f"data: {json.dumps({'type': 'ping'})}\n\n"
             except GeneratorExit:
                 pass
             finally:
@@ -842,15 +1116,41 @@ def create_app(state: LauncherState) -> Flask:
         if not allowed:
             abort(404)
 
-        full_path = (state.base_path / filename).resolve()
-        try:
-            full_path.relative_to(state.base_path.resolve())
-        except ValueError:
-            abort(404)
+        # Sub-app logos live with the downloaded apps (writable data); the
+        # launcher's own images ship with the application itself. On macOS
+        # those are now two different directories.
+        roots = (
+            [state.base_path] if filename.startswith("apps/")
+            else [state.resource_path, state.base_path]
+        )
 
-        if not full_path.exists():
-            abort(404)
+        for root in roots:
+            root = Path(root).resolve()
+            full_path = (root / filename).resolve()
+            try:
+                full_path.relative_to(root)
+            except ValueError:
+                continue
+            if full_path.exists():
+                return send_from_directory(root, filename)
 
-        return send_from_directory(state.base_path, filename)
+        abort(404)
+
+    @app.errorhandler(404)
+    def handle_404(_error):
+        return jsonify(success=False, code="not_found", error="Not found"), 404
+
+    @app.errorhandler(405)
+    def handle_405(_error):
+        return jsonify(success=False, code="method_not_allowed", error="Method not allowed"), 405
+
+    @app.errorhandler(Exception)
+    def handle_unexpected(error):
+        # Without this Flask returns an HTML error page, which the frontend
+        # then fails to parse as JSON - turning any backend bug into a
+        # baffling "Unexpected token '<'" in the UI.
+        logger.exception("Unhandled error serving %s", request.path)
+        failure = classify(error)
+        return jsonify(success=False, code=failure.code, error=failure.message), 500
 
     return app

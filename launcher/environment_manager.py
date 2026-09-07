@@ -3,8 +3,11 @@ Environment Manager for PyPottery Suite
 Handles virtual environment creation and dependency installation
 """
 
+import logging
 import os
+import re
 import sys
+import time
 import venv
 import subprocess
 import platform
@@ -14,8 +17,17 @@ from pathlib import Path
 from typing import Optional, Callable, List, Tuple
 from dataclasses import dataclass
 
-from .hardware_detector import HardwareInfo, detect_hardware
-from .process_utils import no_window_kwargs
+from .error_messages import classify
+from .hardware_detector import HardwareInfo, detect_hardware, detect_venv_pytorch
+from .process_utils import no_window_kwargs, resource_path
+
+logger = logging.getLogger("launcher.env")
+
+# Written only once a full install has actually succeeded. Its absence is what
+# tells a half-finished environment (venv created, PyTorch download died) apart
+# from a working one - the interpreter existing proves nothing.
+ENV_MARKER_NAME = ".pypottery_env.json"
+ENV_MARKER_SCHEMA = 1
 
 
 @dataclass
@@ -91,7 +103,9 @@ class EnvironmentManager:
             self.uv_path = venv_uv
             return self.uv_path
 
-        if self.venv_exists() and self.pip_executable.exists():
+        # Deliberately python_available(), not venv_exists(): this runs during
+        # an install, when the environment is by definition not "ready" yet.
+        if self.python_available() and self.pip_executable.exists():
             try:
                 self._report_progress("venv", "Installing uv via pip for ultra-fast setup...", 11)
                 success, _ = self.run_pip_command(["install", "uv", "--quiet"], capture_output=True)
@@ -129,14 +143,109 @@ class EnvironmentManager:
         """Set callback for progress updates"""
         self._progress_callback = callback
     
-    def _report_progress(self, stage: str, message: str, percent: float, is_error: bool = False):
-        """Report progress to callback if set"""
+    def _report_progress(self, stage: str, message: str, percent: float,
+                         is_error: bool = False, detail: str = ""):
+        """
+        Report progress to callback if set.
+
+        `detail` is the raw tool output (pip/uv can emit hundreds of lines):
+        it goes to the log file only, never into the UI.
+        """
+        if detail:
+            logger.log(logging.ERROR if is_error else logging.INFO,
+                       "%s [%s]\n%s", message, stage, detail.strip())
+        elif is_error:
+            logger.error("%s [%s]", message, stage)
+
         if self._progress_callback:
             self._progress_callback(InstallProgress(stage, message, percent, is_error))
-    
+
+    # ---- Environment state --------------------------------------------
+
+    @property
+    def marker_path(self) -> Path:
+        return self.venv_path / ENV_MARKER_NAME
+
+    def _read_marker(self) -> Optional[dict]:
+        try:
+            data = json.loads(self.marker_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+        return data if data.get("schema") == ENV_MARKER_SCHEMA else None
+
+    def _write_marker(self, hardware_info: HardwareInfo):
+        payload = {
+            "schema": ENV_MARKER_SCHEMA,
+            "pytorch_variant": hardware_info.recommended_pytorch_variant,
+            "pytorch_index_url": hardware_info.pytorch_index_url,
+            "python_version": platform.python_version(),
+            "completed_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        }
+        tmp = self.marker_path.with_suffix(".tmp")
+        try:
+            tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+            os.replace(tmp, self.marker_path)
+        except OSError:
+            logger.exception("Could not write the environment marker")
+
+    def _clear_marker(self):
+        try:
+            self.marker_path.unlink()
+        except OSError:
+            pass
+
+    def python_available(self) -> bool:
+        """Can the venv's interpreter actually be run? (Not 'is it complete'.)"""
+        python = self.python_executable
+        # A venv built from an AppImage's temporary mount leaves a symlink
+        # pointing at a path that no longer exists on the next launch;
+        # exists() already returns False for that, but be explicit about it.
+        if not python.exists():
+            return False
+        try:
+            result = subprocess.run(
+                [str(python), "-c", "pass"], capture_output=True, timeout=20, **no_window_kwargs()
+            )
+            return result.returncode == 0
+        except Exception:
+            return False
+
+    def env_state(self) -> dict:
+        """
+        What shape is the environment in?
+
+        absent     - never created
+        broken     - present but the interpreter won't run (deleted, or a
+                     dangling symlink from a previous AppImage mount)
+        incomplete - interpreter runs, but the install never finished
+        ready      - usable
+        """
+        python = self.python_executable
+        payload = {
+            "python_executable": str(python),
+            "variant": None,
+            "reason": "",
+        }
+
+        if not self.venv_path.exists():
+            return {**payload, "status": "absent", "ready": False, "exists": False,
+                    "reason": "No Python environment yet"}
+
+        if not self.python_available():
+            return {**payload, "status": "broken", "ready": False, "exists": True,
+                    "reason": "The Python environment is damaged and needs to be rebuilt"}
+
+        marker = self._read_marker()
+        if not marker:
+            return {**payload, "status": "incomplete", "ready": False, "exists": True,
+                    "reason": "Setup did not finish - the environment needs repairing"}
+
+        return {**payload, "status": "ready", "ready": True, "exists": True,
+                "variant": marker.get("pytorch_variant")}
+
     def venv_exists(self) -> bool:
-        """Check if virtual environment exists"""
-        return self.python_executable.exists()
+        """True only for an environment that finished installing and still runs."""
+        return self.env_state()["status"] == "ready"
 
     def base_python(self) -> str:
         """
@@ -151,16 +260,80 @@ class EnvironmentManager:
         of the frozen exe, not a working Python). The exe package bundles a
         real portable Python next to itself for exactly this, see
         build_windows_release.py's create_pyinstaller_package().
+
+        For an AppImage the problem is the same in a different disguise:
+        sys.executable lives on a temporary mount whose path changes on every
+        run, so a venv built from it dangles the next time the app starts.
+        ensure_base_python() copies that interpreter somewhere permanent and
+        this returns the copy.
         """
         if getattr(sys, "frozen", False):
-            bundled = self.base_path / "python_runtime" / "python.exe"
+            for root in (resource_path(), self.base_path):
+                bundled = root / "python_runtime" / "python.exe"
+                if bundled.exists():
+                    return str(bundled)
+            raise RuntimeError(
+                "Bundled Python runtime not found (expected at "
+                f"{resource_path() / 'python_runtime' / 'python.exe'}). "
+                "Reinstall PyPottery or use the WinPython package instead."
+            )
+
+        if os.environ.get("APPIMAGE"):
+            bundled = self._appimage_runtime_dir() / "bin" / "python3"
             if bundled.exists():
                 return str(bundled)
             raise RuntimeError(
                 f"Bundled Python runtime not found (expected at {bundled}). "
-                "Reinstall PyPottery or use the WinPython package instead."
+                "Make sure PyPottery can write to the folder containing the .AppImage file."
             )
+
         return sys.executable
+
+    def _appimage_runtime_dir(self) -> Path:
+        return self.base_path / "python_runtime"
+
+    def ensure_base_python(self):
+        """
+        Give the launcher a Python interpreter that will still be there next
+        time. Only does anything inside an AppImage, where the bundled
+        interpreter lives on a mount that disappears when the app exits.
+        """
+        if getattr(sys, "frozen", False) or not os.environ.get("APPIMAGE"):
+            return
+
+        target = self._appimage_runtime_dir()
+        marker = target / ".pypottery_runtime.json"
+        version = platform.python_version()
+
+        if (target / "bin" / "python3").exists():
+            try:
+                if json.loads(marker.read_text(encoding="utf-8")).get("python_version") == version:
+                    return
+            except (OSError, ValueError):
+                pass  # Unreadable or from an older build - copy it again.
+
+        source = Path(sys.executable).resolve().parent.parent
+        self._report_progress(
+            "venv", "Preparing the bundled Python runtime (one-time, this takes a minute)...", 2
+        )
+        logger.info("Copying AppImage runtime %s -> %s", source, target)
+
+        staging = target.with_name("python_runtime.tmp")
+        try:
+            if staging.exists():
+                shutil.rmtree(staging)
+            shutil.copytree(source, staging, symlinks=True)
+            (staging / ".pypottery_runtime.json").write_text(
+                json.dumps({"python_version": version}), encoding="utf-8"
+            )
+            if target.exists():
+                shutil.rmtree(target)
+            os.replace(staging, target)
+            self._report_progress("venv", "Bundled Python runtime ready", 4)
+        except OSError as e:
+            shutil.rmtree(staging, ignore_errors=True)
+            self._report_progress("venv", classify(e).message, 0, is_error=True, detail=str(e))
+            raise
 
     def create_venv(self, force_recreate: bool = False) -> bool:
         """
@@ -173,15 +346,27 @@ class EnvironmentManager:
             True if successful, False otherwise
         """
         self._report_progress("venv", "Creating virtual environment...", 5)
-        
-        if self.venv_exists():
-            if force_recreate:
-                self._report_progress("venv", "Removing existing environment...", 2)
-                shutil.rmtree(self.venv_path)
-            else:
+
+        self.ensure_base_python()
+
+        if self.venv_path.exists():
+            reusable = self.python_available() and not force_recreate
+            if reusable:
                 self._report_progress("venv", "Virtual environment already exists", 10)
                 return True
-        
+            # Deleting outright rather than passing --clear: neither venv nor
+            # uv replaces a *dangling* symlink (the state an AppImage leaves
+            # behind once its temporary mount is gone), so they would both
+            # "succeed" and leave the environment just as broken.
+            self._report_progress("venv", "Removing the previous environment...", 2)
+            try:
+                shutil.rmtree(self.venv_path)
+            except OSError as e:
+                self._report_progress(
+                    "venv", classify(e).message, 0, is_error=True, detail=str(e)
+                )
+                return False
+
         if self.uv_path:
             try:
                 cmd = [str(self.uv_path), "venv", str(self.venv_path), "--python", self.base_python()]
@@ -348,72 +533,125 @@ class EnvironmentManager:
         if success:
             self._report_progress("pytorch", "PyTorch installed successfully", 40)
         else:
-            self._report_progress("pytorch", f"PyTorch installation failed: {output}", 15, is_error=True)
-        
+            self._report_progress(
+                "pytorch", f"PyTorch installation failed. {classify(output).message}",
+                15, is_error=True, detail=output,
+            )
+
         return success
     
-    def install_requirements(self, requirements_file: Path) -> bool:
+    def install_requirements(self, requirements_file: Path,
+                             hardware_info: Optional[HardwareInfo] = None) -> bool:
         """
         Install requirements from file, excluding PyTorch packages.
-        
+
         Args:
             requirements_file: Path to requirements.txt
-            
+            hardware_info: If given, used after installing to confirm a
+                transitive dependency didn't silently swap out the GPU build
+                of PyTorch for a CPU one (see the re-check below).
+
         Returns:
             True if successful
         """
         if not requirements_file.exists():
             self._report_progress("dependencies", f"Requirements file not found: {requirements_file}", 40, is_error=True)
             return False
-        
+
         self._report_progress("dependencies", "Installing dependencies...", 45)
-        
-        # Read requirements and filter out PyTorch packages (already installed)
+
+        # Read requirements and filter out PyTorch packages (already installed).
+        # requirements.txt is a file we author ourselves, not arbitrary user
+        # input, so this doesn't need to be a full pip requirements parser -
+        # but it does need to not mis-handle its own valid syntax:
+        #  - "-r other.txt" / "--extra-index-url ..." / "-e ." are pip options,
+        #    not package names, and must never be split across a batch boundary
+        #    (they'd be sent to pip completely detached from what they modify);
+        #  - an inline "package==1.0  # note" comment must not become part of
+        #    the version spec passed to pip.
         pytorch_packages = {"torch", "torchvision", "torchaudio"}
         filtered_requirements = []
-        
+        global_pip_args = []
+
         with open(requirements_file, "r") as f:
-            for line in f:
-                line = line.strip()
+            for raw_line in f:
+                line = raw_line.strip()
                 if not line or line.startswith("#"):
+                    continue
+                # Strip an inline comment (a '#' preceded by whitespace),
+                # mirroring pip's own COMMENT_RE - a bare '#' with no
+                # preceding space is left alone (could be part of a URL).
+                line = re.sub(r"(?:\s+)#.*$", "", line).strip()
+                if not line:
+                    continue
+                if line.startswith("-"):
+                    global_pip_args.extend(line.split())
                     continue
                 # Extract package name (before ==, >=, etc.)
                 pkg_name = line.split("==")[0].split(">=")[0].split("<=")[0].split("[")[0].strip()
                 if pkg_name.lower() not in pytorch_packages:
                     filtered_requirements.append(line)
-        
-        # Create temporary requirements file
-        temp_req_file = self.base_path / "temp_requirements.txt"
-        with open(temp_req_file, "w") as f:
-            f.write("\n".join(filtered_requirements))
-        
-        try:
-            # Install in batches to show progress
-            total = len(filtered_requirements)
-            batch_size = 10
-            
-            for i in range(0, total, batch_size):
-                batch = filtered_requirements[i:i+batch_size]
-                progress = 45 + (i / total) * 45  # 45-90%
-                
+
+        # Install in batches to show progress
+        total = len(filtered_requirements)
+        batch_size = 10
+
+        for i in range(0, total, batch_size):
+            batch = filtered_requirements[i:i + batch_size]
+            progress = 45 + (i / total) * 45 if total else 45  # 45-90%
+
+            self._report_progress(
+                "dependencies",
+                f"Installing packages ({i+1}-{min(i+batch_size, total)}/{total})...",
+                progress
+            )
+
+            success, output = self._run_pip(["install"] + global_pip_args + batch)
+            if not success:
                 self._report_progress(
-                    "dependencies", 
-                    f"Installing packages ({i+1}-{min(i+batch_size, total)}/{total})...", 
-                    progress
+                    "dependencies", f"Installing dependencies failed. {classify(output).message}",
+                    progress, is_error=True, detail=output,
                 )
-                
-                success, output = self._run_pip(["install"] + batch)
-                if not success:
-                    self._report_progress("dependencies", f"Installation failed: {output}", progress, is_error=True)
-                    return False
-            
-            self._report_progress("dependencies", "All dependencies installed", 90)
-            return True
-            
-        finally:
-            # Cleanup temp file
-            if temp_req_file.exists():
-                temp_req_file.unlink()
+                return False
+
+        self._report_progress("dependencies", "All dependencies installed", 88)
+
+        if hardware_info is not None:
+            self._reverify_pytorch_variant(hardware_info)
+
+        return True
+
+    def _reverify_pytorch_variant(self, hardware_info: HardwareInfo):
+        """
+        A transitive dependency pulled in by requirements.txt (something
+        merely requiring "torch>=2.0", say) can in principle make pip
+        resolve and reinstall a plain CPU build from PyPI's default index,
+        silently undoing a GPU install that just succeeded. Cheap insurance:
+        check what's actually there now, and if it doesn't match, put the
+        right build back.
+        """
+        wants_cuda = bool(hardware_info.pytorch_index_url) and \
+            hardware_info.recommended_pytorch_variant.startswith("cu")
+        if not wants_cuda:
+            return
+
+        _, device = detect_venv_pytorch(self.python_executable)
+        if device and device.startswith("CUDA"):
+            return
+
+        self._report_progress(
+            "dependencies",
+            "A dependency reset PyTorch to a CPU-only build - reinstalling the GPU version...",
+            89,
+        )
+        packages = ["torch", "torchvision", "torchaudio"]
+        cmd = ["install", "--force-reinstall"] + packages + ["--index-url", hardware_info.pytorch_index_url]
+        success, output = self._run_pip(cmd)
+        if not success:
+            self._report_progress(
+                "dependencies", f"Could not restore the GPU build of PyTorch. {classify(output).message}",
+                89, detail=output,
+            )
     
     def install_package(self, package: str) -> bool:
         """Install a single package"""
@@ -476,21 +714,28 @@ print(f"Tensor test passed: {x.shape}")
         except Exception as e:
             return False, str(e)
     
-    def full_install(self, hardware_info: HardwareInfo, requirements_file: Path) -> bool:
+    def full_install(self, hardware_info: HardwareInfo, requirements_file: Path,
+                     force_recreate: bool = False) -> bool:
         """
         Perform complete installation: venv + PyTorch + dependencies.
         
         Args:
             hardware_info: Hardware detection results
             requirements_file: Path to requirements.txt
-            
+            force_recreate: Rebuild the venv from scratch instead of reusing it
+
         Returns:
             True if all steps successful
         """
+        # Any environment being (re)built is incomplete until proven otherwise:
+        # clearing the marker first means a run that dies halfway can never
+        # leave behind something that still claims to be ready.
+        self._clear_marker()
+
         # Step 1: Create venv
-        if not self.create_venv():
+        if not self.create_venv(force_recreate=force_recreate):
             return False
-        
+
         # Step 2: Ensure uv is ready for maximum installation speed
         if not self.uv_path:
             self.ensure_uv()
@@ -498,19 +743,24 @@ print(f"Tensor test passed: {x.shape}")
         # Step 3: Install PyTorch
         if not self.install_pytorch(hardware_info):
             return False
-        
+
         # Step 4: Verify PyTorch
         self._report_progress("pytorch", "Verifying PyTorch installation...", 42)
         success, msg = self.verify_pytorch_installation()
         if not success:
-            self._report_progress("pytorch", f"PyTorch verification failed: {msg}", 42, is_error=True)
-            # Continue anyway, might work for CPU-only
-        
+            # Not fatal - a CPU-only install can still be perfectly usable -
+            # but the full output belongs in the log, not in the UI.
+            self._report_progress(
+                "pytorch", "PyTorch verification reported a problem - continuing anyway", 42,
+                detail=msg,
+            )
+
         # Step 5: Install other dependencies
-        if not self.install_requirements(requirements_file):
+        if not self.install_requirements(requirements_file, hardware_info):
             return False
-        
+
         # Step 6: Complete
+        self._write_marker(hardware_info)
         self._report_progress("complete", "Installation complete!", 100)
         return True
     

@@ -3,7 +3,9 @@ Application Manager for PyPottery Suite
 Handles downloading, launching, and managing PyPottery applications
 """
 
+import logging
 import os
+import signal
 import sys
 import subprocess
 import platform
@@ -19,6 +21,16 @@ from typing import Optional, Callable, Dict, List, Tuple
 from dataclasses import dataclass
 from urllib.request import urlopen, Request
 from urllib.error import URLError
+
+from .error_messages import classify
+from .logging_setup import app_log_dir, guarded
+from .process_utils import no_window_kwargs, open_path
+
+logger = logging.getLogger("launcher.apps")
+
+# Downloads are unpacked here and only swapped into place once they're known
+# to be complete, so a failure can never destroy a working installation.
+STAGING_DIRNAME = ".staging"
 
 
 @dataclass
@@ -91,15 +103,22 @@ class AppManager:
             # since nothing else ever populates launcher/static/vendor.
             self.vendor_assets_manager.sync_to_app(Path(__file__).parent)
 
-        threading.Thread(target=_prepare_vendor_assets, daemon=True).start()
+        threading.Thread(
+            target=guarded(_prepare_vendor_assets, "vendor_assets"), daemon=True
+        ).start()
 
         # Load app configurations
         self.apps: Dict[str, AppInfo] = {}
         self._load_app_configs()
-        
+
         # Running processes
         self._processes: Dict[str, subprocess.Popen] = {}
-        
+        # Open log files for those processes, closed when they stop.
+        self._log_files: Dict[str, object] = {}
+
+        self._cleanup_stale_downloads()
+
+
         # Callbacks
         self._status_callback: Optional[Callable[[str, str], None]] = None
         self._download_callback: Optional[Callable[[DownloadProgress], None]] = None
@@ -275,9 +294,13 @@ class AppManager:
             # Try the URL, if 404 try with/without 'v' prefix
             request = Request(zip_url, headers={"User-Agent": "PyPottery-Launcher"})
             
-            temp_zip = self.base_path / f"temp_{app_id}.zip"
+            staging_root = self.apps_path / STAGING_DIRNAME
+            staging_root.mkdir(parents=True, exist_ok=True)
+            stage_dir = staging_root / f"{app_id}-{os.getpid()}-{int(time.time())}"
+            stage_dir.mkdir(parents=True, exist_ok=True)
+            temp_zip = stage_dir / "download.zip"
             response = None
-            
+
             try:
                 response = urlopen(request, timeout=120)
             except URLError as e:
@@ -340,45 +363,57 @@ class AppManager:
                             )
             
             response.close()
+
+            # A stream cut short (dropped Wi-Fi, a proxy giving up) yields a
+            # file that unzips to garbage or half an app. Catch it here, while
+            # the working installation is still untouched.
+            if total_size > 0 and downloaded != total_size:
+                raise IOError(
+                    f"Truncated download: got {downloaded} of {total_size} bytes"
+                )
+
             self._report_download_progress(app_id, "extracting", "Download complete. Preparing extraction...", 0, 100)
-            
-            # Remove existing installation
-            if app_path.exists():
-                self._report_status(app_id, "Removing old version...")
-                self._report_download_progress(app_id, "extracting", "Removing old version...", 0, 100)
-                shutil.rmtree(app_path)
-            
-            # Extract zip
+
+            # Extract into staging - the existing install stays exactly where
+            # it is until the new one is complete and verified.
             self._report_status(app_id, "Extracting files...")
             self._report_download_progress(app_id, "extracting", "Extracting files...", 0, 100)
-            
+
+            extract_root = stage_dir / "extract"
+            extract_root.mkdir(parents=True, exist_ok=True)
+
             with zipfile.ZipFile(temp_zip, 'r') as zip_ref:
-                # Get the root folder name in the zip
-                root_folder = zip_ref.namelist()[0].split('/')[0]
                 file_list = zip_ref.namelist()
+                if not file_list:
+                    raise zipfile.BadZipFile("The downloaded archive is empty")
+                root_folder = file_list[0].split('/')[0]
                 total_files = len(file_list)
-                
+
                 for idx, file in enumerate(file_list):
-                    zip_ref.extract(file, self.apps_path)
+                    zip_ref.extract(file, extract_root)
                     if idx % 10 == 0:  # Update every 10 files
                         self._report_download_progress(
                             app_id, "extracting",
                             f"Extracting files... {idx + 1}/{total_files}",
                             idx + 1, total_files
                         )
-            
-            # Rename extracted folder to standard name
-            extracted_path = self.apps_path / root_folder
-            if extracted_path.exists():
-                extracted_path.rename(app_path)
-            
-            # Cleanup
-            temp_zip.unlink()
-            
+
+            extracted_path = extract_root / root_folder
+            if not extracted_path.is_dir():
+                raise IOError("The downloaded archive did not contain the expected folder")
+
+            # Does this actually look like the app? Better to find out now than
+            # to leave the user with a folder that can't start.
+            if not (extracted_path / app.entry_script).exists():
+                raise IOError(
+                    f"The download is missing {app.entry_script} - it may be an "
+                    "incomplete release"
+                )
+
             # Detect real version if we just downloaded "main"
             # This prevents stuck "Update Available" messages
-            detected_version = self._detect_version(app_path)
-            
+            detected_version = self._detect_version(extracted_path)
+
             # If we found a real version in the files, prefer it over "main"
             final_version = version
             if (not version or version in ["main", "master"]) and detected_version:
@@ -392,28 +427,114 @@ class AppManager:
             if final_version not in ("main", "master") and final_version.lower().startswith("v") and final_version[1:2].isdigit():
                 final_version = final_version[1:]
 
-            # Save version info
-            version_file = app_path / ".version"
-            version_file.write_text(final_version)
-            
+            (extracted_path / ".version").write_text(final_version)
+
+            # An update of a running app would fight the running process for
+            # its own files (guaranteed to fail on Windows).
+            if app_id in self._processes:
+                self._report_status(app_id, f"Stopping {app.name} to update it...")
+                self.stop_app(app_id)
+
+            self._report_download_progress(app_id, "extracting", "Installing...", 95, 100)
+            self._swap_into_place(app_id, extracted_path, app_path)
+
             # Update app status
             app.installed = True
             app.installed_version = final_version
             app.update_available = False
-            
+
             self._report_status(app_id, f"{app.name} installed successfully!")
             self._report_download_progress(app_id, "complete", f"{app.name} installed successfully!", 100, 100)
             return True
-            
-        except URLError as e:
-            self._report_status(app_id, f"Download failed: {e}")
-            self._report_download_progress(app_id, "error", f"Download failed: {e}", 0, 0)
-            return False
+
         except Exception as e:
-            self._report_status(app_id, f"Installation failed: {e}")
-            self._report_download_progress(app_id, "error", f"Installation failed: {e}", 0, 0)
+            logger.exception("Installing %s failed", app_id)
+            message = classify(e).message
+            # The previous installation is still on disk and still valid -
+            # re-read the truth from there so the UI can't offer to launch
+            # something that isn't there.
+            self._refresh_single_app(app_id)
+            self._report_status(app_id, f"Installation failed. {message}")
+            self._report_download_progress(app_id, "error", f"Installation failed. {message}", 0, 0)
             return False
-    
+        finally:
+            shutil.rmtree(stage_dir, ignore_errors=True)
+
+    def _swap_into_place(self, app_id: str, staged: Path, app_path: Path):
+        """
+        Replace an installation with a freshly staged one, keeping the old copy
+        until the new one is in place so a failure can be rolled back.
+        """
+        backup = None
+        if app_path.exists():
+            backup = app_path.with_name(f"{app_path.name}.old-{int(time.time())}")
+            self._rename_with_retry(app_path, backup)
+
+        try:
+            self._rename_with_retry(staged, app_path)
+        except OSError:
+            if backup is not None and not app_path.exists():
+                # Put the working version back rather than leaving nothing.
+                logger.warning("Install swap failed for %s - restoring the previous version", app_id)
+                self._rename_with_retry(backup, app_path)
+            raise
+
+        if backup is not None:
+            shutil.rmtree(backup, ignore_errors=True)
+
+    @staticmethod
+    def _rename_with_retry(source: Path, target: Path, attempts: int = 3):
+        """
+        Directory renames lose races with antivirus scanners and file indexers
+        on Windows, and those are transient - retry before giving up, then fall
+        back to a copy.
+        """
+        last_error = None
+        for attempt in range(attempts):
+            try:
+                source.rename(target)
+                return
+            except OSError as e:
+                last_error = e
+                time.sleep(0.5 * (attempt + 1))
+        try:
+            shutil.copytree(source, target)
+            shutil.rmtree(source, ignore_errors=True)
+            return
+        except OSError:
+            raise last_error if last_error else OSError(f"Could not move {source} to {target}")
+
+    def _refresh_single_app(self, app_id: str):
+        """Re-read one app's installed state from disk."""
+        app = self.apps.get(app_id)
+        if not app:
+            return
+        app_path = self._app_path(app_id)
+        app.installed = (app_path / app.entry_script).exists()
+        if not app.installed:
+            app.installed_version = None
+            return
+        version_file = app_path / ".version"
+        app.installed_version = (
+            version_file.read_text(encoding="utf-8").strip()
+            if version_file.exists()
+            else self._detect_version(app_path)
+        )
+
+    def _cleanup_stale_downloads(self):
+        """Clear staging dirs and old temp zips left by an interrupted install."""
+        try:
+            staging_root = self.apps_path / STAGING_DIRNAME
+            if staging_root.exists():
+                shutil.rmtree(staging_root, ignore_errors=True)
+            for leftover in self.apps_path.glob("*.old-*"):
+                shutil.rmtree(leftover, ignore_errors=True)
+            for leftover in self.base_path.glob("temp_*.zip"):
+                leftover.unlink(missing_ok=True)
+        except OSError:
+            logger.exception("Could not clean up leftover download files")
+
+
     def uninstall_app(self, app_id: str) -> bool:
         """
         Remove an installed application.
@@ -436,13 +557,19 @@ class AppManager:
         if app_id in self._processes:
             self.stop_app(app_id)
 
-        app_path = self.apps_path / app_id
-        if app_path.exists():
-            shutil.rmtree(app_path)
-        
+        app_path = self._app_path(app_id)
+        try:
+            if app_path.exists():
+                shutil.rmtree(app_path)
+        except OSError as e:
+            logger.exception("Could not remove %s", app_id)
+            self._report_status(app_id, f"Could not uninstall {app.name}. {classify(e).message}")
+            return False
+
         app.installed = False
         app.installed_version = None
-        
+        app.update_available = False
+
         self._report_status(app_id, f"{app.name} uninstalled")
         return True
     
@@ -500,46 +627,92 @@ class AppManager:
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUTF8"] = "1"
         
+        # Unbuffered, so a crash's last words actually reach the log file
+        # instead of dying in a 4 KB buffer.
+        env["PYTHONUNBUFFERED"] = "1"
+
         # Launch process
         try:
-            if self.is_windows:
-                # Windows: use CREATE_NEW_CONSOLE for separate window
-                # Don't pipe stdout/stderr when using CREATE_NEW_CONSOLE - the console handles I/O
-                # This prevents buffer blocking during long operations like model downloads
+            log_file = self._open_app_log(app_id)
+
+            if self.developer_mode and self.is_windows:
+                # A visible console is useful when you're editing the app;
+                # for everyone else the output goes to the log file instead.
                 process = subprocess.Popen(
                     [str(self.python_executable), str(script_path)],
                     cwd=str(app_path),
                     env=env,
-                    stdout=None,  # Let the console window handle output
-                    stderr=None,
-                    creationflags=subprocess.CREATE_NEW_CONSOLE
+                    creationflags=subprocess.CREATE_NEW_CONSOLE,
+                )
+            elif self.is_windows:
+                process = subprocess.Popen(
+                    [str(self.python_executable), str(script_path)],
+                    cwd=str(app_path),
+                    env=env,
+                    stdout=log_file or subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT if log_file else subprocess.DEVNULL,
+                    **no_window_kwargs(),
                 )
             else:
-                # Unix: detach from terminal
-                # Don't pipe stdout/stderr - prevents buffer blocking during long operations
-                # Use DEVNULL or let the terminal handle output naturally
                 process = subprocess.Popen(
                     [str(self.python_executable), str(script_path)],
                     cwd=str(app_path),
                     env=env,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    start_new_session=True
+                    stdout=log_file or subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT if log_file else subprocess.DEVNULL,
+                    start_new_session=True,
                 )
-            
+
             self._processes[app_id] = process
+            if log_file:
+                self._log_files[app_id] = log_file
+
             app.is_running = True
             app.process = process
-            
+
             # NOTE: Don't open browser here - Flask apps open it themselves
             # The Flask apps already have browser opening logic built-in
-            
+
             self._report_status(app_id, f"{app.name} started on port {app.port}")
             return True
-            
+
         except Exception as e:
-            self._report_status(app_id, f"Failed to start {app.name}: {e}")
+            logger.exception("Failed to start %s", app_id)
+            self._close_app_log(app_id)
+            self._report_status(app_id, f"Failed to start {app.name}. {classify(e).message}")
             return False
+
+    def _open_app_log(self, app_id: str):
+        """
+        Per-app log file. Without it a sub-app that dies on startup leaves no
+        trace at all: the launcher only reports "<app> has stopped".
+        """
+        directory = app_log_dir()
+        if directory is None:
+            return None
+        try:
+            path = directory / f"{app_id}.log"
+            if path.exists() and path.stat().st_size > 0:
+                previous = directory / f"{app_id}.log.1"
+                previous.unlink(missing_ok=True)
+                path.rename(previous)
+            handle = open(path, "ab")
+            handle.write(
+                f"\n=== {time.strftime('%Y-%m-%d %H:%M:%S')} launching {app_id} ===\n".encode()
+            )
+            handle.flush()
+            return handle
+        except OSError:
+            logger.exception("Could not open a log file for %s", app_id)
+            return None
+
+    def _close_app_log(self, app_id: str):
+        handle = self._log_files.pop(app_id, None)
+        if handle is not None:
+            try:
+                handle.close()
+            except OSError:
+                pass
     
     def stop_app(self, app_id: str) -> bool:
         """
@@ -560,29 +733,78 @@ class AppManager:
             return False
         
         process = self._processes[app_id]
-        
+
         try:
-            # Try graceful termination first
-            process.terminate()
-            
-            # Wait up to 5 seconds
-            try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                # Force kill
-                process.kill()
-                process.wait(timeout=2)
-            
+            self._terminate_tree(process)
+
             del self._processes[app_id]
+            self._close_app_log(app_id)
             app.is_running = False
             app.process = None
-            
+
             self._report_status(app_id, f"{app.name} stopped")
             return True
-            
+
         except Exception as e:
+            logger.exception("Failed to stop %s", app_id)
             self._report_status(app_id, f"Failed to stop {app.name}: {e}")
             return False
+
+    def _terminate_tree(self, process: subprocess.Popen):
+        """
+        Stop a sub-app and everything it spawned.
+
+        terminate() alone only reaches the process we started; PyTorch
+        dataloaders and multiprocessing pools leave children behind that keep
+        holding the app's port and GPU memory.
+        """
+        try:
+            import psutil
+        except ImportError:
+            psutil = None
+
+        if psutil is not None:
+            try:
+                parent = psutil.Process(process.pid)
+                children = parent.children(recursive=True)
+                for child in children:
+                    try:
+                        child.terminate()
+                    except psutil.Error:
+                        pass
+                parent.terminate()
+                _, alive = psutil.wait_procs([parent] + children, timeout=5)
+                for survivor in alive:
+                    try:
+                        survivor.kill()
+                    except psutil.Error:
+                        pass
+                process.poll()
+                return
+            except psutil.NoSuchProcess:
+                process.poll()
+                return
+            except psutil.Error:
+                logger.exception("psutil could not stop the process tree - falling back")
+
+        # No psutil (it's a soft dependency): use whatever the OS gives us.
+        if self.is_windows:
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(process.pid)],
+                capture_output=True, timeout=30, **no_window_kwargs(),
+            )
+        else:
+            try:
+                # start_new_session=True at launch made the app its own process
+                # group leader, so this reaches its children too.
+                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            except (ProcessLookupError, PermissionError):
+                process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=2)
     
     def get_app_status(self, app_id: str) -> AppStatus:
         """Get current status of an application"""
@@ -601,6 +823,7 @@ class AppManager:
             else:
                 # Process ended, clean up
                 del self._processes[app_id]
+                self._close_app_log(app_id)
                 app.is_running = False
         
         return AppStatus(
@@ -625,6 +848,7 @@ class AppManager:
             else:
                 # Clean up finished process
                 del self._processes[app_id]
+                self._close_app_log(app_id)
                 if app_id in self.apps:
                     self.apps[app_id].is_running = False
         return running
@@ -635,18 +859,7 @@ class AppManager:
         if not app or not app.installed:
             return False
 
-        app_path = self._app_path(app_id)
-
-        try:
-            if self.is_windows:
-                os.startfile(str(app_path))
-            elif platform.system() == "Darwin":
-                subprocess.run(["open", str(app_path)])
-            else:
-                subprocess.run(["xdg-open", str(app_path)])
-            return True
-        except Exception:
-            return False
+        return open_path(self._app_path(app_id))
 
 
 if __name__ == "__main__":

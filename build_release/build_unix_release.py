@@ -7,6 +7,7 @@ Generates proper .app bundles for macOS and standard directories for Linux.
 
 import argparse
 import os
+import re
 import sys
 import shutil
 import zipfile
@@ -16,6 +17,24 @@ import subprocess
 import platform
 import plistlib
 from pathlib import Path
+
+
+def _read_launcher_version(project_root: Path) -> str:
+    """Pull the canonical version string straight out of web_server.py rather
+    than hand-duplicating it in the build script, where it would drift.
+    Duplicated from build_windows_release.py - the two build scripts are
+    independent by design, so this stays a small copy rather than a shared
+    import."""
+    web_server_py = project_root / "launcher" / "web_server.py"
+    try:
+        content = web_server_py.read_text(encoding="utf-8")
+        match = re.search(r'LAUNCHER_VERSION\s*=\s*["\']([^"\']+)["\']', content)
+        if match:
+            return match.group(1)
+    except OSError:
+        pass
+    return "0.0.0"
+
 
 # Configuration
 PYTHON_VERSION = "3.12.7"
@@ -33,6 +52,80 @@ LAUNCHER_PACKAGES = [
     "flask",
     "psutil",
 ]
+
+# pip's --platform tag for each target, used when cross-building (see
+# _install_launcher_deps below).
+_PLATFORM_TAGS = {
+    "macos-x86_64": "macosx_11_0_x86_64",
+    "macos-arm64": "macosx_11_0_arm64",
+    "linux-x86_64": "manylinux2014_x86_64",
+}
+
+
+def _target_site_packages(python_dest: Path) -> Path:
+    major_minor = ".".join(PYTHON_VERSION.split(".")[:2])
+    return python_dest / "lib" / f"python{major_minor}" / "site-packages"
+
+
+def _install_launcher_deps(python_dest: Path, platform_name: str):
+    """
+    Install flask/psutil into the bundled Python's site-packages at BUILD
+    time rather than on first run.
+
+    The previous approach ran `pip install` from inside AppRun / the .app's
+    launch script / PyPottery.sh the first time the app started - but an
+    AppImage's squashfs mount is read-only, so that pip install failed and
+    flask was simply never available: the launcher died with an unlogged
+    ImportError before it could open a browser or write anything. A
+    Gatekeeper-translocated .app is read-only for the same reason. Building
+    the dependencies in now, exactly like the Windows WinPython package
+    already does, means the shipped bundle is complete and needs no network
+    access just to start.
+    """
+    print("\n📦 Step 1b: Installing launcher dependencies (flask, psutil)...")
+    site_packages = _target_site_packages(python_dest)
+    site_packages.mkdir(parents=True, exist_ok=True)
+
+    host_native = (
+        (platform_name.startswith("macos") and sys.platform == "darwin")
+        or (platform_name.startswith("linux") and sys.platform.startswith("linux"))
+    )
+
+    if host_native:
+        python_bin = python_dest / "bin" / "python3"
+        cmd = [
+            str(python_bin), "-m", "pip", "install",
+            "--target", str(site_packages), "--upgrade",
+            "--no-warn-script-location", *LAUNCHER_PACKAGES,
+        ]
+    else:
+        # Cross-building (e.g. the macOS package built from a Linux/Windows
+        # host, as this repo's CI already does for the .icns/.dmg steps):
+        # the target interpreter can't run on this host at all, so resolve
+        # wheels via the *host's* pip against the target's platform tag
+        # instead of invoking the target Python directly. Works for flask
+        # (pure Python) and psutil (ships prebuilt wheels for all three
+        # targets above).
+        tag = _PLATFORM_TAGS.get(platform_name)
+        major_minor = ".".join(PYTHON_VERSION.split(".")[:2])
+        cmd = [
+            sys.executable, "-m", "pip", "install",
+            "--target", str(site_packages),
+            "--platform", tag, "--python-version", major_minor,
+            "--implementation", "cp", "--only-binary=:all:",
+            "--no-warn-script-location", *LAUNCHER_PACKAGES,
+        ]
+        print(f"   Cross-building {platform_name} from this host - resolving "
+              f"wheels for platform tag {tag} instead of running the target "
+              f"interpreter directly")
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Could not install launcher dependencies into the {platform_name} "
+            f"bundle:\n{result.stderr}"
+        )
+    print("   ✓ flask and psutil installed into the bundle")
 
 
 def download_file(url: str, dest: Path, desc: str = ""):
@@ -254,11 +347,16 @@ EOF
     fi
 fi
 
-# Check deps (just enough to start the web launcher)
+# flask/psutil are bundled into the Python at build time - the AppImage's
+# squashfs mount is read-only, so a runtime `pip install` here would silently
+# fail every time and the app would never start. If this ever fires, the
+# bundle itself is broken (a corrupted download, or a build that skipped
+# Step 1b) - nothing this script can fix on its own.
 if ! "$PYTHON" -c "import flask" 2>/dev/null; then
-    echo "Installing dependencies..."
-    "$PYTHON" -m pip install --upgrade pip --quiet
-    "$PYTHON" -m pip install flask psutil --quiet
+    zenity --error --text="PyPottery Launcher's Python environment is incomplete (missing 'flask'). Please redownload the AppImage." 2>/dev/null \
+        || notify-send "PyPottery Launcher" "Incomplete installation (missing 'flask') - please redownload." 2>/dev/null \
+        || echo "PyPottery Launcher: incomplete installation (missing 'flask') - please redownload the AppImage." >&2
+    exit 1
 fi
 
 exec "$PYTHON" -c "import sys; sys.path.insert(0, '$HERE'); from launcher.gui import main; main()"
@@ -389,6 +487,8 @@ def _build_single_platform(platform_name: str, release_dir: Path, project_root: 
         )
         print("   ✓ Python extracted")
 
+    _install_launcher_deps(python_dest, platform_name)
+
     # 2. Copy Launcher Files
     print("\n📦 Step 2: Copying launcher files...")
 
@@ -441,7 +541,8 @@ def _build_single_platform(platform_name: str, release_dir: Path, project_root: 
             'CFBundleName': 'PyPotteryLauncher',
             'CFBundleDisplayName': 'PyPottery Launcher',
             'CFBundleIdentifier': 'com.lrncrd.pypottery',
-            'CFBundleVersion': '1.0.2',
+            'CFBundleVersion': _read_launcher_version(project_root),
+            'CFBundleShortVersionString': _read_launcher_version(project_root),
             'CFBundlePackageType': 'APPL',
             'CFBundleExecutable': 'launcher',
             'CFBundleIconFile': 'AppIcon',
@@ -468,25 +569,33 @@ APP_BUNDLE="$( cd "$DIR/../.." && pwd )"
 # macOS Gatekeeper "App Translocation": an app carrying the quarantine flag
 # (downloaded via browser/Slack/AirDrop/etc.) that is launched from its
 # original, unmoved location gets silently run from a read-only random mount
-# under .../AppTranslocation/.../d/. Everything the launcher needs to write
-# (the Python venv, downloaded sub-apps) lives inside the bundle itself, so
-# that read-only mount breaks setup with "Read-only file system" errors.
-# Detect it and self-relocate to /Applications before doing anything else -
-# translocation only applies to the original copy, not one moved elsewhere.
+# under .../AppTranslocation/.../d/ - every subsequent launch can land on a
+# *different* random path. The launcher's own data no longer lives inside the
+# bundle (see gui.get_base_path()), so this can no longer cause data loss,
+# but it is still a confusing place for the app to live. Offer to move it to
+# Applications; if a copy is already there, open that one instead of
+# overwriting it - a silent `rm -rf` on an existing install is exactly the
+# kind of surprise this launcher should never spring on anyone.
 if [[ "$APP_BUNDLE" == *"/AppTranslocation/"* ]]; then
     APP_NAME="$(basename "$APP_BUNDLE")"
     TARGET="/Applications/$APP_NAME"
 
-    if osascript -e 'display dialog "PyPottery Launcher deve essere spostato nella cartella Applicazioni per poter scrivere i propri file (ambiente Python, app scaricate). Vuoi spostarlo ora?" with title "PyPottery Launcher" buttons {"Annulla", "Sposta in Applicazioni"} default button "Sposta in Applicazioni" cancel button "Annulla"' >/dev/null 2>&1; then
-        rm -rf "$TARGET" 2>/dev/null
+    if [ -e "$TARGET" ]; then
+        if osascript -e 'display dialog "PyPottery Launcher is already installed in Applications. Open the existing app instead?" with title "PyPottery Launcher" buttons {"Cancel", "Open Existing App"} default button "Open Existing App" cancel button "Cancel"' >/dev/null 2>&1; then
+            open "$TARGET"
+        fi
+        exit 0
+    fi
+
+    if osascript -e 'display dialog "PyPottery Launcher should be moved to the Applications folder to run normally. Move it now?" with title "PyPottery Launcher" buttons {"Cancel", "Move to Applications"} default button "Move to Applications" cancel button "Cancel"' >/dev/null 2>&1; then
         if ditto "$APP_BUNDLE" "$TARGET" 2>/dev/null; then
             xattr -cr "$TARGET" 2>/dev/null
             open "$TARGET"
         else
-            osascript -e 'display alert "Spostamento non riuscito" message "Trascina manualmente PyPottery Launcher.app nella cartella Applicazioni, poi riaprilo da lì." as critical'
+            osascript -e 'display alert "Move Failed" message "Please drag PyPottery Launcher.app into the Applications folder manually, then open it from there." as critical'
         fi
     else
-        osascript -e 'display alert "Impossibile continuare" message "Trascina PyPottery Launcher.app nella cartella Applicazioni, poi riaprilo da lì." as critical'
+        osascript -e 'display alert "Cannot Continue From Here" message "Please drag PyPottery Launcher.app into the Applications folder, then open it from there." as critical'
     fi
     exit 0
 fi
@@ -494,15 +603,14 @@ fi
 RESOURCES="$DIR/../Resources"
 PYTHON="$RESOURCES/python/bin/python3"
 
-# Install dependencies if needed (just enough to start the web launcher -
-# everything else, including the heavy PyTorch environment, is installed on
-# first run from inside the launcher's own "Setup Environment" button)
+# flask/psutil are bundled into the Python at build time (see
+# _install_launcher_deps in build_unix_release.py) - a Gatekeeper-
+# translocated or DMG-mounted copy is read-only, so installing them here at
+# runtime would silently fail every time. If this ever fires, the bundle
+# itself is incomplete; nothing this script can fix on its own.
 if ! "$PYTHON" -c "import flask" 2>/dev/null; then
-    # Dialog via AppleScript to show activity
-    osascript -e 'display notification "Installing dependencies..." with title "PyPottery Launcher"'
-
-    "$PYTHON" -m pip install --upgrade pip --quiet
-    "$PYTHON" -m pip install flask psutil --quiet
+    osascript -e 'display alert "PyPottery Launcher" message "The application bundle looks incomplete (the flask module is missing). Please redownload PyPottery Launcher." as critical'
+    exit 1
 fi
 
 # Run Launcher
@@ -533,13 +641,17 @@ PIP="$SCRIPT_DIR/python/bin/pip3"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PYTHON="$SCRIPT_DIR/python/bin/python3"
 
-# Check deps (simple check) - just enough to start the web launcher.
-# Everything else (the heavy PyTorch environment, the sub-apps themselves) is
-# installed on first run from inside the launcher's own "Setup Environment"
-# button, exactly as when running from source.
+# flask/psutil are bundled into the Python at build time (see
+# _install_launcher_deps in build_unix_release.py). Fall back to install.sh
+# if they're somehow missing (e.g. this folder was assembled by hand) rather
+# than failing outright - unlike the AppImage/.app flavors, this folder is a
+# normal writable directory, so a local pip install here can actually work.
 if ! "$PYTHON" -c "import flask" 2>/dev/null; then
-    echo "Installing dependencies..."
-    "$SCRIPT_DIR/install.sh"
+    echo "Launcher dependencies are missing - running install.sh..."
+    if ! "$SCRIPT_DIR/install.sh"; then
+        echo "PyPottery Launcher: could not install dependencies. Check your internet connection and try running ./install.sh manually." >&2
+        exit 1
+    fi
 fi
 
 "$PYTHON" -c "import sys; sys.path.insert(0, '$SCRIPT_DIR'); from launcher.gui import main; main()"
