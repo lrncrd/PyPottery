@@ -600,7 +600,7 @@ if [[ "$APP_BUNDLE" == *"/AppTranslocation/"* ]]; then
     exit 0
 fi
 
-RESOURCES="$DIR/../Resources"
+RESOURCES="$( cd "$DIR/../Resources" && pwd )"
 PYTHON="$RESOURCES/python/bin/python3"
 
 # flask/psutil are bundled into the Python at build time (see

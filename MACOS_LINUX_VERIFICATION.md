@@ -9,6 +9,25 @@ machine. This needs a native pass on each platform before the public release.
 
 ## macOS - `.app` + `.dmg`
 
+**Verified 2026-09-08 on Apple Silicon (arm64).** One real bug was found and
+fixed during this pass: the bundle's `Contents/MacOS/launcher` script built
+`RESOURCES="$DIR/../Resources"` without resolving the `..`, so `sys.path`
+carried the literal `..` segment into `__file__`, which broke
+`_is_macos_app_bundle()`'s `resource_dir.parent.name == "Contents"` check in
+`gui.py`. The launcher fell through to the generic branch and wrote
+`logs/` + `.pypottery.lock` straight into the read-only
+`Contents/Resources` instead of `~/Library/Application Support/PyPottery`.
+Fixed in `build_unix_release.py` by resolving `RESOURCES` the same way as
+`DIR`/`APP_BUNDLE` two lines above (`cd ... && pwd`); rebuilt and confirmed
+the base path, migration, single-instance lock, Show Data Folder, and Quit
+flow all behave correctly afterward.
+
+Not exercised this pass: the "Open Existing App" dialog on a second `.dmg`
+mount only fires under Gatekeeper App Translocation (quarantined bundle run
+outside `/Applications`), which doesn't reproduce reliably from a locally
+built, unquarantined `.dmg` — needs a manual Finder pass with a
+downloaded/AirDropped copy.
+
 Build: `python3 build_release/build_unix_release.py` (auto-detects
 arm64/x86_64 from the host; needs Xcode Command Line Tools for `hdiutil`,
 `sips`, `iconutil`, `osascript`)
