@@ -3,39 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PyPottery Suite Launcher</title>
+  <title>PyPottery Suite — Archaeological Pottery Documentation Tools</title>
+  <meta name="description" content="PyPottery Suite - Specialized Archaeological Ceramic Documentation, AI Inking, Vector Tracing & Publication Plate Layout Synthesis">
+  <meta name="theme-color" content="#fbf9f5">
   <!-- Local Offline Vendor Assets with CDN Fallback -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.min.css') }}" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';">
-  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/fonts/fonts.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="../static/vendor/bootstrap-icons/bootstrap-icons.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';">
+  <link rel="stylesheet" href="../static/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../static/css/style.css?v=1.2.2">
 </head>
 <body>
+<a href="#main-container" class="skip-link">Skip to main content</a>
+
 <!-- Splash / Loading Screen Overlay -->
-<div id="splash-screen" class="splash-screen">
+<div id="splash-screen" class="splash-screen" role="status" aria-live="polite">
   <div class="splash-content">
     <div class="splash-logo-container">
-      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="splash-logo" onerror="this.style.display='none'">
-      <div class="splash-logo-halo"></div>
+      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite Logo" class="splash-logo" onerror="this.style.display='none'">
     </div>
     <h1 class="splash-title">PyPottery <span class="splash-accent">Suite</span></h1>
     <p class="splash-subtitle">Archaeological Pottery Documentation Tools</p>
     <div class="splash-progress-container">
-      <div class="splash-track"><div id="splash-bar" class="splash-fill"></div></div>
+      <div class="splash-track" role="progressbar" id="splash-bar-track" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="System initialization progress"><div id="splash-bar" class="splash-fill"></div></div>
       <p id="splash-status" class="splash-status-text">Initializing system &amp; detecting hardware...</p>
     </div>
   </div>
 </div>
 
-<!-- Shutdown confirmation overlay - same visual language as the splash
-     screen above, shown once the launcher process has actually exited -->
-<div id="terminated-screen" class="splash-screen hidden">
+<!-- Shutdown confirmation overlay -->
+<div id="terminated-screen" class="splash-screen hidden" role="status" aria-live="polite">
   <div class="splash-content">
     <div class="splash-logo-container">
-      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="splash-logo" onerror="this.style.display='none'">
-      <div class="splash-logo-halo"></div>
+      <img src="/assets/imgs/Logo.png" alt="PyPottery Suite Logo" class="splash-logo" onerror="this.style.display='none'">
     </div>
-    <h1 class="splash-title">Launcher <span class="splash-accent">Terminated</span> 🏺</h1>
-    <p class="splash-subtitle">PyPottery Suite launcher has been closed. You can close this browser tab.</p>
+    <h1 class="splash-title">Launcher <span class="splash-accent">Terminated</span></h1>
+    <p class="splash-subtitle">PyPottery Suite launcher has been closed. You can safely close this browser tab.</p>
   </div>
 </div>
 
@@ -52,56 +53,56 @@
         <div class="brand-meta">
           <span class="version-badge" id="launcher-version">v1.0</span>
           <span class="system-status-chip" id="system-status-chip">
-            <span class="status-dot-pulse"></span> Launcher Ready
+            <span class="status-dot-pulse" aria-hidden="true"></span> Launcher Ready
           </span>
         </div>
       </div>
     </div>
     
-    <div class="header-actions">
+    <nav class="header-actions" aria-label="Launcher Actions">
       <button id="btn-changelog" class="btn btn-outline btn-icon-text" title="View Changelog &amp; Release Notes">
-        <span class="btn-icon"><i class="bi bi-journal-text"></i></span>
+        <span class="btn-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></span>
         <span>Changelog</span>
       </button>
       <button id="btn-check-updates" class="btn btn-outline btn-icon-text" title="Check for Application &amp; Launcher Updates">
-        <span class="btn-icon"><i class="bi bi-arrow-repeat"></i></span>
+        <span class="btn-icon"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></span>
         <span>Check Updates</span>
       </button>
       <button id="btn-about" class="btn btn-outline btn-icon-text" title="About PyPottery Suite &amp; Author">
-        <span class="btn-icon"><i class="bi bi-info-circle"></i></span>
+        <span class="btn-icon"><i class="bi bi-info-circle" aria-hidden="true"></i></span>
         <span>Info</span>
       </button>
       <button id="btn-quit" class="btn btn-danger-soft btn-icon-text" title="Quit PyPottery Launcher">
-        <span class="btn-icon"><i class="bi bi-power"></i></span>
+        <span class="btn-icon"><i class="bi bi-power" aria-hidden="true"></i></span>
         <span>Quit</span>
       </button>
-    </div>
+    </nav>
   </header>
 
   <!-- Main Container -->
-  <main class="main-container">
+  <main class="main-container" id="main-container">
 
     <!-- Notification Banners -->
-    <div id="banner-connection-lost" class="banner banner-warning hidden">
-      <div class="banner-icon"><i class="bi bi-wifi-off"></i></div>
+    <div id="banner-connection-lost" class="banner banner-warning hidden" role="alert" aria-live="assertive">
+      <div class="banner-icon"><i class="bi bi-wifi-off" aria-hidden="true"></i></div>
       <div class="banner-content">
         <strong class="banner-title">Connection Lost</strong>
-        <span>The launcher stopped responding - it may have gone to sleep or been closed. Reconnecting...</span>
+        <span>The launcher stopped responding — it may have gone to sleep or been closed. Reconnecting...</span>
       </div>
-      <button id="btn-connection-retry" class="btn btn-outline btn-sm"><i class="bi bi-arrow-clockwise"></i> Retry Now</button>
+      <button id="btn-connection-retry" class="btn btn-outline btn-sm"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Retry Now</button>
     </div>
 
-    <div id="banner-driver-warning" class="banner banner-warning hidden">
-      <div class="banner-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+    <div id="banner-driver-warning" class="banner banner-warning hidden" role="alert" aria-live="polite">
+      <div class="banner-icon"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i></div>
       <div class="banner-content">
         <strong class="banner-title">GPU Driver Notice</strong>
         <span id="banner-driver-warning-text"></span>
       </div>
-      <button class="banner-dismiss" data-dismiss="banner-driver-warning" title="Dismiss"><i class="bi bi-x-lg"></i></button>
+      <button class="banner-dismiss" data-dismiss="banner-driver-warning" title="Dismiss" aria-label="Dismiss GPU driver notice"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
 
-    <div id="banner-launcher-update" class="banner banner-info hidden">
-      <div class="banner-icon"><i class="bi bi-arrow-up-circle-fill"></i></div>
+    <div id="banner-launcher-update" class="banner banner-info hidden" role="status" aria-live="polite">
+      <div class="banner-icon"><i class="bi bi-arrow-up-circle-fill" aria-hidden="true"></i></div>
       <div class="banner-content">
         <div class="banner-header-line">
           <strong class="banner-title">PyPottery Launcher Update Available</strong>
@@ -111,26 +112,27 @@
         <div id="banner-launcher-update-notes" class="banner-notes hidden"></div>
       </div>
       <div class="banner-actions">
-        <button id="btn-launcher-update-notes-toggle" class="btn btn-outline btn-sm hidden"><i class="bi bi-file-text"></i> Changelog</button>
-        <button id="btn-launcher-update-confirm" class="btn btn-primary btn-sm"><i class="bi bi-arrow-up-circle"></i> Update &amp; Restart</button>
+        <button id="btn-launcher-update-notes-toggle" class="btn btn-outline btn-sm hidden"><i class="bi bi-file-text" aria-hidden="true"></i> Changelog</button>
+        <button id="btn-launcher-update-confirm" class="btn btn-primary btn-sm"><i class="bi bi-arrow-up-circle" aria-hidden="true"></i> Update &amp; Restart</button>
         <button class="banner-dismiss btn btn-ghost btn-sm" data-dismiss="banner-launcher-update">Later</button>
       </div>
     </div>
 
-    <div id="banner-launcher-update-progress" class="banner banner-info hidden">
-      <div class="banner-icon spinner"><i class="bi bi-arrow-repeat"></i></div>
+    <div id="banner-launcher-update-progress" class="banner banner-info hidden" role="status" aria-live="polite">
+      <div class="banner-icon spinner"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></div>
       <div class="banner-content" style="width: 100%;">
         <div class="banner-header-line" style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span id="banner-launcher-update-progress-text">Updating launcher...</span>
           <span id="banner-launcher-update-progress-pct" style="font-weight: 600; font-size: 0.85rem;">0%</span>
         </div>
-        <div class="progress-track"><div id="launcher-update-progress-bar" class="progress-fill"></div></div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Launcher update progress"><div id="launcher-update-progress-bar" class="progress-fill"></div></div>
       </div>
     </div>
 
     <!-- Front Matter / ASCII Hero Banner & Daily Greeting -->
-    <section class="card hero-frontmatter" id="hero-frontmatter">
+    <section class="card hero-frontmatter" id="hero-frontmatter" aria-label="Archaeological Laboratory Banner">
       <div class="hero-ascii-wrapper">
+        <img src="/assets/icon_app.png" alt="PyPottery Amphora Logo" class="hero-amphora-logo" width="72" height="72">
         <pre class="hero-ascii-art" id="hero-ascii-art" aria-label="PyPottery ASCII Banner">
     ____        ____        __  __                  
    / __ \__  __/ __ \____  / /_/ /____  _______  __ 
@@ -140,115 +142,129 @@
       /____/                              /____/    </pre>
       </div>
       <p class="hero-greeting-text" id="hero-greeting-text">
-        <span class="greeting-sparkle">✦</span>
+        <span class="greeting-sparkle" aria-hidden="true"><i class="bi bi-stars"></i></span>
         <span id="hero-greeting-msg">Good afternoon! Happy Friday — have a great weekend ahead!</span>
       </p>
-      <div class="hero-pop-quote" id="hero-pop-quote" title="Click for another quote from Wikiquote">
-        <span class="pop-quote-text" id="pop-quote-text">“It belongs in a museum!”</span>
-        <span class="pop-quote-source" id="pop-quote-source">— Indiana Jones and the Last Crusade (Wikiquote)</span>
+      <div class="hero-pop-quote" id="hero-pop-quote" title="Click for another quote from Wikiquote" role="button" tabindex="0" aria-label="Archaeological quote, click for another quote">
+        <div class="pop-quote-content" id="pop-quote-content">
+          <span class="pop-quote-text" id="pop-quote-text">“It belongs in a museum!”</span>
+          <span class="pop-quote-source" id="pop-quote-source">— Indiana Jones and the Last Crusade (Wikiquote)</span>
+        </div>
       </div>
     </section>
 
-    <!-- Dashboard Top Row: Hardware Specs & Environment Status -->
-    <div class="dashboard-grid">
-      
-      <!-- System Specs Card -->
-      <section class="card hardware-panel" id="hardware-panel">
-        <div class="card-header">
-          <div class="card-title-group">
-            <span class="card-icon"><i class="bi bi-motherboard"></i></span>
-            <h2 class="card-title">System &amp; Hardware Specs</h2>
-          </div>
-          <span class="card-tag">Specs</span>
+    <!-- Dashboard Top Row: Hardware Specs & Environment Status (Unified Collapsible Panel) -->
+    <section class="card system-dashboard-panel" id="system-dashboard-panel" aria-labelledby="dashboard-panel-title">
+      <div class="card-header dashboard-main-header">
+        <div class="card-title-group">
+          <span class="card-icon"><i class="bi bi-sliders2" aria-hidden="true"></i></span>
+          <h2 class="card-title" id="dashboard-panel-title">System Specs &amp; Environment</h2>
         </div>
-        <div class="hw-grid">
-          <div class="hw-card">
-            <span class="hw-icon" title="Operating System"><i class="bi bi-display"></i></span>
-            <div class="hw-details">
-              <span class="hw-label">Operating System</span>
-              <span class="hw-value" data-hw="os">Detecting...</span>
-            </div>
-          </div>
-          <div class="hw-card">
-            <span class="hw-icon" title="Processor (CPU)"><i class="bi bi-cpu"></i></span>
-            <div class="hw-details">
-              <span class="hw-label">Processor (CPU)</span>
-              <span class="hw-value" data-hw="cpu">Detecting...</span>
-            </div>
-          </div>
-          <div class="hw-card">
-            <span class="hw-icon" title="System Memory"><i class="bi bi-memory"></i></span>
-            <div class="hw-details">
-              <span class="hw-label">System Memory</span>
-              <span class="hw-value" data-hw="ram">Detecting...</span>
-              <div class="ram-track-mini"><div id="ram-bar-fill" class="ram-fill-mini" style="width: 0%;"></div></div>
-            </div>
-          </div>
-          <div class="hw-card">
-            <span class="hw-icon" title="GPU Acceleration"><i class="bi bi-gpu-card"></i></span>
-            <div class="hw-details">
-              <span class="hw-label">GPU Acceleration</span>
-              <span class="hw-value" data-hw="gpu">Detecting...</span>
-            </div>
-          </div>
-          <div class="hw-card hw-card-full">
-            <span class="hw-icon" title="PyTorch Acceleration Engine"><i class="bi bi-lightning-charge"></i></span>
-            <div class="hw-details">
-              <span class="hw-label">PyTorch Backend</span>
-              <span class="hw-value" data-hw="pytorch">Detecting...</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Python Environment Card -->
-      <section class="card environment-panel" id="environment-panel">
-        <div class="card-header">
-          <div class="card-title-group">
-            <span class="card-icon"><i class="bi bi-terminal-split"></i></span>
-            <h2 class="card-title">Python Environment</h2>
-          </div>
-          <div class="env-header-right">
-            <span id="env-status-text" class="env-status-badge">Checking...</span>
-            <span id="env-verified-check" class="card-verified-check hidden" title="Environment Ready & Verified"><i class="bi bi-check-circle-fill"></i></span>
-          </div>
-        </div>
-        <p class="panel-subtitle">Isolated Python execution environment for pottery documentation tools and AI models.</p>
-        
-        <div class="env-progress-block">
-          <div class="progress-track-large"><div id="env-progress-bar" class="progress-fill-glow"></div></div>
-          <p id="env-progress-label" class="progress-label">Ready for operation</p>
-        </div>
-
-        <div id="env-variant-toggle" class="env-variant-toggle hidden">
-          <label class="toggle-row">
-            <span class="switch">
-              <input type="checkbox" id="chk-gpu-variant">
-              <span class="switch-track"><span class="switch-thumb"></span></span>
-            </span>
-            <span class="toggle-label">Enable GPU (CUDA) acceleration</span>
-          </label>
-          <span id="env-variant-hint" class="hint-text"></span>
-        </div>
-
-        <div class="env-actions">
-          <button id="btn-env-setup" class="btn btn-primary">
-            <span>Setup Environment</span>
-          </button>
-          <button id="btn-env-verify" class="btn btn-outline">
-            <span>Verify Dependencies</span>
+        <div class="dashboard-header-right">
+          <span id="env-status-text" class="env-status-badge">Checking...</span>
+          <span id="env-verified-check" class="card-verified-check hidden" title="Environment Ready &amp; Verified"><i class="bi bi-check-circle-fill" aria-hidden="true"></i></span>
+          <button id="btn-dashboard-toggle" class="btn btn-outline btn-icon-only btn-xs card-toggle-btn" aria-expanded="true" aria-controls="system-dashboard-body" title="Collapse / Expand System Dashboard" aria-label="Collapse or expand system specs and environment">
+            <i class="bi bi-chevron-up" aria-hidden="true"></i>
           </button>
         </div>
-      </section>
+      </div>
+      <div class="panel-collapsible-wrapper" id="system-dashboard-body">
+        <div class="panel-collapsible-inner">
+          <div class="system-dashboard-columns">
+            
+            <!-- Left Column: System & Hardware Specs -->
+            <div class="system-col hardware-col" id="hardware-panel">
+              <div class="system-col-header">
+                <span class="system-col-title"><i class="bi bi-motherboard" aria-hidden="true"></i> Hardware Specifications</span>
+              </div>
+              <div class="hw-grid">
+                <div class="hw-stat-row">
+                  <span class="hw-icon" title="Operating System"><i class="bi bi-display" aria-hidden="true"></i></span>
+                  <div class="hw-details">
+                    <span class="hw-label">Operating System</span>
+                    <span class="hw-value" data-hw="os">Detecting...</span>
+                  </div>
+                </div>
+                <div class="hw-stat-row">
+                  <span class="hw-icon" title="Processor (CPU)"><i class="bi bi-cpu" aria-hidden="true"></i></span>
+                  <div class="hw-details">
+                    <span class="hw-label">Processor (CPU)</span>
+                    <span class="hw-value" data-hw="cpu">Detecting...</span>
+                  </div>
+                </div>
+                <div class="hw-stat-row">
+                  <span class="hw-icon" title="System Memory"><i class="bi bi-memory" aria-hidden="true"></i></span>
+                  <div class="hw-details">
+                    <span class="hw-label">System Memory</span>
+                    <span class="hw-value" data-hw="ram">Detecting...</span>
+                    <div class="ram-track-mini" role="progressbar" aria-label="System memory utilization" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="ram-bar-fill" class="ram-fill-mini" style="width: 0%;"></div></div>
+                  </div>
+                </div>
+                <div class="hw-stat-row">
+                  <span class="hw-icon" title="GPU Acceleration"><i class="bi bi-gpu-card" aria-hidden="true"></i></span>
+                  <div class="hw-details">
+                    <span class="hw-label">GPU Acceleration</span>
+                    <span class="hw-value" data-hw="gpu">Detecting...</span>
+                  </div>
+                </div>
+                <div class="hw-stat-row hw-stat-full">
+                  <span class="hw-icon" title="PyTorch Acceleration Engine"><i class="bi bi-lightning-charge" aria-hidden="true"></i></span>
+                  <div class="hw-details">
+                    <span class="hw-label">PyTorch Backend</span>
+                    <span class="hw-value" data-hw="pytorch">Detecting...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    </div>
+            <!-- Right Column: Python Environment -->
+            <div class="system-col environment-col environment-panel" id="environment-panel">
+              <div class="system-col-header">
+                <span class="system-col-title"><i class="bi bi-terminal-split" aria-hidden="true"></i> Python Runtime</span>
+              </div>
+              <p class="panel-subtitle">Isolated Python execution environment for pottery documentation tools and AI models.</p>
+              
+              <div class="env-progress-block">
+                <div class="progress-track-large" role="progressbar" aria-label="Python environment readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="env-progress-bar" class="progress-fill-glow"></div></div>
+                <p id="env-progress-label" class="progress-label">Ready for operation</p>
+              </div>
+
+              <div id="env-variant-toggle" class="env-variant-toggle hidden">
+                <label class="toggle-row">
+                  <span class="switch">
+                    <input type="checkbox" id="chk-gpu-variant">
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </span>
+                  <span class="toggle-label">Enable GPU (CUDA) acceleration</span>
+                </label>
+                <span id="env-variant-hint" class="hint-text"></span>
+              </div>
+
+              <div class="env-actions">
+                <button id="btn-env-setup" class="btn btn-primary">
+                  <span>Setup Environment</span>
+                </button>
+                <button id="btn-env-verify" class="btn btn-outline">
+                  <span>Verify Dependencies</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Applications Section -->
-    <section class="apps-section">
+    <section class="apps-section" aria-labelledby="apps-section-title">
       <div class="section-header">
         <div>
-          <h2 class="section-title"><i class="bi bi-collection" style="color: var(--primary); margin-right: 6px;"></i> Archaeological Suite Applications</h2>
-          <p class="section-description">Specialized AI tools for pottery documentation, vectorization, digital inking, and layout synthesis.</p>
+          <h2 class="section-title" id="apps-section-title"><i class="bi bi-collection" style="color: var(--primary); margin-right: 6px;" aria-hidden="true"></i> Suite Applications</h2>
+        </div>
+        <div class="apps-search-wrapper">
+          <i class="bi bi-search apps-search-icon" aria-hidden="true"></i>
+          <input type="search" id="apps-search-input" class="apps-search-input" placeholder="Filter tools (press / to search)..." aria-label="Filter applications" autocomplete="off" spellcheck="false">
+          <button id="apps-search-clear" class="apps-search-clear hidden" title="Clear filter" aria-label="Clear application filter"><i class="bi bi-x-circle-fill" aria-hidden="true"></i></button>
         </div>
       </div>
       <div id="apps-list" class="apps-grid">
@@ -261,16 +277,16 @@
     </section>
 
     <!-- Downloaded AI Models -->
-    <section class="card model-cache-panel" id="model-cache-panel">
+    <section class="card model-cache-panel" id="model-cache-panel" aria-labelledby="model-cache-title">
       <div class="card-header">
         <div class="card-title-group">
-          <span class="card-icon"><i class="bi bi-database"></i></span>
-          <h2 class="card-title">Downloaded AI Models</h2>
+          <span class="card-icon"><i class="bi bi-database" aria-hidden="true"></i></span>
+          <h2 class="card-title" id="model-cache-title">Downloaded AI Models</h2>
         </div>
         <div class="card-header-actions">
           <span class="env-status-badge" id="model-cache-total">0 MB total</span>
-          <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache">
-            <i class="bi bi-arrow-clockwise"></i>
+          <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache" aria-label="Rescan model cache">
+            <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -281,74 +297,76 @@
     </section>
 
     <!-- Terminal & Activity Log Panel -->
-    <section class="card console-panel" id="console-panel">
+    <section class="card console-panel" id="console-panel" aria-labelledby="console-panel-title">
       <div class="console-header">
         <div class="console-title-group">
-          <span class="console-dot" id="console-dot">●</span>
-          <span class="console-title"><i class="bi bi-terminal" style="color: var(--primary); margin-right: 6px;"></i> System &amp; Application Logs</span>
+          <span class="console-dot" id="console-dot" aria-hidden="true">●</span>
+          <h2 class="console-title" id="console-panel-title"><i class="bi bi-terminal" style="color: var(--primary); margin-right: 6px;" aria-hidden="true"></i> System &amp; Application Logs</h2>
           <span class="console-last-msg" id="console-last-msg">Ready</span>
         </div>
         <div class="console-actions">
-          <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log"><i class="bi bi-clipboard"></i> Copy</button>
-          <button id="btn-open-logs" class="btn btn-outline btn-xs" title="Open the logs folder"><i class="bi bi-folder2-open"></i> Open logs folder</button>
-          <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen"><i class="bi bi-trash3"></i> Clear</button>
-          <button id="btn-console-toggle" class="btn btn-outline btn-xs">Show Logs</button>
+          <button id="btn-console-copy" class="btn btn-outline btn-xs" title="Copy log"><i class="bi bi-clipboard" aria-hidden="true"></i> Copy</button>
+          <button id="btn-open-logs" class="btn btn-outline btn-xs" title="Open the logs folder"><i class="bi bi-folder2-open" aria-hidden="true"></i> Open logs folder</button>
+          <button id="btn-console-clear" class="btn btn-outline btn-xs" title="Clear log screen"><i class="bi bi-trash3" aria-hidden="true"></i> Clear</button>
+          <button id="btn-console-toggle" class="btn btn-outline btn-xs" aria-expanded="false" aria-controls="console-body-wrapper"><i class="bi bi-chevron-down" aria-hidden="true"></i> Show Logs</button>
         </div>
       </div>
-      <div class="console-body hidden" id="console-body">
-        <div class="console-toolbar">
-          <div class="log-filter-chips">
-            <button class="filter-chip active" data-filter="all">All</button>
-            <button class="filter-chip" data-filter="info">Info</button>
-            <button class="filter-chip" data-filter="success">Success</button>
-            <button class="filter-chip" data-filter="warning">Warnings</button>
-            <button class="filter-chip" data-filter="error">Errors</button>
+      <div class="console-body-wrapper" id="console-body-wrapper">
+        <div class="console-body" id="console-body">
+          <div class="console-toolbar">
+            <div class="log-filter-chips" role="group" aria-label="Log severity filter">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="info">Info</button>
+              <button class="filter-chip" data-filter="success">Success</button>
+              <button class="filter-chip" data-filter="warning">Warnings</button>
+              <button class="filter-chip" data-filter="error">Errors</button>
+            </div>
+            <span class="log-count" id="log-count">0 entries</span>
           </div>
-          <span class="log-count" id="log-count">0 entries</span>
+          <pre id="console-log" class="console-stream" role="log" aria-live="polite"></pre>
         </div>
-        <pre id="console-log" class="console-stream"></pre>
       </div>
     </section>
 
     <!-- Footer -->
     <footer class="app-footer">
-      <p id="footer-text">PyPottery Suite Launcher • Developed with 🏺 for Pottery Archaeology • <a href="https://github.com/lrncrd" target="_blank" rel="noopener">github.com/lrncrd</a></p>
+      <p id="footer-text">PyPottery Suite Launcher • Dedicated to Archaeological Ceramic Documentation • <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer">github.com/lrncrd</a></p>
     </footer>
 
   </main>
 </div>
 
 <!-- Interactive Premium Installer Hub Modal -->
-<div id="installer-modal" class="installer-modal-overlay hidden">
+<div id="installer-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="installer-app-name">
   <div class="installer-modal">
     <!-- Header -->
     <div class="installer-header">
       <div class="installer-app-info">
         <div class="installer-logo-box" id="installer-logo-box">
-          <i class="bi bi-box-seam" style="font-size: 1.6rem; color: var(--primary);"></i>
+          <i class="bi bi-box-seam" style="font-size: 1.6rem; color: var(--primary);" aria-hidden="true"></i>
         </div>
         <div>
           <h3 class="installer-app-name" id="installer-app-name">Installing Application</h3>
           <p class="installer-app-subtitle" id="installer-app-subtitle">Archaeological Suite Installation</p>
         </div>
       </div>
-      <button class="installer-close-btn" id="btn-installer-close" title="Minimize / Close"><i class="bi bi-x-lg"></i></button>
+      <button class="installer-close-btn" id="btn-installer-close" title="Minimize / Close" aria-label="Minimize or close installer"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
 
     <!-- Stepper Pipeline -->
-    <div class="installer-stepper">
+    <div class="installer-stepper" role="group" aria-label="Installation stages">
       <div class="step-item" id="step-download">
-        <div class="step-circle">1</div>
+        <div class="step-circle" aria-hidden="true">1</div>
         <span class="step-label" id="step-1-label">Download</span>
       </div>
-      <div class="step-connector" id="conn-1"></div>
+      <div class="step-connector" id="conn-1" aria-hidden="true"></div>
       <div class="step-item" id="step-extract">
-        <div class="step-circle">2</div>
+        <div class="step-circle" aria-hidden="true">2</div>
         <span class="step-label" id="step-2-label">Unpack &amp; Setup</span>
       </div>
-      <div class="step-connector" id="conn-2"></div>
+      <div class="step-connector" id="conn-2" aria-hidden="true"></div>
       <div class="step-item" id="step-finalize">
-        <div class="step-circle">3</div>
+        <div class="step-circle" aria-hidden="true">3</div>
         <span class="step-label" id="step-3-label">Ready</span>
       </div>
     </div>
@@ -356,7 +374,7 @@
     <!-- Hero Progress Ring & Status -->
     <div class="installer-hero-progress">
       <div class="progress-ring-container">
-        <svg class="progress-ring" width="110" height="110">
+        <svg class="progress-ring" width="110" height="110" aria-hidden="true">
           <circle class="progress-ring-bg" stroke="#e8e3d8" stroke-width="7" fill="transparent" r="46" cx="55" cy="55"/>
           <circle id="installer-ring-bar" class="progress-ring-fill" stroke="url(#terracotta-gradient)" stroke-width="7" stroke-dasharray="289.02" stroke-dashoffset="289.02" stroke-linecap="round" fill="transparent" r="46" cx="55" cy="55"/>
           <defs>
@@ -377,38 +395,38 @@
     <!-- Embedded Terminal Output Box -->
     <div class="installer-console-box">
       <div class="installer-console-header">
-        <span class="console-dot info">●</span>
+        <span class="console-dot info" aria-hidden="true">●</span>
         <span>Installation Live Stream</span>
       </div>
-      <div class="installer-console-log" id="installer-console-log"></div>
+      <div class="installer-console-log" id="installer-console-log" role="log" aria-live="polite"></div>
     </div>
 
     <!-- Actions Footer (Shown when installation finishes or errors) -->
     <div class="installer-footer" id="installer-footer">
-      <button class="btn btn-primary hidden" id="btn-installer-done"><i class="bi bi-check-lg"></i> Complete Setup</button>
-      <button class="btn btn-success btn-glow hidden" id="btn-installer-launch"><i class="bi bi-box-arrow-up-right"></i> Launch App Now</button>
+      <button class="btn btn-primary hidden" id="btn-installer-done"><i class="bi bi-check-lg" aria-hidden="true"></i> Complete Setup</button>
+      <button class="btn btn-success btn-glow hidden" id="btn-installer-launch"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Launch App Now</button>
     </div>
   </div>
 </div>
 
 <!-- Changelog & Release Notes Modal -->
-<div id="changelog-modal" class="installer-modal-overlay hidden">
+<div id="changelog-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="changelog-modal-title">
   <div class="changelog-modal-card">
     <div class="changelog-modal-header">
       <div class="changelog-header-info">
         <div class="changelog-header-icon">
-          <i class="bi bi-journal-text"></i>
+          <i class="bi bi-journal-text" aria-hidden="true"></i>
         </div>
         <div class="changelog-header-titles">
-          <h2 class="changelog-modal-title">Changelog &amp; Release Notes</h2>
+          <h2 class="changelog-modal-title" id="changelog-modal-title">Changelog &amp; Release Notes</h2>
           <p class="changelog-modal-subtitle">Updates and version history across the PyPottery Suite</p>
         </div>
       </div>
-      <button class="changelog-close-btn" id="btn-changelog-close" title="Close"><i class="bi bi-x-lg"></i></button>
+      <button class="changelog-close-btn" id="btn-changelog-close" title="Close" aria-label="Close changelog dialog"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
     <div class="changelog-modal-body" id="changelog-modal-body">
       <div class="changelog-loading">
-        <div class="spinner"><i class="bi bi-arrow-repeat"></i></div>
+        <div class="spinner"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></div>
         <p>Loading latest release notes from GitHub...</p>
       </div>
     </div>
@@ -416,66 +434,57 @@
 </div>
 
 <!-- About & Info Premium Modal -->
-<div id="about-modal" class="installer-modal-overlay hidden">
+<div id="about-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="about-hero-title">
   <div class="about-modal-card about-card-compact">
-    <button class="about-close-btn" id="btn-about-close" title="Close"><i class="bi bi-x-lg"></i></button>
-    
-    <!-- Ambient Dynamic Glowing Aura -->
-    <div class="about-ambient-orb about-ambient-orb-top"></div>
-    <div class="about-ambient-orb about-ambient-orb-bottom"></div>
+    <button class="about-close-btn" id="btn-about-close" title="Close" aria-label="Close info dialog"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
 
     <div class="about-modal-body-centered">
       
       <!-- Animated Floating Logo Stage -->
       <div class="about-logo-stage">
-        <div class="about-logo-halo-ring"></div>
         <div class="about-logo-disc">
           <img src="/assets/imgs/Logo.png" alt="PyPottery Suite" class="about-logo-img" onerror="this.src='/assets/icon_app.png'">
         </div>
       </div>
 
       <!-- Suite Title -->
-      <h2 class="about-hero-title">PyPottery <span class="about-accent">Suite</span></h2>
+      <h2 class="about-hero-title" id="about-hero-title">PyPottery <span class="about-accent">Suite</span></h2>
 
       <!-- Version Chip -->
       <div class="about-version-pill">
-        <span class="about-live-dot"></span>
+        <span class="about-live-dot" aria-hidden="true"></span>
         <span id="about-version-badge">v1.1.0</span>
       </div>
 
-      <!-- Divider Glow -->
-      <div class="about-divider-glow"></div>
-
       <!-- Author Profile Showcase Card (Linked to GitHub) -->
-      <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer" class="about-author-link-card" title="Open Lorenzo Cardarelli GitHub Profile">
+      <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer" class="about-author-link" title="Open Lorenzo Cardarelli GitHub Profile">
         <div class="about-avatar-container">
-          <div class="about-avatar-glow-ring"></div>
           <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" class="about-avatar-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="about-avatar-fallback" style="display:none;"><i class="bi bi-person-fill"></i></div>
+          <div class="about-avatar-fallback" style="display:none;"><i class="bi bi-person-fill" aria-hidden="true"></i></div>
         </div>
         <div class="about-author-text">
           <span class="about-author-label">Created by</span>
           <h3 class="about-author-heading">Lorenzo Cardarelli</h3>
-          <span class="about-author-handle"><i class="bi bi-github"></i> @lrncrd <i class="bi bi-box-arrow-up-right"></i></span>
+          <span class="about-author-handle"><i class="bi bi-github" aria-hidden="true"></i> @lrncrd <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></span>
         </div>
       </a>
 
       <!-- Action Links: Website & Ko-fi Support -->
       <div class="about-actions-grid">
         <a href="https://lrncrd.github.io/PyPottery/" target="_blank" rel="noopener noreferrer" class="about-action-btn about-btn-web" title="Official Website &amp; Documentation">
-          <i class="bi bi-globe2"></i>
+          <i class="bi bi-globe2" aria-hidden="true"></i>
           <span>Website &amp; Docs</span>
-          <i class="bi bi-box-arrow-up-right external-icon"></i>
+          <i class="bi bi-box-arrow-up-right external-icon" aria-hidden="true"></i>
         </a>
 
         <a href="https://ko-fi.com/lrncrd" target="_blank" rel="noopener noreferrer" class="about-action-btn about-btn-kofi" title="Support development on Ko-fi">
-          <i class="bi bi-cup-hot-fill"></i>
+          <i class="bi bi-cup-hot-fill" aria-hidden="true"></i>
           <span>Support on Ko-fi</span>
-          <i class="bi bi-heart-fill heart-icon"></i>
+          <i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i>
         </a>
 
         <button id="btn-about-data-folder" class="about-action-btn about-btn-web" title="Contains the Python environment, installed apps and models - delete manually to remove them">
-          <i class="bi bi-folder2-open"></i>
+          <i class="bi bi-folder2-open" aria-hidden="true"></i>
           <span>Show Data Folder</span>
         </button>
       </div>
@@ -485,17 +494,17 @@
 </div>
 
 <!-- Open Source Disclaimer Modal Overlay (AS-IS) -->
-<div id="disclaimer-modal" class="installer-modal-overlay hidden">
+<div id="disclaimer-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="disclaimer-title">
   <div class="disclaimer-modal-card">
     <div class="disclaimer-modal-body">
       
       <!-- Icon Stage -->
       <div class="disclaimer-icon-wrapper">
-        <i class="bi bi-shield-exclamation"></i>
+        <i class="bi bi-shield-exclamation" aria-hidden="true"></i>
       </div>
 
-      <span class="disclaimer-tag">Open Source Notice</span>
-      <h2 class="disclaimer-title">Terms &amp; Disclaimer</h2>
+      <h2 class="disclaimer-title" id="disclaimer-title">Terms &amp; Disclaimer</h2>
+
 
       <div class="disclaimer-textbox">
         <p class="disclaimer-highlight">
@@ -519,7 +528,7 @@
 </div>
 
 <!-- Mandatory First-Time Setup Fullscreen Modal (Blocks Launcher until Installed) -->
-<div id="first-setup-modal" class="installer-modal-overlay hidden" data-blocking="true">
+<div id="first-setup-modal" class="installer-modal-overlay hidden" data-blocking="true" role="dialog" aria-modal="true" aria-labelledby="first-setup-title">
   <div class="first-setup-modal-card first-setup-minimal">
     <div class="first-setup-body">
       
@@ -528,7 +537,7 @@
         <i class="bi bi-stars"></i>
       </div>
 
-      <h2 class="first-setup-title">Initial Setup Required</h2>
+      <h2 class="first-setup-title" id="first-setup-title">Initial Setup Required</h2>
       <p class="first-setup-subtitle">
         Configure the Python environment and AI backend to start using PyPottery Suite.
       </p>
@@ -553,7 +562,7 @@
 </div>
 
 <!-- GPU/CPU PyTorch Variant Confirm Modal -->
-<div id="gpu-variant-modal" class="installer-modal-overlay hidden">
+<div id="gpu-variant-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gpu-variant-modal-title">
   <div class="confirm-modal-card">
     <div class="confirm-modal-icon"><i class="bi bi-gpu-card"></i></div>
     <h2 id="gpu-variant-modal-title" class="confirm-modal-title">GPU Acceleration</h2>
@@ -568,7 +577,7 @@
 <!-- Floating Toast Container -->
 <div id="toast-container" class="toast-container"></div>
 
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v=1.2.2"></script>
 </body>
 </html>
 

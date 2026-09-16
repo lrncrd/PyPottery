@@ -6,7 +6,7 @@ format: html
 <div style="text-align: center;">
   <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
   <br>
-  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+  <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
     version 2.1.0
   </span>
 </div>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPottery Suite - Linux AppImage Installation Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, sans-serif;
+            user-select: none;
+        }
+
+        /* Ubuntu Desktop Screen Container - Light Theme */
+        .linux-desktop {
+            width: 880px;
+            height: 620px;
+            background: linear-gradient(135deg, #fbf7f2 0%, #f7efe6 35%, #efe3d5 70%, #e6d5c3 100%);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transform-origin: center;
+        }
+
+        /* Canonical Ubuntu Aubergine & Orange Atmospheric Glow */
+        .ubuntu-wallpaper-glow {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 85% 15%, rgba(119, 33, 111, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(233, 84, 32, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 50% 50%, rgba(94, 39, 80, 0.10) 0%, transparent 60%);
+            pointer-events: none;
+            filter: blur(24px);
+        }
+
+        /* GNOME Top Panel Bar - Light Theme */
+        .gnome-topbar {
+            height: 28px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            font-size: 12px;
+            color: #1e293b;
+            font-weight: 500;
+            z-index: 60;
+        }
+
+        .topbar-activities {
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #1e293b;
+        }
+
+        .topbar-clock {
+            font-weight: 500;
+            color: #334155;
+            letter-spacing: 0.3px;
+        }
+
+        .topbar-system {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        /* Main Workspace Container (Left Dock + Desktop Canvas) */
+        .workspace-body {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ubuntu Left Dock - Light Theme */
+        .ubuntu-dock {
+            width: 54px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            gap: 10px;
+            z-index: 55;
+            box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .dock-app-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dock-app-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+            transform: scale(1.06);
+        }
+
+        .dock-app-btn.active {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .ubuntu-pip {
+            position: absolute;
+            left: -4px;
+            width: 4px;
+            height: 12px;
+            border-radius: 0 4px 4px 0;
+            background: #e95420;
+            box-shadow: 0 0 6px rgba(233, 84, 32, 0.8);
+        }
+
+        .ubuntu-dock-spacer {
+            flex: 1;
+        }
+
+        .show-apps-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #334155;
+            font-size: 18px;
+        }
+
+        /* Desktop Canvas Area */
+        .desktop-canvas {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Ubuntu Files (Nautilus) Window - Light Theme */
+        .nautilus-window {
+            width: 620px;
+            height: 410px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 30;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .nautilus-window.closing {
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+        }
+
+        .nautilus-header {
+            height: 46px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+        }
+
+        .nautilus-pathbar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .path-pill {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .win-btn {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .win-btn.close:hover {
+            background: #e95420;
+            color: white;
+        }
+
+        .nautilus-body {
+            flex: 1;
+            display: flex;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Nautilus Left Sidebar - Light Theme */
+        .nautilus-sidebar {
+            width: 150px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .sidebar-item {
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .sidebar-item.active {
+            background: #e2e8f0;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* Nautilus Main File Grid - Light Theme */
+        .nautilus-files {
+            flex: 1;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: max-content;
+            gap: 20px 16px;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            width: 130px;
+        }
+
+        .file-item:hover, .file-item.selected {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+        }
+
+        .appimage-icon-wrapper {
+            width: 58px;
+            height: 58px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .appimage-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -4px;
+            background: #0284c7;
+            color: white;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .file-name {
+            font-size: 11px;
+            color: #1e293b;
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.25;
+            word-break: break-all;
+        }
+
+        .file-size {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        /* Right-Click Context Menu - Light Theme */
+        .context-menu {
+            position: absolute;
+            width: 170px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 8px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            padding: 5px;
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .context-menu.open {
+            display: flex;
+        }
+
+        .ctx-item {
+            padding: 6px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .ctx-item:hover, .ctx-item.active {
+            background: #fff7ed;
+            color: #c2410c;
+            font-weight: 600;
+        }
+
+        .ctx-sep {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 3px 0;
+        }
+
+        /* Properties Dialog Window - Light Theme */
+        .properties-modal {
+            position: absolute;
+            width: 320px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.14);
+            border-radius: 10px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+            z-index: 110;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            color: #1e293b;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .properties-modal.open {
+            display: flex;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .prop-header {
+            height: 38px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .prop-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f1f5f9;
+            padding: 0 10px;
+        }
+
+        .prop-tab {
+            padding: 8px 12px;
+            font-size: 11.5px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .prop-tab.active {
+            color: #e95420;
+            border-bottom: 2px solid #e95420;
+            font-weight: 600;
+        }
+
+        .prop-content {
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .prop-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Ubuntu Toggle Switch */
+        .toggle-switch {
+            width: 38px;
+            height: 20px;
+            background: #cbd5e1;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .toggle-knob {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+
+        .toggle-switch.on {
+            background: #e95420;
+        }
+
+        .toggle-switch.on .toggle-knob {
+            transform: translateX(18px);
+        }
+
+        /* GNOME Top Notification Banner - Light Theme */
+        .gnome-toast {
+            position: absolute;
+            top: 36px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gnome-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Mouse Cursor */
+        .cursor {
+            width: 18px;
+            height: 24px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1.2" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
+            position: absolute;
+            top: 110%;
+            left: 110%;
+            z-index: 99999;
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
+
+        /* PyPottery Application Window for Linux */
+        .pypottery-window {
+            position: absolute;
+            top: 75px;
+            left: 190px;
+            width: 500px;
+            height: 360px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.14);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 85;
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .pypottery-window.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .pypottery-titlebar {
+            height: 40px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 8px;
+        }
+
+        .pypottery-titlebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pypottery-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        .pypottery-pixel-amphora {
+            width: 128px;
+            height: 128px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.08));
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="linux-desktop" id="screen">
+        <!-- Ubuntu Wallpaper Glow -->
+        <div class="ubuntu-wallpaper-glow"></div>
+
+        <!-- GNOME Top Bar -->
+        <div class="gnome-topbar">
+            <div class="topbar-activities">Activities</div>
+            <div class="topbar-clock">Thu Sep 10 14:30</div>
+            <div class="topbar-system">
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-volume-high"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+                <i class="fas fa-power-off"></i>
+            </div>
+        </div>
+
+        <!-- GNOME Top Notification Toast -->
+        <div class="gnome-toast" id="gnomeToast">
+            <img src="icon_app.png" onerror="this.src='icon_app.ico'" class="w-6 h-6 object-contain" alt="PyPottery">
+            <div class="flex flex-col text-xs">
+                <span class="font-bold text-slate-800">PyPottery Launcher</span>
+                <span class="text-slate-500">AppImage launched &amp; desktop integration ready</span>
+            </div>
+        </div>
+
+        <!-- Workspace Container -->
+        <div class="workspace-body">
+            <!-- Ubuntu Left Dock -->
+            <div class="ubuntu-dock">
+                <!-- Files App (Active) -->
+                <div class="dock-app-btn active" id="dockFiles" title="Files">
+                    <div class="ubuntu-pip"></div>
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-base shadow">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                </div>
+
+                <!-- Text Editor -->
+                <div class="dock-app-btn" title="Text Editor">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm shadow">
+                        <i class="fas fa-file-lines"></i>
+                    </div>
+                </div>
+
+                <!-- Terminal -->
+                <div class="dock-app-btn" title="Terminal">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-900 to-black flex items-center justify-center text-emerald-400 font-mono text-xs font-bold shadow border border-slate-700">
+                        &gt;_
+                    </div>
+                </div>
+
+                <!-- PyPottery Launcher in Dock (Initially Hidden) -->
+                <div class="dock-app-btn" id="dockPyPottery" style="display: none;" title="PyPottery Launcher">
+                    <div class="ubuntu-pip"></div>
+                    <img src="icon_app.png" onerror="this.src='icon_app.ico'" class="w-8 h-8 object-contain drop-shadow" alt="PyPottery">
+                </div>
+
+                <div class="ubuntu-dock-spacer"></div>
+
+                <!-- Show Applications 9-Dot Button -->
+                <div class="show-apps-btn" title="Show Applications">
+                    <i class="fas fa-grip"></i>
+                </div>
+            </div>
+
+            <!-- Desktop Canvas Area -->
+            <div class="desktop-canvas">
+                <!-- Ubuntu Files (Nautilus) Window -->
+                <div class="nautilus-window" id="nautilusWindow">
+                    <div class="nautilus-header">
+                        <div class="nautilus-pathbar">
+                            <div class="path-pill">
+                                <i class="fas fa-house text-xs text-gray-400"></i>
+                                <span>Home</span>
+                            </div>
+                            <span class="text-gray-400">/</span>
+                            <div class="path-pill">
+                                <i class="fas fa-download text-xs text-amber-500"></i>
+                                <span>Downloads</span>
+                            </div>
+                        </div>
+
+                        <div class="window-controls">
+                            <div class="win-btn">—</div>
+                            <div class="win-btn">□</div>
+                            <div class="win-btn close">✕</div>
+                        </div>
+                    </div>
+
+                    <div class="nautilus-body">
+                        <!-- Sidebar -->
+                        <div class="nautilus-sidebar">
+                            <div class="sidebar-item"><i class="fas fa-star text-xs"></i><span>Starred</span></div>
+                            <div class="sidebar-item"><i class="fas fa-house text-xs"></i><span>Home</span></div>
+                            <div class="sidebar-item"><i class="fas fa-file text-xs"></i><span>Documents</span></div>
+                            <div class="sidebar-item active"><i class="fas fa-download text-xs text-amber-500"></i><span>Downloads</span></div>
+                            <div class="sidebar-item"><i class="fas fa-image text-xs"></i><span>Pictures</span></div>
+                        </div>
+
+                        <!-- Main Files Grid -->
+                        <div class="nautilus-files" id="filesGrid">
+                            <!-- PyPottery AppImage File -->
+                            <div class="file-item" id="appimageFile">
+                                <div class="appimage-icon-wrapper">
+                                    <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="AppImage" class="w-12 h-12 object-contain drop-shadow">
+                                    <span class="appimage-badge">AppImage</span>
+                                </div>
+                                <span class="file-name">PyPottery-Launcher.AppImage</span>
+                                <span class="file-size" id="fileStatusText">88.4 MB</span>
+                            </div>
+
+                            <!-- Other generic files in Downloads for realism -->
+                            <div class="file-item opacity-65">
+                                <div class="w-12 h-12 flex items-center justify-center text-red-500 text-3xl">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <span class="file-name">guide_manual.pdf</span>
+                                <span class="file-size">2.1 MB</span>
+                            </div>
+
+                            <div class="file-item opacity-65">
+                                <div class="w-12 h-12 flex items-center justify-center text-blue-500 text-3xl">
+                                    <i class="fas fa-file-lines"></i>
+                                </div>
+                                <span class="file-name">notes.txt</span>
+                                <span class="file-size">14 KB</span>
+                            </div>
+
+                            <!-- Context Menu for Right-Click -->
+                            <div class="context-menu" id="contextMenu">
+                                <div class="ctx-item"><i class="fas fa-arrow-up-right-from-square text-xs"></i><span>Open</span></div>
+                                <div class="ctx-item opacity-50"><i class="fas fa-play text-xs"></i><span>Run as Program</span></div>
+                                <div class="ctx-sep"></div>
+                                <div class="ctx-item"><i class="fas fa-scissors text-xs"></i><span>Cut</span></div>
+                                <div class="ctx-item"><i class="fas fa-copy text-xs"></i><span>Copy</span></div>
+                                <div class="ctx-sep"></div>
+                                <div class="ctx-item font-semibold text-orange-600" id="ctxProperties">
+                                    <i class="fas fa-circle-info text-xs"></i><span>Properties</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Properties Dialog Modal -->
+                <div class="properties-modal" id="propertiesModal">
+                    <div class="prop-header">
+                        <span>PyPottery-Launcher Properties</span>
+                        <div class="win-btn close" id="closePropBtn">✕</div>
+                    </div>
+
+                    <div class="prop-tabs">
+                        <div class="prop-tab">Basic</div>
+                        <div class="prop-tab active">Permissions</div>
+                    </div>
+
+                    <div class="prop-content">
+                        <div class="prop-row">
+                            <span class="text-slate-500">File type:</span>
+                            <span class="font-medium text-slate-800">AppImage package</span>
+                        </div>
+                        <div class="prop-row">
+                            <span class="text-slate-500">Owner access:</span>
+                            <span class="font-medium text-slate-800">Read and write</span>
+                        </div>
+                        <div class="border-t border-slate-200 my-1"></div>
+                        <div class="prop-row">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800 text-xs">Allow executing file as program</span>
+                                <span class="text-[10px] text-slate-400">Enables running the AppImage as an application</span>
+                            </div>
+                            <div class="toggle-switch" id="execToggle">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PyPottery Suite Application Window (Opens upon launch) - Only Pixel Amphora Logo -->
+                <div class="pypottery-window" id="pypotteryWindow">
+                    <div class="pypottery-titlebar">
+                        <div class="pypottery-titlebar-title">
+                            <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery" class="w-4 h-4 object-contain">
+                            <span>PyPottery</span>
+                        </div>
+                        <div class="window-controls ml-auto">
+                            <div class="win-btn">—</div>
+                            <div class="win-btn">□</div>
+                            <div class="win-btn close">✕</div>
+                        </div>
+                    </div>
+
+                    <div class="pypottery-body">
+                        <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery Pixel Amphora" class="pypottery-pixel-amphora">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulated Pointer Cursor -->
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const screen = document.getElementById('screen');
+
+        const nautilusWindow = document.getElementById('nautilusWindow');
+        const appimageFile = document.getElementById('appimageFile');
+        const fileStatusText = document.getElementById('fileStatusText');
+        const contextMenu = document.getElementById('contextMenu');
+        const ctxProperties = document.getElementById('ctxProperties');
+        const propertiesModal = document.getElementById('propertiesModal');
+        const execToggle = document.getElementById('execToggle');
+        const closePropBtn = document.getElementById('closePropBtn');
+
+        const dockPyPottery = document.getElementById('dockPyPottery');
+        const gnomeToast = document.getElementById('gnomeToast');
+        const pypotteryWindow = document.getElementById('pypotteryWindow');
+
+        function getCoords(el) {
+            const r = el.getBoundingClientRect();
+            const w = screen.getBoundingClientRect();
+            const scale = w.width / 880;
+            return {
+                x: (r.left - w.left) / scale,
+                y: (r.top - w.top) / scale,
+                cx: (r.left - w.left + r.width / 2) / scale,
+                cy: (r.top - w.top + r.height / 2) / scale
+            };
+        }
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        async function sequence() {
+            // 1. Initial State Reset
+            cursor.style.transition = 'none';
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            cursor.style.transform = 'scale(1)';
+
+            nautilusWindow.classList.remove('closing');
+            appimageFile.classList.remove('selected');
+            fileStatusText.textContent = '88.4 MB';
+            fileStatusText.className = 'file-size';
+
+            contextMenu.classList.remove('open');
+            ctxProperties.classList.remove('active');
+
+            propertiesModal.classList.remove('open');
+            execToggle.classList.remove('on');
+
+            dockPyPottery.style.display = 'none';
+            gnomeToast.classList.remove('show');
+            pypotteryWindow.classList.remove('visible');
+
+            await wait(800);
+
+            // 2. Cursor moves to PyPottery-Launcher.AppImage
+            const filePos = getCoords(appimageFile);
+            cursor.style.transition = 'all 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (filePos.cy + 5) + 'px';
+            cursor.style.left = (filePos.cx + 5) + 'px';
+
+            await wait(1000);
+
+            // Right-click down
+            cursor.style.transform = 'scale(0.88)';
+            appimageFile.classList.add('selected');
+            await wait(150);
+            cursor.style.transform = 'scale(1)';
+
+            // Context Menu appears
+            contextMenu.style.top = '70px';
+            contextMenu.style.left = '80px';
+            contextMenu.classList.add('open');
+
+            await wait(500);
+
+            // 3. Cursor moves to "Properties" in context menu
+            const propPos = getCoords(ctxProperties);
+            cursor.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (propPos.cy) + 'px';
+            cursor.style.left = (propPos.cx) + 'px';
+
+            await wait(650);
+
+            // Click Properties
+            cursor.style.transform = 'scale(0.88)';
+            ctxProperties.classList.add('active');
+            await wait(140);
+            cursor.style.transform = 'scale(1)';
+
+            // Close context menu & open Properties modal
+            contextMenu.classList.remove('open');
+            propertiesModal.classList.add('open');
+
+            await wait(450);
+
+            // 4. Toggle "Allow executing file as program"
+            // Cursor moves to toggle switch
+            const togglePos = getCoords(execToggle);
+            cursor.style.transition = 'all 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (togglePos.cy) + 'px';
+            cursor.style.left = (togglePos.cx) + 'px';
+
+            await wait(900);
+
+            // Click switch: Turn ON!
+            cursor.style.transform = 'scale(0.88)';
+            execToggle.classList.add('on');
+            await wait(140);
+            cursor.style.transform = 'scale(1)';
+
+            await wait(600);
+
+            // Cursor moves to Close button on modal
+            const closeBtnPos = getCoords(closePropBtn);
+            cursor.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (closeBtnPos.cy) + 'px';
+            cursor.style.left = (closeBtnPos.cx) + 'px';
+
+            await wait(650);
+
+            // Click Close button
+            cursor.style.transform = 'scale(0.88)';
+            await wait(120);
+            cursor.style.transform = 'scale(1)';
+
+            // Properties modal closes
+            propertiesModal.classList.remove('open');
+            fileStatusText.textContent = 'Executable AppImage';
+            fileStatusText.className = 'file-size text-emerald-600 font-medium';
+
+            await wait(500);
+
+            // 5. Double-click AppImage to Launch
+            // Cursor moves back to file
+            const filePos2 = getCoords(appimageFile);
+            cursor.style.transition = 'all 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (filePos2.cy) + 'px';
+            cursor.style.left = (filePos2.cx) + 'px';
+
+            await wait(750);
+
+            // Double Click (Click 1)
+            cursor.style.transform = 'scale(0.86)';
+            await wait(120);
+            cursor.style.transform = 'scale(1)';
+            await wait(100);
+            // Click 2
+            cursor.style.transform = 'scale(0.86)';
+            await wait(120);
+            cursor.style.transform = 'scale(1)';
+
+            await wait(350);
+
+            // Files window closes as AppImage starts
+            nautilusWindow.classList.add('closing');
+
+            await wait(450);
+
+            // 6. Launched! Shows in Ubuntu Dock + Desktop Toast + PyPottery Window opens
+            dockPyPottery.style.display = 'flex';
+            gnomeToast.classList.add('show');
+            pypotteryWindow.classList.add('visible');
+
+            await wait(500);
+
+            // Cursor moves smoothly to window center
+            const winPos = getCoords(pypotteryWindow);
+            cursor.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (winPos.cy + 20) + 'px';
+            cursor.style.left = (winPos.cx) + 'px';
+
+            // Hold final state for viewing
+            await wait(4200);
+
+            // Reset cursor away and repeat sequence
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+
+            await wait(1600);
+            sequence();
+        }
+
+        function scaleDesktopToFit() {
+            const screen = document.querySelector('.linux-desktop');
+            if (!screen) return;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const scale = Math.min(w / 900, h / 640, 0.98);
+            screen.style.transform = `scale(${scale})`;
+            screen.style.transformOrigin = 'center center';
+        }
+        window.addEventListener('resize', scaleDesktopToFit);
+        window.addEventListener('DOMContentLoaded', scaleDesktopToFit);
+        window.addEventListener('load', scaleDesktopToFit);
+        scaleDesktopToFit();
+
+        setTimeout(sequence, 600);
+    </script>
+</body>
+
+</html>

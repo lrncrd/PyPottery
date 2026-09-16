@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPottery Suite - macOS Installation Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            user-select: none;
+        }
+
+        /* macOS Desktop Screen Container - Light Theme */
+        .mac-desktop {
+            width: 880px;
+            height: 620px;
+            background: linear-gradient(135deg, #fde8d7 0%, #fed7aa 25%, #e0f2fe 65%, #dbeafe 100%);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transform-origin: center;
+        }
+
+        /* macOS Wallpaper Atmosphere Glow */
+        .mac-wallpaper-art {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(251, 146, 60, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 75% 65%, rgba(56, 189, 248, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(192, 132, 252, 0.2) 0%, transparent 55%);
+            pointer-events: none;
+            filter: blur(24px);
+        }
+
+        /* macOS Top Menu Bar - Light Glass */
+        .mac-menubar {
+            height: 28px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 12px;
+            color: #1e293b;
+            font-weight: 500;
+            z-index: 60;
+        }
+
+        .menubar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menubar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 11px;
+            color: #334155;
+        }
+
+        /* macOS DMG Finder Window */
+        .dmg-window {
+            position: absolute;
+            top: 65px;
+            left: 155px;
+            width: 570px;
+            height: 380px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(30px) saturate(190%);
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 30;
+            overflow: hidden;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .dmg-window.closing {
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+        }
+
+        .dmg-titlebar {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(246, 246, 246, 0.7);
+        }
+
+        .traffic-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .traffic-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; border: 0.5px solid #e0443e; }
+        .dot-yellow { background: #ffbd2e; border: 0.5px solid #dea123; }
+        .dot-green { background: #27c93f; border: 0.5px solid #1aab29; }
+
+        .dmg-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* DMG Main Drag & Drop Canvas */
+        .dmg-canvas {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px 40px;
+            background: radial-gradient(circle at 50% 30%, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .dmg-instruction {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drag-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .drag-source, .drag-target {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 110px;
+            padding: 12px 8px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .app-icon-img {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+            transition: transform 0.2s ease;
+        }
+
+        .drag-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Animated Connecting Arrow */
+        .arrow-connector {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 60px;
+        }
+
+        .arrow-svg {
+            width: 100%;
+            height: 48px;
+            overflow: visible;
+        }
+
+        .arrow-path {
+            stroke: #94a3b8;
+            stroke-width: 2.5;
+            stroke-dasharray: 6, 6;
+            fill: none;
+            animation: dashMove 1.2s linear infinite;
+        }
+
+        @keyframes dashMove {
+            to { stroke-dashoffset: -24; }
+        }
+
+        /* Applications Folder Target */
+        .apps-folder-icon {
+            width: 68px;
+            height: 68px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .folder-base {
+            width: 64px;
+            height: 54px;
+            background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .folder-tab {
+            position: absolute;
+            top: -6px;
+            left: 6px;
+            width: 26px;
+            height: 10px;
+            background: #60a5fa;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .folder-symbol {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            opacity: 0.9;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        .drag-target.hovered .apps-folder-icon {
+            transform: scale(1.18);
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.7));
+        }
+
+        /* Floating Drag Ghost Element */
+        .drag-ghost {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 68px;
+            height: 68px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-9999px, -9999px);
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+            will-change: transform, opacity;
+        }
+
+        /* Copy Progress Toast inside DMG */
+        .copy-toast {
+            position: absolute;
+            bottom: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* macOS Launchpad (Full Screen App Grid) - Light Theme */
+        .launchpad-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(248, 250, 252, 0.90);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            z-index: 50;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .launchpad-overlay.open {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .launchpad-search {
+            width: 260px;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 18px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1e293b;
+            font-size: 12px;
+            margin-bottom: 50px;
+        }
+
+        .launchpad-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 36px 48px;
+            max-width: 680px;
+        }
+
+        .launchpad-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .launchpad-item:hover, .launchpad-item.highlight {
+            transform: scale(1.12);
+        }
+
+        .launchpad-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .launchpad-label {
+            color: #1e293b;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* macOS Dock bouncing physics */
+        @keyframes macDockBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1, 1);
+                animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+            }
+            22% {
+                transform: translateY(-28px) scale(0.95, 1.05);
+                animation-timing-function: cubic-bezier(0.6, 0.05, 0.8, 0.4);
+            }
+            42% {
+                transform: translateY(0) scale(1.12, 0.88);
+                animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+            }
+            58% {
+                transform: translateY(-13px) scale(0.98, 1.02);
+                animation-timing-function: cubic-bezier(0.6, 0.05, 0.8, 0.4);
+            }
+            72% {
+                transform: translateY(0) scale(1.05, 0.95);
+                animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+            }
+            82% {
+                transform: translateY(-4px) scale(1, 1);
+                animation-timing-function: cubic-bezier(0.6, 0.05, 0.8, 0.4);
+            }
+            90% {
+                transform: translateY(0) scale(1, 1);
+            }
+        }
+
+        .dock-icon-bounce {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            transform-origin: bottom center;
+        }
+
+        .dock-icon-bounce.bouncing {
+            animation: macDockBounce 1.15s infinite;
+        }
+
+        .dock-bounce-shadow {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 5px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45) 0%, transparent 75%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .dock-bounce-shadow.bouncing {
+            animation: macDockShadow 1.15s infinite;
+        }
+
+        @keyframes macDockShadow {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.4;
+            }
+            22% {
+                transform: translateX(-50%) scale(0.6);
+                opacity: 0.15;
+            }
+            42% {
+                transform: translateX(-50%) scale(1.15);
+                opacity: 0.55;
+            }
+            58% {
+                transform: translateX(-50%) scale(0.85);
+                opacity: 0.25;
+            }
+            72% {
+                transform: translateX(-50%) scale(1.05);
+                opacity: 0.45;
+            }
+            82% {
+                transform: translateX(-50%) scale(0.95);
+                opacity: 0.35;
+            }
+            90% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.4;
+            }
+        }
+
+        /* macOS Floating Dock - Light Glass */
+        .mac-dock {
+            margin-top: auto;
+            margin-bottom: 12px;
+            align-self: center;
+            height: 58px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 10px;
+            z-index: 60;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .dock-item {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .dock-item:hover, .dock-item.active {
+            transform: translateY(-8px) scale(1.15);
+        }
+
+        .dock-dot {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .dock-sep {
+            width: 1px;
+            height: 34px;
+            background: rgba(0, 0, 0, 0.12);
+            margin: 0 2px;
+        }
+
+        /* Mouse Cursor */
+        .cursor {
+            width: 18px;
+            height: 24px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1.2" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
+            position: absolute;
+            top: 110%;
+            left: 110%;
+            z-index: 99999;
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
+
+        /* PyPottery Application Window for macOS */
+        .pypottery-window {
+            position: absolute;
+            top: 75px;
+            left: 190px;
+            width: 500px;
+            height: 360px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.22);
+            display: flex;
+            flex-direction: column;
+            z-index: 85;
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .pypottery-window.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .pypottery-titlebar {
+            height: 38px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 12px;
+            position: relative;
+        }
+
+        .pypottery-titlebar-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pypottery-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        .pypottery-pixel-amphora {
+            width: 128px;
+            height: 128px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.08));
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mac-desktop" id="screen">
+        <!-- Ambient Atmosphere Artwork -->
+        <div class="mac-wallpaper-art"></div>
+
+        <!-- Top Menu Bar -->
+        <div class="mac-menubar">
+            <div class="menubar-left">
+                <span class="font-bold text-sm"><i class="fab fa-apple"></i></span>
+                <span class="font-semibold">Finder</span>
+                <span>File</span>
+                <span>Edit</span>
+                <span>View</span>
+                <span>Go</span>
+                <span>Window</span>
+                <span>Help</span>
+            </div>
+            <div class="menubar-right">
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-search"></i>
+                <i class="fas fa-sliders text-xs"></i>
+                <span>Thu 9:41 AM</span>
+            </div>
+        </div>
+
+        <!-- Window 1: Classic macOS DMG Drag & Drop Window -->
+        <div class="dmg-window" id="dmgWindow">
+            <div class="dmg-titlebar">
+                <div class="traffic-dots">
+                    <div class="traffic-dot dot-red"></div>
+                    <div class="traffic-dot dot-yellow"></div>
+                    <div class="traffic-dot dot-green"></div>
+                </div>
+                <div class="dmg-title">
+                    <i class="fas fa-compact-disc text-gray-400"></i>
+                    <span>PyPottery Launcher Installer</span>
+                </div>
+            </div>
+
+            <div class="dmg-canvas">
+                <div class="dmg-instruction">
+                    <span>Drag to Install</span>
+                </div>
+
+                <div class="drag-container">
+                    <!-- Left: Source App -->
+                    <div class="drag-source" id="dragSource">
+                        <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery Launcher" class="app-icon-img" id="sourceAppIcon">
+                        <span class="drag-label">PyPottery Launcher</span>
+                    </div>
+
+                    <!-- Middle: Animated Connecting Arrow -->
+                    <div class="arrow-connector">
+                        <svg class="arrow-svg" viewBox="0 0 180 40">
+                            <path class="arrow-path" d="M 10 20 Q 90 0 170 20" />
+                            <polygon points="168,14 178,20 168,26" fill="#94a3b8" />
+                        </svg>
+                    </div>
+
+                    <!-- Right: Applications Target Folder -->
+                    <div class="drag-target" id="dragTarget">
+                        <div class="apps-folder-icon">
+                            <div class="folder-base">
+                                <div class="folder-tab"></div>
+                                <span class="folder-symbol">A</span>
+                            </div>
+                        </div>
+                        <span class="drag-label">Applications</span>
+                    </div>
+                </div>
+
+                <!-- Toast upon successful copy -->
+                <div class="copy-toast" id="copyToast">
+                    <i class="fas fa-check-circle text-emerald-500"></i>
+                    <span>Copied to Applications folder</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Drag Ghost Element -->
+        <img src="icon_app.png" onerror="this.src='icon_app.ico'" id="dragGhost" class="drag-ghost" alt="Dragging">
+
+        <!-- Window 2: macOS Launchpad Overlay -->
+        <div class="launchpad-overlay" id="launchpadOverlay">
+            <div class="launchpad-search">
+                <i class="fas fa-search text-gray-500"></i>
+                <span>Search</span>
+            </div>
+
+            <div class="launchpad-grid">
+                <!-- Highlighted Item: PyPottery Launcher with official icon -->
+                <div class="launchpad-item" id="launchpadPyPottery">
+                    <div class="launchpad-icon bg-white p-1 border border-gray-200">
+                        <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery" class="w-full h-full object-contain drop-shadow">
+                    </div>
+                    <span class="launchpad-label font-bold">PyPottery Launcher</span>
+                </div>
+
+                <div class="launchpad-item opacity-75">
+                    <div class="launchpad-icon bg-gradient-to-br from-sky-400 to-blue-600 text-white">
+                        <i class="far fa-compass"></i>
+                    </div>
+                    <span class="launchpad-label">Safari</span>
+                </div>
+
+                <div class="launchpad-item opacity-75">
+                    <div class="launchpad-icon bg-gradient-to-br from-blue-500 to-indigo-700 text-white">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span class="launchpad-label">Mail</span>
+                </div>
+
+                <div class="launchpad-item opacity-75">
+                    <div class="launchpad-icon bg-gradient-to-br from-gray-800 to-black text-white">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <span class="launchpad-label">Terminal</span>
+                </div>
+
+                <div class="launchpad-item opacity-75">
+                    <div class="launchpad-icon bg-gradient-to-br from-gray-400 to-gray-600 text-white">
+                        <i class="fas fa-gear"></i>
+                    </div>
+                    <span class="launchpad-label">System Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Window 3: PyPottery Suite Application Window (Opens upon launch) - Only Pixel Amphora Logo -->
+        <div class="pypottery-window" id="pypotteryWindow">
+            <div class="pypottery-titlebar">
+                <div class="traffic-dots">
+                    <div class="traffic-dot dot-red"></div>
+                    <div class="traffic-dot dot-yellow"></div>
+                    <div class="traffic-dot dot-green"></div>
+                </div>
+                <div class="pypottery-titlebar-title">
+                    <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery" class="w-3.5 h-3.5 object-contain">
+                    <span>PyPottery</span>
+                </div>
+            </div>
+
+            <div class="pypottery-body">
+                <img src="icon_app.png" onerror="this.src='icon_app.ico'" alt="PyPottery Pixel Amphora" class="pypottery-pixel-amphora">
+            </div>
+        </div>
+
+        <!-- macOS Dock at Bottom -->
+        <div class="mac-dock">
+            <div class="dock-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png" class="w-9 h-9 object-contain" alt="Finder" onerror="this.innerHTML='📁'">
+                <div class="dock-dot"></div>
+            </div>
+
+            <!-- Launchpad Rocket Icon in Dock -->
+            <div class="dock-item" id="dockLaunchpad">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white text-base shadow border border-white/20">
+                    <i class="fas fa-rocket text-amber-300"></i>
+                </div>
+            </div>
+
+            <div class="dock-item">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-white text-base shadow">
+                    <i class="far fa-compass"></i>
+                </div>
+            </div>
+
+            <div class="dock-item">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-white text-base shadow">
+                    <i class="fas fa-terminal"></i>
+                </div>
+            </div>
+
+            <div class="dock-sep"></div>
+
+            <div class="dock-item" id="dockPyPottery" style="display: none;">
+                <div class="dock-bounce-shadow" id="dockPyPotteryShadow"></div>
+                <div class="dock-icon-bounce" id="dockPyPotteryIcon">
+                    <img src="icon_app.png" onerror="this.src='icon_app.ico'" class="w-9 h-9 object-contain drop-shadow" alt="PyPottery">
+                </div>
+                <div class="dock-dot"></div>
+            </div>
+
+            <div class="dock-item">
+                <div class="w-9 h-9 rounded-xl bg-gray-200/80 flex items-center justify-center text-gray-600 text-sm">
+                    <i class="far fa-trash-can"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulated Pointer Cursor -->
+        <div class="cursor" id="cursor"></div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const screen = document.getElementById('screen');
+
+        const dmgWindow = document.getElementById('dmgWindow');
+        const dragSource = document.getElementById('dragSource');
+        const sourceAppIcon = document.getElementById('sourceAppIcon');
+        const dragTarget = document.getElementById('dragTarget');
+        const dragGhost = document.getElementById('dragGhost');
+        const copyToast = document.getElementById('copyToast');
+
+        const dockLaunchpad = document.getElementById('dockLaunchpad');
+        const dockPyPottery = document.getElementById('dockPyPottery');
+        const dockPyPotteryIcon = document.getElementById('dockPyPotteryIcon');
+        const dockPyPotteryShadow = document.getElementById('dockPyPotteryShadow');
+        const launchpadOverlay = document.getElementById('launchpadOverlay');
+        const launchpadPyPottery = document.getElementById('launchpadPyPottery');
+        const pypotteryWindow = document.getElementById('pypotteryWindow');
+
+        function getCoords(el) {
+            const r = el.getBoundingClientRect();
+            const w = screen.getBoundingClientRect();
+            const scale = w.width / 880;
+            return {
+                x: (r.left - w.left) / scale,
+                y: (r.top - w.top) / scale,
+                cx: (r.left - w.left + r.width / 2) / scale,
+                cy: (r.top - w.top + r.height / 2) / scale
+            };
+        }
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        // Animate drag movement smoothly along an upward quadratic arc
+        function dragAcross(p0, p1, p2, durationMs) {
+            return new Promise(resolve => {
+                const startTime = performance.now();
+                cursor.style.transition = 'none';
+                dragGhost.style.transition = 'none';
+
+                function frame(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / durationMs, 1);
+                    // Smooth easeInOutQuad
+                    const t = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
+
+                    // Bézier: (1-t)^2 * P0 + 2(1-t)t * P1 + t^2 * P2
+                    const invT = 1 - t;
+                    const curX = invT * invT * p0.x + 2 * invT * t * p1.x + t * t * p2.x;
+                    const curY = invT * invT * p0.y + 2 * invT * t * p1.y + t * t * p2.y;
+
+                    dragGhost.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%) scale(1.06)`;
+                    cursor.style.top = curY + 'px';
+                    cursor.style.left = curX + 'px';
+
+                    if (progress > 0.75) {
+                        dragTarget.classList.add('hovered');
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(frame);
+                    } else {
+                        resolve();
+                    }
+                }
+
+                requestAnimationFrame(frame);
+            });
+        }
+
+        async function sequence() {
+            // 1. Initial State Reset
+            cursor.style.transition = 'none';
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            cursor.style.transform = 'scale(1)';
+
+            dmgWindow.classList.remove('closing');
+            sourceAppIcon.style.opacity = '1';
+            dragTarget.classList.remove('hovered');
+            copyToast.classList.remove('show');
+
+            dragGhost.style.opacity = '0';
+            dragGhost.style.transform = 'translate(-9999px, -9999px)';
+
+            launchpadOverlay.classList.remove('open');
+            dockLaunchpad.classList.remove('active');
+            dockPyPottery.style.display = 'none';
+            dockPyPotteryIcon.classList.remove('bouncing');
+            dockPyPotteryShadow.classList.remove('bouncing');
+            launchpadPyPottery.classList.remove('highlight');
+            pypotteryWindow.classList.remove('visible');
+
+            await wait(900);
+
+            // 2. Cursor moves to PyPottery Launcher icon in DMG
+            const sourceCoords = getCoords(sourceAppIcon);
+            cursor.style.transition = 'all 1s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (sourceCoords.cy) + 'px';
+            cursor.style.left = (sourceCoords.cx) + 'px';
+
+            await wait(1050);
+
+            // Click and grab icon
+            cursor.style.transform = 'scale(0.88)';
+            sourceAppIcon.style.opacity = '0.35';
+
+            // Show drag ghost
+            dragGhost.style.transition = 'none';
+            dragGhost.style.transform = `translate(${sourceCoords.cx}px, ${sourceCoords.cy}px) translate(-50%, -50%) scale(1.06)`;
+            dragGhost.style.opacity = '1';
+
+            await wait(280);
+
+            // 3. Smooth drag arc to Applications folder
+            cursor.style.transition = 'none';
+            const targetCoords = getCoords(dragTarget);
+            const p0 = { x: sourceCoords.cx, y: sourceCoords.cy };
+            const p2 = { x: targetCoords.cx, y: targetCoords.cy - 6 };
+            const p1 = {
+                x: (p0.x + p2.x) / 2,
+                y: (p0.y + p2.y) / 2 - 38
+            };
+
+            await dragAcross(p0, p1, p2, 1400);
+
+            // Drop icon in Applications
+            cursor.style.transform = 'scale(1)';
+            dragGhost.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+            dragGhost.style.transform = `translate(${p2.x}px, ${p2.y}px) translate(-50%, -50%) scale(0.6)`;
+            dragGhost.style.opacity = '0';
+
+            await wait(240);
+            dragTarget.classList.remove('hovered');
+
+            // Show copy completed toast
+            copyToast.classList.add('show');
+
+            await wait(1400);
+
+            // Close DMG window
+            dmgWindow.classList.add('closing');
+
+            await wait(450);
+
+            // 4. Open Launchpad from Dock
+            const dockCoords = getCoords(dockLaunchpad);
+            cursor.style.transition = 'all 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (dockCoords.cy) + 'px';
+            cursor.style.left = (dockCoords.cx) + 'px';
+
+            await wait(950);
+
+            // Click Launchpad icon
+            cursor.style.transform = 'scale(0.88)';
+            dockLaunchpad.classList.add('active');
+            await wait(140);
+            cursor.style.transform = 'scale(1)';
+
+            // Launchpad opens
+            launchpadOverlay.classList.add('open');
+
+            await wait(600);
+
+            // 5. Cursor moves to PyPottery Launcher in Launchpad
+            const appPos = getCoords(launchpadPyPottery);
+            cursor.style.transition = 'all 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (appPos.cy + 10) + 'px';
+            cursor.style.left = (appPos.cx) + 'px';
+
+            await wait(950);
+
+            // Click PyPottery Launcher
+            launchpadPyPottery.classList.add('highlight');
+            cursor.style.transform = 'scale(0.88)';
+            await wait(160);
+            cursor.style.transform = 'scale(1)';
+
+            // Launchpad closes
+            launchpadOverlay.classList.remove('open');
+            launchpadPyPottery.classList.remove('highlight');
+            dockLaunchpad.classList.remove('active');
+
+            await wait(350);
+
+            // 6. Icon bounces in Dock during engine initialization
+            dockPyPottery.style.display = 'flex';
+            dockPyPotteryIcon.classList.add('bouncing');
+            dockPyPotteryShadow.classList.add('bouncing');
+
+            const dockAppPos = getCoords(dockPyPottery);
+            cursor.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (dockAppPos.cy - 35) + 'px';
+            cursor.style.left = (dockAppPos.cx) + 'px';
+
+            // Bounce duration
+            await wait(3200);
+
+            // Stabilize in Dock
+            dockPyPotteryIcon.classList.remove('bouncing');
+            dockPyPotteryShadow.classList.remove('bouncing');
+
+            // 7. PyPottery Window opens with Pixel Amphora Logo!
+            await wait(350);
+            pypotteryWindow.classList.add('visible');
+
+            // Cursor moves smoothly to window center
+            const winPos = getCoords(pypotteryWindow);
+            cursor.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (winPos.cy + 20) + 'px';
+            cursor.style.left = (winPos.cx) + 'px';
+
+            // Hold state for viewing
+            await wait(4200);
+
+            // Reset cursor and loop sequence
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            pypotteryWindow.classList.remove('visible');
+
+            await wait(1600);
+            sequence();
+        }
+
+        function scaleDesktopToFit() {
+            const screen = document.querySelector('.mac-desktop');
+            if (!screen) return;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const scale = Math.min(w / 900, h / 640, 0.98);
+            screen.style.transform = `scale(${scale})`;
+            screen.style.transformOrigin = 'center center';
+        }
+        window.addEventListener('resize', scaleDesktopToFit);
+        window.addEventListener('DOMContentLoaded', scaleDesktopToFit);
+        window.addEventListener('load', scaleDesktopToFit);
+        scaleDesktopToFit();
+
+        setTimeout(sequence, 600);
+    </script>
+</body>
+
+</html>

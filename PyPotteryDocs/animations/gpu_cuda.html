@@ -4,98 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPU CUDA Icon Animation</title>
+    <title>GPU CUDA Animation</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: transparent;
+            min-height: 100vh;
+            background: transparent;
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        .gpu-container {
-            width: 300px;
-            height: auto;
-            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
-            transition: transform 0.3s ease;
+        .icon-container {
+            width: 92px;
+            height: 92px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.2));
         }
 
-        .gpu-container:hover {
-            transform: scale(1.02);
+        .icon-container:hover {
+            transform: scale(1.12);
+            filter: drop-shadow(0 12px 24px rgba(16, 185, 129, 0.35));
         }
 
-        /* Enhanced Fan Animation with glow */
-        .fan {
-            transform-origin: 0px 0px;
-            animation: spin 3s linear infinite;
-            filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.5));
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: visible;
         }
 
-        @keyframes spin {
+        /* Dual Fans Spinning */
+        .gpu-fan {
+            animation: fanSpin 2.6s linear infinite;
+        }
+
+        @keyframes fanSpin {
             from {
                 transform: rotate(0deg);
             }
-
             to {
                 transform: rotate(360deg);
             }
         }
 
-        /* LED Power Indicator */
-        .led-indicator {
-            animation: led-pulse 2s infinite ease-in-out;
+        /* NVIDIA Green LED Breathing Bar */
+        .led-glow-bar {
+            animation: ledBreath 2.2s ease-in-out infinite alternate;
         }
 
-        @keyframes led-pulse {
-
-            0%,
-            100% {
-                fill: #10b981;
+        @keyframes ledBreath {
+            0% {
+                opacity: 0.7;
                 filter: drop-shadow(0 0 3px #10b981);
             }
-
-            50% {
-                fill: #34d399;
-                filter: drop-shadow(0 0 8px #34d399);
-            }
-        }
-
-        /* Power connector glow */
-        .power-connector {
-            animation: power-glow 3s infinite ease-in-out;
-        }
-
-        @keyframes power-glow {
-
-            0%,
             100% {
-                fill: #f59e0b;
-            }
-
-            50% {
-                fill: #fbbf24;
-            }
-        }
-
-        /* NVIDIA brand badge pulse */
-        .nvidia-badge {
-            animation: badge-pulse 4s infinite ease-in-out;
-        }
-
-        @keyframes badge-pulse {
-
-            0%,
-            100% {
-                opacity: 0.8;
-            }
-
-            50% {
                 opacity: 1;
+                filter: drop-shadow(0 0 8px #22c55e);
+            }
+        }
+
+        /* Power LED Pulse */
+        .power-led {
+            animation: powerPulse 1.4s infinite ease-in-out alternate;
+        }
+
+        @keyframes powerPulse {
+            0% {
+                opacity: 0.4;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.15);
+                filter: drop-shadow(0 0 4px #76b900);
             }
         }
     </style>
@@ -103,96 +96,124 @@
 
 <body>
 
-    <div class="gpu-container">
-        <svg viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Bracket (Left) -->
-            <path d="M40 20 L40 230" stroke="#9ca3af" stroke-width="8" stroke-linecap="round" />
-            <path d="M40 20 L20 20" stroke="#9ca3af" stroke-width="8" stroke-linecap="round" />
+    <div class="icon-container" id="gpu-container">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Shroud Carbon/Gunmetal Gradient -->
+                <linearGradient id="shroud-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#334155"/>
+                    <stop offset="30%" stop-color="#1e293b"/>
+                    <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
 
-            <!-- Main Body (Shroud) -->
-            <rect x="50" y="40" width="340" height="170" rx="10" fill="white" stroke="#374151" stroke-width="6" />
+                <!-- Fan Well Radial Shadow -->
+                <radialGradient id="fan-well" cx="50%" cy="50%" r="50%">
+                    <stop offset="60%" stop-color="#090d16"/>
+                    <stop offset="100%" stop-color="#1e293b"/>
+                </radialGradient>
 
-            <!-- Decorative Stripe / Brand Bar -->
-            <rect x="50" y="80" width="340" height="90" fill="#eff6ff" opacity="0.5" />
+                <!-- Metallic Blade Gradient -->
+                <linearGradient id="blade-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#64748b"/>
+                    <stop offset="50%" stop-color="#334155"/>
+                    <stop offset="100%" stop-color="#1e293b"/>
+                </linearGradient>
 
-            <!-- NVIDIA Logo/Text Area -->
-            <g class="nvidia-badge">
-                <rect x="70" y="55" width="80" height="18" rx="9" fill="#76b900" />
-                <text x="110" y="68" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white"
-                    text-anchor="middle">NVIDIA</text>
+                <!-- NVIDIA Emerald Green Gradient -->
+                <linearGradient id="nv-green" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#76b900"/>
+                    <stop offset="50%" stop-color="#22c55e"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                </linearGradient>
+
+                <!-- Gold PCIe Contacts -->
+                <linearGradient id="pcie-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Backplate / IO Bracket -->
+            <rect x="18" y="44" width="8" height="112" rx="3" fill="#64748b" stroke="#475569" stroke-width="1"/>
+
+            <!-- Main GPU Card Body / Armor Shroud -->
+            <rect x="24" y="48" width="154" height="104" rx="14" fill="url(#shroud-grad)" stroke="#475569" stroke-width="2.5"/>
+            <rect x="28" y="52" width="146" height="96" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+
+            <!-- Heatsink Fin Array Lines (Behind fans) -->
+            <g stroke="#1e293b" stroke-width="1.5" opacity="0.6">
+                <line x1="38" y1="62" x2="38" y2="138"/>
+                <line x1="44" y1="62" x2="44" y2="138"/>
+                <line x1="158" y1="62" x2="158" y2="138"/>
+                <line x1="164" y1="62" x2="164" y2="138"/>
             </g>
 
-            <!-- LED Power Indicator -->
-            <circle cx="370" cy="60" r="6" class="led-indicator" />
+            <!-- Copper Heatpipe Accent (Top) -->
+            <path d="M 40,58 L 160,58" stroke="#b45309" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
 
-            <!-- Decorative Vents on Right -->
-            <rect x="360" y="100" width="15" height="6" rx="2" fill="#374151" />
-            <rect x="360" y="115" width="15" height="6" rx="2" fill="#374151" />
-            <rect x="360" y="130" width="15" height="6" rx="2" fill="#374151" />
-            <rect x="360" y="145" width="15" height="6" rx="2" fill="#374151" />
-
-            <!-- PCIe Connector (Bottom) with glow -->
-            <path d="M100 210 L100 230 L280 230 L280 210" class="power-connector" stroke="#374151" stroke-width="4" />
-            <line x1="120" y1="210" x2="120" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="140" y1="210" x2="140" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="160" y1="210" x2="160" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="180" y1="210" x2="180" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="200" y1="210" x2="200" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="220" y1="210" x2="220" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="240" y1="210" x2="240" y2="230" stroke="#374151" stroke-width="2" />
-            <line x1="260" y1="210" x2="260" y2="230" stroke="#374151" stroke-width="2" />
-
-            <!-- Fan 1 (Left) -->
-            <g transform="translate(135, 125)">
-                <circle cx="0" cy="0" r="55" stroke="#374151" stroke-width="4" fill="white" />
-                <circle cx="0" cy="0" r="52" fill="rgba(37, 99, 235, 0.05)" />
-                <g class="fan">
-                    <circle cx="0" cy="0" r="10" fill="#374151" />
-                    <path d="M0 0 L0 -45 A45 45 0 0 1 25 -35 Z" fill="#2563eb" />
-                    <path d="M0 0 L25 -35 A45 45 0 0 1 42 -15 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L42 -15 A45 45 0 0 1 42 15 Z" fill="#2563eb" />
-                    <path d="M0 0 L42 15 A45 45 0 0 1 25 35 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L25 35 A45 45 0 0 1 0 45 Z" fill="#2563eb" />
-                    <path d="M0 0 L0 45 A45 45 0 0 1 -25 35 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L-25 35 A45 45 0 0 1 -42 15 Z" fill="#2563eb" />
-                    <path d="M0 0 L-42 15 A45 45 0 0 1 -42 -15 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L-42 -15 A45 45 0 0 1 -25 -35 Z" fill="#2563eb" />
-                    <path d="M0 0 L-25 -35 A45 45 0 0 1 0 -45 Z" fill="#1d4ed8" />
-                </g>
+            <!-- Left Fan Well -->
+            <circle cx="68" cy="100" r="32" fill="url(#fan-well)" stroke="#334155" stroke-width="2"/>
+            
+            <!-- Left Spinning Fan -->
+            <g class="gpu-fan" id="fan-left" style="transform-origin: 68px 100px;">
+                <!-- 6 Aerodynamic Blades -->
+                <path d="M 68,100 C 60,82 72,74 78,74 C 74,84 72,94 68,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 68,100 C 86,92 94,104 94,110 C 84,106 74,104 68,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 68,100 C 76,118 64,126 58,126 C 62,116 64,106 68,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 68,100 C 50,108 42,96 42,90 C 52,94 62,96 68,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 68,100 C 52,86 64,76 70,76 C 68,88 66,96 68,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 68,100 C 84,114 72,124 66,124 C 68,112 70,104 68,100 Z" fill="url(#blade-grad)"/>
+                <!-- Center Metallic Hub Cap -->
+                <circle cx="68" cy="100" r="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+                <circle cx="68" cy="100" r="3" fill="#76b900"/>
             </g>
 
-            <!-- Fan 2 (Right) -->
-            <g transform="translate(285, 125)">
-                <circle cx="0" cy="0" r="55" stroke="#374151" stroke-width="4" fill="white" />
-                <circle cx="0" cy="0" r="52" fill="rgba(37, 99, 235, 0.05)" />
-                <g class="fan" style="animation-delay: -1.5s;">
-                    <circle cx="0" cy="0" r="10" fill="#374151" />
-                    <path d="M0 0 L0 -45 A45 45 0 0 1 25 -35 Z" fill="#2563eb" />
-                    <path d="M0 0 L25 -35 A45 45 0 0 1 42 -15 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L42 -15 A45 45 0 0 1 42 15 Z" fill="#2563eb" />
-                    <path d="M0 0 L42 15 A45 45 0 0 1 25 35 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L25 35 A45 45 0 0 1 0 45 Z" fill="#2563eb" />
-                    <path d="M0 0 L0 45 A45 45 0 0 1 -25 35 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L-25 35 A45 45 0 0 1 -42 15 Z" fill="#2563eb" />
-                    <path d="M0 0 L-42 15 A45 45 0 0 1 -42 -15 Z" fill="#1d4ed8" />
-                    <path d="M0 0 L-42 -15 A45 45 0 0 1 -25 -35 Z" fill="#2563eb" />
-                    <path d="M0 0 L-25 -35 A45 45 0 0 1 0 -45 Z" fill="#1d4ed8" />
-                </g>
+            <!-- Right Fan Well -->
+            <circle cx="134" cy="100" r="32" fill="url(#fan-well)" stroke="#334155" stroke-width="2"/>
+
+            <!-- Right Spinning Fan -->
+            <g class="gpu-fan" id="fan-right" style="transform-origin: 134px 100px;">
+                <path d="M 134,100 C 126,82 138,74 144,74 C 140,84 138,94 134,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 134,100 C 152,92 160,104 160,110 C 150,106 140,104 134,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 134,100 C 142,118 130,126 124,126 C 128,116 130,106 134,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 134,100 C 116,108 108,96 108,90 C 118,94 128,96 134,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 134,100 C 118,86 130,76 136,76 C 134,88 132,96 134,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 134,100 C 150,114 138,124 132,124 C 134,112 136,104 134,100 Z" fill="url(#blade-grad)"/>
+                <circle cx="134" cy="100" r="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+                <circle cx="134" cy="100" r="3" fill="#76b900"/>
             </g>
 
+            <!-- NVIDIA CUDA LED Logo / Neon Bar (Top Edge) -->
+            <rect x="42" y="52" width="118" height="5" rx="2.5" fill="url(#nv-green)" class="led-glow-bar"/>
+
+            <!-- PCIe Gold Connection Fingers (Bottom Edge) -->
+            <g fill="url(#pcie-gold)">
+                <rect x="44" y="152" width="6" height="8" rx="1"/>
+                <rect x="54" y="152" width="6" height="8" rx="1"/>
+                <rect x="64" y="152" width="6" height="8" rx="1"/>
+                <rect x="74" y="152" width="6" height="8" rx="1"/>
+                <rect x="88" y="152" width="6" height="8" rx="1"/>
+                <rect x="98" y="152" width="6" height="8" rx="1"/>
+                <rect x="108" y="152" width="6" height="8" rx="1"/>
+                <rect x="118" y="152" width="6" height="8" rx="1"/>
+                <rect x="128" y="152" width="6" height="8" rx="1"/>
+                <rect x="138" y="152" width="6" height="8" rx="1"/>
+            </g>
+
+            <!-- Power Status LED Indicator -->
+            <circle cx="166" cy="62" r="3" fill="#76b900" class="power-led"/>
         </svg>
     </div>
 
     <script>
-        const container = document.querySelector('.gpu-container');
-        const fans = document.querySelectorAll('.fan');
+        const container = document.getElementById('gpu-container');
+        let turbo = false;
 
         container.addEventListener('click', () => {
+            turbo = !turbo;
+            const fans = document.querySelectorAll('.gpu-fan');
             fans.forEach(fan => {
-                fan.style.animationDuration = '0.3s';
-                setTimeout(() => {
-                    fan.style.animationDuration = '3s';
-                }, 2000);
+                fan.style.animationDuration = turbo ? '0.6s' : '2.6s';
             });
         });
     </script>

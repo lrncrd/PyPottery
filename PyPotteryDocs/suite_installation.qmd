@@ -1,367 +1,579 @@
 ---
-title: "Suite Installation"
+title: "Suite Installation & Deployment"
+subtitle: "Standalone launcher, hardware-accelerated runtime provisioning, and developer setup."
+page-layout: full
+toc: true
+toc-depth: 3
 ---
 
 ```{=html}
-<div class="hero-section">
-  <h2>🚀 PyPottery Suite Launcher</h2>
-  <p>
-    The easiest way to get started with PyPottery! Download the pre-packaged launcher 
-    with everything included - no Python installation required.
+<style>
+#title-block-header {
+  display: none !important;
+}
+</style>
+
+<!-- Hero -->
+<div class="archaeo-drafting-hero">
+  <h1 class="drafting-hero-title">PyPottery Suite Installation</h1>
+
+  <p class="drafting-hero-lead">
+    The PyPottery Suite ships as a self-contained application hub. The launcher provisions an isolated Python
+    environment, detects available hardware acceleration (NVIDIA CUDA, Apple Silicon MPS, AMD ROCm, or CPU), and
+    runs each of the five suite modules as an independent process without touching your system's Python install.
   </p>
 </div>
+
+<hr class="hero-pipeline-hr">
 ```
 
-## Quick Start
+## Deployment Paradigms
 
-The **PyPottery Suite Launcher** is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.
+Two ways to run PyPottery, depending on your workflow:
 
-::: {.callout-tip}
-## No Technical Knowledge Required
-The launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+```{=html}
+<div class="methodology-card">
+  <div>
+    <span class="methodology-tag" style="color: var(--teal-dark); background: var(--teal-soft); border-color: var(--teal-border);">RECOMMENDED FOR RESEARCHERS</span>
+    <h3 class="methodology-title">Method A: Launcher Hub</h3>
+    <p class="methodology-desc">
+      A packaged release with no Python installation, Git, or terminal use required. The launcher bootstraps
+      dependencies, configures a hardware-matched PyTorch backend, and opens a browser-based control panel.
+    </p>
+  </div>
+  <a href="#method-a-launcher-hub" class="btn-editorial-primary" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Launcher guide</a>
+</div>
+```
 :::
 
-## Download
-
-Download the PyPottery Suite Launcher for your operating system:
-
+::: {.g-col-12 .g-col-md-6}
 ```{=html}
-<div style="text-align: center; margin: 1.5rem 0;">
-  <iframe src="animations/github_download.html" width="100%" height="800" style="border: none; border-radius: 8px; max-width: 850px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></iframe>
-</div>
-```
-
-| Platform | Download | Size |
-|----------|----------|------|
-| **Windows 10/11** (64-bit) | [PyPottery-Launcher-Windows.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~52 MB |
-| **macOS Intel** (x86_64) | [PyPottery-Launcher-macos-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
-| **macOS Apple Silicon** (M1/M2/M3) | [PyPottery-Launcher-macos-arm64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~22 MB |
-| **Linux** (x86_64) | Coming Soon | Coming Soon |
-
-
-<!--
-| **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
--->
-
-
-## Installation
-
-### Windows
-
-1. **Download** the Windows package from the link above
-2. **Extract** the ZIP file to a folder of your choice (e.g., `C:\PyPottery`)
-3. **Run** `PyPottery.bat` by double-clicking it
-
-```{=html}
-<div style="background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #10b981;">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-    <span style="font-size: 1.5rem;">💡</span>
-    <strong style="color: #166534;">Tip</strong>
+<div class="methodology-card">
+  <div>
+    <span class="methodology-tag" style="color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border);">DEVELOPERS</span>
+    <h3 class="methodology-title">Method B: Source & CLI</h3>
+    <p class="methodology-desc">
+      Install directly from GitHub. For developers, computational archaeologists building custom pipelines, and
+      contributors extending the machine learning modules via the launcher's Developer Mode.
+    </p>
   </div>
-  <p style="margin: 0; color: #166534;">
-    You can create a desktop shortcut to <code>PyPottery.bat</code> for quick access!
-  </p>
+  <a href="#method-b-source-cli" class="btn-editorial-github" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Source instructions</a>
+</div>
+```
+:::
+
+:::
+
+---
+
+## Method A: Launcher Hub
+
+### Release Packages
+
+Download the package for your operating system from the GitHub releases page:
+
+::: {.callout-important}
+#### Offline use in the field
+PyPottery runs **offline by default** once set up. The **first run** is the main exception: initial environment
+setup and AI model downloads (YOLOv8 detectors, TrOCR, SAM 2, and the matching PyTorch backend) require an
+internet connection. If you're deploying to a dig house or field site without connectivity, run the initial
+configuration while connected — at your institution or a hotel — before departing.
+
+One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for
+metadata extraction, so that specific feature needs a live connection every time it's used, not just once.
+Everything else in the suite runs locally.
+:::
+
+```{=html}
+<div class="os-download-grid">
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">Windows</span>
+      <h4 class="os-card-title">Windows 10 / 11</h4>
+      <div class="os-card-meta">64-bit (x86_64) • ~28 MB installer</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable,
+        no-installer versions are also available on the releases page.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download Windows Installer
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">macOS Apple Silicon</span>
+      <h4 class="os-card-title">macOS arm64</h4>
+      <div class="os-card-meta">M1 / M2 / M3 / M4 • .dmg</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download macOS arm64
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">macOS Intel</span>
+      <h4 class="os-card-title">macOS x86_64</h4>
+      <div class="os-card-meta">Intel Mac • .dmg</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Build for Intel-based Mac workstations and laptops, distributed as a .dmg.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download macOS Intel
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">Linux</span>
+      <h4 class="os-card-title">Linux x86_64</h4>
+      <div class="os-card-meta">AppImage</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download Linux AppImage
+    </a>
+  </div>
 </div>
 ```
 
-### macOS
+---
 
-1. **Download** the appropriate package for your Mac:
-   - **Intel Mac**: `macos-x86_64` version
-   - **Apple Silicon (M1/M2/M3)**: `macos-arm64` version
-2. **Extract** the ZIP file
-3. **Double-click** on the `PyPottery Launcher.app` file to launch the app
+### Installation by Operating System
+
+Select your operating system for step-by-step instructions:
+
+::: {.panel-tabset}
+
+### Windows 10 / 11
+
+```{=html}
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download and run the installer</div>
+      <p class="install-step-desc">
+        Download <code>PyPottery-Launcher-Setup.exe</code> from GitHub Releases and run it. It's a normal
+        installer with a setup wizard (Welcome → choose folder → Install → Finish) — no admin rights needed, it
+        installs to your own user profile, and it registers a proper uninstaller in <strong>Add or remove
+        programs</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Launch it</div>
+      <p class="install-step-desc">
+        The installer already created a Start Menu entry and a Desktop shortcut for you. Open either one — it
+        starts a local web server and opens your browser to <code>http://127.0.0.1:5000</code>.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">03</div>
+    <div class="install-step-body">
+      <div class="install-step-title">First-run environment setup</div>
+      <p class="install-step-desc">
+        Click <strong>"Configure Environment"</strong> in the browser interface. The launcher detects your GPU or
+        CPU, provisions an isolated Python runtime, and installs the matching PyTorch build. Later launches start
+        immediately.
+      </p>
+    </div>
+  </div>
+</div>
+```
 
 ::: {.callout-note}
-## First Run on macOS
-The first time you run the launcher, macOS may ask for permission. Right-click on the script and select "Open" to bypass Gatekeeper.
+#### Windows SmartScreen warning
+GitHub release binaries aren't signed with an enterprise code-signing certificate, so Windows Defender
+SmartScreen may show *"Windows protected your PC"*. Click **"More info"**, then **"Run anyway"**.
 :::
-
-::: {.callout-warning}
-## Don't run on Download
-Download folder doesn't allow running the app. Move it to a different location (e.g, Desktop or Applications).
-:::
-
-### Linux
-
-
-```{=html}
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe src="animations/under_construction.html" width="100%" height="500" style="border: none; border-radius: 12px; max-width: 750px;"></iframe>
-  <p style="color: #6b7280; font-size: 1.1rem; margin-top: 1rem;">Linux of the installer is coming soon! Check back later.</p>
-</div>
-```
-
-<!-- COMING SOON: Linux Installation Instructions
-### Linux
-
-1. **Download** the Linux package
-2. **Extract** the ZIP file:
-   ```bash
-   unzip PyPottery-Launcher-linux-x86_64-v1.0.0.zip
-   cd PyPottery-Launcher-linux-x86_64
-   ```
-3. **Run the installer** (first time only):
-   ```bash
-   chmod +x install.sh PyPottery.sh
-   ./install.sh
-   ```
-4. **Launch PyPottery**:
-   ```bash
-   ./PyPottery.sh
-   ```
--->
-
-## Using the Launcher
-
-
-Once the launcher opens, you'll see a clean interface with all available PyPottery applications.
-
-::: {.callout-note}
-## The launcher runs in your browser
-Just like the PyPottery apps it manages, the launcher itself opens as a page in your default web browser (instead of a separate desktop window). Closing that browser tab shuts down the launcher and any app it's currently running - simply reopen it from `PyPottery.bat` / `PyPottery Launcher.app` when you want to start again.
-:::
-
-```{=html}
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe src="animations/launcher_demo.html" width="100%" height="850" style="border: none; border-radius: 12px; max-width: 950px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"></iframe>
-</div>
-```
-
-```{=html}
-<div style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white;">
-  <h3 style="color: white; margin-top: 0;">🎯 Launcher Features</h3>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>📥 One-Click Download</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Download apps directly from the launcher</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>🔄 Auto Updates</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Check for and install updates easily</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>⚙️ Environment Setup</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Automatic Python environment configuration</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>🖥️ Hardware Detection</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Detects GPU for optimal performance</p>
-    </div>
-  </div>
-</div>
-```
-
-### Step 1: Configure Environment
-
-The first time you use the launcher, click **"Configure Environment"** to set up the Python environment. This installs all required dependencies.
-
-```{=html}
-<div style="background: #fef3c7; border-radius: 8px; padding: 1rem; margin: 1rem 0; border-left: 4px solid #f59e0b;">
-  <strong style="color: #92400e;">⏱️ First Setup</strong>
-  <p style="margin: 0.5rem 0 0 0; color: #92400e;">
-    Environment configuration may take 5-10 minutes depending on your internet connection. 
-    The progress bar shows the current status.
-  </p>
-</div>
-```
-
-### Step 2: Download Apps
-
-Click the **download button** (⬇️) next to any app to download it. Available apps:
-
-| App | Description |
-|-----|-------------|
-| **PyPotteryInk** | AI-based inking of pottery drawings |
-| **PyPotteryLayout** | Create publication-ready layouts |
-| **PyPotteryLens** | Data collection from PDF documents |
-
-<!-- | **PyPotteryScan** | Digitize pottery plates with AI-powered OCR | -->
-<!-- | **PyPotteryTrace** | Vectorize pottery profiles | -->
-
-### Step 3: Launch Apps
-
-Once an app is downloaded, click the **"Launch"** button to start it. The app will open in your default web browser.
-
-```{=html}
-<div style="background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #3b82f6;">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-    <span style="font-size: 1.5rem;">ℹ️</span>
-    <strong style="color: #1e40af;">How Apps Work</strong>
-  </div>
-  <p style="margin: 0; color: #1e40af;">
-    PyPottery apps run as local web servers. When you click "Launch", a browser window opens
-    with the app interface. The launcher shows the running status and allows you to stop the app.
-  </p>
-</div>
-```
 
 ::: {.callout-tip}
-## For Developers: Developer Mode
-If you're working from a git checkout of a PyPottery app instead of a downloaded release, the launcher supports a **Developer Mode**: copy `launcher/dev_config.example.py` to `launcher/dev_config.py` and set `DEVELOPER_MODE = True`. With it enabled, Launch and Open Folder point at the app's local git checkout at the repo root instead of the downloaded copy in `apps/`, and Install/Update/Uninstall are disabled for those apps (you manage them yourself with `git pull`).
+#### Prefer a portable version?
+Two no-installer alternatives sit on the same [releases page](https://github.com/lrncrd/PyPottery/releases/latest):
+`PyPottery-Launcher-Windows-v1.1.0.zip` (extract, then run `PyPottery.bat`) and
+`PyPottery-Launcher-Windows-EXE-v1.1.0.zip` (extract, then run `PyPottery.exe` directly). Both skip the installer
+entirely — useful on a locked-down machine. Unlike the installer, they don't create shortcuts for you; right-click
+the executable and choose **Send to → Desktop (create shortcut)** if you want one.
 :::
+
+#### Interactive walkthrough
+
+```{=html}
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Windows 11 installation walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_windows.html" class="simulator-iframe" title="PyPottery Windows Installation Simulation"></iframe>
+</div>
+```
+
+### macOS (Apple Silicon & Intel)
+
+```{=html}
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download the .dmg</div>
+      <p class="install-step-desc">
+        Download <code>PyPottery-Launcher-macos-arm64.dmg</code> (Apple Silicon: M1–M4) or
+        <code>PyPottery-Launcher-macos-x86_64.dmg</code> (Intel), then open it.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Drag to Applications</div>
+      <p class="install-step-desc">
+        The .dmg opens a window with <code>PyPottery Launcher.app</code> next to an <code>Applications</code>
+        shortcut — drag one onto the other. This is the standard macOS install, and it's what avoids Gatekeeper's
+        "App Translocation" issue in the first place.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">03</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Launch from Applications</div>
+      <p class="install-step-desc">
+        Open <code>PyPottery Launcher.app</code> from <code>/Applications</code>. On Apple Silicon, PyPottery
+        initializes the Metal Performance Shaders (MPS) backend automatically. Environments, model caches, and
+        logs live in <code>~/Library/Application Support/PyPottery</code>.
+      </p>
+    </div>
+  </div>
+</div>
+```
+
+::: {.callout-note}
+#### "Developer cannot be verified"
+macOS may block software downloaded outside the App Store with *"PyPottery Launcher cannot be opened because the
+developer cannot be verified"*.
+
+- **GUI**: right-click (or Control-click) `PyPottery Launcher.app`, choose **Open**, then confirm.
+- **Terminal**: clear the quarantine attribute:
+  ```bash
+  xattr -cr /Applications/"PyPottery Launcher.app"
+  ```
+:::
+
+::: {.callout-tip}
+#### Opened it straight from Downloads?
+If the app runs from a translocated or quarantined location instead of `/Applications`, PyPottery notices and
+offers a dialog to move itself there for you — no manual Terminal work required. Installing from the `.dmg`
+above avoids the situation from the start, since it's already pointing you at `/Applications`.
+:::
+
+::: {.callout-tip}
+#### Portable version
+A plain `.zip` of the same app (<code>PyPottery-Launcher-macos-arm64.zip</code> /
+<code>-x86_64.zip</code>) is also on the releases page, for anyone who'd rather place the app manually than use
+the `.dmg`.
+:::
+
+#### Interactive walkthrough
+
+```{=html}
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>macOS installation walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_mac.html" class="simulator-iframe" title="PyPottery macOS Installation Simulation"></iframe>
+</div>
+```
+
+### Linux (x86_64 AppImage)
+
+```{=html}
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download the AppImage</div>
+      <div class="install-step-desc">
+        <p>Download <code>PyPottery-Launcher-linux-x86_64.AppImage</code> from GitHub Releases, then make it executable:</p>
+        <pre><code class="language-bash">chmod +x PyPottery-Launcher-linux-x86_64.AppImage</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Run it</div>
+      <div class="install-step-desc">
+        <pre><code class="language-bash">./PyPottery-Launcher-linux-x86_64.AppImage</code></pre>
+        <p>
+          On first run it registers its own menu entry and icon (GNOME, KDE, XFCE) automatically — no separate
+          install script needed. To remove the menu entry later, run
+          <code>./PyPottery-Launcher-linux-x86_64.AppImage --uninstall-desktop</code>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+::: {.callout-note}
+#### FUSE requirement on recent distributions
+AppImage requires FUSE 2. Recent distributions (Ubuntu 24.04+, Debian 12+, Fedora 40+) don't ship
+`libfuse2` by default. If the AppImage fails to start:
+```bash
+# Ubuntu / Debian / Linux Mint:
+sudo apt update && sudo apt install -y libfuse2
+
+# Fedora / RHEL:
+sudo dnf install -y fuse-libs
+
+# Arch Linux:
+sudo pacman -S fuse2
+```
+:::
+
+::: {.callout-tip}
+#### Prefer a plain directory to an AppImage?
+`PyPottery-Launcher-linux-x86_64.zip`, on the same releases page, extracts to a normal directory instead — useful
+if AppImages aren't an option on your system:
+```bash
+unzip PyPottery-Launcher-linux-x86_64.zip -d ~/PyPottery
+cd ~/PyPottery
+chmod +x PyPottery.sh install_desktop.sh
+./install_desktop.sh   # optional: adds a menu entry
+./PyPottery.sh          # installs missing dependencies on first run, then starts the launcher
+```
+:::
+
+#### Interactive walkthrough
+
+```{=html}
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Linux AppImage walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_linux.html" class="simulator-iframe" title="PyPottery Linux Installation Simulation"></iframe>
+</div>
+```
+
+:::
+
+---
+
+## The Suite Launcher
+
+The launcher is a local process supervisor reachable in the browser at `http://127.0.0.1:5000`.
+
+```{=html}
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Launcher control panel walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/launcher_demo.html" class="launcher-simulator-iframe" title="PyPottery Launcher Interactive Demonstration"></iframe>
+</div>
+```
+
+### What it handles
+
+1. **Environment lifecycle**: creates and validates an isolated virtual environment (`pypottery_env`), keeping tool dependencies separate from your system's global libraries.
+2. **Hardware detection**: identifies available compute (CUDA 11.8–12.6, Apple Silicon MPS, AMD ROCm 6.2, or CPU) and installs the matching PyTorch build automatically.
+3. **Single-instance lock**: an advisory lock (`instance_lock.py`) prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.
+4. **Offline model caching**: model weights (YOLOv8, TrOCR, the diffusion model, SAM 2) are downloaded once into `models/` and cached for fully offline use afterward.
+5. **Process isolation**: each application runs as an independent subprocess on its own loopback port. Closing the launcher stops all child processes.
+
+---
+
+## Module Architecture & Port Allocation
+
+Each tool runs as its own microservice:
+
+| Module | Function | Port | Min RAM | Recommended | Architecture |
+|:---|:---|:---:|:---:|:---:|:---|
+| **PyPotteryLens** | PDF & monograph figure extraction | `5001` | 8 GB | 16 GB | YOLOv8 + PyMuPDF |
+| **PyPotteryScan** | Pottery card digitization & OCR | `5002` | 16 GB | 32 GB | TrOCR + Vision-LLM |
+| **PyPotteryInk** | Pencil drawing → ink restoration | `5003` | 8 GB | 16 GB | 1-Step Latent Diffusion |
+| **PyPotteryTrace** | Profile vectorization | `5004` | 8 GB | 16 GB | SAM 2 + Spline Engine |
+| **PyPotteryLayout** | Plate synthesis | `5005` | 4 GB | 8 GB | Metric Grid Engine + Vector SVG/PDF |
+
+::: {.callout-note}
+#### Process independence
+Because each module binds to its own port (`127.0.0.1:5001`–`5005`), a heavy job in one — dense OCR in
+PyPotteryScan, for instance — doesn't block or slow down another, such as an active session in PyPotteryTrace.
+:::
+
+---
+
+## Method B: Source & CLI
+
+For running from a Git checkout or developing custom ML backends:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/lrncrd/PyPottery.git
+cd PyPottery
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv venv
+
+# Windows:
+venv\Scripts\activate
+
+# macOS / Linux:
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+```
+
+### 4. Enable Developer Mode
+
+Developer Mode runs the launcher against your local Git checkout instead of downloaded release binaries:
+
+1. Copy the template configuration:
+   ```bash
+   # Windows:
+   copy launcher\dev_config.example.py launcher\dev_config.py
+
+   # macOS / Linux:
+   cp launcher/dev_config.example.py launcher/dev_config.py
+   ```
+2. In `launcher/dev_config.py`, set:
+   ```python
+   DEVELOPER_MODE = True
+   ```
+3. Run the development server:
+   ```bash
+   python -m launcher.gui
+   ```
+
+### 5. Standalone module installation
+
+To run a single tool outside the launcher, see its dedicated installation guide:
+
+- [PyPotteryLens](pypotterylens/installation.qmd)
+- [PyPotteryScan](pypotteryscan/installation.qmd)
+- [PyPotteryInk](pypotteryink/installation.qmd)
+- [PyPotteryTrace](pypotterytrace/installation.qmd)
+- [PyPotteryLayout](pypotterylayout/installation.qmd)
+
+---
 
 ## Troubleshooting
 
-### General Troubleshooting during the installation
-
-Remove the `pypottery_env` folder and try again.
-
-### Windows: "Windows protected your PC" message
-
-This is normal for new applications. Click **"More info"** → **"Run anyway"**.
-
-<!-- COMING SOON: macOS and Linux troubleshooting
-### macOS: "Cannot be opened because it is from an unidentified developer"
-
-Right-click on the script → **"Open"** → **"Open"** in the dialog.
-
-### Linux: Permission denied
-
-Make sure the scripts are executable:
-```bash
-chmod +x install.sh PyPottery.sh
+```{=html}
+<div class="diagnostic-table-wrapper">
+<table class="diagnostic-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Symptom</th>
+      <th style="width: 35%;">Cause</th>
+      <th style="width: 40%;">Resolution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>"Windows protected your PC" (SmartScreen)</strong></td>
+      <td>No enterprise code-signing certificate — common for open-source releases.</td>
+      <td>Click <strong>"More info"</strong>, then <strong>"Run anyway"</strong>. One-time per release.</td>
+    </tr>
+    <tr>
+      <td><strong>"Developer cannot be verified" (macOS)</strong></td>
+      <td>Gatekeeper flags apps downloaded outside the App Store or that aren't notarized.</td>
+      <td>Right-click <code>PyPottery Launcher.app</code>, choose <strong>Open</strong>, confirm. Or run <code>xattr -cr /Applications/"PyPottery Launcher.app"</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>"Move to Applications?" dialog (macOS)</strong></td>
+      <td>Launched from a translocated/quarantined copy (e.g. still in <code>Downloads/</code>) instead of the installed copy in <code>/Applications</code>.</td>
+      <td>Choose <strong>"Move to Applications"</strong> in the dialog, or drag the app there yourself and relaunch. Installing via the <code>.dmg</code> avoids this from the start.</td>
+    </tr>
+    <tr>
+      <td><strong>"AppImage requires FUSE to run" (Linux)</strong></td>
+      <td>Recent distros (Ubuntu 24.04+, Fedora 40+) don't include FUSE 2 by default.</td>
+      <td>Install it: <code>sudo apt install libfuse2</code> or <code>sudo dnf install fuse-libs</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Permission denied on Linux</strong></td>
+      <td>The executable bit wasn't preserved on extraction.</td>
+      <td>Run <code>chmod +x</code> on the <code>.AppImage</code> file, or on <code>PyPottery.sh</code> if you're using the zip package.</td>
+    </tr>
+    <tr>
+      <td><strong>Environment setup fails or is corrupted</strong></td>
+      <td>Network interruption during the PyTorch download or package installation.</td>
+      <td>Delete <code>pypottery_env/</code> (or <code>~/Library/Application Support/PyPottery/pypottery_env</code> on macOS) and re-run <strong>"Configure Environment"</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Port already in use</strong></td>
+      <td>A previous instance crashed without releasing ports 5000–5005, or another local service is using them.</td>
+      <td>Terminate orphaned Python processes via Task Manager, Activity Monitor, or <code>pkill -f "launcher.gui"</code> on Linux.</td>
+    </tr>
+    <tr>
+      <td><strong>Deploying to a site with no connectivity</strong></td>
+      <td>No internet access on-site for the first-run model and package downloads.</td>
+      <td>Run the launcher and let all five apps and models download while still connected. Once initialized, everything except Lens's metadata extraction runs fully offline.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 ```
--->
 
-### Apps not downloading
-
-Check your internet connection and firewall settings. The launcher downloads apps from GitHub.
-
-### Environment configuration fails
-
-Try running the launcher as administrator (Windows).
-
-<!-- COMING SOON: add back when macOS/Linux are available
-Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).
--->
-
-## Alternative: Manual Installation
-
-If you prefer to install PyPottery tools manually or need more control, see the individual installation guides:
-
-<!-- - [PyPotteryScan Installation](pypotteryscan/installation.qmd) -->
-- [PyPotteryInk Installation](pypotteryink/installation.qmd)
-<!-- - [PyPotteryTrace Installation](pypotterytrace/installation.qmd) -->
-- [PyPotteryLayout Installation](pypotterylayout/installation.qmd)
-- [PyPotteryLens Installation](pypotterylens/installation.qmd)
+---
 
 ```{=html}
-<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px;">
-  <h3 style="margin-bottom: 1rem;">Ready to Start?</h3>
-  <p style="color: #6b7280; margin-bottom: 1.5rem;">Download the launcher and begin digitizing your pottery collection!</p>
-  <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="download-link" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-    📥 Download PyPottery Launcher
-  </a>
-</div>
-
-<!-- Ko-fi Donation Popup Modal -->
-<div id="kofi-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
-  <div style="background: white; border-radius: 20px; padding: 2.5rem; max-width: 450px; margin: 1rem; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: modalSlideIn 0.3s ease-out;">
-    
-    <!-- Header -->
-    <div style="font-size: 3rem; margin-bottom: 1rem;">☕</div>
-    <h3 style="margin: 0 0 0.5rem 0; color: #1f2937; font-size: 1.5rem;">Support PyPottery!</h3>
-    <p style="color: #6b7280; margin: 0 0 1.5rem 0; font-size: 0.95rem; line-height: 1.6;">
-      PyPottery is a <strong>free and open-source</strong> project built for the archaeological community. 
-      If you find it useful, please consider supporting its development!
-    </p>
-    
-    <!-- Ko-fi Button -->
-    <a href="https://ko-fi.com/lrncrd" target="_blank" style="display: inline-block; margin-bottom: 1.5rem;">
-      <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi" style="border: none; height: 40px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+<div class="archaeo-cta-box" style="margin-top: 3rem;">
+  <h3 class="archaeo-cta-title">Ready to install</h3>
+  <p class="archaeo-cta-desc">
+    Download the launcher for your operating system and start producing standardized, publication-ready ceramic
+    documentation.
+  </p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem;">
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener">
+      Download Latest Release (GitHub)
     </a>
-    
-    <!-- Divider -->
-    <div style="border-top: 1px solid #e5e7eb; margin: 1rem 0;"></div>
-    
-    <!-- Buttons -->
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <button id="kofi-continue" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'">
-        📥 Continue to Download
-      </button>
-      <button id="kofi-close" style="background: #f3f4f6; color: #6b7280; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 500; cursor: pointer; font-size: 0.95rem; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-        Maybe Later
-      </button>
-    </div>
-    
-    <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;">
-      Every contribution helps keep this project alive! 🙏
-    </p>
+    <a href="docs_home.html" class="btn-editorial-github">
+      Back to Documentation Hub
+    </a>
   </div>
 </div>
-
-<style>
-  @keyframes modalSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-</style>
-
-<script>
-(function() {
-  // Variables to store the target URL
-  let pendingDownloadUrl = null;
-  
-  // Get the modal elements
-  const modal = document.getElementById('kofi-modal');
-  const continueBtn = document.getElementById('kofi-continue');
-  const closeBtn = document.getElementById('kofi-close');
-  
-  // Function to show modal
-  function showKofiModal(url) {
-    pendingDownloadUrl = url;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-  
-  // Function to hide modal
-  function hideKofiModal() {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-  
-  // Continue to download
-  continueBtn.addEventListener('click', function() {
-    hideKofiModal();
-    if (pendingDownloadUrl) {
-      window.open(pendingDownloadUrl, '_blank');
-    }
-  });
-  
-  // Close modal
-  closeBtn.addEventListener('click', function() {
-    hideKofiModal();
-  });
-  
-  // Close on backdrop click
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      hideKofiModal();
-    }
-  });
-  
-  // Close on Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal.style.display === 'flex') {
-      hideKofiModal();
-    }
-  });
-  
-  // Intercept all download links (GitHub releases links)
-  document.addEventListener('click', function(e) {
-    const link = e.target.closest('a');
-    if (link && link.href && link.href.includes('github.com/lrncrd/PyPottery/releases')) {
-      e.preventDefault();
-      showKofiModal(link.href);
-    }
-  });
-})();
-</script>
 ```

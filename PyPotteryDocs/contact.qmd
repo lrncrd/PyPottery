@@ -21,36 +21,36 @@ For general questions, bug reports, or feature requests, you can:
 ```{=html}
 <div class="software-grid" style="margin-top: 1.5rem;">
 
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);">
     <div style="font-size: 2.5rem; margin-bottom: 1rem;">📚</div>
     <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Check Documentation</h4>
     <p class="card-description">
       Review the comprehensive documentation for common solutions and detailed guides.
     </p>
     <div style="margin-top: 1rem;">
-      <a href="intro.html" style="color: #667eea; font-weight: 600; text-decoration: none;">Browse Docs →</a>
+      <a href="intro.html" style="color: #c2410c; font-weight: 600; text-decoration: none;">Browse Docs →</a>
     </div>
   </div>
 
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);">
     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🐛</div>
     <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Report Issues</h4>
     <p class="card-description">
       Submit bug reports or check existing issues on the GitHub repository.
     </p>
     <div style="margin-top: 1rem;">
-      <a href="https://github.com/lrncrd/PyPottery/issues" target="_blank" style="color: #667eea; font-weight: 600; text-decoration: none;">View Issues →</a>
+      <a href="https://github.com/lrncrd/PyPottery/issues" target="_blank" style="color: #c2410c; font-weight: 600; text-decoration: none;">View Issues →</a>
     </div>
   </div>
 
-  <div class="software-card" style="--card-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="software-card" style="--card-accent: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);">
     <div style="font-size: 2.5rem; margin-bottom: 1rem;">💡</div>
     <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">Request Features</h4>
     <p class="card-description">
       Suggest new features or improvements through GitHub's issue tracker.
     </p>
     <div style="margin-top: 1rem;">
-      <a href="https://github.com/lrncrd/PyPottery/issues/new" target="_blank" style="color: #667eea; font-weight: 600; text-decoration: none;">Submit Request →</a>
+      <a href="https://github.com/lrncrd/PyPottery/issues/new" target="_blank" style="color: #c2410c; font-weight: 600; text-decoration: none;">Submit Request →</a>
     </div>
   </div>
 
@@ -61,14 +61,14 @@ For general questions, bug reports, or feature requests, you can:
 ## Get in Touch
 
 ```{=html}
-<div style="text-align: center; margin: 3rem 0; padding: 2.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white;">
+<div style="text-align: center; margin: 3rem 0; padding: 2.5rem; background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); border-radius: 20px; color: white;">
   <h3 style="color: white; margin-top: 0; margin-bottom: 1rem;">Let's enhance your archaeological documentation</h3>
   <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">
     I'm happy to discuss how PyPottery can be optimized for your needs
   </p>
-  <div style="display: inline-flex; align-items: center; gap: 1rem; padding: 1.25rem 2rem; background: white; border-radius: 12px; color: #667eea; font-size: 1.1rem; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+  <div style="display: inline-flex; align-items: center; gap: 1rem; padding: 1.25rem 2rem; background: white; border-radius: 12px; color: #c2410c; font-size: 1.1rem; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
     <span style="font-size: 1.5rem;">📧</span>
-    <a href="mailto:lorenzo.cardarelli@uniroma1.it" style="color: #667eea; text-decoration: none;">lorenzo.cardarelli@uniroma1.it</a>
+    <a href="mailto:lorenzo.cardarelli@uniroma1.it" style="color: #c2410c; text-decoration: none;">lorenzo.cardarelli@uniroma1.it</a>
   </div>
 </div>
 ```

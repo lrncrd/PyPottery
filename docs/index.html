@@ -2,710 +2,3187 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO Meta Tags -->
-    <title>PyPottery - AI-Powered Archaeological Pottery Documentation</title>
-    <meta name="description"
-        content="PyPottery is an open-source suite of AI-powered tools for digitizing archaeological pottery documentation. Transform hand-drawn pottery into publication-ready plates using computer vision.">
-    <meta name="keywords"
-        content="PyPottery, archaeological pottery, digitization, computer vision, AI, archaeology, pottery documentation, PyPotteryLens, PyPotteryInk, PyPotteryLayout, open source">
-    <meta name="author" content="Lorenzo Cardarelli">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://lrncrd.github.io/PyPottery/">
+  <!-- SEO Meta Tags -->
+  <title>PyPottery Suite — Archaeological Pottery Documentation Tools</title>
+  <meta name="description"
+    content="Download PyPottery Suite: Open-source AI-powered desktop application for digitizing, vectorizing, and assembling archaeological pottery documentation. 100% offline and private.">
+  <meta name="keywords"
+    content="PyPottery, archaeological pottery, pottery digitization, computer vision, AI inking, vector tracing, plate layout, PyPotteryLens, PyPotteryScan, PyPotteryInk, PyPotteryTrace, PyPotteryLayout, SAM 2, YOLOv8, diffusion models, archaeology">
+  <meta name="author" content="Lorenzo Cardarelli">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://lrncrd.github.io/PyPottery/">
+  <meta name="theme-color" content="#fbf9f5">
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="PyPottery - AI-Powered Archaeological Pottery Documentation">
-    <meta property="og:description"
-        content="Open-source AI tools for transforming archaeological pottery drawings into publication-ready documentation.">
-    <meta property="og:url" content="https://lrncrd.github.io/PyPottery/">
-    <meta property="og:image" content="https://lrncrd.github.io/PyPottery/logo.png">
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PyPottery Suite — Archaeological Pottery Documentation Tools">
+  <meta property="og:description"
+    content="Download PyPottery Suite: Open-source AI-powered desktop application for archaeological ceramic documentation.">
+  <meta property="og:url" content="https://lrncrd.github.io/PyPottery/">
+  <meta property="og:image" content="https://lrncrd.github.io/PyPottery/icon_app.png">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PyPottery - AI-Powered Archaeological Pottery Documentation">
-    <meta name="twitter:description" content="Open-source AI tools for archaeological pottery digitization.">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PyPottery Suite — Archaeological Pottery Documentation Tools">
+  <meta name="twitter:description"
+    content="Open-source desktop tools for archaeological ceramic documentation, AI inking, and plate layout synthesis.">
+  <meta name="twitter:image" content="https://lrncrd.github.io/PyPottery/icon_app.png">
 
-    <!-- Use existing styles if possible, plus local overrides -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <style>
-        /* Reset & Base */
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: #fdfdfd;
-            overflow-x: hidden;
-        }
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-        /* Navigation (Mimic Quarto for consistency if standalone, or just be a landing page) */
-        /* For this task, we focus on the landing content itself */
+  <style>
+    /* ==========================================================================
+       PyPottery Suite — Archaeological Warm Terracotta Design System
+       Consistent with launcher/templates/index.html & style.css
+       ========================================================================== */
+    :root {
+      --bg-main: #fbf9f5;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #f7f2ea 0%, #fbf9f5 65%, #f4eee5 100%);
+      --bg-card: #ffffff;
+      --bg-card-hover: #ffffff;
+      --bg-subtle: #f6f3ed;
 
-        .landing-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+      --border-light: #e8e3d8;
+      --border-hover: #d4a373;
+      --border-focus: #c2410c;
 
-        /* Hero */
-        .hero-section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
+      --text-main: #1c1917;
+      --text-dim: #57534e;
+      --text-muted: #78716c;
 
-        .hero-text {
-            flex: 1;
-            padding-right: 50px;
-            z-index: 2;
-        }
+      /* Terracotta & Clay Palette */
+      --primary: #c2410c;
+      --primary-hover: #9a3412;
+      --primary-soft: #fff7ed;
+      --primary-border: #ffedd5;
+      --primary-glow: rgba(194, 65, 12, 0.15);
 
-        .hero-visual {
-            flex: 1;
-            height: 100%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
+      /* Mediterranean Glaze Teal */
+      --teal: #0f766e;
+      --teal-hover: #115e59;
+      --teal-soft: #f0fdf4;
+      --teal-border: #bbf7d0;
 
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(99, 102, 241, 0.1);
-            color: #4f46e5;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            opacity: 0;
-            /* JS handling */
-        }
+      /* Status Colors */
+      --success: #15803d;
+      --success-soft: #f0fdf4;
+      --danger: #e11d48;
+      --warning: #d97706;
+      --warning-soft: #fffbeb;
 
-        h1 {
-            font-size: 4.5rem;
-            line-height: 1.1;
-            font-weight: 800;
-            color: #111827;
-            margin: 0 0 24px 0;
-            opacity: 0;
-            /* JS handling */
-        }
+      /* Terminal & Code */
+      --console-bg: #1c1917;
+      --console-fg: #f5f5f4;
+      --console-border: #292524;
 
-        .gradient-text {
-            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      --radius-xl: 20px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
 
-        .hero-desc {
-            font-size: 1.25rem;
-            color: #4b5563;
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            opacity: 0;
-            /* JS handling */
-        }
+      --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.04);
+      --shadow-card: 0 4px 18px -2px rgba(120, 53, 15, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+      --shadow-hover: 0 12px 28px -4px rgba(120, 53, 15, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      --shadow-elevated: 0 20px 45px -10px rgba(44, 30, 20, 0.14), 0 0 0 1px rgba(194, 65, 12, 0.08);
 
-        .cta-group {
-            display: flex;
-            gap: 16px;
-            opacity: 0;
-            /* JS handling */
-        }
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-        .btn {
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .btn-primary {
-            background: #111827;
-            color: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      line-height: 1.55;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .btn-secondary {
-            background: white;
-            color: #111827;
-            border: 1px solid #e5e7eb;
-        }
+    ::selection {
+      background: #ffedd5;
+      color: #9a3412;
+    }
 
-        .btn-secondary:hover {
-            border-color: #d1d5db;
-            background: #f9fafb;
-        }
+    /* Archival Parchment Scrollbars */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f4eee5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d6cbbe;
+      border-radius: 6px;
+      border: 2px solid #f4eee5;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #b5a494;
+    }
 
-        /* Orbit Animation Elements */
-        .orbit-system {
-            position: relative;
-            width: 600px;
-            height: 600px;
-        }
+    /* Accessible Focus Ring */
+    :focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
 
-        .orbit-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid rgba(200, 200, 200, 0.2);
-            border-radius: 50%;
-        }
+    /* Skip to content */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 10000;
+      transition: top 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      top: 16px;
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
 
-        .c1 {
-            width: 300px;
-            height: 300px;
-            border-color: rgba(99, 102, 241, 0.1);
-        }
+    /* ==========================================================================
+       Top Navigation Bar (Rock-Solid Non-Breaking Glassmorphism)
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(251, 249, 245, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-light);
+      height: 68px;
+      display: flex;
+      align-items: center;
+    }
 
-        .c2 {
-            width: 500px;
-            height: 500px;
-            border-color: rgba(236, 72, 153, 0.1);
-        }
+    .header-inner {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 1.25rem;
+    }
 
-        .orbit-icon {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            top: 50%;
-            left: 50%;
-            /* Start center, JS moves them */
-        }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+    }
 
-        .orbit-icon img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-        }
+    .brand-logo-wrap {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(194, 65, 12, 0.12);
+      border: 1px solid var(--border-light);
+      padding: 3px;
+    }
+    .brand-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-        .center-logo {
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 30px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #111827;
-            font-weight: 800;
-            font-size: 2rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            z-index: 10;
-        }
+    .brand-text-block {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
 
-        /* Bento Grid */
-        .grid-section {
-            padding: 80px 0;
-        }
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+    .brand-accent {
+      color: var(--primary);
+    }
 
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            grid-auto-rows: minmax(250px, auto);
-        }
+    .version-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      padding: 1px 7px;
+      border-radius: 12px;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+    }
 
-        .bento-card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            transition: transform 0.3s;
-            overflow: hidden;
-            position: relative;
-        }
+    /* Navigation Links */
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      flex-shrink: 1;
+    }
 
-        .card-large {
-            grid-column: span 2;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+      list-style: none;
+      white-space: nowrap;
+    }
 
-        .card-tall {
-            grid-row: span 2;
-            background: #111827;
-            color: white;
-        }
+    .nav-link {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nav-link:hover {
+      color: var(--primary);
+    }
 
-        .bento-card h3 {
-            font-size: 1.8rem;
-            margin: 0 0 16px 0;
-        }
+    /* Actions on Header */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
 
-        .bento-card p {
-            font-size: 1.1rem;
-            color: #6b7280;
-            line-height: 1.5;
-        }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1.05rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
 
-        .card-tall p {
-            color: #9ca3af;
-        }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(194, 65, 12, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(194, 65, 12, 0.3);
+      color: #ffffff;
+    }
 
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
+    .btn-outline {
+      background: white;
+      color: var(--text-main);
+      border-color: var(--border-light);
+    }
+    .btn-outline:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
 
-        /* Floating interaction layer */
-        .glass-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to top, white, transparent);
-            pointer-events: none;
-        }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-dim);
+    }
+    .btn-ghost:hover {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
 
-        @media (max-width: 1024px) {
-            .hero-section {
-                flex-direction: column;
-                text-align: center;
-                height: auto;
-                padding-top: 100px;
-            }
+    .btn-sm {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+    }
 
-            .hero-text {
-                padding: 0;
-                margin-bottom: 60px;
-            }
+    /* Mobile hamburger button */
+    .mobile-menu-btn {
+      display: none;
+      background: white;
+      border: 1px solid var(--border-light);
+      color: var(--text-main);
+      font-size: 1.25rem;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
 
-            .hero-visual {
-                height: 500px;
-                width: 100%;
-            }
+    /* ==========================================================================
+       Hero Section (Two-Column Layout: Text Left, Download Commands Right)
+       ========================================================================== */
+    .hero-outer {
+      position: relative;
+      width: 100%;
+      background-color: var(--bg-page);
+      background-image: 
+        linear-gradient(to right, rgba(194, 65, 12, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(194, 65, 12, 0.04) 1px, transparent 1px),
+        linear-gradient(to right, rgba(194, 65, 12, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(194, 65, 12, 0.08) 1px, transparent 1px);
+      background-size: 14px 14px, 14px 14px, 70px 70px, 70px 70px;
+      border-bottom: 1px solid var(--border-light);
+      overflow: hidden;
+    }
 
-            h1 {
-                font-size: 3rem;
-            }
+    /* Soft radial vignette to keep the technical millimeter grid subtle */
+    .hero-outer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 65% 40%, rgba(255, 255, 255, 0) 0%, rgba(253, 251, 247, 0.65) 55%, var(--bg-page) 92%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-            .hero-desc {
-                margin-left: auto;
-                margin-right: auto;
-            }
+    .hero-section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem 2.5rem 1.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 3.5rem;
+      align-items: center;
+      min-height: calc(78vh - 68px);
+    }
 
-            .cta-group {
-                justify-content: center;
-            }
+    .hero-text-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
 
-            .bento-grid {
-                grid-template-columns: 1fr;
-            }
+    .hero-action-col {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
 
-            .card-large,
-            .card-tall {
-                grid-column: span 1;
-                grid-row: span 1;
-            }
-        }
-    </style>
+    /* Watermark Pixel Vase peeking out from behind the download card */
+    .hero-vase-watermark {
+      position: absolute;
+      top: -140px;
+      right: -70px;
+      width: 350px;
+      height: 350px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.82;
+      transform: rotate(13deg);
+      filter: drop-shadow(0 18px 36px rgba(194, 65, 12, 0.26));
+      clip-path: inset(0 0 22% 0);
+      transition: all 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .hero-action-col:hover .hero-vase-watermark {
+      opacity: 1;
+      transform: rotate(9deg) translateY(-10px) scale(1.04);
+      filter: drop-shadow(0 26px 48px rgba(194, 65, 12, 0.36));
+    }
+
+    .vase-watermark-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title {
+      font-size: 3.15rem;
+      font-weight: 800;
+      line-height: 1.14;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.12rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+      max-width: 580px;
+    }
+
+    /* ==========================================================================
+       Hero Download Card (Prominent Software Download CTA)
+       ========================================================================== */
+    .hero-download-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 1.25rem;
+      text-align: left;
+      transition: all 0.25s ease;
+    }
+    .hero-download-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Clean horizontal divider line between Hero and Pipeline */
+    .hero-pipeline-hr {
+      position: relative;
+      z-index: 2;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 4%, rgba(194, 130, 80, 0.35) 25%, rgba(194, 65, 12, 0.55) 50%, rgba(194, 130, 80, 0.35) 75%, transparent 96%);
+      margin: 1rem auto 0 auto;
+      max-width: 1240px;
+      width: 92%;
+    }
+
+    .download-card-main {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .download-icon-stage {
+      width: 62px;
+      height: 62px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .app-download-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+
+    .download-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .download-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .download-icon-stage {
+      width: 52px;
+      height: 52px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .app-download-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: pixelated;
+    }
+
+    .download-identity {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .download-app-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+    .download-app-desc {
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Master Split-Button CTA */
+    .download-cta-block {
+      position: relative;
+      margin-bottom: 0.75rem;
+    }
+
+    .split-download-group {
+      display: flex;
+      width: 100%;
+      border-radius: var(--radius-md);
+      background: #c2410c;
+      box-shadow: 0 4px 14px rgba(194, 65, 12, 0.22);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .split-download-group:hover {
+      box-shadow: 0 6px 20px rgba(194, 65, 12, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .split-btn-primary {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.8rem 1.25rem;
+      background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      transition: background 0.15s ease;
+    }
+    .split-btn-primary:hover {
+      background: linear-gradient(135deg, #9a3412 0%, #c2410c 100%);
+      color: #ffffff;
+    }
+
+    .split-btn-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .split-btn-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .split-btn-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .split-btn-meta {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 500;
+    }
+
+    .split-btn-trigger {
+      width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #b93807 0%, #d84b05 100%);
+      border: none;
+      border-left: 1px solid rgba(0, 0, 0, 0.12);
+      color: #ffffff;
+      font-size: 0.95rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      font-family: inherit;
+    }
+    .split-btn-trigger:hover {
+      background: #9a3412;
+    }
+    .split-btn-trigger #dropdown-chevron-icon {
+      transition: transform 0.2s ease;
+    }
+    .split-btn-trigger[aria-expanded="true"] #dropdown-chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Floating Popover Menu */
+    .platform-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 36px -4px rgba(28, 25, 23, 0.16), 0 0 0 1px rgba(194, 65, 12, 0.06);
+      z-index: 100;
+      overflow: hidden;
+      animation: popoverFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .platform-popover[hidden] {
+      display: none !important;
+    }
+    @keyframes popoverFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .popover-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .popover-version {
+      font-size: 0.7rem;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .popover-items {
+      display: flex;
+      flex-direction: column;
+      padding: 6px;
+      gap: 3px;
+    }
+    .popover-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .popover-item:hover {
+      background: var(--primary-soft);
+      transform: translateX(2px);
+    }
+    .popover-item:hover .popover-icon {
+      color: var(--primary);
+    }
+    .popover-item:hover .popover-item-name {
+      color: var(--primary);
+    }
+    .popover-icon {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      width: 22px;
+      text-align: center;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .popover-item-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+      min-width: 0;
+    }
+    .popover-item-name {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: color 0.15s ease;
+    }
+    .popover-item-sub {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+    }
+    .popover-tag {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--teal);
+      background: var(--teal-soft);
+      border: 1px solid var(--teal-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .popover-footer {
+      padding: 8px 14px;
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-light);
+      text-align: right;
+    }
+    .popover-manual-link {
+      font-size: 0.74rem;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .popover-manual-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Clean Footnote (Typography, not badges) */
+    .download-card-footnote {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-top: 0.35rem;
+    }
+    .footnote-detect {
+      color: var(--teal);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .footnote-dot {
+      color: #d6cbbe;
+      user-select: none;
+    }
+    .footnote-link {
+      margin-left: auto;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .footnote-link:hover {
+      text-decoration: underline;
+    }
+
+    .download-trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border-light);
+    }
+    .download-trust-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .download-trust-strip i {
+      color: var(--teal);
+    }
+    .install-guide-link {
+      margin-left: auto;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+    .install-guide-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Key metrics strip under download card */
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      padding: 1.25rem 0.25rem 0 0.25rem;
+      border-top: 1px solid var(--border-light);
+      width: 100%;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .metric-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       Hero Visual: PyPottery Suite App Container Visual ("Il Vasetto Pixelato")
+       ========================================================================== */
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+    }
+
+    .suite-container-stage {
+      position: relative;
+      width: 100%;
+      max-width: 530px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Ambient Warm Stage Aura & Rings */
+    .stage-ambient-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 440px;
+      height: 440px;
+      transform: translate(-50%, -45%);
+      background: radial-gradient(circle, rgba(194, 65, 12, 0.09) 0%, rgba(245, 239, 230, 0.45) 50%, transparent 72%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stage-ambient-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -45%);
+      border-radius: 50%;
+      border: 1px dashed rgba(194, 130, 80, 0.20);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .stage-ambient-ring.outer {
+      width: 460px;
+      height: 460px;
+      animation: rotateSlow 140s linear infinite;
+    }
+    .stage-ambient-ring.inner {
+      width: 320px;
+      height: 320px;
+      border-style: dotted;
+      animation: rotateSlow 90s linear infinite reverse;
+    }
+    @keyframes rotateSlow {
+      from { transform: translate(-50%, -45%) rotate(0deg); }
+      to { transform: translate(-50%, -45%) rotate(360deg); }
+    }
+
+    /* SVG Connecting Beams */
+    .stage-connector-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .connector-path {
+      stroke: rgba(194, 65, 12, 0.26);
+      stroke-width: 2px;
+      stroke-dasharray: 6 6;
+      fill: none;
+      transition: stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease;
+      animation: flowConnector 30s linear infinite;
+    }
+    .connector-path.highlight {
+      stroke: rgba(194, 65, 12, 0.48);
+      stroke-width: 2.2px;
+    }
+    .connector-path.active-beam {
+      stroke: var(--primary) !important;
+      stroke-width: 3px !important;
+      filter: drop-shadow(0 0 8px rgba(194, 65, 12, 0.65)) !important;
+    }
+    @keyframes flowConnector {
+      to { stroke-dashoffset: -300; }
+    }
+
+    /* Central Pixel Vase Dock ("Il Vasetto Pixelato") */
+    .suite-vase-container {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .suite-vase-container:hover {
+      transform: translateX(-50%) translateY(-4px) scale(1.03);
+    }
+    .suite-vase-container:hover .pixel-vase-img {
+      filter: drop-shadow(0 18px 30px rgba(194, 65, 12, 0.35));
+    }
+
+    .pixel-vase-wrapper {
+      position: relative;
+      width: 115px;
+      height: 125px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pixel-vase-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 12px 24px rgba(120, 53, 15, 0.22));
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Pedestal Dock Badge */
+    .vase-dock-badge {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: white;
+      border: 1px solid var(--border-light);
+      padding: 5px 12px;
+      border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(120, 53, 15, 0.08);
+      font-size: 0.78rem;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .dock-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 6px rgba(194, 65, 12, 0.6);
+      animation: pulseVase 2s infinite;
+    }
+    @keyframes pulseVase {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .dock-title {
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+    .dock-sub {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 1px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--primary-border);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* 5 Emerging Tool Cards */
+    .emerging-tool-card {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      box-shadow: 0 6px 20px -2px rgba(120, 53, 15, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+      text-decoration: none !important;
+      color: inherit;
+      z-index: 5;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .emerging-tool-card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 14px 30px -4px rgba(120, 53, 15, 0.16);
+      border-color: var(--border-hover);
+      z-index: 20;
+    }
+
+    /* Card Positions (Fan / Arc Burst from Vessel) */
+    /* 1. PyPotteryLens (Top Left) */
+    .emerging-tool-card.tool-lens {
+      top: 95px;
+      left: 10px;
+      animation: floatA 5.5s ease-in-out infinite;
+    }
+    /* 2. PyPotteryScan (Mid Left) */
+    .emerging-tool-card.tool-scan {
+      top: 240px;
+      left: 15px;
+      animation: floatB 6.2s ease-in-out infinite;
+    }
+    /* 3. PyPotteryInk (Center Pinnacle - Flagship) */
+    .emerging-tool-card.tool-ink {
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-color: rgba(194, 65, 12, 0.28);
+      background: linear-gradient(180deg, #ffffff 0%, #fffcf8 100%);
+      padding: 10px 14px;
+      box-shadow: 0 8px 24px -2px rgba(194, 65, 12, 0.12);
+      animation: floatCenter 5s ease-in-out infinite;
+    }
+    .emerging-tool-card.tool-ink:hover {
+      transform: translateX(-50%) translateY(-5px) scale(1.04);
+    }
+    /* 4. PyPotteryTrace (Mid Right) */
+    .emerging-tool-card.tool-trace {
+      top: 240px;
+      right: 15px;
+      animation: floatA 6.8s ease-in-out infinite 0.5s;
+    }
+    /* 5. PyPotteryLayout (Top Right) */
+    .emerging-tool-card.tool-layout {
+      top: 95px;
+      right: 10px;
+      animation: floatB 5.8s ease-in-out infinite 0.8s;
+    }
+
+    /* Floating keyframes */
+    @keyframes floatA {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes floatB {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+    @keyframes floatCenter {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-6px); }
+    }
+
+    .tool-card-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .tool-card-icon-box.ink-box {
+      width: 40px;
+      height: 40px;
+      background: rgba(194, 65, 12, 0.08);
+      border-color: rgba(194, 65, 12, 0.2);
+    }
+    .tool-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 3px;
+    }
+
+    .tool-card-content {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.22;
+    }
+    .tool-card-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+    .tool-card-role {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .tool-card-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 2px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .tool-card-badge.teal {
+      color: var(--teal);
+      background: var(--teal-soft);
+      border: 1px solid var(--teal-border);
+    }
+    .tool-card-badge.blue {
+      color: #0284c7;
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px solid rgba(2, 132, 199, 0.2);
+    }
+    .tool-card-badge.terracotta {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+    }
+    .tool-card-badge.amber {
+      color: #d97706;
+      background: rgba(217, 119, 6, 0.08);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+    }
+    .tool-card-badge.rose {
+      color: #e11d48;
+      background: rgba(225, 29, 72, 0.08);
+      border: 1px solid rgba(225, 29, 72, 0.2);
+    }
+
+    /* Responsive adjustments for Stage */
+    @media (max-width: 992px) {
+      .suite-container-stage {
+        height: 480px;
+        max-width: 480px;
+      }
+      .emerging-tool-card.tool-lens { top: 75px; left: 0px; }
+      .emerging-tool-card.tool-scan { top: 215px; left: 10px; }
+      .emerging-tool-card.tool-trace { top: 215px; right: 10px; }
+      .emerging-tool-card.tool-layout { top: 75px; right: 0px; }
+      .emerging-tool-card.tool-ink { top: 10px; }
+    }
+
+    @media (max-width: 600px) {
+      .suite-container-stage {
+        height: auto;
+        min-height: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .stage-connector-svg,
+      .stage-ambient-ring {
+        display: none;
+      }
+      .emerging-tool-card {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        width: 100%;
+        max-width: 320px;
+        animation: none !important;
+      }
+      .suite-vase-container {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin-bottom: 12px;
+      }
+    }
+
+    /* ==========================================================================
+       Section Styling Defaults
+       ========================================================================== */
+    .section-wrap {
+      padding: 5rem 1.5rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header-centered {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .section-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.85rem;
+    }
+
+    .section-h2 {
+      font-size: 2.45rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      margin-bottom: 0.85rem;
+      line-height: 1.2;
+    }
+
+    .section-p {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       Pipeline Flowchart Section (5-Step Archival Spine)
+       ========================================================================== */
+    .timeline-spine-wrapper {
+      position: relative;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .timeline-spine-bg {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-light);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .timeline-spine-active {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 0;
+      background: var(--primary);
+      transform: translateX(-50%);
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(194, 65, 12, 0.4);
+    }
+
+    .timeline-row {
+      display: flex;
+      margin-bottom: 3.5rem;
+      position: relative;
+      align-items: center;
+    }
+    .timeline-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-col {
+      flex: 1;
+    }
+    .timeline-spacer {
+      flex: 1;
+    }
+
+    .timeline-node {
+      position: absolute;
+      left: 50%;
+      top: 32px;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      background: white;
+      border: 3px solid var(--border-light);
+      border-radius: 50%;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timeline-row.active .timeline-node {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 5px var(--primary-soft), 0 4px 12px rgba(194, 65, 12, 0.25);
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 1.85rem;
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 4;
+    }
+    .timeline-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-hover);
+    }
+
+    .timeline-col.left {
+      padding-right: 48px;
+    }
+    .timeline-col.right {
+      padding-left: 48px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .card-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .app-logo-badge {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: var(--shadow-sm);
+    }
+    .app-logo-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .app-header-text h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+    }
+    .app-header-text .app-sub-role {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .step-number-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .card-desc {
+      font-size: 0.94rem;
+      color: var(--text-dim);
+      line-height: 1.58;
+      margin-bottom: 1.15rem;
+    }
+
+    .card-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ==========================================================================
+       PyPottery Desktop Launcher Spotlight
+       ========================================================================== */
+    .launcher-spotlight-box {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .launcher-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.75rem 0 2rem 0;
+    }
+
+    .pillar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .pillar-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+    .pillar-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .pillar-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .demo-window-wrapper {
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-lg);
+      box-shadow: none;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .demo-iframe-box {
+      width: 100%;
+      height: 540px;
+      position: relative;
+      background: transparent;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .demo-iframe-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ==========================================================================
+       Scientific Publications & Research Citations
+       ========================================================================== */
+    .publications-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .pub-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.85rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+    }
+    .pub-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-hover);
+    }
+
+    .pub-journal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      padding: 3px 10px;
+      border-radius: 20px;
+      align-self: flex-start;
+      margin-bottom: 0.85rem;
+    }
+
+    .pub-title {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 0.65rem;
+    }
+
+    .pub-authors {
+      font-size: 0.86rem;
+      color: var(--text-dim);
+      margin-bottom: 0.45rem;
+    }
+
+    .pub-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pub-doi-chip {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      background: var(--bg-subtle);
+      padding: 2px 7px;
+      border-radius: 5px;
+      color: var(--text-dim);
+      border: 1px solid var(--border-light);
+    }
+
+    .pub-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* Preprints Strip */
+    .preprints-strip {
+      background: white;
+      border: 1px dashed var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .preprints-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preprints-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+    .preprint-btn {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+    .preprint-btn:hover {
+      color: var(--primary);
+      border-color: var(--border-hover);
+      background: white;
+    }
+
+    /* ==========================================================================
+       Frontier Techniques Glossary (Computer Vision / OCR / LLMs / Diffusion)
+       ========================================================================== */
+    .tech-glossary {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    .tech-glossary-row {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border-light);
+      align-items: start;
+    }
+    .tech-glossary-row:last-child {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .tech-term {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--font-main);
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .tech-term i {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    .tech-term-sub {
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .tech-desc {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin: 0;
+    }
+    @media (max-width: 720px) {
+      .tech-glossary-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+    }
+
+    /* ==========================================================================
+       Documentation Hub & Pixel Assistant Section
+       ========================================================================== */
+    .docs-banner-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .docs-banner-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.65rem;
+    }
+
+    .docs-features-list {
+      list-style: none;
+      margin: 1.25rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    .docs-features-list li {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .docs-features-list li i {
+      color: var(--success);
+      font-size: 1.05rem;
+    }
+
+    /* ==========================================================================
+       Developer & Contribute Section (Where git clone lives)
+       ========================================================================== */
+    .developer-box {
+      background: var(--console-bg);
+      border: 1px solid var(--console-border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2.5rem;
+      align-items: center;
+      color: var(--console-fg);
+      box-shadow: var(--shadow-elevated);
+      margin-top: 3rem;
+    }
+
+    .developer-text h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 0.65rem;
+    }
+    .developer-text p {
+      font-size: 0.92rem;
+      color: #a8a29e;
+      line-height: 1.6;
+    }
+
+    .developer-terminal {
+      background: #12100e;
+      border: 1px solid #292524;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-bar {
+      height: 30px;
+      background: #1c1917;
+      border-bottom: 1px solid #292524;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 6px;
+    }
+    .terminal-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #44403c;
+    }
+    .terminal-title {
+      font-size: 0.7rem;
+      color: #78716c;
+      font-family: var(--font-mono);
+      margin-left: 6px;
+    }
+
+    .terminal-code-row {
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+    }
+    .terminal-prompt {
+      color: #ea580c;
+      font-weight: 700;
+      user-select: none;
+    }
+    .terminal-cmd {
+      color: #f5f5f4;
+      user-select: all;
+    }
+
+    .terminal-copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d6cbbe;
+      border-radius: var(--radius-sm);
+      padding: 4px 9px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-main);
+      font-weight: 600;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .terminal-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    /* Author Card */
+    .author-showcase-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .author-profile {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+    .author-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      box-shadow: 0 4px 12px rgba(194, 65, 12, 0.2);
+    }
+    .author-details h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .author-details p {
+      font-size: 0.86rem;
+      color: var(--text-dim);
+    }
+    .author-handle {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    .author-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-kofi {
+      background: #ff5e5b;
+      color: white;
+    }
+    .btn-kofi:hover {
+      background: #e04b48;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       Site Footer
+       ========================================================================== */
+    .site-footer {
+      background: #1c1917;
+      color: #f5f5f4;
+      border-top: 1px solid #292524;
+      padding: 4.5rem 1.5rem 2.5rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .footer-logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+    .footer-desc {
+      font-size: 0.88rem;
+      color: #a8a29e;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #d6cbbe;
+      margin-bottom: 1.15rem;
+    }
+
+    .footer-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .footer-nav a {
+      color: #a8a29e;
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s ease;
+    }
+    .footer-nav a:hover {
+      color: #fdba74;
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid #292524;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.82rem;
+      color: #78716c;
+    }
+
+    .footer-bottom a {
+      color: #a8a29e;
+      text-decoration: none;
+    }
+    .footer-bottom a:hover {
+      color: #fdba74;
+    }
+
+    /* Floating Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-msg {
+      background: var(--console-bg);
+      color: white;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ==========================================================================
+       Responsive Media Queries
+       ========================================================================== */
+    @media (max-width: 1080px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding-top: 2.5rem;
+      }
+      .hero-text-col {
+        align-items: center;
+        text-align: center;
+      }
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-action-col {
+        align-items: center;
+      }
+      .hero-download-card {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 520px;
+        text-align: left;
+      }
+      .hero-metrics {
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-vase-watermark {
+        top: -105px;
+        right: 0px;
+        width: 280px;
+        height: 280px;
+        clip-path: inset(0 0 22% 0);
+      }
+
+      .launcher-spotlight-box {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+      .developer-box {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .hero-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem 1rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .nav-wrapper {
+        display: none;
+      }
+      .nav-wrapper.open {
+        display: flex;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid var(--border-light);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        padding: 1.25rem 1.5rem;
+      }
+      .nav-wrapper.open .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+        width: 100%;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.35rem;
+      }
+
+      .download-actions-group {
+        flex-direction: column;
+      }
+      .btn-download-main,
+      .btn-all-downloads-toggle {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .timeline-spine-bg,
+      .timeline-spine-active {
+        left: 24px;
+      }
+      .timeline-row {
+        flex-direction: column;
+        padding-bottom: 2rem;
+      }
+      .timeline-col.left,
+      .timeline-col.right {
+        padding: 0 0 0 54px;
+        width: 100%;
+      }
+      .timeline-spacer {
+        display: none;
+      }
+      .timeline-node {
+        left: 24px;
+      }
+
+      .pillar-grid {
+        grid-template-columns: 1fr;
+      }
+      .publications-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .author-showcase-box {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+      .author-profile {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="landing-container">
+  <!-- ==========================================================================
+       Top Navigation Bar (Rock-Solid Non-Breaking Layout)
+       ========================================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-group" aria-label="PyPottery Suite Home">
+        <div class="brand-logo-wrap">
+          <img src="logo.png" alt="PyPottery Suite Logo">
+        </div>
+        <div class="brand-text-block">
+          <span class="brand-name">PyPottery <span class="brand-accent">Suite</span></span>
+          <span class="version-pill">v1.1.0</span>
+        </div>
+      </a>
 
-        <!-- Hero -->
-        <section class="hero-section">
-            <div class="hero-text">
-                <h1>Digitize Pottery<br><span class="gradient-text">Like Never Before</span></h1>
-                <p class="hero-desc">
-                    PyPottery combines state-of-the-art Computer Vision with archaeological standards.
-                    From physical drawings to publication-ready plates in one seamless workflow.
-                </p>
-                <br>
-                <div class="cta-group centered">
-                    <a href="https://lrncrd.github.io/PyPottery/intro.html" class="btn btn-primary">🚀 Get Started</a>
-                    <a href="https://github.com/lrncrd/PyPottery" class="btn btn-secondary"><i class="bi bi-github"></i>
-                        GitHub</a>
-                </div>
+      <!-- Desktop Nav -->
+      <nav class="nav-wrapper" id="nav-wrapper" aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#pipeline" class="nav-link"><i class="bi bi-diagram-3" aria-hidden="true"></i> Pipeline</a></li>
+          <li><a href="#launcher" class="nav-link"><i class="bi bi-window-desktop" aria-hidden="true"></i> Launcher</a></li>
+          <li><a href="#research" class="nav-link"><i class="bi bi-journal-text" aria-hidden="true"></i> Research</a></li>
+          <li><a href="#contribute" class="nav-link"><i class="bi bi-code-slash" aria-hidden="true"></i> Contribute</a></li>
+          <li><a href="docs_home.html" class="nav-link"><i class="bi bi-book" aria-hidden="true"></i> Docs</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn btn-primary btn-sm" id="header-download-btn" title="Download PyPottery Suite Launcher">
+          <i class="bi bi-download" id="header-download-icon" aria-hidden="true"></i>
+          <span id="header-download-label">Download Launcher</span>
+        </a>
+        <a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer"
+          class="btn btn-outline btn-sm" title="View Source on GitHub">
+          <i class="bi bi-github" aria-hidden="true"></i>
+          <span>GitHub</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Main Content Container
+       ========================================================================== -->
+  <main id="main-content">
+
+    <!-- ==========================================================================
+         Hero Section: Download Card + Two-Column Layout with Millimeter Grid
+         ========================================================================== -->
+    <div class="hero-outer">
+      <section class="hero-section">
+        <!-- Column 1: Editorial Text & Scientific Specs -->
+        <div class="hero-text-col">
+          <h1 class="hero-title">
+            Document Pottery in <span class="brand-accent">Minutes, Not Months</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            An open-source desktop suite for archaeologists, researchers, and ceramic illustrators.
+            From extracting vessel drawings in legacy PDF reports to digital inking, interactive contour vectorization, and publication-ready plate synthesis.
+          </p>
+        </div>
+
+        <!-- Column 2: Download Suite Commands -->
+        <div class="hero-action-col">
+          <!-- Pixel Vase Watermark (Peeking out behind the download card) -->
+          <div class="hero-vase-watermark" aria-hidden="true">
+            <img src="icon_app.png" alt="" class="vase-watermark-img">
+          </div>
+
+          <!-- Impeccable Primary Download Unit -->
+          <div class="hero-download-card" id="hero-download">
+            <!-- Clean, Calm Brand Header (Zero tag clutter) -->
+            <div class="download-card-header">
+              <div class="download-icon-stage">
+                <img src="icon_app.png" alt="PyPottery Suite App Icon" class="app-download-icon">
+              </div>
+              <div class="download-identity">
+                <h3 class="download-app-title">PyPottery Suite Launcher</h3>
+                <p class="download-app-desc">Desktop application for archaeological ceramic documentation</p>
+              </div>
             </div>
 
-            <div class="hero-visual">
-                <div class="orbit-system">
-                    <div class="orbit-circle c1"></div>
-                    <div class="orbit-circle c2"></div>
+            <!-- Master Split-Button CTA with Floating Popover -->
+            <div class="download-cta-block">
+              <div class="split-download-group">
+                <a href="https://github.com/lrncrd/PyPottery/releases/latest" id="primary-download-btn" class="split-btn-primary" target="_blank" rel="noopener noreferrer">
+                  <span class="split-btn-icon">
+                    <i class="bi bi-download" id="primary-download-icon"></i>
+                  </span>
+                  <span class="split-btn-text">
+                    <span class="split-btn-title" id="primary-download-title">Download for Windows</span>
+                    <span class="split-btn-meta" id="primary-download-meta">v1.1.0 • Standalone EXE • ~52 MB</span>
+                  </span>
+                </a>
 
-                    <div class="center-logo">
-                        <img src="logo.png" alt="PyPottery Logo" style="width: 80%; height: 80%; object-fit: contain;">
-                    </div>
+                <button type="button" class="split-btn-trigger" id="platform-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="platform-dropdown-menu" title="All platforms and builds">
+                  <i class="bi bi-chevron-down" id="dropdown-chevron-icon"></i>
+                </button>
 
-                    <!-- Floating Icons (Removed Scan) -->
-                    <div class="orbit-icon i1"><img src="imgs/LogoInk.png" alt="Ink"></div>
-                    <div class="orbit-icon i2"><img src="imgs/LogoLens.png" alt="Lens"></div>
-                    <div class="orbit-icon i3"><img src="imgs/LogoLayout.png" alt="Layout"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pipeline Intro Hero -->
-        <section class="pipeline-intro">
-            <span class="pipeline-badge">⚙️ Our Modular Pipeline</span>
-            <h2>Five Steps to Publication</h2>
-            <p>Each tool is designed to work standalone or seamlessly with the others. Use what you need, skip what you
-                don't.</p>
-        </section>
-
-        <!-- Timeline Flowchart Section -->
-        <section class="timeline-section">
-            <div class="timeline-container">
-                <div class="timeline-line"></div>
-                <div class="timeline-progress"></div>
-
-                <!-- Step 1: Lens (Left) -->
-                <div class="timeline-row">
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="step-badge">1</span>
-                                <img class="timeline-logo" src="imgs/LogoLens.png" alt="Lens">
-                            </div>
-                            <h2>PyPotteryLens</h2>
-                            <p class="timeline-desc">Mines the archives. Extracts pottery drawings from existing PDF
-                                reports automatically.</p>
-                            <div class="timeline-actions">
-                                <a href="https://lrncrd.github.io/PyPottery/pypotterylens/usage.html"
-                                    class="t-btn t-btn-docs">📖 Docs</a>
-                                <a href="https://github.com/lrncrd/PyPottery" class="t-btn t-btn-git"><i
-                                        class="bi bi-github"></i> GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-spacer"></div>
-                </div>
-
-                <!-- Step 2: Coming Soon (Right) -->
-                <div class="timeline-row">
-                    <div class="timeline-spacer"></div>
-                    <div class="timeline-item right coming-soon">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="soon-icon">🔒</span>
-                                <span class="step-badge">2</span>
-                            </div>
-                            <h2>Coming Soon...</h2>
-                            <p class="timeline-desc">A new tool is brewing. Stay tuned for announcements.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3: Ink (Left) -->
-                <div class="timeline-row">
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="step-badge">3</span>
-                                <img class="timeline-logo" src="imgs/LogoInk.png" alt="Ink">
-                            </div>
-                            <h2>PyPotteryInk</h2>
-                            <p class="timeline-desc">Turns your hand-drawn pottery into publication-ready images.</p>
-                            <div class="timeline-actions">
-                                <a href="https://lrncrd.github.io/PyPottery/pypotteryink/usage.html"
-                                    class="t-btn t-btn-docs">📖 Docs</a>
-                                <a href="https://github.com/lrncrd/PyPottery" class="t-btn t-btn-git"><i
-                                        class="bi bi-github"></i> GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-spacer"></div>
-                </div>
-
-                <!-- Step 4: Coming Soon (Right) -->
-                <div class="timeline-row">
-                    <div class="timeline-spacer"></div>
-                    <div class="timeline-item right coming-soon">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="soon-icon">🔒</span>
-                                <span class="step-badge">4</span>
-                            </div>
-                            <h2>Coming Soon...</h2>
-                            <p class="timeline-desc">Another exciting module on the horizon.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: Layout (Left) -->
-                <div class="timeline-row">
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="step-badge">5</span>
-                                <img class="timeline-logo" src="imgs/LogoLayout.png" alt="Layout">
-                            </div>
-                            <h2>PyPotteryLayout</h2>
-                            <p class="timeline-desc">Composes the final plates. Arranges images with scales and labels
-                                for print.</p>
-                            <div class="timeline-actions">
-                                <a href="https://lrncrd.github.io/PyPottery/pypotterylayout/usage.html"
-                                    class="t-btn t-btn-docs">📖 Docs</a>
-                                <a href="https://github.com/lrncrd/PyPottery" class="t-btn t-btn-git"><i
-                                        class="bi bi-github"></i> GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-spacer"></div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Lightning Speed</h3>
-                    <p>Process hundreds of drawings in the time it takes to post-process few manually.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3>AI Powered</h3>
-                    <p>Built on PyTorch, YOLOv8, and SAM2. We leverage open source industrial-grade computer vision.</p>
-                </div>
-                <div class="feature-card pixel-card">
-                    <div class="feature-icon">📚</div>
-                    <h3>Docs at Your Fingertips</h3>
-                    <p>Complex tools need good documentation. Pixel, our assistant, is always ready to help you
-                        navigate the docs.</p>
-                    <div class="pixel-iframe-wrapper">
-                        <iframe src="animations/pixel_assistant.html" frameborder="0"></iframe>
-                    </div>
-                </div>
-                <div class="feature-card featured">
-                    <div class="feature-icon">💎</div>
-                    <h3>Open Source</h3>
-                    <p>Archaeology should be accessible. PyPottery is 100% free and open source. Contributions are
-                        welcome.</p>
-                    <a href="https://github.com/lrncrd/PyPottery/releases" class="download-btn">
-                        📦 Download Latest Release
+                <!-- Floating Popover Dropdown for Other Platforms -->
+                <div class="platform-popover" id="platform-dropdown-menu" hidden>
+                  <div class="popover-header">
+                    <span>Available Platforms</span>
+                    <span class="popover-version">v1.1.0</span>
+                  </div>
+                  <div class="popover-items">
+                    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="popover-item" data-os="windows" target="_blank" rel="noopener noreferrer">
+                      <i class="bi bi-windows popover-icon"></i>
+                      <div class="popover-item-content">
+                        <span class="popover-item-name">Windows 10/11</span>
+                        <span class="popover-item-sub">Standalone 64-bit EXE (~52 MB)</span>
+                      </div>
                     </a>
+
+                    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="popover-item" data-os="macos-arm" target="_blank" rel="noopener noreferrer">
+                      <i class="bi bi-apple popover-icon"></i>
+                      <div class="popover-item-content">
+                        <span class="popover-item-name">macOS (Apple Silicon)</span>
+                        <span class="popover-item-sub">M1 / M2 / M3 / M4 (.app, ~22 MB)</span>
+                      </div>
+                    </a>
+
+                    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="popover-item" data-os="macos-intel" target="_blank" rel="noopener noreferrer">
+                      <i class="bi bi-apple popover-icon"></i>
+                      <div class="popover-item-content">
+                        <span class="popover-item-name">macOS (Intel)</span>
+                        <span class="popover-item-sub">x86_64 Mac (.app, ~22 MB)</span>
+                      </div>
+                    </a>
+
+                    <a href="suite_installation.html#linux" class="popover-item" data-os="linux">
+                      <i class="bi bi-ubuntu popover-icon"></i>
+                      <div class="popover-item-content">
+                        <span class="popover-item-name">Linux (Ubuntu / Debian / Fedora)</span>
+                        <span class="popover-item-sub">Python Virtualenv &amp; CLI setup</span>
+                      </div>
+                    </a>
+
+                    <a href="https://github.com/lrncrd/PyPottery/archive/refs/heads/main.zip" class="popover-item">
+                      <i class="bi bi-file-earmark-zip popover-icon"></i>
+                      <div class="popover-item-content">
+                        <span class="popover-item-name">Source Code</span>
+                        <span class="popover-item-sub">Full repository .zip archive</span>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div class="popover-footer">
+                    <a href="suite_installation.html" class="popover-manual-link">
+                      <i class="bi bi-book"></i> Full Installation Guide &rarr;
+                    </a>
+                  </div>
                 </div>
+              </div>
             </div>
-        </section>
 
-        <!-- Publications Section -->
-        <section class="publications-section">
-            <div class="section-header">
-                <span class="section-badge">📚 Research</span>
-                <h2>Scientific Publications</h2>
-                <p>PyPottery is built on peer-reviewed research. Explore the science behind the tools.</p>
-            </div>
-            <div class="publications-grid">
-                <!-- Published Papers -->
-                <a href="https://www.sciencedirect.com/science/article/pii/S2212054825000542" class="publication-card"
-                    target="_blank">
-                    <div class="pub-source">Digital Applications in Archaeology and Cultural Heritage</div>
-                    <h3>PyPotteryLens: An Open-Source Framework for Automated Pottery Digitisation</h3>
-                    <p class="pub-meta">2025 · Open Access</p>
-                    <p class="pub-doi">DOI: 10.1016/j.daach.2025.e00380</p>
-                    <span class="read-link">Read Paper →</span>
-                </a>
-                <a href="https://www.sciencedirect.com/science/article/pii/S1296207425001268" class="publication-card"
-                    target="_blank">
-                    <div class="pub-source">Journal of Cultural Heritage</div>
-                    <h3>PyPotteryInk: A One-Step Diffusion Model for Archaeological Drawing Vectorization</h3>
-                    <p class="pub-meta">2025 · Open Access</p>
-                    <p class="pub-doi">DOI: 10.1016/j.culher.2025.01.010</p>
-                    <span class="read-link">Read Paper →</span>
-                </a>
-                <!-- Preprints -->
-                <a href="https://arxiv.org/abs/2502.06897" class="publication-card preprint" target="_blank">
-                    <div class="pub-source">arXiv Preprint</div>
-                    <h3>PyPotteryInk: One-Step Diffusion Model for Sketch to Publication-ready Archaeological Drawings
-                    </h3>
-                    <p class="pub-meta">2025 · Preprint</p>
-                    <p class="pub-doi">arXiv:2502.06897</p>
-                    <span class="read-link">Read Preprint →</span>
-                </a>
-                <a href="https://arxiv.org/abs/2412.11574" class="publication-card preprint" target="_blank">
-                    <div class="pub-source">arXiv Preprint</div>
-                    <h3>PyPotteryLens: An Open-Source Deep Learning Framework for Automated Digitisation of
-                        Archaeological Pottery Documentation</h3>
-                    <p class="pub-meta">2024 · Preprint</p>
-                    <p class="pub-doi">arXiv:2412.11574</p>
-                    <span class="read-link">Read Preprint →</span>
-                </a>
-            </div>
-        </section>
+          </div>
 
+          <!-- Key Metrics Strip under Download Unit -->
+          <div class="hero-metrics">
+            <div class="metric-item">
+              <span class="metric-val">5</span>
+              <span class="metric-label">Integrated Tools</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">Local-First</span>
+              <span class="metric-label">+ Optional Cloud LLM</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">CUDA / MPS</span>
+              <span class="metric-label">PyTorch Engine</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">Apache 2.0</span>
+              <span class="metric-label">Open Science</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clean horizontal divider between Hero and Pipeline -->
+      <hr class="hero-pipeline-hr">
     </div>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="logo.png" alt="PyPottery" class="footer-logo">
-                <p>Open source tools for archaeological documentation.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Documentation</h4>
-                    <a href="https://lrncrd.github.io/PyPottery/intro.html">Getting Started</a>
-                    <a href="https://lrncrd.github.io/PyPottery/pypotterylens/usage.html">PyPotteryLens</a>
-                    <a href="https://lrncrd.github.io/PyPottery/pypotteryink/usage.html">PyPotteryInk</a>
-                    <a href="https://lrncrd.github.io/PyPottery/pypotterylayout/usage.html">PyPotteryLayout</a>
+    <!-- ==========================================================================
+         Pipeline Flowchart Section (5-Step Archival Spine)
+         ========================================================================== -->
+    <section class="section-wrap" id="pipeline">
+      <div class="section-header-centered">
+        <h2 class="section-h2">Five Steps from Archive to Publication</h2>
+        <p class="section-p">
+          Each tool solves a dedicated stage of ceramic documentation. Run them individually as standalone tools or orchestrated through the PyPottery Suite Launcher.
+        </p>
+      </div>
+
+      <div class="timeline-spine-wrapper">
+        <div class="timeline-spine-bg" aria-hidden="true"></div>
+        <div class="timeline-spine-active" id="timeline-spine-active" aria-hidden="true"></div>
+
+        <!-- Step 1: Lens (Left) -->
+        <div class="timeline-row active" data-step="1">
+          <div class="timeline-node" aria-hidden="true">1</div>
+          <div class="timeline-col left">
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="card-brand">
+                  <div class="app-logo-badge">
+                    <img src="imgs/LogoLens.png" alt="PyPotteryLens Logo">
+                  </div>
+                  <div class="app-header-text">
+                    <h3>PyPotteryLens</h3>
+                    <span class="app-sub-role">Archive Mining &amp; PDF Extraction</span>
+                  </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Community</h4>
-                    <a href="https://github.com/lrncrd/PyPottery">GitHub</a>
-                    <a href="https://github.com/lrncrd/PyPottery/releases">Releases</a>
-                    <a href="https://github.com/lrncrd/PyPottery/issues">Report Issues</a>
-                </div>
+                <span class="step-number-tag">Stage 01</span>
+              </div>
+              <p class="card-desc">
+                Mines historical archaeological reports and PDF monographs. Uses deep learning (YOLOv8) to automatically detect, isolate, and catalog pottery vessel illustrations directly from multi-page documents.
+              </p>
+              <div class="card-actions-row">
+                <a href="pypotterylens/usage.html" class="btn btn-outline btn-sm"><i class="bi bi-book"></i> Read Documentation</a>
+                <a href="https://github.com/lrncrd/PyPotteryLens" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm"><i class="bi bi-github"></i> GitHub</a>
+              </div>
             </div>
+          </div>
+          <div class="timeline-spacer"></div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2025 PyPottery. Apache 2.0 License.</p>
+
+        <!-- Step 2: Scan (Right) -->
+        <div class="timeline-row" data-step="2">
+          <div class="timeline-node" aria-hidden="true">2</div>
+          <div class="timeline-spacer"></div>
+          <div class="timeline-col right">
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="card-brand">
+                  <div class="app-logo-badge">
+                    <img src="imgs/LogoScan.png" alt="PyPotteryScan Logo">
+                  </div>
+                  <div class="app-header-text">
+                    <h3>PyPotteryScan</h3>
+                    <span class="app-sub-role">Plate Digitization &amp; OCR</span>
+                  </div>
+                </div>
+                <span class="step-number-tag">Stage 02</span>
+              </div>
+              <p class="card-desc">
+                Specialized tool for processing scanned multi-sherd excavation plates. Automatically segments drawing boundaries, extracts handwritten labels and stratigraphic context codes using OCR, and exports structured tables.
+              </p>
+              <div class="card-actions-row">
+                <a href="docs_home.html" class="btn btn-outline btn-sm"><i class="bi bi-book"></i> Read Documentation</a>
+                <a href="https://github.com/lrncrd/PyPotteryScan" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm"><i class="bi bi-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
         </div>
-    </footer>
 
-    <!-- GSAP CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <!-- Step 3: Ink (Left) -->
+        <div class="timeline-row" data-step="3">
+          <div class="timeline-node" aria-hidden="true">3</div>
+          <div class="timeline-col left">
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="card-brand">
+                  <div class="app-logo-badge">
+                    <img src="imgs/LogoInk.png" alt="PyPotteryInk Logo">
+                  </div>
+                  <div class="app-header-text">
+                    <h3>PyPotteryInk</h3>
+                    <span class="app-sub-role">AI Inking &amp; Diffusion Engine</span>
+                  </div>
+                </div>
+                <span class="step-number-tag">Stage 03</span>
+              </div>
+              <p class="card-desc">
+                Transforms pencil field sketches and hand-drawn technical illustrations into publication-grade vectorized drawings in seconds, powered by a custom one-step diffusion model tailored for archaeological illustration conventions.
+              </p>
+              <div class="card-actions-row">
+                <a href="pypotteryink/usage.html" class="btn btn-outline btn-sm"><i class="bi bi-book"></i> Read Documentation</a>
+                <a href="https://github.com/lrncrd/PyPotteryInk" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm"><i class="bi bi-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-spacer"></div>
+        </div>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+        <!-- Step 4: Trace (Right) -->
+        <div class="timeline-row" data-step="4">
+          <div class="timeline-node" aria-hidden="true">4</div>
+          <div class="timeline-spacer"></div>
+          <div class="timeline-col right">
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="card-brand">
+                  <div class="app-logo-badge">
+                    <img src="imgs/LogoTrace.png" alt="PyPotteryTrace Logo">
+                  </div>
+                  <div class="app-header-text">
+                    <h3>PyPotteryTrace</h3>
+                    <span class="app-sub-role">SAM 2 Interactive Vectorization</span>
+                  </div>
+                </div>
+                <span class="step-number-tag">Stage 04</span>
+              </div>
+              <p class="card-desc">
+                Interactive AI-powered vectorization tool for pottery drawings. Leverages Segment Anything 2 (SAM 2) for rapid sherd profile tracing, rim diameter curvature matching, and clean vector SVG export.
+              </p>
+              <div class="card-actions-row">
+                <a href="docs_home.html" class="btn btn-outline btn-sm"><i class="bi bi-book"></i> Read Documentation</a>
+                <a href="https://github.com/lrncrd/PyPotteryTrace" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm"><i class="bi bi-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        // Hero Entrance
-        const tl = gsap.timeline();
+        <!-- Step 5: Layout (Left) -->
+        <div class="timeline-row" data-step="5">
+          <div class="timeline-node" aria-hidden="true">5</div>
+          <div class="timeline-col left">
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="card-brand">
+                  <div class="app-logo-badge">
+                    <img src="imgs/LogoLayout.png" alt="PyPotteryLayout Logo">
+                  </div>
+                  <div class="app-header-text">
+                    <h3>PyPotteryLayout</h3>
+                    <span class="app-sub-role">Publication Plate Synthesis</span>
+                  </div>
+                </div>
+                <span class="step-number-tag">Stage 05</span>
+              </div>
+              <p class="card-desc">
+                Composes standardized publication plates. Automatically arranges ceramic illustrations with consistent metric scale bars, rim orientation rules, typological labels, and standardized print margins.
+              </p>
+              <div class="card-actions-row">
+                <a href="pypotterylayout/usage.html" class="btn btn-outline btn-sm"><i class="bi bi-book"></i> Read Documentation</a>
+                <a href="https://github.com/lrncrd/PyPotteryLayout" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm"><i class="bi bi-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-spacer"></div>
+        </div>
 
-        tl.to("h1", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" })
-            .to(".hero-desc", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.5")
-            .to(".cta-group", { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.7)" }, "-=0.5");
+      </div>
+    </section>
 
-        // Orbit Animation
-        // Position icons in a circle
-        const icons = [".i1", ".i2", ".i3"]; // Scan removed
-        const radius = 220; // radius of orbit
+    <!-- ==========================================================================
+         PyPottery Suite Desktop Launcher Deep-Dive
+         ========================================================================== -->
+    <section class="section-wrap" id="launcher">
+      <div class="section-header-centered">
+        <h2 class="section-h2">The PyPottery Suite Desktop Launcher</h2>
+        <p class="section-p">
+          Launch, configure, and manage all five tools with zero command-line friction. Designed specifically for field archaeologists and research teams.
+        </p>
+      </div>
 
-        // Initial placement
-        icons.forEach((selector, i) => {
-            const angle = (i / icons.length) * Math.PI * 2;
-            gsap.set(selector, {
-                x: Math.cos(angle) * radius,
-                y: Math.sin(angle) * radius
-            });
+      <div class="launcher-spotlight-box">
+        <div class="launcher-info">
+          <h3 style="font-size: 1.65rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">
+            One Control Center for Every Tool
+          </h3>
+          <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">
+            The PyPottery Launcher coordinates all documentation modules from a single offline desktop interface. It monitors hardware, downloads required neural network weights, and manages an isolated Python execution environment.
+          </p>
+
+          <div class="pillar-grid">
+            <div class="pillar-item">
+              <div class="pillar-icon-row">
+                <i class="bi bi-shield-check"></i>
+                <span class="pillar-title">Local-First, Private by Default</span>
+              </div>
+              <p class="pillar-desc">Unpublished excavation drawings and sensitive site data stay on your workstation. Optional cloud LLM assistance via OpenRouter is there if you want it &mdash; never required.</p>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-icon-row">
+                <i class="bi bi-lightning-charge"></i>
+                <span class="pillar-title">Auto GPU Acceleration</span>
+              </div>
+              <p class="pillar-desc">Automatically configures PyTorch for NVIDIA CUDA, Apple Silicon MPS, or multithreaded CPU.</p>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-icon-row">
+                <i class="bi bi-database-check"></i>
+                <span class="pillar-title">Shared Model Zoo</span>
+              </div>
+              <p class="pillar-desc">Large AI model checkpoints are stored in a centralized cache, preventing duplicated downloads.</p>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-icon-row">
+                <i class="bi bi-box-seam"></i>
+                <span class="pillar-title">Just Download &amp; Run</span>
+              </div>
+              <p class="pillar-desc">Compiled installers let you download, install, and start working right away &mdash; the terminal stays optional, for whoever wants it.</p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-download"></i> <span>Download Windows EXE</span>
+            </a>
+            <a href="suite_installation.html" class="btn btn-outline">
+              <i class="bi bi-file-earmark-text"></i> <span>Installation Guide</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive Launcher Live Demo Frame -->
+        <div class="demo-window-wrapper">
+          <div class="demo-iframe-box">
+            <iframe src="animations/launcher_demo.html" title="PyPottery Suite Launcher Live Demo" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Scientific Publications & Research Citations
+         ========================================================================== -->
+    <section class="section-wrap" id="research">
+      <div class="section-header-centered">
+        <h2 class="section-h2">Peer-Reviewed Publications</h2>
+        <p class="section-p">
+          PyPottery algorithms and methods are grounded in peer-reviewed academic literature published in leading digital archaeology journals.
+        </p>
+      </div>
+
+      <div class="publications-grid">
+        <!-- Paper 1: DAACH (Lens) -->
+        <div class="pub-card">
+          <span class="pub-journal-pill"><i class="bi bi-journal-check"></i> DAACH • Elsevier • 2025</span>
+          <h3 class="pub-title">
+            PyPotteryLens: An Open-Source Framework for Automated Pottery Digitisation
+          </h3>
+          <p class="pub-authors">Lorenzo Cardarelli (2025)</p>
+          <div class="pub-meta-row">
+            <span>Digital Applications in Archaeology and Cultural Heritage</span>
+            <span class="pub-doi-chip">DOI: 10.1016/j.daach.2025.e00380</span>
+          </div>
+          <div class="pub-actions">
+            <a href="https://www.sciencedirect.com/science/article/pii/S2212054825000542" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+              <i class="bi bi-box-arrow-up-right"></i> Read Journal Article
+            </a>
+            <button class="btn btn-outline btn-sm btn-bibtex" data-bib="daach2025">
+              <i class="bi bi-quote"></i> BibTeX
+            </button>
+          </div>
+        </div>
+
+        <!-- Paper 2: JCH (Ink) -->
+        <div class="pub-card">
+          <span class="pub-journal-pill"><i class="bi bi-journal-check"></i> JCH • Elsevier • 2025</span>
+          <h3 class="pub-title">
+            PyPotteryInk: A One-Step Diffusion Model for Archaeological Drawing Vectorization
+          </h3>
+          <p class="pub-authors">Lorenzo Cardarelli (2025)</p>
+          <div class="pub-meta-row">
+            <span>Journal of Cultural Heritage</span>
+            <span class="pub-doi-chip">DOI: 10.1016/j.culher.2025.01.010</span>
+          </div>
+          <div class="pub-actions">
+            <a href="https://www.sciencedirect.com/science/article/pii/S1296207425001268" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+              <i class="bi bi-box-arrow-up-right"></i> Read Journal Article
+            </a>
+            <button class="btn btn-outline btn-sm btn-bibtex" data-bib="jch2025">
+              <i class="bi bi-quote"></i> BibTeX
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preprints Strip -->
+      <div class="preprints-strip">
+        <div class="preprints-title">
+          <i class="bi bi-file-earmark-medical" style="color: var(--primary);"></i>
+          <span>Open-Access arXiv Preprints:</span>
+        </div>
+        <div class="preprints-links">
+          <a href="https://arxiv.org/abs/2502.06897" target="_blank" rel="noopener noreferrer" class="preprint-btn">
+            <i class="bi bi-file-text"></i> arXiv:2502.06897 (PyPotteryInk)
+          </a>
+          <a href="https://arxiv.org/abs/2412.11574" target="_blank" rel="noopener noreferrer" class="preprint-btn">
+            <i class="bi bi-file-text"></i> arXiv:2412.11574 (PyPotteryLens)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Frontier Techniques Section (what actually runs under the hood)
+         ========================================================================== -->
+    <section class="section-wrap" id="technology">
+      <div class="section-header-centered">
+        <h2 class="section-h2">Frontier AI, in Service of Archaeology</h2>
+        <p class="section-p">
+          Not generic image filters: every stage runs on new and exciting techniques, adapted specifically for archaeological drawing conventions rather than repurposed off the shelf.
+        </p>
+      </div>
+
+      <div class="tech-glossary">
+        <div class="tech-glossary-row">
+          <div class="tech-term"><i class="bi bi-bounding-box-circles"></i> Computer Vision <span class="tech-term-sub">YOLOv8</span></div>
+          <p class="tech-desc">Detects and segments individual vessel drawings straight off monograph plates and scans &mdash; no manual cropping.</p>
+        </div>
+        <div class="tech-glossary-row">
+          <div class="tech-term"><i class="bi bi-fonts"></i> OCR + Few-Shot LLMs</div>
+          <p class="tech-desc">Reads handwritten notes and stratigraphic codes off decades-old inventory cards, then structures the result into clean, queryable tables.</p>
+        </div>
+        <div class="tech-glossary-row">
+          <div class="tech-term"><i class="bi bi-magic"></i> One-Step Diffusion</div>
+          <p class="tech-desc">A custom diffusion architecture, trained on archaeological line-weight conventions, turns a pencil sketch into publication-grade ink in seconds &mdash; not hours on vector graphics software.</p>
+        </div>
+        <div class="tech-glossary-row">
+          <div class="tech-term"><i class="bi bi-vector-pen"></i> Segment Anything 2</div>
+          <p class="tech-desc">Meta's interactive segmentation model, repurposed for vessel profiles: click a rim or a break line and get back an editable, smoothed B&eacute;zier curve.</p>
+        </div>
+        <div class="tech-glossary-row">
+          <div class="tech-term"><i class="bi bi-cloud"></i> Optional Cloud LLMs <span class="tech-term-sub">via OpenRouter</span></div>
+          <p class="tech-desc">For metadata tasks that benefit from a larger model, you can opt into cloud inference &mdash; never required, and never for your excavation imagery itself.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Documentation Hub & Pixel Assistant Section
+         ========================================================================== -->
+    <section class="section-wrap" style="padding-top: 1rem;">
+      <div style="max-width: 760px; margin: 0 auto;">
+        <div class="docs-banner-card">
+          <h2 class="docs-banner-title">Comprehensive Documentation</h2>
+          <p style="color: var(--text-dim); line-height: 1.6;">
+            Good software deserves good documentation. Here you'll find step-by-step tutorials and practical tricks for getting the most out of every tool.
+          </p>
+          <ul class="docs-features-list">
+            <li><i class="bi bi-check-circle-fill"></i> Complete Installation Manuals</li>
+            <li><i class="bi bi-check-circle-fill"></i> Pretrained Diffusion Zoo</li>
+            <li><i class="bi bi-check-circle-fill"></i> Video Workflows &amp; Tutorials</li>
+            <li><i class="bi bi-check-circle-fill"></i> REST &amp; Python APIs</li>
+          </ul>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="docs_home.html" class="btn btn-primary">
+              <span>Read Documentation</span> <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="requirements.html" class="btn btn-outline">
+              <span>System Requirements</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================================================
+           Developer & Contribute Section (Where git clone lives)
+           ========================================================================== -->
+      <div class="developer-box" id="contribute">
+        <div class="developer-text">
+          <h3>Building from Source or Contributing?</h3>
+          <p>
+            All PyPottery tools are open source under the Apache 2.0 License. You can clone the repository to run standalone command-line scripts, inspect the neural architectures, or contribute improvements.
+          </p>
+          <div style="margin-top: 1rem;">
+            <a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="color: white; border-color: #44403c; background: #292524;">
+              <i class="bi bi-github"></i> <span>Contribute on GitHub</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="developer-terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span>
+            <span class="terminal-title">bash — clone repository</span>
+          </div>
+          <div class="terminal-code-row">
+            <span class="terminal-prompt">$</span>
+            <code class="terminal-cmd" id="dev-cmd-text">git clone https://github.com/lrncrd/PyPottery.git</code>
+            <button class="terminal-copy-btn" id="btn-copy-dev" aria-label="Copy clone command">
+              <i class="bi bi-clipboard" id="dev-copy-icon"></i>
+              <span id="dev-copy-text">Copy</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Author Showcase Card -->
+      <div class="author-showcase-box">
+        <div class="author-profile">
+          <img src="https://github.com/lrncrd.png" alt="Lorenzo Cardarelli" class="author-avatar"
+            onerror="this.src='icon_app.png'">
+          <div class="author-details">
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Lead Author &amp; Developer</span>
+            <h3>Lorenzo Cardarelli</h3>
+            <p>PhD</p>
+            <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer" class="author-handle">
+              <i class="bi bi-github"></i> @lrncrd <i class="bi bi-box-arrow-up-right" style="font-size: 0.7rem;"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="author-actions">
+          <a href="https://ko-fi.com/lrncrd" target="_blank" rel="noopener noreferrer" class="btn btn-kofi">
+            <i class="bi bi-cup-hot-fill"></i> <span>Support on Ko-fi</span>
+          </a>
+          <a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            <i class="bi bi-star"></i> <span>Star on GitHub</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       Site Footer
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand-col">
+        <img src="icon_app.png" alt="PyPottery Suite Icon" class="footer-logo">
+        <p class="footer-desc">
+          PyPottery Suite — Dedicated open-source computer vision tools for archaeological ceramic documentation and digital heritage preservation.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Suite Tools</h4>
+        <ul class="footer-nav">
+          <li><a href="pypotterylens/usage.html">PyPotteryLens</a></li>
+          <li><a href="docs_home.html">PyPotteryScan</a></li>
+          <li><a href="pypotteryink/usage.html">PyPotteryInk</a></li>
+          <li><a href="docs_home.html">PyPotteryTrace</a></li>
+          <li><a href="pypotterylayout/usage.html">PyPotteryLayout</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <ul class="footer-nav">
+          <li><a href="docs_home.html">Documentation Home</a></li>
+          <li><a href="suite_installation.html">Installation Guide</a></li>
+          <li><a href="requirements.html">Hardware &amp; System</a></li>
+          <li><a href="pypotteryink/model_zoo.html">Diffusion Model Zoo</a></li>
+          <li><a href="suite_version.html">Version History</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul class="footer-nav">
+          <li><a href="https://github.com/lrncrd/PyPottery/releases/latest" target="_blank" rel="noopener noreferrer">Download Releases</a></li>
+          <li><a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer">GitHub Project</a></li>
+          <li><a href="https://github.com/lrncrd/PyPottery/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
+          <li><a href="https://ko-fi.com/lrncrd" target="_blank" rel="noopener noreferrer">Ko-fi Support</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024–2026 Lorenzo Cardarelli. Distributed under the Apache 2.0 Open Source License.</p>
+      <p>Built so no advisor can make you hand-trace pottery for ten months • <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer">github.com/lrncrd</a></p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- GSAP & ScrollTrigger Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // ==========================================================================
+    // Copy Command with Toast Feedback
+    // ==========================================================================
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.innerHTML = `<i class="bi bi-check2-circle" style="color: #22c55e;"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 2600);
+    }
+
+    // ==========================================================================
+    // Client OS Detection & Impeccable Split-Button CTA
+    // ==========================================================================
+    const PLATFORM_CONFIG = {
+      windows: {
+        osName: 'Windows',
+        btnTitle: 'Download for Windows',
+        btnMeta: 'v1.1.0 • Standalone EXE • ~52 MB',
+        href: 'https://github.com/lrncrd/PyPottery/releases/latest',
+        target: '_blank',
+        headerLabel: 'Download EXE'
+      },
+      macos: {
+        osName: 'macOS',
+        btnTitle: 'Download for macOS',
+        btnMeta: 'v1.1.0 • Apple Silicon & Intel • ~22 MB',
+        href: 'https://github.com/lrncrd/PyPottery/releases/latest',
+        target: '_blank',
+        headerLabel: 'Download for Mac'
+      },
+      linux: {
+        osName: 'Linux',
+        btnTitle: 'Setup for Linux',
+        btnMeta: 'Python Virtualenv • Launcher & CLI Guide',
+        href: 'suite_installation.html#linux',
+        target: '_self',
+        headerLabel: 'Install Linux'
+      }
+    };
+
+    function detectClientOS() {
+      const ua = (navigator.userAgent || '').toLowerCase();
+      const platform = (navigator.platform || (navigator.userAgentData && navigator.userAgentData.platform) || '').toLowerCase();
+
+      if (platform.includes('win') || ua.includes('windows')) return 'windows';
+      if (platform.includes('mac') || ua.includes('macintosh') || ua.includes('mac os')) return 'macos';
+      if (platform.includes('linux') || ua.includes('linux') || ua.includes('x11')) return 'linux';
+      return 'windows';
+    }
+
+    function applyPlatform(osKey) {
+      const cfg = PLATFORM_CONFIG[osKey] || PLATFORM_CONFIG.windows;
+
+      const mainBtn = document.getElementById('primary-download-btn');
+      const titleEl = document.getElementById('primary-download-title');
+      const metaEl = document.getElementById('primary-download-meta');
+      const iconEl = document.getElementById('primary-download-icon');
+
+      if (mainBtn && titleEl && metaEl) {
+        titleEl.textContent = cfg.btnTitle;
+        metaEl.textContent = cfg.btnMeta;
+        mainBtn.href = cfg.href;
+        mainBtn.target = cfg.target;
+        if (iconEl) {
+          iconEl.className = osKey === 'linux' ? 'bi bi-terminal' : 'bi bi-download';
+        }
+      }
+
+      const headerBtn = document.getElementById('header-download-btn');
+      const headerLabel = document.getElementById('header-download-label');
+      if (headerBtn && headerLabel) {
+        headerLabel.textContent = cfg.headerLabel;
+        headerBtn.href = cfg.href;
+      }
+    }
+
+    // Run detection safely
+    let detectedOS = 'windows';
+    try {
+      detectedOS = detectClientOS();
+      applyPlatform(detectedOS);
+    } catch (e) {
+      console.warn('OS detection fallback:', e);
+      applyPlatform('windows');
+    }
+
+    // Split-button dropdown trigger
+    const dropdownTrigger = document.getElementById('platform-dropdown-trigger');
+    const dropdownMenu = document.getElementById('platform-dropdown-menu');
+
+    if (dropdownTrigger && dropdownMenu) {
+      dropdownTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdownTrigger.getAttribute('aria-expanded') === 'true';
+        dropdownTrigger.setAttribute('aria-expanded', !isOpen);
+        dropdownMenu.hidden = isOpen;
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!dropdownMenu.contains(e.target) && e.target !== dropdownTrigger) {
+          dropdownTrigger.setAttribute('aria-expanded', 'false');
+          dropdownMenu.hidden = true;
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !dropdownMenu.hidden) {
+          dropdownTrigger.setAttribute('aria-expanded', 'false');
+          dropdownMenu.hidden = true;
+          dropdownTrigger.focus();
+        }
+      });
+    }
+
+    const btnCopyDev = document.getElementById('btn-copy-dev');
+    if (btnCopyDev) {
+      btnCopyDev.addEventListener('click', () => {
+        const cmd = document.getElementById('dev-cmd-text').textContent;
+        navigator.clipboard.writeText(cmd).then(() => {
+          const icon = document.getElementById('dev-copy-icon');
+          const text = document.getElementById('dev-copy-text');
+          if (icon && text) {
+            icon.className = 'bi bi-check-lg';
+            text.textContent = 'Copied!';
+            setTimeout(() => {
+              icon.className = 'bi bi-clipboard';
+              text.textContent = 'Copy';
+            }, 2000);
+          }
+          showToast('Clone command copied to clipboard!');
         });
+      });
+    }
 
-        // Continuous rotation
-        gsap.to(".orbit-system", {
-            rotation: 360,
-            duration: 40,
-            repeat: -1,
-            ease: "none"
+    // ==========================================================================
+    // BibTeX Copy Actions
+    // ==========================================================================
+    const bibtexData = {
+      daach2025: `@article{cardarelli2025pypotterylens,
+  title = {PyPotteryLens: An Open-Source Framework for Automated Pottery Digitisation},
+  author = {Cardarelli, Lorenzo},
+  journal = {Digital Applications in Archaeology and Cultural Heritage},
+  volume = {36},
+  pages = {e00380},
+  year = {2025},
+  publisher = {Elsevier},
+  doi = {10.1016/j.daach.2025.e00380}
+}`,
+      jch2025: `@article{cardarelli2025pypotteryink,
+  title = {PyPotteryInk: A One-Step Diffusion Model for Archaeological Drawing Vectorization},
+  author = {Cardarelli, Lorenzo},
+  journal = {Journal of Cultural Heritage},
+  volume = {72},
+  year = {2025},
+  publisher = {Elsevier},
+  doi = {10.1016/j.culher.2025.01.010}
+}`
+    };
+
+    document.querySelectorAll('.btn-bibtex').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-bib');
+        const bib = bibtexData[key];
+        if (bib) {
+          navigator.clipboard.writeText(bib).then(() => {
+            showToast('BibTeX citation copied to clipboard!');
+          });
+        }
+      });
+    });
+
+    // ==========================================================================
+    // Sticky Header Scroll Effect & Mobile Navigation
+    // ==========================================================================
+    const siteHeader = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    });
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navWrapper = document.getElementById('nav-wrapper');
+    if (mobileMenuBtn && navWrapper) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = navWrapper.classList.toggle('open');
+        mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      navWrapper.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navWrapper.classList.remove('open');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
         });
+      });
+    }
 
-        // Counter-rotate icons to keep them upright
-        gsap.to(".orbit-icon", {
-            rotation: -360,
-            duration: 40,
-            repeat: -1,
-            ease: "none"
-        });
+    // ==========================================================================
+    // GSAP Scroll Animations
+    // ==========================================================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Float effect for icons
-        icons.forEach((icon, i) => {
-            gsap.to(icon, {
-                y: `+=${20}`,
-                duration: 2 + i,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-        });
+    if (!prefersReducedMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      // Timeline Spine Scroll Progress
+      gsap.to('#timeline-spine-active', {
+        height: '100%',
+        scrollTrigger: {
+          trigger: '.timeline-spine-wrapper',
+          start: 'top center',
+          end: 'bottom bottom',
+          scrub: 0.8
+        },
+        ease: 'none'
+      });
 
-        // Bento Grid Scroll Animations
-        const cards = document.querySelectorAll('.bento-card');
-        cards.forEach((card, i) => {
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 100,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power2.out",
-                delay: i * 0.1
-            });
-        });
-
-        // Timeline Animation
-
-        // 1. Draw the central line
-        gsap.to('.timeline-progress', {
-            height: '100%',
+      // Reveal Timeline Cards
+      document.querySelectorAll('.timeline-row').forEach(row => {
+        const card = row.querySelector('.timeline-card');
+        if (card) {
+          gsap.from(card, {
             scrollTrigger: {
-                trigger: '.timeline-container',
-                start: 'top center',
-                end: 'bottom bottom',
-                scrub: 1.5 // Smooth drawing
+              trigger: row,
+              start: 'top 82%',
+              toggleActions: 'play none none reverse'
             },
-            ease: 'none'
+            y: 36,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'power3.out'
+          });
+        }
+
+        ScrollTrigger.create({
+          trigger: row,
+          start: 'top 55%',
+          onEnter: () => row.classList.add('active'),
+          onLeaveBack: () => row.classList.remove('active')
         });
+      });
 
-        // 2. Reveal Items & Activate Dots
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        timelineItems.forEach(item => {
-
-            // Fade In & Slide Up
-            gsap.from(item.querySelector('.timeline-content'), {
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.6,
-                ease: 'power3.out'
-            });
-
-            // Activate Dot when passed
-            ScrollTrigger.create({
-                trigger: item,
-                start: 'top 60%',
-                onEnter: () => item.classList.add('active'),
-                onLeaveBack: () => item.classList.remove('active')
-            });
+      // Reveal Publication Cards
+      document.querySelectorAll('.pub-card').forEach((card, i) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 92%',
+            toggleActions: 'play none none reverse'
+          },
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          delay: i * 0.12,
+          ease: 'power2.out'
         });
+      });
+    }
 
-    </script>
+    // Interactive Beam Highlighting between Vase Container & Tools
+    const suiteStage = document.getElementById('suite-container-stage');
+    if (suiteStage) {
+      const toolCards = suiteStage.querySelectorAll('.emerging-tool-card');
+      const vaseContainer = document.getElementById('suite-vase-container');
+      const beams = suiteStage.querySelectorAll('.connector-path');
+
+      toolCards.forEach(card => {
+        const toolKey = card.getAttribute('data-tool');
+        const beam = document.getElementById(`beam-${toolKey}`);
+        card.addEventListener('mouseenter', () => {
+          if (beam) beam.classList.add('active-beam');
+        });
+        card.addEventListener('mouseleave', () => {
+          if (beam) beam.classList.remove('active-beam');
+        });
+      });
+
+      if (vaseContainer) {
+        vaseContainer.addEventListener('mouseenter', () => {
+          beams.forEach(b => b.classList.add('active-beam'));
+        });
+        vaseContainer.addEventListener('mouseleave', () => {
+          beams.forEach(b => b.classList.remove('active-beam'));
+        });
+      }
+    }
+  </script>
+
 </body>
 
 </html>

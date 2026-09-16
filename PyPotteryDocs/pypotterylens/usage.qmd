@@ -14,7 +14,7 @@ toc: true
 <div style="
     background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     border: 1px solid #e1e4e8;
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #c2410c;
     border-radius: 12px;
     padding: 15px 25px;
     margin: 20px 0;
@@ -28,7 +28,7 @@ toc: true
             Need a hand?
         </div>
         <div style="line-height: 1.5;">
-            Look for <strong style="color: #667eea;">Pixel</strong> in the app! <br>
+            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
             Clicking on him brings you straight back to this guide.
         </div>
     </div>

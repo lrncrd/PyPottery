@@ -1,33 +1,51 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: ../docs
+  render:
+    - "!article.qmd"
+    - "*.qmd"
+    - "*/*.qmd"
 
 website:
   title: "PyPottery"
   repo-url: https://github.com/lrncrd/PyPottery
   repo-actions: [source, issue]
   navbar:
+    logo: "logo_mark.png"
+    left:
+      - text: "Project Home"
+        href: index.html
+      - text: "Download Suite"
+        href: https://github.com/lrncrd/PyPottery/releases/latest
+      - text: "Publications"
+        href: docs_home.qmd#academic-citations
     right:
       - icon: github
         href: https://github.com/lrncrd/PyPottery
         aria-label: GitHub
   sidebar:
-    logo: "/logo.png"
     collapse-level: 1
     style: "docked"
-    search: true
+    search: false
     contents:
-      - text: "Documentation Home"
+      - text: "Suite Overview"
         href: docs_home.qmd
-      - intro.qmd
-      - suite_installation.qmd
-      - requirements.qmd
-#      - section: "PyPotteryScan"
-#        contents:
-#          - pypotteryscan/index.qmd
-#          - pypotteryscan/installation.qmd
-#          - pypotteryscan/usage.qmd
-#          - pypotteryscan/version_history.qmd
+      - text: "Suite Installation"
+        href: suite_installation.qmd
+      - text: "System Requirements"
+        href: requirements.qmd
+      - section: "PyPotteryLens"
+        contents:
+          - pypotterylens/index.qmd
+          - pypotterylens/installation.qmd
+          - pypotterylens/usage.qmd
+          - pypotterylens/version_history.qmd
+      - section: "PyPotteryScan"
+        contents:
+          - pypotteryscan/index.qmd
+          - pypotteryscan/installation.qmd
+          - pypotteryscan/usage.qmd
+          - pypotteryscan/version_history.qmd
       - section: "PyPotteryInk"
         contents:
           - pypotteryink/index.qmd
@@ -37,24 +55,18 @@ website:
           - pypotteryink/model_zoo.qmd
           - pypotteryink/api.qmd
           - pypotteryink/version_history.qmd
-#      - section: "PyPotteryTrace"
-#        contents:
-#          - pypotterytrace/index.qmd
-#          - pypotterytrace/installation.qmd
-#          - pypotterytrace/usage.qmd
-#          - pypotterytrace/version_history.qmd
+      - section: "PyPotteryTrace"
+        contents:
+          - pypotterytrace/index.qmd
+          - pypotterytrace/installation.qmd
+          - pypotterytrace/usage.qmd
+          - pypotterytrace/version_history.qmd
       - section: "PyPotteryLayout"
         contents:
           - pypotterylayout/index.qmd
           - pypotterylayout/installation.qmd
           - pypotterylayout/usage.qmd
           - pypotterylayout/version_history.qmd
-      - section: "PyPotteryLens"
-        contents:
-          - pypotterylens/index.qmd
-          - pypotterylens/installation.qmd
-          - pypotterylens/usage.qmd
-          - pypotterylens/version_history.qmd
       - suite_version.qmd
       - contact.qmd
       - acknowledgment.qmd

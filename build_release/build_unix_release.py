@@ -507,8 +507,15 @@ def _build_single_platform(platform_name: str, release_dir: Path, project_root: 
     if launcher_dest.exists():
         shutil.rmtree(launcher_dest)  # Ensure clean copy
 
-    # Using ignore logic to skip __pycache__
-    shutil.copytree(src_launcher, launcher_dest, ignore=shutil.ignore_patterns("__pycache__"))
+    # Skip __pycache__ and dev_config.py - the latter is a gitignored,
+    # local-only developer-mode switch (see web_server.py's
+    # `from .dev_config import DEVELOPER_MODE`); its mere presence, not its
+    # content, flips developer mode on, so shipping it would turn Developer
+    # Mode on for every end user if the build machine happens to have one.
+    shutil.copytree(
+        src_launcher, launcher_dest,
+        ignore=shutil.ignore_patterns("__pycache__", "dev_config.py"),
+    )
 
     # Copy requirements
     if (project_root / "requirements.txt").exists():

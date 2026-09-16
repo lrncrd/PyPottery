@@ -242,9 +242,9 @@ def initialize_state(state: LauncherState):
     state.log("Initializing PyPottery Suite Launcher...", "info")
 
     if DEVELOPER_MODE:
-        state.log("Developer mode ON - sub-apps run from their local git checkouts", "warning")
+        state.log("Developer mode ON - sub-apps run from local git checkouts with active terminal Python", "warning")
 
-    state.env_manager = EnvironmentManager(state.base_path)
+    state.env_manager = EnvironmentManager(state.base_path, developer_mode=DEVELOPER_MODE)
     state.env_manager.set_progress_callback(lambda p: _on_env_progress(state, p))
 
     # python_available(), not venv_exists(): even a half-installed environment
@@ -260,7 +260,10 @@ def initialize_state(state: LauncherState):
 
     env_state = state.env_manager.env_state()
     if env_state["status"] == "ready":
-        state.log("Python environment found", "success")
+        if DEVELOPER_MODE:
+            state.log(f"Developer Mode: Using active terminal Python environment", "success")
+        else:
+            state.log("Python environment found", "success")
         state.log(f"Using Python: {state.env_manager.python_executable}", "info")
     else:
         if env_state["status"] == "absent":
@@ -618,7 +621,8 @@ def create_app(state: LauncherState) -> Flask:
         launcher_release = state.update_checker.get_latest_release("lrncrd", "PyPottery")
         releases_data["launcher"] = {
             "name": "PyPottery Launcher",
-            "icon": "🏺",
+            "icon": "bi-collection",
+            "logo_path": "imgs/Logo.png",
             "current_version": str(state.launcher_version).lstrip("v"),
             "latest_version": str(launcher_release.tag_name).lstrip("v") if launcher_release else str(state.launcher_version).lstrip("v"),
             "release_notes": launcher_release.body if launcher_release and launcher_release.body else "PyPottery Suite unified launcher.",
@@ -634,6 +638,7 @@ def create_app(state: LauncherState) -> Flask:
                 releases_data[app_id] = {
                     "name": app.name,
                     "icon": app.icon,
+                    "logo_path": app.logo_path or f"imgs/Logo{app_id.replace('PyPottery', '')}.png",
                     "current_version": curr_v,
                     "latest_version": latest_v,
                     "release_notes": rel.body if rel and rel.body else "No release notes available for this release.",
@@ -784,6 +789,9 @@ def create_app(state: LauncherState) -> Flask:
 
     @app.route("/api/env/setup", methods=["POST"])
     def env_setup():
+        if DEVELOPER_MODE:
+            state.log("Setup skipped: Developer mode is active and using terminal Python", "info")
+            return jsonify(success=True, message="Developer mode is active; using terminal Python", env=state.env_manager.env_state() if state.env_manager else None)
         if not state.env_manager:
             return jsonify(success=False, error="Not initialized"), 409
         if not state.hardware_info:

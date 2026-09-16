@@ -10,7 +10,7 @@
             "min_ram_gb": 4,
             "recommended_ram_gb": 8,
             "requires_gpu": false,
-            "icon": "📐",
+            "icon": "bi-layout-three-columns",
             "logo": "imgs/LogoLayout.png"
         },
         "PyPotteryLens": {
@@ -23,7 +23,7 @@
             "min_ram_gb": 8,
             "recommended_ram_gb": 16,
             "requires_gpu": false,
-            "icon": "🔍",
+            "icon": "bi-eye",
             "logo": "imgs/LogoLens.png"
         },
         "PyPotteryInk": {
@@ -36,7 +36,7 @@
             "min_ram_gb": 8,
             "recommended_ram_gb": 16,
             "requires_gpu": false,
-            "icon": "🖋️",
+            "icon": "bi-pen-fill",
             "logo": "imgs/LogoInk.png"
         },
         "PyPotteryScan": {
@@ -49,7 +49,7 @@
             "min_ram_gb": 16,
             "recommended_ram_gb": 32,
             "requires_gpu": false,
-            "icon": "🖨️",
+            "icon": "bi-upc-scan",
             "logo": "imgs/LogoScan.png"
         },
         "PyPotteryTrace": {
@@ -62,7 +62,7 @@
             "min_ram_gb": 8,
             "recommended_ram_gb": 16,
             "requires_gpu": false,
-            "icon": "✏️",
+            "icon": "bi-bezier2",
             "logo": "imgs/LogoTrace.png"
         }
     },

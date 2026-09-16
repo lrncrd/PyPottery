@@ -5,6 +5,8 @@ subtitle: "Development timeline and changes"
 
 ## Latest Release
 
+-   **Added GLM-OCR** as a lightweight local OCR engine (0.9B params, works on CPU or GPU, no NVIDIA GPU required), alongside the existing OlmOCR-FP4 option.
+
 ## v0.2.0 (Initial Release) - (December 2025)
 
 🚀 A PyPotteryScan major release 🚀

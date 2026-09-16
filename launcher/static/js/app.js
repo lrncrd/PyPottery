@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   const TAG_STYLE = {
-    info: { icon: '<i class="bi bi-info-circle"></i>', color: "#38bdf8" },
-    success: { icon: '<i class="bi bi-check-circle"></i>', color: "#34d399" },
-    error: { icon: '<i class="bi bi-x-circle"></i>', color: "#f87171" },
-    warning: { icon: '<i class="bi bi-exclamation-triangle"></i>', color: "#fbbf24" },
-    progress: { icon: '<i class="bi bi-arrow-repeat"></i>', color: "#c084fc" },
+    info: { icon: '<i class="bi bi-info-circle" aria-hidden="true"></i>' },
+    success: { icon: '<i class="bi bi-check-circle" aria-hidden="true"></i>' },
+    error: { icon: '<i class="bi bi-x-circle" aria-hidden="true"></i>' },
+    warning: { icon: '<i class="bi bi-exclamation-triangle" aria-hidden="true"></i>' },
+    progress: { icon: '<i class="bi bi-arrow-repeat" aria-hidden="true"></i>' },
   };
 
   const els = {
@@ -42,6 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ramBarFill: document.getElementById("ram-bar-fill"),
     hwGpu: document.querySelector('[data-hw="gpu"]'),
     hwPytorch: document.querySelector('[data-hw="pytorch"]'),
+    systemDashboardPanel: document.getElementById("system-dashboard-panel"),
+    btnDashboardToggle: document.getElementById("btn-dashboard-toggle"),
+    hardwarePanel: document.getElementById("hardware-panel"),
     environmentPanel: document.getElementById("environment-panel"),
     envStatusText: document.getElementById("env-status-text"),
     envVerifiedCheck: document.getElementById("env-verified-check"),
@@ -61,10 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGpuVariantCancel: document.getElementById("btn-gpu-variant-cancel"),
     btnGpuVariantConfirm: document.getElementById("btn-gpu-variant-confirm"),
     appsList: document.getElementById("apps-list"),
+    consolePanel: document.getElementById("console-panel"),
     consoleLog: document.getElementById("console-log"),
     consoleDot: document.getElementById("console-dot"),
     consoleLastMsg: document.getElementById("console-last-msg"),
     consoleBody: document.getElementById("console-body"),
+    consoleBodyWrapper: document.getElementById("console-body-wrapper"),
     btnConsoleToggle: document.getElementById("btn-console-toggle"),
     btnConsoleClear: document.getElementById("btn-console-clear"),
     btnConsoleCopy: document.getElementById("btn-console-copy"),
@@ -113,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     appOrder: [],          // preserves display order
     downloadProgress: {},  // app_id -> {stage, message, percent}
     pendingUpdateVersion: null,
+    developerMode: false,
     envExists: false,
     isEnvSetupMandatory: false,
     consoleEntries: [],    // raw log entries
@@ -227,19 +233,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderSingleLogLine(entry) {
-    const style = TAG_STYLE[entry.tag] || TAG_STYLE.info;
+    const tag = entry.tag || "info";
+    const style = TAG_STYLE[tag] || TAG_STYLE.info;
     const line = document.createElement("div");
     line.className = "console-line";
     line.innerHTML = `
       <span class="console-timestamp">[${escapeHtml(entry.timestamp)}]</span>
-      <span style="color: ${style.color}">${style.icon} ${escapeHtml(entry.message)}</span>
+      <span class="console-msg console-msg-${escapeHtml(tag)}">${style.icon} <span>${escapeHtml(entry.message)}</span></span>
     `;
     
     els.consoleLog.appendChild(line);
     els.consoleLog.scrollTop = els.consoleLog.scrollHeight;
 
     els.consoleLastMsg.textContent = entry.message;
-    const dotClass = ["error", "success", "warning"].includes(entry.tag) ? entry.tag : "info";
+    const dotClass = ["error", "success", "warning"].includes(tag) ? tag : "info";
     els.consoleDot.className = `console-dot ${dotClass}`;
   }
 
@@ -259,9 +266,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Log filter chips listener
-  document.querySelectorAll(".filter-chip").forEach(chip => {
+  document.querySelectorAll(".log-filter-chips .filter-chip").forEach(chip => {
     chip.addEventListener("click", () => {
-      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+      document.querySelectorAll(".log-filter-chips .filter-chip").forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
       store.activeLogFilter = chip.dataset.filter;
       renderConsoleLogs();
@@ -270,8 +277,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (els.btnConsoleToggle) {
     els.btnConsoleToggle.addEventListener("click", () => {
-      const isHidden = els.consoleBody.classList.toggle("hidden");
-      els.btnConsoleToggle.textContent = isHidden ? "Show Logs" : "Hide Logs";
+      const panel = els.consolePanel || document.getElementById("console-panel");
+      const isOpen = panel ? panel.classList.toggle("is-open") : false;
+      els.btnConsoleToggle.setAttribute("aria-expanded", String(isOpen));
+      els.btnConsoleToggle.innerHTML = isOpen
+        ? '<i class="bi bi-chevron-up" aria-hidden="true"></i> Hide Logs'
+        : '<i class="bi bi-chevron-down" aria-hidden="true"></i> Show Logs';
+      if (isOpen && els.consoleLog) {
+        setTimeout(() => {
+          els.consoleLog.scrollTop = els.consoleLog.scrollHeight;
+        }, 100);
+      }
     });
   }
 
@@ -294,6 +310,25 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("Logs copied to clipboard!", "success", 2500);
       });
     });
+  }
+
+  // ---- Collapsible Dashboard Panel ----
+
+  function initCollapsiblePanels() {
+    const dashPanel = els.systemDashboardPanel || document.getElementById("system-dashboard-panel");
+    const dashToggle = els.btnDashboardToggle || document.getElementById("btn-dashboard-toggle");
+    if (dashPanel && dashToggle) {
+      const isCollapsed = localStorage.getItem("pypottery_dashboard_collapsed") === "true";
+      if (isCollapsed) {
+        dashPanel.classList.add("panel-collapsed");
+        dashToggle.setAttribute("aria-expanded", "false");
+      }
+      dashToggle.addEventListener("click", () => {
+        const collapsed = dashPanel.classList.toggle("panel-collapsed");
+        dashToggle.setAttribute("aria-expanded", !collapsed);
+        localStorage.setItem("pypottery_dashboard_collapsed", collapsed);
+      });
+    }
   }
 
   // ---- Hardware Panel ----
@@ -360,7 +395,13 @@ document.addEventListener("DOMContentLoaded", () => {
     checkboxes.forEach((cb, i) => {
       if (!cb) return;
       cb.disabled = !hw.cuda_available;
-      if (!store.pytorchVariantTouched) cb.checked = !!hw.cuda_available;
+      if (!store.pytorchVariantTouched) {
+        if (store.envExists) {
+          cb.checked = isCudaInstalled();
+        } else {
+          cb.checked = !!hw.cuda_available;
+        }
+      }
       if (hints[i]) hints[i].textContent = hintText;
     });
   }
@@ -378,16 +419,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof envState === "boolean") {
       envState = { status: envState ? "ready" : "absent", ready: envState };
     }
+    if (!envState) {
+      envState = { status: "absent", ready: false, reason: "No Python environment yet" };
+    }
+    const isDevMode = Boolean(store.developerMode || envState.developer_mode);
+    if (isDevMode) {
+      store.developerMode = true;
+    }
     store.envState = envState;
-    store.envExists = envState.ready; // legacy alias, some code still reads this
-    store.envReady = envState.ready;
+    store.envExists = isDevMode || Boolean(envState.ready); // legacy alias, some code still reads this
+    store.envReady = isDevMode || Boolean(envState.ready);
 
-    const isReady = envState.status === "ready";
-    const needsSetup = envState.status === "absent";
-    const needsRepair = envState.status === "broken" || envState.status === "incomplete";
+    const isReady = envState.status === "ready" || isDevMode;
+    const needsSetup = !isDevMode && envState.status === "absent";
+    const needsRepair = !isDevMode && (envState.status === "broken" || envState.status === "incomplete");
 
     if (els.firstSetupModal) {
-      if (isReady) {
+      if (isReady || isDevMode) {
         els.firstSetupModal.classList.add("hidden");
       } else {
         const disclaimerOpen = els.disclaimerModal && !els.disclaimerModal.classList.contains("hidden");
@@ -401,12 +449,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!els.envStatusText) return;
 
     els.envStatusText.classList.remove("ready", "error", "warning");
-    if (isReady) {
+    if (isDevMode) {
+      els.envStatusText.innerHTML = '<i class="bi bi-code-slash"></i> System Python (Dev)';
+      els.envStatusText.classList.add("ready");
+      if (els.btnEnvSetup) els.btnEnvSetup.classList.add("hidden");
+      if (els.envProgressBar) els.envProgressBar.style.width = "100%";
+      if (els.envProgressLabel) els.envProgressLabel.textContent = "Using terminal Python environment";
+
+      if (els.environmentPanel) els.environmentPanel.classList.remove("env-needs-setup");
+      if (els.envVerifiedCheck) els.envVerifiedCheck.classList.remove("hidden");
+      if (els.btnEnvVerify) els.btnEnvVerify.classList.remove("hidden");
+    } else if (isReady) {
       els.envStatusText.innerHTML = '<i class="bi bi-check2-circle"></i> Active & Ready';
       els.envStatusText.classList.add("ready");
-      els.btnEnvSetup.innerHTML = "<span>Reinstall Environment</span>";
-      els.envProgressBar.style.width = "100%";
-      els.envProgressLabel.textContent = "Virtualenv configured successfully.";
+      if (els.btnEnvSetup) {
+        els.btnEnvSetup.classList.remove("hidden");
+        els.btnEnvSetup.innerHTML = "<span>Reinstall Environment</span>";
+      }
+      if (els.envProgressBar) els.envProgressBar.style.width = "100%";
+      if (els.envProgressLabel) els.envProgressLabel.textContent = "Virtualenv configured successfully.";
 
       if (els.environmentPanel) els.environmentPanel.classList.remove("env-needs-setup");
       if (els.envVerifiedCheck) els.envVerifiedCheck.classList.remove("hidden");
@@ -414,8 +475,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (needsRepair) {
       els.envStatusText.innerHTML = '<i class="bi bi-tools"></i> Incomplete - needs repair';
       els.envStatusText.classList.add("warning");
-      els.btnEnvSetup.innerHTML = "<span>Repair Environment</span>";
-      els.envProgressBar.style.width = "0%";
+      if (els.btnEnvSetup) {
+        els.btnEnvSetup.classList.remove("hidden");
+        els.btnEnvSetup.innerHTML = "<span>Repair Environment</span>";
+      }
+      if (els.envProgressBar) els.envProgressBar.style.width = "0%";
       els.envProgressLabel.textContent = envState.reason || "The environment needs to be rebuilt.";
 
       if (els.environmentPanel) els.environmentPanel.classList.add("env-needs-setup");
@@ -424,8 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       els.envStatusText.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Not Configured';
       els.envStatusText.classList.add("error");
-      els.btnEnvSetup.innerHTML = "<span>Setup Environment</span>";
-      els.envProgressBar.style.width = "0%";
+      if (els.btnEnvSetup) {
+        els.btnEnvSetup.classList.remove("hidden");
+        els.btnEnvSetup.innerHTML = "<span>Setup Environment</span>";
+      }
+      if (els.envProgressBar) els.envProgressBar.style.width = "0%";
       els.envProgressLabel.textContent = "Required dependencies need installation.";
 
       if (els.environmentPanel) els.environmentPanel.classList.add("env-needs-setup");
@@ -433,6 +500,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (els.btnEnvVerify) els.btnEnvVerify.classList.add("hidden");
     }
     renderApps();
+    if (store.hw && !store.pytorchVariantTouched) {
+      updateVariantToggleUI(store.hw);
+    }
   }
 
   function renderEnvProgress(progress) {
@@ -475,6 +545,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const showGpuVariantModal = showConfirmModal;
 
+  function isCudaInstalled() {
+    if (store.developerMode) return true;
+
+    // Check device string from hardware detector (e.g. "CUDA (NVIDIA GeForce RTX 4070 Laptop GPU)")
+    const dev = String(store.hw?.installed_pytorch_device || "").toUpperCase();
+    if (dev.includes("CUDA") || dev.includes("NVIDIA") || dev.includes("GEFORCE") || dev.includes("RTX") || dev.includes("GTX")) {
+      return true;
+    }
+
+    // Check PyTorch version string (e.g. "2.4.0+cu124", "2.5.1+cu121")
+    const ver = String(store.hw?.installed_pytorch_version || "").toLowerCase();
+    if (ver.includes("+cu") || ver.includes("cu12") || ver.includes("cu11")) {
+      return true;
+    }
+
+    // Check environment state variant from marker (e.g. "cu124", "cu126", "cu128")
+    const variant = String(store.envState?.variant || "").toLowerCase();
+    if (variant.startsWith("cu") || variant === "auto") {
+      return true;
+    }
+
+    // If previously selected GPU in this session and environment is ready
+    if (store.lastEnvSetupVariant === true && store.envReady) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isCpuOnlyInstalled() {
+    if (store.developerMode) return false;
+    if (!store.envExists) return false;
+    if (isCudaInstalled()) return false;
+
+    const dev = String(store.hw?.installed_pytorch_device || "").toUpperCase();
+    const variant = String(store.envState?.variant || "").toLowerCase();
+    const ver = String(store.hw?.installed_pytorch_version || "").toLowerCase();
+
+    return variant === "cpu" || dev === "CPU" || (ver.length > 0 && !ver.includes("cu"));
+  }
+
   function getWantsGpu() {
     const cb = els.chkGpuVariant || els.chkGpuVariantFirst;
     return cb ? cb.checked : true;
@@ -513,10 +624,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const checked = cb.checked;
       setGpuCheckboxes(checked);
 
-      // Checking the box only changes what the *next* install will use -
-      // if PyTorch is already installed CPU-only, offer to reinstall now
-      // (or let the user back out, which reverts the checkbox).
-      if (checked && store.envExists && !store.hw?.installed_pytorch_device?.startsWith("CUDA")) {
+      // In developer mode, do not prompt for installation/reinstallation
+      if (store.developerMode) return;
+
+      // If CUDA is ALREADY installed, turning the toggle on simply restores the state —
+      // do not prompt to reinstall what is already installed!
+      if (isCudaInstalled()) return;
+
+      // Only prompt if PyTorch is genuinely installed as CPU-only and user re-checks GPU
+      if (checked && store.envExists && isCpuOnlyInstalled()) {
         showGpuVariantModal({
           title: "Enable GPU Acceleration",
           message: "PyTorch is currently installed CPU-only. Reinstall now to enable GPU-accelerated (CUDA) PyTorch.",
@@ -539,8 +655,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (els.btnEnvSetup) {
     els.btnEnvSetup.addEventListener("click", () => {
+      if (store.developerMode) {
+        showToast("Developer mode is active; using terminal Python environment.", "info", 3000);
+        return;
+      }
       const wantsGpu = getWantsGpu();
-      if (store.envExists && store.hw?.installed_pytorch_device?.startsWith("CUDA") && !wantsGpu) {
+      if (store.envExists && isCudaInstalled() && !wantsGpu) {
         showGpuVariantModal({
           title: "Switch to CPU-only?",
           message: "This will replace your existing GPU-accelerated PyTorch with a CPU-only version.",
@@ -573,7 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="model-row-meta">${escapeHtml(meta)}</span>
         </div>
         <span class="model-row-size">${formatBytes(entry.size_bytes)}</span>
-        <button class="btn btn-danger-soft btn-icon-only" data-action="delete-model" data-path="${escapeHtml(entry.path)}" title="Delete this cached model">🗑️</button>
+        <button class="btn btn-danger-soft btn-icon-only" data-action="delete-model" data-path="${escapeHtml(entry.path)}" title="Delete this cached model"><i class="bi bi-trash"></i></button>
       </div>`;
   }
 
@@ -617,31 +737,35 @@ document.addEventListener("DOMContentLoaded", () => {
       const entry = store.models.find((m) => m.path === path);
       const label = entry ? entry.name : path;
 
-      const confirmed = confirm(
-        `Delete "${label}" from the model cache?\n\nThis frees disk space now, but ${entry && entry.used_by ? entry.used_by : "the owning app"} will need to download it again next time it's used.`
-      );
-      if (!confirmed) return;
-
-      btn.disabled = true;
-      fetch("/api/models/delete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path }),
-      })
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.success) {
-            renderModelCache(data);
-            showToast(`Deleted ${label} — ${formatBytes(entry ? entry.size_bytes : 0)} freed`, "success", 4000);
-          } else {
-            showToast(`Failed to delete ${label}: ${data.error || "unknown error"}`, "error", 4500);
-            btn.disabled = false;
-          }
-        })
-        .catch(() => {
-          showToast(`Failed to delete ${label}`, "error", 4500);
-          btn.disabled = false;
-        });
+      showConfirmModal({
+        title: "Delete Cached Model",
+        message: `Delete "${label}" from the model cache?\n\nThis frees disk space now, but ${entry && entry.used_by ? entry.used_by : "the owning app"} will need to download it again next time it's used.`,
+        confirmText: "Delete Model",
+        cancelText: "Keep Model",
+        danger: true,
+        onConfirm: () => {
+          btn.disabled = true;
+          fetch("/api/models/delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ path }),
+          })
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.success) {
+                renderModelCache(data);
+                showToast(`Deleted ${label} — ${formatBytes(entry ? entry.size_bytes : 0)} freed`, "success", 4000);
+              } else {
+                showToast(`Failed to delete ${label}: ${data.error || "unknown error"}`, "error", 4500);
+                btn.disabled = false;
+              }
+            })
+            .catch(() => {
+              showToast(`Failed to delete ${label}`, "error", 4500);
+              btn.disabled = false;
+            });
+        },
+      });
     });
   }
 
@@ -650,14 +774,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function actionState(app) {
     if (app.is_running) return { label: "Stop App", cls: "btn-danger", action: "stop" };
     if (app.installed) return { label: "Launch App", cls: "btn-success", action: "launch" };
-    if (app.developer_mode) return { label: "Checkout Not Found", cls: "btn-primary", action: "none" };
+    if (app.developer_mode) return { label: "Checkout Not Found", cls: "btn-outline btn-dev-mode", action: "none" };
     return { label: "Install", cls: "btn-primary", action: "install" };
   }
 
   function statusBadge(app) {
     if (app.is_running) return { text: "RUNNING", cls: "running", dot: "●" };
     if (app.installed) return { text: "INSTALLED", cls: "ready", dot: "●" };
-    return { text: "NOT INSTALLED", cls: "", dot: "○" };
+    return { text: "NOT&nbsp;INSTALLED", cls: "", dot: "○" };
   }
 
   function appCardHtml(app) {
@@ -670,9 +794,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `v${app.installed_version}${app.update_available ? " • Update Available" : ""}`
       : "";
 
+    const fallbackIcon = app.icon || 'bi-collection';
     const logoHtml = app.logo_path
-      ? `<img src="/assets/${app.logo_path}" alt="${escapeHtml(app.name)}" onerror="this.replaceWith(document.createTextNode('${app.icon || '🏺'}'))">`
-      : `<span class="emoji-icon">${app.icon || '🏺'}</span>`;
+      ? `<img src="/assets/${app.logo_path}" alt="${escapeHtml(app.name)}" onerror="var i=document.createElement('i');i.className='bi ${fallbackIcon}';this.replaceWith(i);">`
+      : `<i class="bi ${fallbackIcon}" aria-hidden="true"></i>`;
 
     const dl = store.downloadProgress[app.id];
     let progressHtml = "";
@@ -707,8 +832,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const uninstallBtnHtml = app.developer_mode ? "" : `<button class="btn btn-quiet btn-icon-only" data-action="uninstall" data-app-id="${app.id}" title="${isRunning ? 'Stop the app before uninstalling' : 'Uninstall'}" ${!app.installed || isRunning ? "disabled" : ""}><i class="bi bi-trash3"></i></button>`;
 
     const badgePillHtml = isLocked && !app.installed
-      ? `<span class="status-badge-pill locked"><i class="bi bi-lock-fill"></i> REQUIRES ENV</span>`
-      : `<span class="status-badge-pill ${badge.cls}">${badge.dot} ${badge.text}</span>`;
+      ? `<span class="status-badge-pill locked"><i class="bi bi-lock-fill"></i> REQUIRES&nbsp;ENV</span>`
+      : `<span class="status-badge-pill ${badge.cls}">${badge.dot}&nbsp;${badge.text}</span>`;
 
     const lockBannerHtml = isLocked && !app.installed
       ? `<div class="card-lock-banner"><i class="bi bi-lock-fill"></i> Setup Python Environment to unlock</div>`
@@ -727,7 +852,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <p class="app-desc">${escapeHtml(app.description)}</p>
             <div class="app-chips">
-              <span class="chip"><i class="bi bi-ethernet"></i> Port ${app.port}</span>
               <span class="chip"><i class="bi bi-memory"></i> ${app.min_ram_gb}GB RAM</span>
               ${app.requires_gpu ? `<span class="chip chip-gpu"><i class="bi bi-gpu-card"></i> GPU</span>` : ""}
               ${app.developer_mode ? `<span class="chip chip-dev" title="Running from the local git checkout at the repo root - install/update disabled"><i class="bi bi-code-slash"></i> DEV MODE</span>` : ""}
@@ -767,12 +891,47 @@ document.addEventListener("DOMContentLoaded", () => {
     return div.innerHTML;
   }
 
+  let appFilterQuery = "";
+
   function renderApps() {
     if (!store.appOrder.length) {
       els.appsList.innerHTML = '<p class="apps-empty">No applications configured in launcher.</p>';
       return;
     }
-    els.appsList.innerHTML = store.appOrder.map((id) => appCardHtml(store.apps[id])).join("");
+    const q = appFilterQuery.toLowerCase();
+    const visibleIds = store.appOrder.filter((id) => {
+      if (!q) return true;
+      const app = store.apps[id];
+      if (!app) return false;
+      return (
+        app.name.toLowerCase().includes(q) ||
+        (app.description && app.description.toLowerCase().includes(q)) ||
+        id.toLowerCase().includes(q)
+      );
+    });
+
+    if (!visibleIds.length) {
+      els.appsList.innerHTML = `
+        <div class="apps-search-empty" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);">
+          <i class="bi bi-search" style="font-size: 1.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.6;"></i>
+          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">No tools match "<strong>${escapeHtml(appFilterQuery)}</strong>"</p>
+          <button class="btn btn-outline btn-sm" id="btn-reset-search"><i class="bi bi-x-circle"></i> Clear search filter</button>
+        </div>`;
+      const resetBtn = document.getElementById("btn-reset-search");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          appFilterQuery = "";
+          const input = document.getElementById("apps-search-input");
+          if (input) input.value = "";
+          const clearBtn = document.getElementById("apps-search-clear");
+          if (clearBtn) clearBtn.classList.add("hidden");
+          renderApps();
+        });
+      }
+      return;
+    }
+
+    els.appsList.innerHTML = visibleIds.map((id) => appCardHtml(store.apps[id])).join("");
   }
 
   function setApps(appsArray) {
@@ -795,7 +954,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Toast feedback on status changes
     if (previous) {
       if (!previous.is_running && app.is_running) {
-        showToast(`${app.name} is now running on port ${app.port}`, "success", 5000);
+        showToast(`${app.name} is now running`, "success", 5000);
       } else if (previous.is_running && !app.is_running) {
         showToast(`${app.name} has been stopped`, "info", 3000);
       } else if (!previous.installed && app.installed) {
@@ -925,6 +1084,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const APP_LOGOS = {
+    launcher: "imgs/Logo.png",
+    pypotteryink: "imgs/LogoInk.png",
+    pypotterylayout: "imgs/LogoLayout.png",
+    pypotterylens: "imgs/LogoLens.png",
+    pypotteryscan: "imgs/LogoScan.png",
+    pypotterytrace: "imgs/LogoTrace.png",
+  };
+
   function renderChangelog(data) {
     if (!els.changelogModalBody) return;
     let html = "";
@@ -936,6 +1104,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sortedKeys.forEach((key) => {
       const item = data[key];
+      const normKey = String(key || "").toLowerCase();
+      const logoPath = item.logo_path || APP_LOGOS[normKey] || (store.apps && store.apps[key]?.logo_path) || "imgs/Logo.png";
       const published = item.published_at
         ? new Date(item.published_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
         : "";
@@ -944,7 +1114,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="changelog-item-card">
           <div class="changelog-item-header">
             <div class="changelog-item-title-group">
-              <span class="changelog-item-icon">${item.icon || '🏺'}</span>
+              <div class="changelog-item-logo-frame">
+                <img src="/assets/${logoPath}" alt="${escapeHtml(item.name)}" class="changelog-item-logo" onerror="this.onerror=null; this.src='/assets/imgs/Logo.png';">
+              </div>
               <h3 class="changelog-item-title">${escapeHtml(item.name)}</h3>
             </div>
             <div class="changelog-item-meta">
@@ -1021,7 +1193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     els.btnAcceptDisclaimer.addEventListener("click", () => {
       els.disclaimerModal.classList.add("hidden");
       localStorage.setItem("pypottery_disclaimer_accepted", "1");
-      if (!store.envExists && els.firstSetupModal) {
+      if (!store.developerMode && !store.envExists && els.firstSetupModal) {
         els.firstSetupModal.classList.remove("hidden");
       }
     });
@@ -1126,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (els.conn2) els.conn2.className = "step-connector complete";
         if (els.stepFinalize) els.stepFinalize.className = "step-item complete";
 
-        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Installation Complete! 🎉";
+        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Installation Complete!";
         if (els.btnInstallerLaunch) {
           els.btnInstallerLaunch.classList.remove("hidden");
           els.btnInstallerLaunch.onclick = () => {
@@ -1136,11 +1308,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (els.btnInstallerDone) {
           els.btnInstallerDone.classList.remove("hidden");
-          els.btnInstallerDone.textContent = "✨ Done";
+          els.btnInstallerDone.textContent = "Done";
           els.btnInstallerDone.onclick = closeInstallerModal;
         }
       } else if (stage === "error") {
-        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Installation Error ⚠️";
+        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Installation Error";
         if (els.btnInstallerDone) {
           els.btnInstallerDone.classList.remove("hidden");
           els.btnInstallerDone.textContent = "Close";
@@ -1169,7 +1341,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // out of the modal at all.
       if (progress.is_error) {
         store.envSetupFailed = true;
-        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Environment Setup Error ⚠️";
+        if (els.installerStatusTitle) els.installerStatusTitle.textContent = "Environment Setup Error";
         if (els.btnInstallerClose) els.btnInstallerClose.classList.remove("hidden");
         if (els.btnInstallerDone) {
           els.btnInstallerDone.classList.remove("hidden");
@@ -1401,20 +1573,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const textEl = document.getElementById("pop-quote-text");
     const sourceEl = document.getElementById("pop-quote-source");
     const quoteContainer = document.getElementById("hero-pop-quote");
+    const contentEl = document.getElementById("pop-quote-content");
     if (!textEl || !sourceEl || !data || !data.quote) return;
 
-    if (quoteContainer) {
-      quoteContainer.style.opacity = "0";
+    if (quoteContainer && contentEl) {
+      // 1. Lock current height in pixels and clip during animation
+      const currentH = quoteContainer.offsetHeight || contentEl.offsetHeight;
+      quoteContainer.style.height = currentH + "px";
+      quoteContainer.style.overflow = "hidden";
+      quoteContainer.style.pointerEvents = "none";
+
+      // 2. Fade & slight slide up
+      contentEl.style.opacity = "0";
+      contentEl.style.transform = "translateY(-4px)";
+
       setTimeout(() => {
-        textEl.textContent = `“${data.quote}”`;
-        sourceEl.textContent = `— ${data.source}`;
-        quoteContainer.style.opacity = "1";
-      }, 150);
+        // 3. Swap text while invisible
+        textEl.textContent = `\u201c${data.quote}\u201d`;
+        sourceEl.textContent = `\u2014 ${data.source}`;
+
+        // 4. Measure new height of inner content
+        const newH = Math.max(contentEl.scrollHeight, contentEl.offsetHeight);
+
+        // 5. Animate container height smoothly
+        quoteContainer.style.height = newH + "px";
+
+        // 6. Fade & slide content back in
+        contentEl.style.opacity = "1";
+        contentEl.style.transform = "translateY(0)";
+        quoteContainer.style.pointerEvents = "";
+
+        // 7. Ensure no clipping once animation settles
+        setTimeout(() => {
+          if (quoteContainer) quoteContainer.style.overflow = "visible";
+        }, 400);
+      }, 220);
     } else {
-      textEl.textContent = `“${data.quote}”`;
-      sourceEl.textContent = `— ${data.source}`;
+      textEl.textContent = `\u201c${data.quote}\u201d`;
+      sourceEl.textContent = `\u2014 ${data.source}`;
     }
   }
+
+  window.addEventListener("resize", () => {
+    const qc = document.getElementById("hero-pop-quote");
+    const qcc = document.getElementById("pop-quote-content");
+    if (qc && qcc && qcc.offsetHeight > 0) {
+      qc.style.height = qcc.offsetHeight + "px";
+    }
+  });
 
   async function fetchWikiquote(forceRefresh = false) {
     try {
@@ -1712,6 +1918,71 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---- Search & Keyboard Shortcuts (Flexibility & Efficiency) ----
+
+  const appsSearchInput = document.getElementById("apps-search-input");
+  const appsSearchClear = document.getElementById("apps-search-clear");
+
+  if (appsSearchInput) {
+    appsSearchInput.addEventListener("input", (e) => {
+      appFilterQuery = e.target.value.trim();
+      if (appsSearchClear) {
+        appsSearchClear.classList.toggle("hidden", !appFilterQuery);
+      }
+      renderApps();
+    });
+  }
+
+  if (appsSearchClear) {
+    appsSearchClear.addEventListener("click", () => {
+      appFilterQuery = "";
+      if (appsSearchInput) {
+        appsSearchInput.value = "";
+        appsSearchInput.focus();
+      }
+      appsSearchClear.classList.add("hidden");
+      renderApps();
+    });
+  }
+
+  // Global keyboard shortcuts (Escape to close modals, / to filter tools)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (els.aboutModal && !els.aboutModal.classList.contains("hidden")) {
+        els.aboutModal.classList.add("hidden");
+        return;
+      }
+      if (els.changelogModal && !els.changelogModal.classList.contains("hidden")) {
+        els.changelogModal.classList.add("hidden");
+        return;
+      }
+      if (els.gpuVariantModal && !els.gpuVariantModal.classList.contains("hidden")) {
+        els.gpuVariantModal.classList.add("hidden");
+        return;
+      }
+      if (els.installerModal && !els.installerModal.classList.contains("hidden")) {
+        closeInstallerModal();
+        return;
+      }
+      if (appsSearchInput && document.activeElement === appsSearchInput) {
+        appsSearchInput.value = "";
+        appFilterQuery = "";
+        if (appsSearchClear) appsSearchClear.classList.add("hidden");
+        appsSearchInput.blur();
+        renderApps();
+        return;
+      }
+    }
+
+    if (e.key === "/" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
+      if (appsSearchInput) {
+        e.preventDefault();
+        appsSearchInput.focus();
+        appsSearchInput.select();
+      }
+    }
+  });
+
   // ---- Splash Screen Controller ----
 
   function updateSplash(percent, statusMessage) {
@@ -1724,9 +1995,9 @@ document.addEventListener("DOMContentLoaded", () => {
   async function hideSplash() {
     if (!els.splashScreen) return;
     updateSplash(100, "Ready!");
-    await delay(500);
+    await delay(120);
     els.splashScreen.classList.add("splash-fade-out");
-    await delay(700);
+    await delay(250);
     els.splashScreen.style.display = "none";
   }
 
@@ -1734,18 +2005,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function init() {
     renderDailyGreeting();
-    const startTime = Date.now();
-    updateSplash(25, "Initializing system components...");
-    await delay(350);
+    const initQuoteCont = document.getElementById("hero-pop-quote");
+    const initQuoteContent = document.getElementById("pop-quote-content");
+    if (initQuoteCont && initQuoteContent && initQuoteContent.offsetHeight > 0) {
+      initQuoteCont.style.height = initQuoteContent.offsetHeight + "px";
+    }
+    initCollapsiblePanels();
+    updateSplash(30, "Initializing system components...");
 
-    updateSplash(55, "Detecting hardware & environment...");
+    updateSplash(60, "Detecting hardware & environment...");
 
     try {
       const res = await fetch("/api/state");
       const state = await res.json();
 
-      await delay(400);
-      updateSplash(85, "Loading archaeological tools & models...");
+      updateSplash(90, "Loading archaeological tools & models...");
+      if (state.developer_mode !== undefined) {
+        store.developerMode = Boolean(state.developer_mode);
+      }
       if (els.launcherVersion) els.launcherVersion.textContent = `v${state.launcher_version}`;
       if (state.hardware) renderHardware(state.hardware);
       if (state.pop_quote) {
@@ -1765,18 +2042,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     connectEvents();
 
-    // Ensure splash screen stays visible for at least 1.8 seconds total
-    const elapsed = Date.now() - startTime;
-    const minSplashDuration = 1800;
-    if (elapsed < minSplashDuration) {
-      await delay(minSplashDuration - elapsed);
-    }
-
     await hideSplash();
 
     // After splash screen hides, if disclaimer is already accepted and environment is missing, show setup modal
     const disclaimerAccepted = localStorage.getItem("pypottery_disclaimer_accepted") === "1" || !els.disclaimerModal;
-    if (disclaimerAccepted && !store.envExists && els.firstSetupModal) {
+    if (!store.developerMode && disclaimerAccepted && !store.envExists && els.firstSetupModal) {
       els.firstSetupModal.classList.remove("hidden");
     }
   }

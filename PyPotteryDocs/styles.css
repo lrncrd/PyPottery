@@ -1,991 +1,1991 @@
-/* styles.css */
+/* ==========================================================================
+   PyPottery Docs — Design System & Custom Style Override
+   Palette: Warm Archaeological Terracotta & Sand (In sync with index.html)
+   ========================================================================== */
 
-/* Base styles */
+/* --------------------------------------------------------------------------
+   0. Typography: Google Fonts Import
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --primary:         #c2410c;
+  --primary-dark:    #9a3412;
+  --primary-light:   #ea580c;
+  --primary-soft:    rgba(194, 65, 12, 0.08);
+  --primary-border:  rgba(194, 65, 12, 0.20);
+
+  --teal:            #0d9488;
+  --teal-dark:       #0f766e;
+  --teal-soft:       rgba(13, 148, 136, 0.08);
+  --teal-border:     rgba(13, 148, 136, 0.20);
+
+  --bg-page:         #fdfbf7;
+  --bg-card:         #ffffff;
+  --bg-subtle:       #f5efe6;
+  --bg-sidebar:      #f5efe6;
+
+  --border-light:    rgba(194, 130, 80, 0.16);
+  --border-hover:    rgba(194, 65, 12, 0.32);
+
+  --text-main:       #1c1309;
+  --text-dim:        #5c4a35;
+  --text-muted:      #7a6552;
+
+  --shadow-card:     0 4px 18px -2px rgba(120, 53, 15, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-hover:    0 10px 28px -3px rgba(120, 53, 15, 0.14);
+
+  --radius-sm:       6px;
+  --radius-md:       10px;
+  --radius-lg:       14px;
+  --radius-xl:       20px;
+
+  --font-sans:       'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:       'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base / Body
+   -------------------------------------------------------------------------- */
 body {
-    font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans) !important;
+  background-color: var(--bg-page) !important;
+  color: var(--text-main) !important;
+  -webkit-font-smoothing: antialiased;
 }
 
-.sidebar {
-    background-color: #f8f9fa;
-}
-
-/* Navbar Styling */
+/* --------------------------------------------------------------------------
+   3. Navbar (Luminous Archaeological Warm Parchment Header)
+   -------------------------------------------------------------------------- */
 .navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(194, 65, 12, 0.18) !important;
+  box-shadow: 0 1px 4px rgba(28, 25, 23, 0.05) !important;
+  padding: 0.45rem 1.25rem !important;
+  min-height: 60px !important;
+}
+
+.navbar .navbar-brand-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  margin-left: 0 !important;
+  margin-right: 1.5rem !important;
+}
+
+.navbar .navbar-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+}
+
+.navbar .navbar-brand img,
+.navbar .navbar-logo {
+  max-height: 38px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  transition: transform 0.2s ease !important;
+}
+
+.navbar .navbar-brand:hover img,
+.navbar .navbar-brand:hover .navbar-logo {
+  transform: scale(1.05);
 }
 
 .navbar .navbar-brand,
-.navbar .nav-link,
-.navbar .navbar-toggler-icon {
-    color: white !important;
+.navbar .navbar-title {
+  font-family: var(--font-sans) !important;
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.025em !important;
+  color: var(--text-main) !important;
+}
+
+.navbar .nav-link {
+  color: var(--text-dim) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+  padding: 0.4rem 0.8rem !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all 0.15s ease !important;
 }
 
 .navbar .nav-link:hover {
-    color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* Hero Section */
-.hero-section {
-    text-align: center;
-    padding: 2rem 1rem;
-    margin-bottom: 2rem;
+  color: var(--primary) !important;
+  background: var(--primary-soft) !important;
 }
-
-.hero-section h2 {
-    font-size: 1.8rem;
-    color: #1f2937;
-    margin-bottom: 1rem;
-}
-
-.hero-section p {
-    font-size: 1.1rem;
-    color: #6b7280;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* Software Cards Grid */
-.software-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Individual Card */
-.software-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-
-    /* Link specific styles */
-    display: block;
-    text-decoration: none !important;
-    color: inherit !important;
-    cursor: pointer;
-}
-
-.software-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--card-accent, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-}
-
-.software-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* Card Header with Logo */
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.card-logo {
-    width: 70px;
-    height: 70px;
-    object-fit: contain;
-    border-radius: 12px;
-}
-
-.card-title-group {
-    flex: 1;
-}
-
-.card-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    background: var(--card-accent, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0 0 0.25rem 0;
-}
-
-.card-version {
-    display: inline-block;
-    font-size: 0.75rem;
-    padding: 2px 8px;
-    background: var(--card-accent, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-}
-
-/* Card Description */
-.card-description {
-    color: #4b5563;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-/* Features List */
-.card-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.25rem 0;
-}
-
-.card-features li {
-    padding: 0.35rem 0;
-    color: #6b7280;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-}
-
-.card-features li::before {
-    content: '✓';
-    color: #10b981;
-    font-weight: bold;
-}
-
-/* Card Actions */
-.card-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.btn-learn-more {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.65rem 1.25rem;
-    background: var(--card-accent, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.btn-learn-more:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
-    color: white;
-    text-decoration: none;
-}
-
-.btn-github {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.65rem;
-    background: #24292e;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.btn-github:hover {
-    background: #1a1e22;
-    transform: scale(1.05);
-    color: white;
-    text-decoration: none;
-}
-
-.btn-github svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-}
-
-/* Centered CTA Group */
-.cta-group.centered {
-    justify-content: center;
-}
-
-/* Pipeline Intro Hero */
-.pipeline-intro {
-    text-align: center;
-    padding: 100px 20px 60px 20px;
-    background: #ffffff;
-}
-
-.pipeline-badge {
-    display: inline-block;
-    padding: 8px 16px;
-    background: rgba(99, 102, 241, 0.1);
-    color: #4f46e5;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.pipeline-intro h2 {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: #111827;
-    margin-bottom: 16px;
-}
-
-.pipeline-intro p {
-    font-size: 1.2rem;
-    color: #6b7280;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* --- Timeline Flowchart Section --- */
-.timeline-section {
-    position: relative;
-    padding: 100px 20px;
-    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
-    overflow: hidden;
-}
-
-.timeline-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    position: relative;
-}
-
-/* The Central Spine */
-.timeline-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: #e5e7eb;
-    /* Base faint line */
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-.timeline-progress {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 2px;
-    height: 0;
-    /* Animated by JS */
-    background: #4f46e5;
-    /* Active brand color */
-    transform: translateX(-50%);
-    z-index: 2;
-    box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
-    /* Glow */
-}
-
-/* Rows */
-.timeline-row {
-    display: flex;
-    margin-bottom: 0px;
-    /* Overlap slightly or just touch */
-    position: relative;
-    padding-bottom: 80px;
-}
-
-.timeline-row:last-child {
-    padding-bottom: 0;
-}
-
-.timeline-item,
-.timeline-spacer {
-    flex: 1;
-}
-
-/* Item Content Card */
-.timeline-content {
-    background: white;
-    padding: 30px;
-    border-radius: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-    position: relative;
-    z-index: 10;
-    transition: transform 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.03);
-}
-
-.timeline-content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-}
-
-/* Left vs Right logic */
-.timeline-item.left {
-    padding-right: 50px;
-    text-align: right;
-}
 
-.timeline-item.left .timeline-content {
-    margin-left: auto;
-    max-width: 420px;
-    /* Keep it collected */
+.navbar .nav-link.active {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  background: var(--primary-soft) !important;
 }
 
-.timeline-item.right {
-    padding-left: 50px;
-    text-align: left;
+.navbar .navbar-toggler {
+  border-color: var(--border-light) !important;
+  padding: 4px 8px !important;
 }
 
-.timeline-item.right .timeline-content {
-    margin-right: auto;
-    max-width: 420px;
+.navbar .navbar-toggler-icon {
+  filter: none !important;
 }
 
-/* Connectors (The dots on the line) */
-.timeline-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+.navbar .bi-github {
+  color: var(--text-dim) !important;
+  font-size: 1.2rem !important;
+  transition: all 0.15s ease !important;
 }
 
-.timeline-item.left .timeline-header {
-    justify-content: flex-end;
+.navbar .bi-github:hover {
+  color: var(--primary) !important;
+  transform: scale(1.1);
 }
 
-.timeline-item.right .timeline-header {
-    justify-content: flex-start;
+/* --------------------------------------------------------------------------
+   4. Quarto Secondary Nav (Breadcrumbs Bar)
+   -------------------------------------------------------------------------- */
+.quarto-secondary-nav {
+  background: var(--bg-page) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: 0.4rem 1rem !important;
 }
 
-.step-badge {
-    background: #111827;
-    color: white;
-    font-weight: 700;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+.quarto-page-breadcrumbs .breadcrumb-item a {
+  color: var(--text-muted) !important;
+  font-size: 0.83rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
 }
 
-.timeline-logo {
-    max-width: 80px;
-    /* Smaller, icon-like */
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+.quarto-page-breadcrumbs .breadcrumb-item a:hover {
+  color: var(--primary) !important;
 }
 
-.timeline-content h2 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    color: #1f2937;
+.quarto-page-breadcrumbs .breadcrumb-item.active {
+  color: var(--primary) !important;
+  font-size: 0.83rem !important;
+  font-weight: 700 !important;
 }
 
-.timeline-desc {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #4b5563;
-    margin-bottom: 25px;
+.quarto-btn-toggle {
+  color: var(--text-main) !important;
+  border: none !important;
+  background: transparent !important;
 }
 
-/* Coming Soon Items */
-.timeline-item.coming-soon .timeline-content {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px dashed #d1d5db;
-    box-shadow: none;
+.quarto-search-button {
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border-light) !important;
+  background: #ffffff !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 3px 8px !important;
+  transition: all 0.15s ease !important;
 }
 
-.timeline-item.coming-soon h2 {
-    color: #9ca3af;
+.quarto-search-button:hover {
+  color: var(--primary) !important;
+  border-color: var(--primary-border) !important;
 }
 
-.timeline-item.coming-soon .timeline-desc {
-    color: #9ca3af;
-    margin-bottom: 0;
+/* --------------------------------------------------------------------------
+   5. Quarto Sidebar (Architectural Field Desk / Drafting Navigation)
+   -------------------------------------------------------------------------- */
+#quarto-sidebar {
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-light) !important;
+  font-family: var(--font-sans) !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 2rem !important;
 }
 
-.soon-icon {
-    font-size: 2rem;
+/* Hide legacy sidebar logo and search containers so no dead whitespace remains */
+.sidebar-logo,
+#quarto-sidebar .sidebar-logo,
+#quarto-sidebar > .flex-shrink-0,
+#quarto-sidebar .sidebar-search,
+#quarto-sidebar .sidebar-logo-container {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Connector Dot on Spine */
-.timeline-item::after {
-    content: '';
-    position: absolute;
-    top: 50px;
-    /* Align with header roughly */
-    width: 16px;
-    height: 16px;
-    background: white;
-    border: 3px solid #1f2937;
-    border-radius: 50%;
-    z-index: 5;
+#quarto-sidebar .sidebar-menu-container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+#quarto-sidebar .sidebar-menu-container > ul {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  list-style: none !important;
+}
+
+/* Category header: SUITE CORE */
+#quarto-sidebar .sidebar-menu-container > ul::before {
+  content: "SUITE CORE";
+  display: block;
+  font-family: var(--font-mono) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--text-muted) !important;
+  text-transform: uppercase !important;
+  padding: 0.25rem 0.85rem 0.45rem 0.85rem !important;
+}
+
+/* Section divider & Category header: CORE MODULES */
+.sidebar-item-section:first-of-type {
+  margin-top: 1.15rem !important;
+  padding-top: 0.85rem !important;
+  border-top: 1px solid var(--border-light) !important;
+}
+
+.sidebar-item-section:first-of-type::before {
+  content: "CORE MODULES";
+  display: block;
+  font-family: var(--font-mono) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--text-muted) !important;
+  text-transform: uppercase !important;
+  padding: 0 0.85rem 0.45rem 0.85rem !important;
+}
+
+/* Section divider & Category header: REFERENCE & ABOUT */
+.sidebar-item-section:last-of-type {
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+.sidebar-item-section:last-of-type + .sidebar-item::before {
+  content: "REFERENCE & ABOUT";
+  display: block;
+  font-family: var(--font-mono) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--text-muted) !important;
+  text-transform: uppercase !important;
+  padding: 0.25rem 0.85rem 0.45rem 0.85rem !important;
+}
+
+/* General Sidebar Items */
+.sidebar-item {
+  margin: 0 !important;
+}
+
+.sidebar-item-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 !important;
+}
+
+.sidebar-item-text,
+.sidebar-link {
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  color: var(--text-dim) !important;
+  border-radius: 6px !important;
+  padding: 0.38rem 0.75rem !important;
+  margin: 0.08rem 0.5rem !important;
+  flex: 1 !important;
+  border: 1px solid transparent !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.75) !important;
+  color: var(--primary) !important;
+  border-color: rgba(232, 227, 216, 0.7) !important;
+  text-decoration: none !important;
+}
+
+/* Active Item: Clean, Elevated White Drafting Card with Flush Straight Terracotta Left Edge */
+.sidebar-link.active {
+  background: #ffffff !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+  border: 1px solid #dfd8cb !important;
+  border-left: 3px solid var(--primary) !important;
+  border-radius: 0 6px 6px 0 !important;
+  box-shadow: 0 2px 5px rgba(120, 53, 15, 0.05) !important;
+}
+
+/* Tool Section Heads (PyPotteryLens, PyPotteryScan, etc.): Proper Title Case & High Contrast */
+.sidebar-item-section > .sidebar-item-container > a {
+  font-size: 0.86rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: var(--text-main) !important;
+}
+
+.sidebar-item-section > .sidebar-item-container > a:hover {
+  color: var(--primary) !important;
+}
+
+/* Chevron Icon & Toggle Button */
+.sidebar-item-toggle {
+  padding: 0.25rem 0.45rem !important;
+  margin-right: 0.5rem !important;
+  color: var(--text-muted) !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.sidebar-item-toggle:hover {
+  background: rgba(194, 65, 12, 0.06) !important;
+  color: var(--primary) !important;
+}
+
+.sidebar-item-toggle .bi-chevron-right {
+  color: var(--text-muted) !important;
+  font-size: 0.72rem !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s ease !important;
+}
+
+.sidebar-item-toggle:hover .bi-chevron-right {
+  color: var(--primary) !important;
+}
+
+/* Sub-pages Inside Collapsed/Expanded Section Tree */
+.sidebar-item-section > ul.collapse {
+  border-left: 1px solid var(--border-light) !important;
+  margin-left: 1.25rem !important;
+  padding-left: 0.35rem !important;
+  margin-top: 0.2rem !important;
+  margin-bottom: 0.45rem !important;
+  list-style: none !important;
+}
+
+.sidebar-item-section > ul.collapse .sidebar-link {
+  font-size: 0.81rem !important;
+  font-weight: 400 !important;
+  color: var(--text-dim) !important;
+  padding: 0.22rem 0.6rem !important;
+  margin: 0.05rem 0.25rem !important;
+  border-radius: 4px !important;
+  border: 1px solid transparent !important;
+  border-left: none !important;
+}
+
+.sidebar-item-section > ul.collapse .sidebar-link:hover {
+  color: var(--primary) !important;
+  background: rgba(194, 65, 12, 0.05) !important;
+}
+
+.sidebar-item-section > ul.collapse .sidebar-link.active {
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+  background: #ffffff !important;
+  border: 1px solid var(--border-light) !important;
+  border-left: 2.5px solid var(--primary) !important;
+  border-radius: 0 4px 4px 0 !important;
+  box-shadow: 0 1px 3px rgba(120, 53, 15, 0.04) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. Quarto TOC (Right Margin Sidebar)
+   -------------------------------------------------------------------------- */
+#quarto-margin-sidebar,
+.margin-sidebar {
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+}
+
+#TOC {
+  border-left: 2px solid var(--border-light) !important;
+  padding-left: 1rem !important;
+}
+
+#TOC h2,
+#toc-title {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 0.65rem !important;
+}
+
+#TOC a.nav-link {
+  font-size: 0.84rem !important;
+  color: var(--text-dim) !important;
+  padding: 0.25rem 0 !important;
+  border-left: 2px solid transparent !important;
+  padding-left: 0.65rem !important;
+  margin-left: -1rem !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+#TOC a.nav-link:hover,
+#TOC a.nav-link.active {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  border-left-color: var(--primary) !important;
+}
+
+.toc-actions a {
+  color: var(--text-muted) !important;
+  font-size: 0.78rem !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+}
+
+.toc-actions a:hover {
+  color: var(--primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. Main Content Area & Editorial Typography
+   -------------------------------------------------------------------------- */
+main.content,
+#quarto-document-content {
+  font-family: var(--font-sans) !important;
+  color: var(--text-main) !important;
+  line-height: 1.75 !important;
+}
+
+/* Full-width container styling for hub/portal pages to eliminate the right blank gap */
+.page-layout-full main.content,
+.page-layout-full #quarto-document-content,
+body.fullcontent main.content {
+  max-width: 1360px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding: 0 1.5rem 3rem 1.5rem !important;
+  width: 100% !important;
+}
+
+.quarto-title-block {
+  border-bottom: 2px solid var(--border-light) !important;
+  margin-bottom: 2.2rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.quarto-title-block h1.title {
+  font-size: 2.3rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--text-main) !important;
+  line-height: 1.2 !important;
+}
+
+main h1, main h2, main h3, main h4, main h5 {
+  font-family: var(--font-sans) !important;
+  font-weight: 800 !important;
+  color: var(--text-main) !important;
+  letter-spacing: -0.02em !important;
+}
+
+main h2 {
+  font-size: 1.55rem !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 0.85rem !important;
+  padding-bottom: 0.4rem !important;
+  border-bottom: 2px solid var(--border-light) !important;
+}
+
+main h3 {
+  font-size: 1.22rem !important;
+  font-weight: 700 !important;
+  margin-top: 1.85rem !important;
+  margin-bottom: 0.6rem !important;
 }
 
-.timeline-item.left::after {
-    right: -8px;
+main p {
+  color: var(--text-dim) !important;
+  line-height: 1.75 !important;
+  font-size: 0.98rem !important;
 }
 
-/* Half width of dot (8px) centered on line */
-.timeline-item.right::after {
-    left: -8px;
+main strong {
+  color: var(--text-main) !important;
+  font-weight: 700 !important;
 }
 
-/* Active Dot State (can be triggered by JS class .active) */
-.timeline-item.active::after {
-    background: #4f46e5;
-    border-color: #4f46e5;
-    box-shadow: 0 0 15px rgba(79, 70, 229, 0.6);
+main a {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  transition: color 0.15s ease !important;
 }
 
-/* Actions */
-.timeline-actions {
-    display: flex;
-    gap: 10px;
+main a:hover {
+  color: var(--primary-dark) !important;
+  text-decoration: underline !important;
 }
 
-.timeline-item.left .timeline-actions {
-    justify-content: flex-end;
+/* --------------------------------------------------------------------------
+   8. Code Blocks & Inline Code
+   -------------------------------------------------------------------------- */
+code, kbd, samp {
+  font-family: var(--font-mono) !important;
+  font-size: 0.87em !important;
+  background: var(--bg-subtle) !important;
+  color: var(--primary-dark) !important;
+  padding: 0.15em 0.45em !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--border-light) !important;
 }
 
-.timeline-item.right .timeline-actions {
-    justify-content: flex-start;
+pre code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: inherit !important;
 }
 
-.t-btn {
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
+pre.sourceCode,
+div.sourceCode {
+  background: #1c1309 !important;
+  border: 1px solid rgba(194, 65, 12, 0.20) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  margin: 1.25rem 0 !important;
 }
-
-.t-btn-docs {
-    background: #f3f4f6;
-    color: #1f2937;
-}
-
-.t-btn-docs:hover {
-    background: #e5e7eb;
-}
-
-.t-btn-git {
-    background: #1f2937;
-    color: white;
-}
-
-.t-btn-git:hover {
-    background: black;
-    transform: translateY(-2px);
-}
-
-/* Responsive Mobile */
-@media (max-width: 768px) {
-
-    .timeline-line,
-    .timeline-progress {
-        left: 30px;
-    }
-
-    /* Move line to left */
-    .timeline-item {
-        width: 100%;
-    }
-
-    .timeline-spacer {
-        display: none;
-    }
-
-    .timeline-row {
-        flex-direction: column;
-        padding-bottom: 60px;
-    }
-
-    .timeline-item.left {
-        padding-right: 0;
-        padding-left: 70px;
-        text-align: left;
-    }
-
-    .timeline-item.right {
-        padding-left: 70px;
-    }
-
-    .timeline-item.left .timeline-content,
-    .timeline-item.right .timeline-content {
-        margin-left: 0;
-        max-width: 100%;
-    }
-
-    .timeline-item.left .timeline-header {
-        justify-content: flex-start;
-    }
-
-    /* Reset from right align */
-    .timeline-item.left .timeline-actions {
-        justify-content: flex-start;
-    }
-
-    .timeline-item.left::after {
-        left: 22px;
-        right: auto;
-    }
-
-    /* Align dots to new line pos */
-    .timeline-item.right::after {
-        left: 22px;
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .software-grid {
-        grid-template-columns: 1fr;
-        padding: 0.5rem;
-    }
-
-    .hero-section h2 {
-        font-size: 1.5rem;
-    }
-
-    .card-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .card-actions {
-        flex-direction: column;
-    }
-
-    .btn-github {
-        width: 100%;
-    }
-}
-
-/* Concept Map Styles */
-.concept-map-container {
-    padding: 2rem 1rem;
-    margin: 2rem auto;
-    text-align: center;
-}
-
-.concept-map {
+
+pre.sourceCode code,
+div.sourceCode code {
+  color: #f5ede3 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.code-copy-button {
+  background: rgba(194, 65, 12, 0.18) !important;
+  border: 1px solid rgba(194, 65, 12, 0.3) !important;
+  color: #ea580c !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all 0.15s ease !important;
+}
+
+.code-copy-button:hover {
+  background: rgba(194, 65, 12, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. Callouts & Alerts
+   -------------------------------------------------------------------------- */
+div.callout {
+  border-radius: var(--radius-md) !important;
+  border-left-width: 4px !important;
+  font-family: var(--font-sans) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+div.callout-note {
+  border-left-color: var(--teal) !important;
+  background: var(--teal-soft) !important;
+}
+
+div.callout-warning {
+  border-left-color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.07) !important;
+}
+
+div.callout-important {
+  border-left-color: var(--primary) !important;
+  background: var(--primary-soft) !important;
+}
+
+div.callout-tip {
+  border-left-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.07) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Tables
+   -------------------------------------------------------------------------- */
+table {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border-light) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.9rem !important;
+  width: 100% !important;
+  margin: 1.5rem 0 !important;
+}
+
+thead {
+  background: var(--bg-subtle) !important;
+}
+
+thead th {
+  font-weight: 700 !important;
+  color: var(--text-main) !important;
+  border-bottom: 2px solid var(--border-light) !important;
+  padding: 0.7rem 0.9rem !important;
+}
+
+tbody td {
+  color: var(--text-dim) !important;
+  padding: 0.6rem 0.9rem !important;
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+tbody tr:hover {
+  background: var(--primary-soft) !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. Hero Section (docs_home.html)
+/* --------------------------------------------------------------------------
+   11. Archaeological Hero Component (docs_home & intro)
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   11. Archaeological Drafting Desk Hero (PRODUCT.md Specification)
+   -------------------------------------------------------------------------- */
+.archaeo-drafting-hero {
+  position: relative;
+  background-color: var(--bg-page) !important;
+  background-image: 
+    linear-gradient(to right, rgba(194, 65, 12, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 65, 12, 0.045) 1px, transparent 1px),
+    linear-gradient(to right, rgba(194, 65, 12, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 65, 12, 0.08) 1px, transparent 1px) !important;
+  background-size: 14px 14px, 14px 14px, 70px 70px, 70px 70px !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 3rem 2.5rem 2.25rem 2.5rem !important;
+  margin-bottom: 2.5rem !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-card) !important;
+}
+
+.archaeo-drafting-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 65% 35%, rgba(255, 255, 255, 0) 0%, rgba(253, 251, 247, 0.65) 55%, var(--bg-page) 94%) !important;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.archaeo-drafting-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.drafting-header-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 1.15rem;
+}
+
+.drafting-header-tag .tag-bracket {
+  color: var(--border-hover);
+  font-weight: 400;
+}
+
+.drafting-header-tag .tag-sep {
+  color: var(--text-muted);
+  opacity: 0.45;
+}
+
+.drafting-hero-title {
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--text-main) !important;
+  margin: 0 0 1.15rem 0 !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.drafting-hero-lead {
+  font-size: 1.08rem !important;
+  line-height: 1.75 !important;
+  color: var(--text-dim) !important;
+  max-width: 860px !important;
+  margin: 0 0 2rem 0 !important;
+}
+
+/* Cartiglio Tecnico (Technical Drafting Specifications Block) */
+.drafting-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1px;
+  background: var(--border-light) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-sm) !important;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.03) !important;
+}
+
+.drafting-spec-cell {
+  background: rgba(255, 255, 255, 0.90) !important;
+  padding: 0.85rem 1.15rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.spec-cell-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.spec-cell-val {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.spec-cell-val .val-highlight {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.spec-cell-val .val-teal {
+  color: var(--teal-dark);
+  font-weight: 700;
+}
+
+/* Section divider from PRODUCT.md */
+.hero-pipeline-hr {
+  border: none !important;
+  height: 1px !important;
+  background: linear-gradient(to right, transparent, var(--border-light), var(--primary-border), var(--border-light), transparent) !important;
+  margin: 3.5rem 0 2.5rem 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   11c. Suite Modules Grid (5 Integrated Tools)
+   -------------------------------------------------------------------------- */
+.suite-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 1.35rem;
+  margin: 1.5rem 0 3.25rem 0;
+}
+
+.suite-module-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.suite-module-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
+  border-color: var(--border-hover) !important;
+}
+
+.suite-module-header {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.suite-module-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  padding: 4px;
+  border: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+.suite-module-meta {
+  flex: 1;
+}
+
+.suite-module-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main) !important;
+  margin: 0 !important;
+  line-height: 1.25;
+}
+
+.suite-module-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.module-ver-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  border: 1px solid var(--primary-border);
+}
+
+.module-phase-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.suite-module-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim) !important;
+  line-height: 1.55 !important;
+  margin: 0 0 1rem 0 !important;
+}
+
+.suite-module-features {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 1.25rem 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.suite-module-features li {
+  font-size: 0.82rem !important;
+  color: var(--text-dim) !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  line-height: 1.4 !important;
+}
+
+.suite-module-features li i {
+  color: var(--primary);
+  font-size: 0.85rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.suite-module-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.btn-editorial-primary.btn-sm,
+.btn-editorial-secondary.btn-sm,
+.btn-editorial-github.btn-sm {
+  padding: 0.42rem 0.85rem !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. Visual Archaeological Pipeline (Option B: Input ➔ Core AI ➔ Output)
+   -------------------------------------------------------------------------- */
+.archaeo-pipeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+  margin: 2rem 0 3.5rem 0;
+  position: relative;
+}
+
+.pipeline-stage-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.85rem;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.pipeline-stage-card:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-hover);
+}
+
+.pipeline-stage-card.phase-ingestion {
+  border-top: 4px solid var(--teal);
+}
+
+.pipeline-stage-card.phase-inking {
+  border-top: 4px solid var(--primary);
+}
+
+.pipeline-stage-card.phase-synthesis {
+  border-top: 4px solid #334155;
+}
+
+/* Stage Header */
+.pipeline-stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.pipeline-stage-title-group {
+  flex: 1;
+  min-width: 260px;
+}
+
+.pipeline-stage-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.3rem 0 !important;
+  line-height: 1.25;
+}
+
+.pipeline-stage-lead {
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  margin: 0 !important;
+  line-height: 1.5;
+}
+
+/* Three-Box Flow Strip: Input ➔ Core AI ➔ Output */
+.pipeline-flow-strip {
+  display: grid;
+  grid-template-columns: 1fr auto 1.15fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pipeline-flow-box {
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-height: 84px;
+}
+
+.pipeline-flow-box.engine-box {
+  border-color: rgba(194, 65, 12, 0.35);
+  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.06);
+  background: #fffdfa;
+}
+
+.flow-box-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.flow-box-icon.engine-icon {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary-border);
+}
+
+.flow-box-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.flow-box-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.flow-box-details {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+
+.flow-box-details code {
+  font-size: 0.68rem;
+  padding: 1px 4px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+}
+
+.pipeline-flow-arrow {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+
+/* Subtools Row */
+.pipeline-subtools-grid {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.pipeline-tool-card {
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.pipeline-tool-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 14px rgba(120, 53, 15, 0.08);
+  transform: translateY(-2px);
+}
+
+.pipeline-tool-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.pipeline-tool-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.pipeline-tool-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.pipeline-tool-name-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.pipeline-tool-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 !important;
+}
+
+.pipeline-tool-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+.pipeline-tool-caps {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.pipeline-tool-caps .cap-lead {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.pipeline-tool-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Stage Down Connector */
+.pipeline-stage-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 24px;
+}
+
+.pipeline-connector-line {
+  position: absolute;
+  top: -16px;
+  bottom: -16px;
+  width: 0;
+  border-right: 2px dashed var(--border-hover);
+  z-index: 1;
+}
+
+.pipeline-connector-pill {
+  background: white;
+  border: 1px solid var(--border-light);
+  color: var(--primary);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  z-index: 2;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .pipeline-flow-strip {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .pipeline-flow-arrow {
+    transform: rotate(90deg);
+    margin: -2px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Archaeological Methodology Pillars (Anti-Slop Value Grid)
+   -------------------------------------------------------------------------- */
+.archaeo-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
+  gap: 0.85rem;
+  margin: 1.75rem 0 3rem 0;
+  align-items: stretch;
+}
+
+.archaeo-pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+}
+
+.archaeo-pillar-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary-border);
+}
+
+.pillar-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+  min-height: 48px;
+}
+
+.pillar-num {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.pillar-index {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: block;
+  line-height: 1.3;
+}
+
+.pillar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.32;
+  min-height: 3.8rem;
+  align-self: start;
+}
+
+.pillar-text {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 0;
+  align-self: start;
+}
+
+@media (max-width: 900px) {
+  .archaeo-pillars-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 0.85rem;
+  }
+  .archaeo-pillar-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    grid-row: auto;
+  }
+  .pillar-header {
+    min-height: unset;
+  }
+  .pillar-title {
+    min-height: unset;
+  }
 }
 
-.concept-sources {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
-    padding: 1.5rem;
-    border-radius: 20px;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+/* --------------------------------------------------------------------------
+   14. Ecosystem Matrix Table
+   -------------------------------------------------------------------------- */
+.ecosystem-table-wrapper {
+  margin: 1.75rem 0 3rem 0;
+  padding: 10px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
 }
 
-.concept-item {
-    padding: 0.75rem 1.25rem;
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    /* Flex alignment for logo + text */
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.ecosystem-table-wrapper table {
+  margin: 0 !important;
+  border: none !important;
 }
 
-.concept-logo {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+.ecosystem-table-wrapper th {
+  background: var(--bg-subtle) !important;
+  color: var(--text-main) !important;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  padding: 0.85rem 1rem !important;
 }
 
-.concept-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+.ecosystem-table-wrapper td {
+  padding: 0.85rem 1rem !important;
+  font-size: 0.88rem !important;
+  vertical-align: middle;
 }
 
-.concept-flow-arrow {
-    font-size: 2rem;
-    color: #cbd5e1;
-    animation: flowBounce 2s infinite ease-in-out;
+.tool-table-link {
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none !important;
 }
 
-@keyframes flowBounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(5px);
-    }
+.tool-table-link:hover {
+  text-decoration: underline !important;
+  color: var(--primary-dark) !important;
 }
 
-.concept-platform {
-    display: inline-block;
-    padding: 1.25rem 2.5rem;
-    background: var(--card-accent, linear-gradient(135deg, #1f2937 0%, #374151 100%));
-    color: white;
-    border-radius: 16px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+.hw-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  color: var(--text-dim);
+  display: inline-block;
+  white-space: nowrap;
 }
 
-/* Gradient Presets for Concept Items */
-.bg-ink {
-    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+.hw-tag-cuda {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.25);
+  color: var(--teal-dark);
 }
 
-.bg-lens {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+/* --------------------------------------------------------------------------
+   15. Publications & Citations Section
+   -------------------------------------------------------------------------- */
+.pub-editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 3rem 0;
 }
 
-.bg-layout {
-    background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+.pub-editorial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* --- Features Section (Simplified) --- */
-.features-section {
-    padding: 80px 20px;
-    background: #ffffff;
+.pub-journal-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  padding: 4px 8px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  width: fit-content;
 }
 
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+.pub-editorial-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-main);
+  margin: 0 0 0.5rem 0;
 }
 
-.feature-card {
-    background: #f9fafb;
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
+.pub-editorial-authors {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+.pub-editorial-meta {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-bottom: 1.25rem;
 }
 
-.feature-card.featured {
-    background: #111827;
-    color: white;
-    grid-column: 1 / -1;
-    /* Span full width */
+.pub-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.feature-card.featured p {
-    color: #9ca3af;
+/* --------------------------------------------------------------------------
+   16. Archival CTA & Support Box
+   -------------------------------------------------------------------------- */
+.archaeo-cta-box {
+  margin: 3rem 0 1rem 0;
+  padding: 2.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  text-align: center;
 }
 
-.feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+.archaeo-cta-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.75rem;
 }
 
-.feature-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 12px;
+.archaeo-cta-desc {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  max-width: 620px;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.65;
 }
 
-.feature-card p {
-    color: #6b7280;
-    line-height: 1.6;
-    margin-bottom: 0;
+.archaeo-cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.download-btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 12px 24px;
-    background: #4f46e5;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s ease;
+/* --------------------------------------------------------------------------
+   17. Buttons & CTAs
+   -------------------------------------------------------------------------- */
+.btn-editorial-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.35rem;
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: 1px solid var(--primary-dark);
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 6px rgba(194, 65, 12, 0.2) !important;
 }
 
-.download-btn:hover {
-    background: #4338ca;
-    transform: translateY(-2px);
+.btn-editorial-primary:hover {
+  background: var(--primary-dark) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(194, 65, 12, 0.3) !important;
 }
 
-/* Pixel Iframe Card */
-.pixel-card {
-    position: relative;
+.btn-editorial-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.35rem;
+  background: #ffffff !important;
+  color: var(--text-main) !important;
+  text-decoration: none !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-light);
+  transition: all 0.2s ease !important;
 }
 
-.pixel-iframe-wrapper {
-    margin-top: 15px;
-    width: 100%;
-    height: 80px;
-    overflow: hidden;
-    border-radius: 8px;
+.btn-editorial-secondary:hover {
+  border-color: var(--border-hover);
+  color: var(--primary);
+  background: var(--bg-subtle) !important;
 }
 
-.pixel-iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    pointer-events: auto;
+.btn-editorial-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.35rem;
+  background: #1c1309 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease !important;
 }
 
-/* --- Publications Section --- */
-.publications-section {
-    padding: 100px 20px;
-    background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+.btn-editorial-github:hover {
+  background: #2d1f12 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 50px;
+/* --------------------------------------------------------------------------
+   15. Page Navigation & Footer
+   -------------------------------------------------------------------------- */
+.page-navigation .nav-page a {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  font-family: var(--font-sans) !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
 }
 
-.section-badge {
-    display: inline-block;
-    padding: 8px 16px;
-    background: rgba(99, 102, 241, 0.1);
-    color: #4f46e5;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 16px;
+.page-navigation .nav-page a:hover {
+  color: var(--primary-dark) !important;
 }
 
-.section-header h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #111827;
-    margin-bottom: 12px;
+.nav-footer {
+  background: var(--bg-sidebar) !important;
+  border-top: 1px solid var(--border-light) !important;
+  color: var(--text-dim) !important;
+  font-family: var(--font-sans) !important;
+  padding: 1.25rem 0 !important;
+  font-size: 0.88rem !important;
 }
 
-.section-header p {
-    color: #6b7280;
-    font-size: 1.1rem;
+.nav-footer a {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
 }
 
-.publications-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    max-width: 900px;
-    margin: 0 auto;
+.nav-footer a:hover {
+  color: var(--primary-dark) !important;
+  text-decoration: underline !important;
 }
 
-.publication-card {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    text-decoration: none;
-    border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
-    display: block;
+/* --------------------------------------------------------------------------
+   16. Scrollbars
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(194, 65, 12, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(194, 65, 12, 0.45);
 }
 
-.publication-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-    border-color: #d1d5db;
-}
-
-.pub-source {
-    font-size: 0.85rem;
-    color: #4f46e5;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.publication-card h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 8px;
-}
-
-.pub-meta {
-    color: #9ca3af;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-}
-
-.read-link {
-    color: #4f46e5;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.pub-doi {
-    font-size: 0.8rem;
-    color: #6b7280;
-    font-family: monospace;
-    margin-bottom: 12px;
-}
-
-.publication-card.preprint {
-    border-style: dashed;
-    background: #fafafa;
-}
-
-.publication-card.preprint .pub-source {
-    color: #f59e0b;
-}
-
-/* --- Footer --- */
-.site-footer {
-    background: #111827;
-    color: white;
-    padding: 60px 20px 30px 20px;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.footer-brand {
-    max-width: 300px;
-}
-
-.footer-logo {
-    width: 50px;
-    margin-bottom: 15px;
-}
-
-.footer-brand p {
-    color: #9ca3af;
-    font-size: 0.95rem;
-}
-
-.footer-links {
-    display: flex;
-    gap: 60px;
-}
-
-.footer-col h4 {
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 15px;
-    color: #9ca3af;
-}
-
-.footer-col a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-    transition: color 0.2s ease;
-}
-
-.footer-col a:hover {
-    color: #6366f1;
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 40px;
-    margin-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-bottom p {
-    color: #6b7280;
-    font-size: 0.9rem;
-}
-
+/* --------------------------------------------------------------------------
+   17. Responsive
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .publications-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-brand {
-        max-width: 100%;
-    }
-
-    .footer-links {
-        flex-direction: column;
-        gap: 30px;
-    }
-}
-/* Fix for GitHub logo size in intro.qmd */
-.github-main-link svg {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    margin-right: 8px;
-    fill: currentColor;
-}
-
-/* GitHub Section Styling */
-.github-section {
-    text-align: center;
-    padding: 3rem 1rem;
-    margin-top: 2rem;
-}
-
-.github-main-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
-    background-color: #24292e;
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  .suite-modules-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hub-quicknav-bar {
+    padding: 0.6rem 0.75rem !important;
+    gap: 0.4rem !important;
+  }
+  .quicknav-pill {
+    font-size: 0.78rem !important;
+    padding: 0.3rem 0.6rem !important;
+  }
+  .archaeo-hero {
+    padding: 1.75rem 1.25rem !important;
+  }
+  .archaeo-hero-title {
+    font-size: 1.65rem !important;
+  }
+  .archaeo-drafting-hero {
+    padding: 1.75rem 1.25rem 1.5rem 1.25rem !important;
+  }
+  .drafting-hero-title {
+    font-size: 1.65rem !important;
+  }
+  .pipeline-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  .pipeline-connector {
+    transform: rotate(90deg);
+    padding: 0.25rem 0;
+  }
+  .ecosystem-table-wrapper {
+    overflow-x: auto;
+  }
+  .pub-actions {
+    flex-wrap: wrap;
+  }
+  .archaeo-cta-box {
+    padding: 1.5rem 1rem !important;
+  }
 }
 
-.github-main-link:hover {
-    background-color: #1a1e22;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    color: white;
-    text-decoration: none;
+/* --------------------------------------------------------------------------
+   18. Quarto Panel Tabset & Suite Installation Architectural Styling
+   -------------------------------------------------------------------------- */
+.panel-tabset {
+  margin: 1.75rem 0 !important;
 }
+
+.panel-tabset .nav-tabs {
+  border-bottom: 2px solid var(--border-light) !important;
+  gap: 0.35rem !important;
+  padding: 0 0.5rem !important;
+  display: flex !important;
+}
+
+.panel-tabset .nav-tabs .nav-item {
+  margin-bottom: -2px !important;
+}
+
+.panel-tabset .nav-tabs .nav-link {
+  font-family: var(--font-sans) !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: var(--text-dim) !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 6px 6px 0 0 !important;
+  padding: 0.65rem 1.25rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.panel-tabset .nav-tabs .nav-link:hover {
+  color: var(--primary) !important;
+  background: var(--primary-soft) !important;
+  border-color: transparent !important;
+}
+
+.panel-tabset .nav-tabs .nav-link.active {
+  color: var(--primary) !important;
+  background: #ffffff !important;
+  border-color: var(--border-light) var(--border-light) transparent var(--border-light) !important;
+  border-bottom: 3px solid var(--primary) !important;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.panel-tabset .tab-content {
+  background: #ffffff !important;
+  border: 1px solid var(--border-light) !important;
+  border-top: none !important;
+  border-radius: 0 0 10px 10px !important;
+  padding: 2rem 1.75rem !important;
+  box-shadow: 0 4px 16px -3px rgba(120, 53, 15, 0.04) !important;
+}
+
+/* Methodology / Deployment Paradigm Cards */
+.methodology-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.methodology-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-hover);
+}
+
+.methodology-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+  width: fit-content;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+}
+
+.methodology-title {
+  font-family: var(--font-sans);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0.4rem 0 0.6rem 0;
+  line-height: 1.3;
+}
+
+.methodology-desc {
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin: 0 0 1rem 0;
+  flex: 1;
+}
+
+/* Installation Step Cards */
+.install-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin: 1.5rem 0;
+}
+
+.install-step-card {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.install-step-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 12px -2px rgba(120, 53, 15, 0.05);
+}
+
+.install-step-num {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.install-step-body {
+  flex: 1;
+}
+
+.install-step-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.install-step-desc {
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Simulator Viewport Containers — Minimal Archaeological Framing */
+.simulator-wrapper {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-subtle);
+  margin: 1.75rem 0;
+  box-shadow: var(--shadow-card);
+}
+
+.simulator-header-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.55rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.simulator-title {
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.simulator-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--teal-dark);
+}
+
+.simulator-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.simulator-iframe {
+  width: 100%;
+  height: 680px;
+  border: none;
+  display: block;
+}
+
+.launcher-simulator-iframe {
+  width: 100%;
+  height: 870px;
+  border: none;
+  display: block;
+}
+
+/* Architectural Download Cards */
+.os-download-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 1.75rem 0;
+}
+
+.os-download-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px -3px rgba(120, 53, 15, 0.04);
+  transition: all 0.2s ease;
+}
+
+.os-download-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px -4px rgba(194, 65, 12, 0.12);
+}
+
+.os-card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+  border: 1px solid var(--teal-border);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  width: fit-content;
+  margin-bottom: 0.75rem;
+}
+
+.os-card-title {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.os-card-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.os-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: #ffffff !important;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.15s ease;
+}
+
+.os-card-btn:hover {
+  background: var(--primary-dark) !important;
+}
+
+/* Diagnostic Matrix Table styling */
+.diagnostic-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.5rem 0;
+  border-radius: 10px;
+}
+
+.diagnostic-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.diagnostic-table th {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  text-align: left;
+}
+
+.diagnostic-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+.diagnostic-table tr:last-child td {
+  border-bottom: none;
+}
+

@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.6.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Suite Installation – PyPottery</title>
+<title>Suite Installation &amp; Deployment – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,17 +64,15 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b8a9d4e0c5aece789d5cf870ccea3ef9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0e409008032177e994eff0779726d4b5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,13 +105,16 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./logo_mark.png" alt="" class="navbar-logo">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">PyPottery</span>
     </a>
@@ -89,6 +124,20 @@ ul.task-list li input[type="checkbox"] {
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Project Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/lrncrd/PyPottery/releases/latest"> 
+<span class="menu-text">Download Suite</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./docs_home.html#academic-citations"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+</ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/lrncrd/PyPottery"> <i class="bi bi-github" role="img" aria-label="GitHub">
@@ -109,39 +158,19 @@ ul.task-list li input[type="checkbox"] {
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./suite_installation.html">Suite Installation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
-      </a>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./docs_home.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Documentation Home</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PyPottery</span></a>
+ <span class="menu-text">Suite Overview</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -153,18 +182,88 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./requirements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Requirements</span></a>
+ <span class="menu-text">System Requirements</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">PyPotteryInk</span></a>
+ <span class="menu-text">PyPotteryLens</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterylens/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterylens/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using PyPotteryLens</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterylens/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">PyPotteryScan</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotteryscan/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotteryscan/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotteryscan/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using PyPotteryScan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotteryscan/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">PyPotteryInk</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotteryink/index.html" class="sidebar-item-text sidebar-link">
@@ -211,13 +310,48 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">PyPotteryLayout</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">PyPotteryTrace</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterytrace/installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterytrace/usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using PyPotteryTrace</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version History</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">PyPotteryLayout</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
@@ -239,41 +373,6 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylayout/version_history.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Version History</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">PyPotteryLens</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pypotterylens/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pypotterylens/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pypotterylens/usage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Using PyPotteryLens</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pypotterylens/version_history.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version History</span></a>
   </div>
 </li>
@@ -307,42 +406,41 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quick-start" id="toc-quick-start" class="nav-link active" data-scroll-target="#quick-start">Quick Start</a></li>
-  <li><a href="#download" id="toc-download" class="nav-link" data-scroll-target="#download">Download</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a>
+  <li><a href="#deployment-paradigms" id="toc-deployment-paradigms" class="nav-link active" data-scroll-target="#deployment-paradigms">Deployment Paradigms</a></li>
+  <li><a href="#method-a-launcher-hub" id="toc-method-a-launcher-hub" class="nav-link" data-scroll-target="#method-a-launcher-hub">Method A: Launcher Hub</a>
   <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
-  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux">Linux</a></li>
+  <li><a href="#release-packages" id="toc-release-packages" class="nav-link" data-scroll-target="#release-packages">Release Packages</a></li>
+  <li><a href="#installation-by-operating-system" id="toc-installation-by-operating-system" class="nav-link" data-scroll-target="#installation-by-operating-system">Installation by Operating System</a></li>
   </ul></li>
-  <li><a href="#using-the-launcher" id="toc-using-the-launcher" class="nav-link" data-scroll-target="#using-the-launcher">Using the Launcher</a>
+  <li><a href="#the-suite-launcher" id="toc-the-suite-launcher" class="nav-link" data-scroll-target="#the-suite-launcher">The Suite Launcher</a>
   <ul class="collapse">
-  <li><a href="#step-1-configure-environment" id="toc-step-1-configure-environment" class="nav-link" data-scroll-target="#step-1-configure-environment">Step 1: Configure Environment</a></li>
-  <li><a href="#step-2-download-apps" id="toc-step-2-download-apps" class="nav-link" data-scroll-target="#step-2-download-apps">Step 2: Download Apps</a></li>
-  <li><a href="#step-3-launch-apps" id="toc-step-3-launch-apps" class="nav-link" data-scroll-target="#step-3-launch-apps">Step 3: Launch Apps</a></li>
+  <li><a href="#what-it-handles" id="toc-what-it-handles" class="nav-link" data-scroll-target="#what-it-handles">What it handles</a></li>
   </ul></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <li><a href="#module-architecture-port-allocation" id="toc-module-architecture-port-allocation" class="nav-link" data-scroll-target="#module-architecture-port-allocation">Module Architecture &amp; Port Allocation</a></li>
+  <li><a href="#method-b-source-cli" id="toc-method-b-source-cli" class="nav-link" data-scroll-target="#method-b-source-cli">Method B: Source &amp; CLI</a>
   <ul class="collapse">
-  <li><a href="#general-troubleshooting-during-the-installation" id="toc-general-troubleshooting-during-the-installation" class="nav-link" data-scroll-target="#general-troubleshooting-during-the-installation">General Troubleshooting during the installation</a></li>
-  <li><a href="#windows-windows-protected-your-pc-message" id="toc-windows-windows-protected-your-pc-message" class="nav-link" data-scroll-target="#windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</a></li>
-  <li><a href="#apps-not-downloading" id="toc-apps-not-downloading" class="nav-link" data-scroll-target="#apps-not-downloading">Apps not downloading</a></li>
-  <li><a href="#environment-configuration-fails" id="toc-environment-configuration-fails" class="nav-link" data-scroll-target="#environment-configuration-fails">Environment configuration fails</a></li>
+  <li><a href="#clone-the-repository" id="toc-clone-the-repository" class="nav-link" data-scroll-target="#clone-the-repository">1. Clone the repository</a></li>
+  <li><a href="#create-a-virtual-environment" id="toc-create-a-virtual-environment" class="nav-link" data-scroll-target="#create-a-virtual-environment">2. Create a virtual environment</a></li>
+  <li><a href="#install-dependencies" id="toc-install-dependencies" class="nav-link" data-scroll-target="#install-dependencies">3. Install dependencies</a></li>
+  <li><a href="#enable-developer-mode" id="toc-enable-developer-mode" class="nav-link" data-scroll-target="#enable-developer-mode">4. Enable Developer Mode</a></li>
+  <li><a href="#standalone-module-installation" id="toc-standalone-module-installation" class="nav-link" data-scroll-target="#standalone-module-installation">5. Standalone module installation</a></li>
   </ul></li>
-  <li><a href="#alternative-manual-installation" id="toc-alternative-manual-installation" class="nav-link" data-scroll-target="#alternative-manual-installation">Alternative: Manual Installation</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/suite_installation.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Suite Installation</h1>
+<h1 class="title">Suite Installation &amp; Deployment</h1>
+<p class="subtitle lead">Standalone launcher, hardware-accelerated runtime provisioning, and developer setup.</p>
 </div>
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -354,246 +452,192 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="hero-section">
-  <h2 class="anchored">🚀 PyPottery Suite Launcher</h2>
-  <p>
-    The easiest way to get started with PyPottery! Download the pre-packaged launcher 
-    with everything included - no Python installation required.
-  </p>
-</div>
-<section id="quick-start" class="level2">
-<h2 class="anchored" data-anchor-id="quick-start">Quick Start</h2>
-<p>The <strong>PyPottery Suite Launcher</strong> is a standalone application that lets you download, install, and run all PyPottery tools from a single, user-friendly interface.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>No Technical Knowledge Required
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The launcher handles everything: Python environment, dependencies, and app management. Just download, extract, and run!</p>
-</div>
-</div>
-</section>
-<section id="download" class="level2">
-<h2 class="anchored" data-anchor-id="download">Download</h2>
-<p>Download the PyPottery Suite Launcher for your operating system:</p>
-<div style="text-align: center; margin: 1.5rem 0;">
-  <iframe src="animations/github_download.html" width="100%" height="800" style="border: none; border-radius: 8px; max-width: 850px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></iframe>
-</div>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Platform</th>
-<th>Download</th>
-<th>Size</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Windows 10/11</strong> (64-bit)</td>
-<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-Windows.zip</a></td>
-<td>~52 MB</td>
-</tr>
-<tr class="even">
-<td><strong>macOS Intel</strong> (x86_64)</td>
-<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-x86_64.zip</a></td>
-<td>~22 MB</td>
-</tr>
-<tr class="odd">
-<td><strong>macOS Apple Silicon</strong> (M1/M2/M3)</td>
-<td><a href="https://github.com/lrncrd/PyPottery/releases/latest">PyPottery-Launcher-macos-arm64.zip</a></td>
-<td>~22 MB</td>
-</tr>
-<tr class="even">
-<td><strong>Linux</strong> (x86_64)</td>
-<td>Coming Soon</td>
-<td>Coming Soon</td>
-</tr>
-</tbody>
-</table>
-<!--
-| **Linux** (x86_64) | [PyPottery-Launcher-linux-x86_64.zip](https://github.com/lrncrd/PyPottery/releases/latest) | ~128 MB |
--->
-</section>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<section id="windows" class="level3">
-<h3 class="anchored" data-anchor-id="windows">Windows</h3>
-<ol type="1">
-<li><strong>Download</strong> the Windows package from the link above</li>
-<li><strong>Extract</strong> the ZIP file to a folder of your choice (e.g., <code>C:\PyPottery</code>)</li>
-<li><strong>Run</strong> <code>PyPottery.bat</code> by double-clicking it</li>
-</ol>
-<div style="background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #10b981;">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-    <span style="font-size: 1.5rem;">💡</span>
-    <strong style="color: #166534;">Tip</strong>
-  </div>
-  <p style="margin: 0; color: #166534;">
-    You can create a desktop shortcut to <code>PyPottery.bat</code> for quick access!
-  </p>
-</div>
-</section>
-<section id="macos" class="level3">
-<h3 class="anchored" data-anchor-id="macos">macOS</h3>
-<ol type="1">
-<li><strong>Download</strong> the appropriate package for your Mac:
-<ul>
-<li><strong>Intel Mac</strong>: <code>macos-x86_64</code> version</li>
-<li><strong>Apple Silicon (M1/M2/M3)</strong>: <code>macos-arm64</code> version</li>
-</ul></li>
-<li><strong>Extract</strong> the ZIP file</li>
-<li><strong>Double-click</strong> on the <code>PyPottery Launcher.app</code> file to launch the app</li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>First Run on macOS
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The first time you run the launcher, macOS may ask for permission. Right-click on the script and select “Open” to bypass Gatekeeper.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Don’t run on Download
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Download folder doesn’t allow running the app. Move it to a different location (e.g, Desktop or Applications).</p>
-</div>
-</div>
-</section>
-<section id="linux" class="level3">
-<h3 class="anchored" data-anchor-id="linux">Linux</h3>
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe src="animations/under_construction.html" width="100%" height="500" style="border: none; border-radius: 12px; max-width: 750px;"></iframe>
-  <p style="color: #6b7280; font-size: 1.1rem; margin-top: 1rem;">Linux of the installer is coming soon! Check back later.</p>
-</div>
-<!-- COMING SOON: Linux Installation Instructions
-### Linux
+<style>
+#title-block-header {
+  display: none !important;
+}
+</style>
 
-1. **Download** the Linux package
-2. **Extract** the ZIP file:
-   ```bash
-   unzip PyPottery-Launcher-linux-x86_64-v1.0.0.zip
-   cd PyPottery-Launcher-linux-x86_64
-   ```
-3. **Run the installer** (first time only):
-   ```bash
-   chmod +x install.sh PyPottery.sh
-   ./install.sh
-   ```
-4. **Launch PyPottery**:
-   ```bash
-   ./PyPottery.sh
-   ```
--->
+<!-- Hero -->
+<div class="archaeo-drafting-hero">
+  <h1 class="drafting-hero-title">PyPottery Suite Installation</h1>
+
+  <p class="drafting-hero-lead">
+    The PyPottery Suite ships as a self-contained application hub. The launcher provisions an isolated Python
+    environment, detects available hardware acceleration (NVIDIA CUDA, Apple Silicon MPS, AMD ROCm, or CPU), and
+    runs each of the five suite modules as an independent process without touching your system's Python install.
+  </p>
+</div>
+
+<hr class="hero-pipeline-hr">
+<section id="deployment-paradigms" class="level2">
+<h2 class="anchored" data-anchor-id="deployment-paradigms">Deployment Paradigms</h2>
+<p>Two ways to run PyPottery, depending on your workflow:</p>
+<div class="grid">
+<div class="g-col-12 g-col-md-6">
+<div class="methodology-card">
+  <div>
+    <span class="methodology-tag" style="color: var(--teal-dark); background: var(--teal-soft); border-color: var(--teal-border);">RECOMMENDED FOR RESEARCHERS</span>
+    <h3 class="methodology-title anchored">Method A: Launcher Hub</h3>
+    <p class="methodology-desc">
+      A packaged release with no Python installation, Git, or terminal use required. The launcher bootstraps
+      dependencies, configures a hardware-matched PyTorch backend, and opens a browser-based control panel.
+    </p>
+  </div>
+  <a href="#method-a-launcher-hub" class="btn-editorial-primary" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Launcher guide</a>
+</div>
+</div>
+<div class="g-col-12 g-col-md-6">
+<div class="methodology-card">
+  <div>
+    <span class="methodology-tag" style="color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border);">DEVELOPERS</span>
+    <h3 class="methodology-title anchored">Method B: Source &amp; CLI</h3>
+    <p class="methodology-desc">
+      Install directly from GitHub. For developers, computational archaeologists building custom pipelines, and
+      contributors extending the machine learning modules via the launcher's Developer Mode.
+    </p>
+  </div>
+  <a href="#method-b-source-cli" class="btn-editorial-github" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Source instructions</a>
+</div>
+</div>
+</div>
+<hr>
 </section>
+<section id="method-a-launcher-hub" class="level2">
+<h2 class="anchored" data-anchor-id="method-a-launcher-hub">Method A: Launcher Hub</h2>
+<section id="release-packages" class="level3">
+<h3 class="anchored" data-anchor-id="release-packages">Release Packages</h3>
+<p>Download the package for your operating system from the GitHub releases page:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Offline use in the field
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PyPottery runs <strong>offline by default</strong> once set up. The <strong>first run</strong> is the main exception: initial environment setup and AI model downloads (YOLOv8 detectors, TrOCR, SAM 2, and the matching PyTorch backend) require an internet connection. If you’re deploying to a dig house or field site without connectivity, run the initial configuration while connected — at your institution or a hotel — before departing.</p>
+<p>One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for metadata extraction, so that specific feature needs a live connection every time it’s used, not just once. Everything else in the suite runs locally.</p>
+</div>
+</div>
+<div class="os-download-grid">
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">Windows</span>
+      <h4 class="os-card-title anchored">Windows 10 / 11</h4>
+      <div class="os-card-meta">64-bit (x86_64) • ~28 MB installer</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable,
+        no-installer versions are also available on the releases page.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download Windows Installer
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">macOS Apple Silicon</span>
+      <h4 class="os-card-title anchored">macOS arm64</h4>
+      <div class="os-card-meta">M1 / M2 / M3 / M4 • .dmg</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download macOS arm64
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">macOS Intel</span>
+      <h4 class="os-card-title anchored">macOS x86_64</h4>
+      <div class="os-card-meta">Intel Mac • .dmg</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Build for Intel-based Mac workstations and laptops, distributed as a .dmg.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download macOS Intel
+    </a>
+  </div>
+
+  <div class="os-download-card">
+    <div>
+      <span class="os-card-badge">Linux</span>
+      <h4 class="os-card-title anchored">Linux x86_64</h4>
+      <div class="os-card-meta">AppImage</div>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+        Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.
+      </p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
+      Download Linux AppImage
+    </a>
+  </div>
+</div>
+<hr>
 </section>
-<section id="using-the-launcher" class="level2">
-<h2 class="anchored" data-anchor-id="using-the-launcher">Using the Launcher</h2>
-<p>Once the launcher opens, you’ll see a clean interface with all available PyPottery applications.</p>
+<section id="installation-by-operating-system" class="level3">
+<h3 class="anchored" data-anchor-id="installation-by-operating-system">Installation by Operating System</h3>
+<p>Select your operating system for step-by-step instructions:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Windows 10 / 11</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">macOS (Apple Silicon &amp; Intel)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Linux (x86_64 AppImage)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download and run the installer</div>
+      <p class="install-step-desc">
+        Download <code>PyPottery-Launcher-Setup.exe</code> from GitHub Releases and run it. It's a normal
+        installer with a setup wizard (Welcome → choose folder → Install → Finish) — no admin rights needed, it
+        installs to your own user profile, and it registers a proper uninstaller in <strong>Add or remove
+        programs</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Launch it</div>
+      <p class="install-step-desc">
+        The installer already created a Start Menu entry and a Desktop shortcut for you. Open either one — it
+        starts a local web server and opens your browser to <code>http://127.0.0.1:5000</code>.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">03</div>
+    <div class="install-step-body">
+      <div class="install-step-title">First-run environment setup</div>
+      <p class="install-step-desc">
+        Click <strong>"Configure Environment"</strong> in the browser interface. The launcher detects your GPU or
+        CPU, provisions an isolated Python runtime, and installs the matching PyTorch build. Later launches start
+        immediately.
+      </p>
+    </div>
+  </div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The launcher runs in your browser
+Windows SmartScreen warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Just like the PyPottery apps it manages, the launcher itself opens as a page in your default web browser (instead of a separate desktop window). Closing that browser tab shuts down the launcher and any app it’s currently running - simply reopen it from <code>PyPottery.bat</code> / <code>PyPottery Launcher.app</code> when you want to start again.</p>
+<p>GitHub release binaries aren’t signed with an enterprise code-signing certificate, so Windows Defender SmartScreen may show <em>“Windows protected your PC”</em>. Click <strong>“More info”</strong>, then <strong>“Run anyway”</strong>.</p>
 </div>
-</div>
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe src="animations/launcher_demo.html" width="100%" height="850" style="border: none; border-radius: 12px; max-width: 950px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"></iframe>
-</div>
-<div style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white;">
-  <h3 style="color: white; margin-top: 0;" class="anchored">🎯 Launcher Features</h3>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>📥 One-Click Download</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Download apps directly from the launcher</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>🔄 Auto Updates</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Check for and install updates easily</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>⚙️ Environment Setup</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Automatic Python environment configuration</p>
-    </div>
-    <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;">
-      <strong>🖥️ Hardware Detection</strong>
-      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Detects GPU for optimal performance</p>
-    </div>
-  </div>
-</div>
-<section id="step-1-configure-environment" class="level3">
-<h3 class="anchored" data-anchor-id="step-1-configure-environment">Step 1: Configure Environment</h3>
-<p>The first time you use the launcher, click <strong>“Configure Environment”</strong> to set up the Python environment. This installs all required dependencies.</p>
-<div style="background: #fef3c7; border-radius: 8px; padding: 1rem; margin: 1rem 0; border-left: 4px solid #f59e0b;">
-  <strong style="color: #92400e;">⏱️ First Setup</strong>
-  <p style="margin: 0.5rem 0 0 0; color: #92400e;">
-    Environment configuration may take 5-10 minutes depending on your internet connection. 
-    The progress bar shows the current status.
-  </p>
-</div>
-</section>
-<section id="step-2-download-apps" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-download-apps">Step 2: Download Apps</h3>
-<p>Click the <strong>download button</strong> (⬇️) next to any app to download it. Available apps:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>App</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>PyPotteryInk</strong></td>
-<td>AI-based inking of pottery drawings</td>
-</tr>
-<tr class="even">
-<td><strong>PyPotteryLayout</strong></td>
-<td>Create publication-ready layouts</td>
-</tr>
-<tr class="odd">
-<td><strong>PyPotteryLens</strong></td>
-<td>Data collection from PDF documents</td>
-</tr>
-</tbody>
-</table>
-<!-- | **PyPotteryScan** | Digitize pottery plates with AI-powered OCR | -->
-<!-- | **PyPotteryTrace** | Vectorize pottery profiles | -->
-</section>
-<section id="step-3-launch-apps" class="level3">
-<h3 class="anchored" data-anchor-id="step-3-launch-apps">Step 3: Launch Apps</h3>
-<p>Once an app is downloaded, click the <strong>“Launch”</strong> button to start it. The app will open in your default web browser.</p>
-<div style="background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #3b82f6;">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-    <span style="font-size: 1.5rem;">ℹ️</span>
-    <strong style="color: #1e40af;">How Apps Work</strong>
-  </div>
-  <p style="margin: 0; color: #1e40af;">
-    PyPottery apps run as local web servers. When you click "Launch", a browser window opens
-    with the app interface. The launcher shows the running status and allows you to stop the app.
-  </p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -601,418 +645,674 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>For Developers: Developer Mode
+Prefer a portable version?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you’re working from a git checkout of a PyPottery app instead of a downloaded release, the launcher supports a <strong>Developer Mode</strong>: copy <code>launcher/dev_config.example.py</code> to <code>launcher/dev_config.py</code> and set <code>DEVELOPER_MODE = True</code>. With it enabled, Launch and Open Folder point at the app’s local git checkout at the repo root instead of the downloaded copy in <code>apps/</code>, and Install/Update/Uninstall are disabled for those apps (you manage them yourself with <code>git pull</code>).</p>
+<p>Two no-installer alternatives sit on the same <a href="https://github.com/lrncrd/PyPottery/releases/latest">releases page</a>: <code>PyPottery-Launcher-Windows-v1.1.0.zip</code> (extract, then run <code>PyPottery.bat</code>) and <code>PyPottery-Launcher-Windows-EXE-v1.1.0.zip</code> (extract, then run <code>PyPottery.exe</code> directly). Both skip the installer entirely — useful on a locked-down machine. Unlike the installer, they don’t create shortcuts for you; right-click the executable and choose <strong>Send to → Desktop (create shortcut)</strong> if you want one.</p>
 </div>
 </div>
+<section id="interactive-walkthrough" class="level4">
+<h4 class="anchored" data-anchor-id="interactive-walkthrough">Interactive walkthrough</h4>
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Windows 11 installation walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_windows.html" class="simulator-iframe" title="PyPottery Windows Installation Simulation"></iframe>
+</div>
+</section>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download the .dmg</div>
+      <p class="install-step-desc">
+        Download <code>PyPottery-Launcher-macos-arm64.dmg</code> (Apple Silicon: M1–M4) or
+        <code>PyPottery-Launcher-macos-x86_64.dmg</code> (Intel), then open it.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Drag to Applications</div>
+      <p class="install-step-desc">
+        The .dmg opens a window with <code>PyPottery Launcher.app</code> next to an <code>Applications</code>
+        shortcut — drag one onto the other. This is the standard macOS install, and it's what avoids Gatekeeper's
+        "App Translocation" issue in the first place.
+      </p>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">03</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Launch from Applications</div>
+      <p class="install-step-desc">
+        Open <code>PyPottery Launcher.app</code> from <code>/Applications</code>. On Apple Silicon, PyPottery
+        initializes the Metal Performance Shaders (MPS) backend automatically. Environments, model caches, and
+        logs live in <code>~/Library/Application Support/PyPottery</code>.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+“Developer cannot be verified”
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>macOS may block software downloaded outside the App Store with <em>“PyPottery Launcher cannot be opened because the developer cannot be verified”</em>.</p>
+<ul>
+<li><p><strong>GUI</strong>: right-click (or Control-click) <code>PyPottery Launcher.app</code>, choose <strong>Open</strong>, then confirm.</p></li>
+<li><p><strong>Terminal</strong>: clear the quarantine attribute:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xattr</span> <span class="at">-cr</span> /Applications/<span class="st">"PyPottery Launcher.app"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Opened it straight from Downloads?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the app runs from a translocated or quarantined location instead of <code>/Applications</code>, PyPottery notices and offers a dialog to move itself there for you — no manual Terminal work required. Installing from the <code>.dmg</code> above avoids the situation from the start, since it’s already pointing you at <code>/Applications</code>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Portable version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A plain <code>.zip</code> of the same app (<code>PyPottery-Launcher-macos-arm64.zip</code> / <code>-x86_64.zip</code>) is also on the releases page, for anyone who’d rather place the app manually than use the <code>.dmg</code>.</p>
+</div>
+</div>
+<section id="interactive-walkthrough-1" class="level4">
+<h4 class="anchored" data-anchor-id="interactive-walkthrough-1">Interactive walkthrough</h4>
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>macOS installation walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_mac.html" class="simulator-iframe" title="PyPottery macOS Installation Simulation"></iframe>
+</div>
+</section>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="install-steps-list">
+  <div class="install-step-card">
+    <div class="install-step-num">01</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Download the AppImage</div>
+      <div class="install-step-desc">
+        <p>Download <code>PyPottery-Launcher-linux-x86_64.AppImage</code> from GitHub Releases, then make it executable:</p>
+        <pre><code class="language-bash">chmod +x PyPottery-Launcher-linux-x86_64.AppImage</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-step-card">
+    <div class="install-step-num">02</div>
+    <div class="install-step-body">
+      <div class="install-step-title">Run it</div>
+      <div class="install-step-desc">
+        <pre><code class="language-bash">./PyPottery-Launcher-linux-x86_64.AppImage</code></pre>
+        <p>
+          On first run it registers its own menu entry and icon (GNOME, KDE, XFCE) automatically — no separate
+          install script needed. To remove the menu entry later, run
+          <code>./PyPottery-Launcher-linux-x86_64.AppImage --uninstall-desktop</code>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+FUSE requirement on recent distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>AppImage requires FUSE 2. Recent distributions (Ubuntu 24.04+, Debian 12+, Fedora 40+) don’t ship <code>libfuse2</code> by default. If the AppImage fails to start:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ubuntu / Debian / Linux Mint:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install <span class="at">-y</span> libfuse2</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fedora / RHEL:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> fuse-libs</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Arch Linux:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> pacman <span class="at">-S</span> fuse2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prefer a plain directory to an AppImage?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>PyPottery-Launcher-linux-x86_64.zip</code>, on the same releases page, extracts to a normal directory instead — useful if AppImages aren’t an option on your system:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> PyPottery-Launcher-linux-x86_64.zip <span class="at">-d</span> ~/PyPottery</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/PyPottery</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x PyPottery.sh install_desktop.sh</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">./install_desktop.sh</span>   <span class="co"># optional: adds a menu entry</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">./PyPottery.sh</span>          <span class="co"># installs missing dependencies on first run, then starts the launcher</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="interactive-walkthrough-2" class="level4">
+<h4 class="anchored" data-anchor-id="interactive-walkthrough-2">Interactive walkthrough</h4>
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Linux AppImage walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/installer_linux.html" class="simulator-iframe" title="PyPottery Linux Installation Simulation"></iframe>
+</div>
+</section>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-suite-launcher" class="level2">
+<h2 class="anchored" data-anchor-id="the-suite-launcher">The Suite Launcher</h2>
+<p>The launcher is a local process supervisor reachable in the browser at <code>http://127.0.0.1:5000</code>.</p>
+<div class="simulator-wrapper">
+  <div class="simulator-header-bar">
+    <div class="simulator-title">
+      <span class="simulator-indicator-dot"></span>
+      <span>Launcher control panel walkthrough</span>
+    </div>
+    <span class="simulator-tag">Interactive</span>
+  </div>
+  <iframe src="animations/launcher_demo.html" class="launcher-simulator-iframe" title="PyPottery Launcher Interactive Demonstration"></iframe>
+</div>
+<section id="what-it-handles" class="level3">
+<h3 class="anchored" data-anchor-id="what-it-handles">What it handles</h3>
+<ol type="1">
+<li><strong>Environment lifecycle</strong>: creates and validates an isolated virtual environment (<code>pypottery_env</code>), keeping tool dependencies separate from your system’s global libraries.</li>
+<li><strong>Hardware detection</strong>: identifies available compute (CUDA 11.8–12.6, Apple Silicon MPS, AMD ROCm 6.2, or CPU) and installs the matching PyTorch build automatically.</li>
+<li><strong>Single-instance lock</strong>: an advisory lock (<code>instance_lock.py</code>) prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.</li>
+<li><strong>Offline model caching</strong>: model weights (YOLOv8, TrOCR, the diffusion model, SAM 2) are downloaded once into <code>models/</code> and cached for fully offline use afterward.</li>
+<li><strong>Process isolation</strong>: each application runs as an independent subprocess on its own loopback port. Closing the launcher stops all child processes.</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="module-architecture-port-allocation" class="level2">
+<h2 class="anchored" data-anchor-id="module-architecture-port-allocation">Module Architecture &amp; Port Allocation</h2>
+<p>Each tool runs as its own microservice:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Module</th>
+<th style="text-align: left;">Function</th>
+<th style="text-align: center;">Port</th>
+<th style="text-align: center;">Min RAM</th>
+<th style="text-align: center;">Recommended</th>
+<th style="text-align: left;">Architecture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>PyPotteryLens</strong></td>
+<td style="text-align: left;">PDF &amp; monograph figure extraction</td>
+<td style="text-align: center;"><code>5001</code></td>
+<td style="text-align: center;">8 GB</td>
+<td style="text-align: center;">16 GB</td>
+<td style="text-align: left;">YOLOv8 + PyMuPDF</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>PyPotteryScan</strong></td>
+<td style="text-align: left;">Pottery card digitization &amp; OCR</td>
+<td style="text-align: center;"><code>5002</code></td>
+<td style="text-align: center;">16 GB</td>
+<td style="text-align: center;">32 GB</td>
+<td style="text-align: left;">TrOCR + Vision-LLM</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>PyPotteryInk</strong></td>
+<td style="text-align: left;">Pencil drawing → ink restoration</td>
+<td style="text-align: center;"><code>5003</code></td>
+<td style="text-align: center;">8 GB</td>
+<td style="text-align: center;">16 GB</td>
+<td style="text-align: left;">1-Step Latent Diffusion</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>PyPotteryTrace</strong></td>
+<td style="text-align: left;">Profile vectorization</td>
+<td style="text-align: center;"><code>5004</code></td>
+<td style="text-align: center;">8 GB</td>
+<td style="text-align: center;">16 GB</td>
+<td style="text-align: left;">SAM 2 + Spline Engine</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>PyPotteryLayout</strong></td>
+<td style="text-align: left;">Plate synthesis</td>
+<td style="text-align: center;"><code>5005</code></td>
+<td style="text-align: center;">4 GB</td>
+<td style="text-align: center;">8 GB</td>
+<td style="text-align: left;">Metric Grid Engine + Vector SVG/PDF</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Process independence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because each module binds to its own port (<code>127.0.0.1:5001</code>–<code>5005</code>), a heavy job in one — dense OCR in PyPotteryScan, for instance — doesn’t block or slow down another, such as an active session in PyPotteryTrace.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="method-b-source-cli" class="level2">
+<h2 class="anchored" data-anchor-id="method-b-source-cli">Method B: Source &amp; CLI</h2>
+<p>For running from a Git checkout or developing custom ML backends:</p>
+<section id="clone-the-repository" class="level3">
+<h3 class="anchored" data-anchor-id="clone-the-repository">1. Clone the repository</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/lrncrd/PyPottery.git</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> PyPottery</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="create-a-virtual-environment" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-virtual-environment">2. Create a virtual environment</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv venv</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">venv\Scripts\activate</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="install-dependencies">3. Install dependencies</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> pip setuptools wheel</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="enable-developer-mode" class="level3">
+<h3 class="anchored" data-anchor-id="enable-developer-mode">4. Enable Developer Mode</h3>
+<p>Developer Mode runs the launcher against your local Git checkout instead of downloaded release binaries:</p>
+<ol type="1">
+<li><p>Copy the template configuration:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">copy</span> launcher<span class="dt">\d</span>ev_config.example.py launcher<span class="dt">\d</span>ev_config.py</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> launcher/dev_config.example.py launcher/dev_config.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>In <code>launcher/dev_config.py</code>, set:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>DEVELOPER_MODE <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Run the development server:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> launcher.gui</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="standalone-module-installation" class="level3">
+<h3 class="anchored" data-anchor-id="standalone-module-installation">5. Standalone module installation</h3>
+<p>To run a single tool outside the launcher, see its dedicated installation guide:</p>
+<ul>
+<li><a href="./pypotterylens/installation.html">PyPotteryLens</a></li>
+<li><a href="./pypotteryscan/installation.html">PyPotteryScan</a></li>
+<li><a href="./pypotteryink/installation.html">PyPotteryInk</a></li>
+<li><a href="./pypotterytrace/installation.html">PyPotteryTrace</a></li>
+<li><a href="./pypotterylayout/installation.html">PyPotteryLayout</a></li>
+</ul>
+<hr>
 </section>
 </section>
 <section id="troubleshooting" class="level2">
 <h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<section id="general-troubleshooting-during-the-installation" class="level3">
-<h3 class="anchored" data-anchor-id="general-troubleshooting-during-the-installation">General Troubleshooting during the installation</h3>
-<p>Remove the <code>pypottery_env</code> folder and try again.</p>
-</section>
-<section id="windows-windows-protected-your-pc-message" class="level3">
-<h3 class="anchored" data-anchor-id="windows-windows-protected-your-pc-message">Windows: “Windows protected your PC” message</h3>
-<p>This is normal for new applications. Click <strong>“More info”</strong> → <strong>“Run anyway”</strong>.</p>
-<!-- COMING SOON: macOS and Linux troubleshooting
-### macOS: "Cannot be opened because it is from an unidentified developer"
+<div class="diagnostic-table-wrapper">
 
-Right-click on the script → **"Open"** → **"Open"** in the dialog.
+<table class="diagnostic-table caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="width: 25%">Symptom</th>
+<th data-quarto-table-cell-role="th" style="width: 35%">Cause</th>
+<th data-quarto-table-cell-role="th" style="width: 40%">Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>"Windows protected your PC" (SmartScreen)</strong></td>
+<td>No enterprise code-signing certificate — common for open-source releases.</td>
+<td>Click <strong>"More info"</strong>, then <strong>"Run anyway"</strong>. One-time per release.</td>
+</tr>
+<tr class="even">
+<td><strong>"Developer cannot be verified" (macOS)</strong></td>
+<td>Gatekeeper flags apps downloaded outside the App Store or that aren't notarized.</td>
+<td>Right-click <code>PyPottery Launcher.app</code>, choose <strong>Open</strong>, confirm. Or run <code>xattr -cr /Applications/"PyPottery Launcher.app"</code>.</td>
+</tr>
+<tr class="odd">
+<td><strong>"Move to Applications?" dialog (macOS)</strong></td>
+<td>Launched from a translocated/quarantined copy (e.g. still in <code>Downloads/</code>) instead of the installed copy in <code>/Applications</code>.</td>
+<td>Choose <strong>"Move to Applications"</strong> in the dialog, or drag the app there yourself and relaunch. Installing via the <code>.dmg</code> avoids this from the start.</td>
+</tr>
+<tr class="even">
+<td><strong>"AppImage requires FUSE to run" (Linux)</strong></td>
+<td>Recent distros (Ubuntu 24.04+, Fedora 40+) don't include FUSE 2 by default.</td>
+<td>Install it: <code>sudo apt install libfuse2</code> or <code>sudo dnf install fuse-libs</code>.</td>
+</tr>
+<tr class="odd">
+<td><strong>Permission denied on Linux</strong></td>
+<td>The executable bit wasn't preserved on extraction.</td>
+<td>Run <code>chmod +x</code> on the <code>.AppImage</code> file, or on <code>PyPottery.sh</code> if you're using the zip package.</td>
+</tr>
+<tr class="even">
+<td><strong>Environment setup fails or is corrupted</strong></td>
+<td>Network interruption during the PyTorch download or package installation.</td>
+<td>Delete <code>pypottery_env/</code> (or <code>~/Library/Application Support/PyPottery/pypottery_env</code> on macOS) and re-run <strong>"Configure Environment"</strong>.</td>
+</tr>
+<tr class="odd">
+<td><strong>Port already in use</strong></td>
+<td>A previous instance crashed without releasing ports 5000–5005, or another local service is using them.</td>
+<td>Terminate orphaned Python processes via Task Manager, Activity Monitor, or <code>pkill -f "launcher.gui"</code> on Linux.</td>
+</tr>
+<tr class="even">
+<td><strong>Deploying to a site with no connectivity</strong></td>
+<td>No internet access on-site for the first-run model and package downloads.</td>
+<td>Run the launcher and let all five apps and models download while still connected. Once initialized, everything except Lens's metadata extraction runs fully offline.</td>
+</tr>
+</tbody>
+</table>
 
-### Linux: Permission denied
-
-Make sure the scripts are executable:
-```bash
-chmod +x install.sh PyPottery.sh
-```
--->
-</section>
-<section id="apps-not-downloading" class="level3">
-<h3 class="anchored" data-anchor-id="apps-not-downloading">Apps not downloading</h3>
-<p>Check your internet connection and firewall settings. The launcher downloads apps from GitHub.</p>
-</section>
-<section id="environment-configuration-fails" class="level3">
-<h3 class="anchored" data-anchor-id="environment-configuration-fails">Environment configuration fails</h3>
-<p>Try running the launcher as administrator (Windows).</p>
-<!-- COMING SOON: add back when macOS/Linux are available
-Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).
--->
-</section>
-</section>
-<section id="alternative-manual-installation" class="level2">
-<h2 class="anchored" data-anchor-id="alternative-manual-installation">Alternative: Manual Installation</h2>
-<p>If you prefer to install PyPottery tools manually or need more control, see the individual installation guides:</p>
-<!-- - [PyPotteryScan Installation](pypotteryscan/installation.qmd) -->
-<ul>
-<li><a href="./pypotteryink/installation.html">PyPotteryInk Installation</a> <!-- - [PyPotteryTrace Installation](pypotterytrace/installation.qmd) --></li>
-<li><a href="./pypotterylayout/installation.html">PyPotteryLayout Installation</a></li>
-<li><a href="./pypotterylens/installation.html">PyPotteryLens Installation</a></li>
-</ul>
-<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px;">
-  <h3 style="margin-bottom: 1rem;" class="anchored">Ready to Start?</h3>
-  <p style="color: #6b7280; margin-bottom: 1.5rem;">Download the launcher and begin digitizing your pottery collection!</p>
-  <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="download-link" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-    📥 Download PyPottery Launcher
-  </a>
 </div>
-
-<!-- Ko-fi Donation Popup Modal -->
-<div id="kofi-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
-  <div style="background: white; border-radius: 20px; padding: 2.5rem; max-width: 450px; margin: 1rem; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: modalSlideIn 0.3s ease-out;">
-    
-    <!-- Header -->
-    <div style="font-size: 3rem; margin-bottom: 1rem;">☕</div>
-    <h3 style="margin: 0 0 0.5rem 0; color: #1f2937; font-size: 1.5rem;" class="anchored">Support PyPottery!</h3>
-    <p style="color: #6b7280; margin: 0 0 1.5rem 0; font-size: 0.95rem; line-height: 1.6;">
-      PyPottery is a <strong>free and open-source</strong> project built for the archaeological community. 
-      If you find it useful, please consider supporting its development!
-    </p>
-    
-    <!-- Ko-fi Button -->
-    <a href="https://ko-fi.com/lrncrd" target="_blank" style="display: inline-block; margin-bottom: 1.5rem;">
-      <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi" style="border: none; height: 40px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+<hr>
+<div class="archaeo-cta-box" style="margin-top: 3rem;">
+  <h3 class="archaeo-cta-title anchored">Ready to install</h3>
+  <p class="archaeo-cta-desc">
+    Download the launcher for your operating system and start producing standardized, publication-ready ceramic
+    documentation.
+  </p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem;">
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener">
+      Download Latest Release (GitHub)
     </a>
-    
-    <!-- Divider -->
-    <div style="border-top: 1px solid #e5e7eb; margin: 1rem 0;"></div>
-    
-    <!-- Buttons -->
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <button id="kofi-continue" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'">
-        📥 Continue to Download
-      </button>
-      <button id="kofi-close" style="background: #f3f4f6; color: #6b7280; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 500; cursor: pointer; font-size: 0.95rem; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-        Maybe Later
-      </button>
-    </div>
-    
-    <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;">
-      Every contribution helps keep this project alive! 🙏
-    </p>
+    <a href="docs_home.html" class="btn-editorial-github">
+      Back to Documentation Hub
+    </a>
   </div>
 </div>
-
-<style>
-  @keyframes modalSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-</style>
-
-<script>
-(function() {
-  // Variables to store the target URL
-  let pendingDownloadUrl = null;
-  
-  // Get the modal elements
-  const modal = document.getElementById('kofi-modal');
-  const continueBtn = document.getElementById('kofi-continue');
-  const closeBtn = document.getElementById('kofi-close');
-  
-  // Function to show modal
-  function showKofiModal(url) {
-    pendingDownloadUrl = url;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-  
-  // Function to hide modal
-  function hideKofiModal() {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-  
-  // Continue to download
-  continueBtn.addEventListener('click', function() {
-    hideKofiModal();
-    if (pendingDownloadUrl) {
-      window.open(pendingDownloadUrl, '_blank');
-    }
-  });
-  
-  // Close modal
-  closeBtn.addEventListener('click', function() {
-    hideKofiModal();
-  });
-  
-  // Close on backdrop click
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      hideKofiModal();
-    }
-  });
-  
-  // Close on Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal.style.display === 'flex') {
-      hideKofiModal();
-    }
-  });
-  
-  // Intercept all download links (GitHub releases links)
-  document.addEventListener('click', function(e) {
-    const link = e.target.closest('a');
-    if (link && link.href && link.href.includes('github.com/lrncrd/PyPottery/releases')) {
-      e.preventDefault();
-      showKofiModal(link.href);
-    }
-  });
-})();
-</script>
 
 
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
     }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
     }
-    const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-    }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
     });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
         }
       }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'quarto',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config); 
     }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
-        }
-      });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
     }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
       } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
         }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
       }
     }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
-        }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
           }
         } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
+          // See if we can fetch this
+          fetch(url.split('#')[0])
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
+            const note = htmlDoc.getElementById(id);
             if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
+              const html = processXRef(id, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1020,161 +1320,185 @@ Try running the launcher as administrator (Windows) or with sudo (Linux/macOS).
             instance.show();
           });
         }
-      }, function(instance) {
-      });
-    }
-        let selectedAnnoteEl;
-        const selectorForAnnotation = ( cell, annotation) => {
-          let cellAttr = 'data-code-cell="' + cell + '"';
-          let lineAttr = 'data-code-annotation="' +  annotation + '"';
-          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-          return selector;
-        }
-        const selectCodeLines = (annoteEl) => {
-          const doc = window.document;
-          const targetCell = annoteEl.getAttribute("data-target-cell");
-          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-          const lineIds = lines.map((line) => {
-            return targetCell + "-" + line;
-          })
-          let top = null;
-          let height = null;
-          let parent = null;
-          if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
-            }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
-            }
-            selectedAnnoteEl = annoteEl;
-          }
-        };
-        const unselectCodeLines = () => {
-          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-          elementsIds.forEach((elId) => {
-            const div = window.document.getElementById(elId);
-            if (div) {
-              div.remove();
-            }
-          });
-          selectedAnnoteEl = undefined;
-        };
-          // Handle positioning of the toggle
-      window.addEventListener(
-        "resize",
-        throttle(() => {
-          elRect = undefined;
-          if (selectedAnnoteEl) {
-            selectCodeLines(selectedAnnoteEl);
-          }
-        }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
-              fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
-            }
-          });
-        }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
       } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
             }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
         });
       }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
     }
-  });
-  </script>
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

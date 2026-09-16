@@ -45,9 +45,12 @@ class EnvironmentManager:
     Handles creation, PyTorch installation, and dependency management.
     """
     
-    def __init__(self, base_path: Path, venv_name: str = "pypottery_env"):
+    def __init__(self, base_path: Path, venv_name: str = "pypottery_env", developer_mode: bool = False):
         self.base_path = Path(base_path)
+        self.venv_name = venv_name
         self.venv_path = self.base_path / venv_name
+        self.developer_mode = developer_mode
+        self.system_python = Path(sys.executable)
         self.is_windows = platform.system() == "Windows"
         self.is_macos = platform.system() == "Darwin"
         self.is_linux = platform.system() == "Linux"
@@ -120,14 +123,27 @@ class EnvironmentManager:
     
     @property
     def python_executable(self) -> Path:
-        """Get path to Python executable in venv"""
+        """Get path to Python executable in venv or system python in developer mode"""
+        if self.developer_mode:
+            return self.system_python
         if self.is_windows:
             return self.venv_path / "Scripts" / "python.exe"
         return self.venv_path / "bin" / "python"
     
     @property
     def pip_executable(self) -> Path:
-        """Get path to pip executable in venv"""
+        """Get path to pip executable in venv or system pip in developer mode"""
+        if self.developer_mode:
+            pip_which = shutil.which("pip")
+            if pip_which:
+                return Path(pip_which)
+            if self.is_windows:
+                candidate = self.system_python.parent / "Scripts" / "pip.exe"
+            else:
+                candidate = self.system_python.parent / "pip"
+            if candidate.exists():
+                return candidate
+            return Path("pip")
         if self.is_windows:
             return self.venv_path / "Scripts" / "pip.exe"
         return self.venv_path / "bin" / "pip"
@@ -195,8 +211,10 @@ class EnvironmentManager:
             pass
 
     def python_available(self) -> bool:
-        """Can the venv's interpreter actually be run? (Not 'is it complete'.)"""
+        """Can the interpreter actually be run? (Not 'is it complete'.)"""
         python = self.python_executable
+        if self.developer_mode:
+            return python.exists()
         # A venv built from an AppImage's temporary mount leaves a symlink
         # pointing at a path that no longer exists on the next launch;
         # exists() already returns False for that, but be explicit about it.
@@ -225,7 +243,18 @@ class EnvironmentManager:
             "python_executable": str(python),
             "variant": None,
             "reason": "",
+            "developer_mode": self.developer_mode,
         }
+
+        if self.developer_mode:
+            return {
+                **payload,
+                "status": "ready",
+                "ready": True,
+                "exists": True,
+                "variant": "system",
+                "reason": "Developer Mode active: using active terminal Python environment",
+            }
 
         if not self.venv_path.exists():
             return {**payload, "status": "absent", "ready": False, "exists": False,
@@ -245,6 +274,8 @@ class EnvironmentManager:
 
     def venv_exists(self) -> bool:
         """True only for an environment that finished installing and still runs."""
+        if self.developer_mode:
+            return True
         return self.env_state()["status"] == "ready"
 
     def base_python(self) -> str:

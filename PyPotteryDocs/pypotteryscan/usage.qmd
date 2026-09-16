@@ -7,7 +7,7 @@ toc: true
 <div style="text-align: center;">
   <img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
   <br>
-  <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
+  <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
     version 0.2.0
   </span>
 </div>
@@ -16,7 +16,7 @@ toc: true
 <div style="
     background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     border: 1px solid #e1e4e8;
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #c2410c;
     border-radius: 12px;
     padding: 15px 25px;
     margin: 20px 0;
@@ -30,7 +30,7 @@ toc: true
             Need a hand?
         </div>
         <div style="line-height: 1.5;">
-            Look for <strong style="color: #667eea;">Pixel</strong> in the app! <br>
+            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
             Clicking on him brings you straight back to this guide.
         </div>
     </div>
@@ -153,10 +153,11 @@ The **Process OCR** tab allows you to perform Optical Character Recognition (OCR
 
 <iframe src="animations/ocr.html" style="width: 100%; height: 450px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
 
-The user has two options:
+On first run, the user is asked to choose an OCR engine to download:
 
-- Use the default OCR model
-- Skip the OCR process, moving to manual text entry
+- **OlmOCR-FP4**: heavier vision-language model, requires an NVIDIA GPU with CUDA
+- **GLM-OCR**: lightweight vision-language model (0.9B params), works on CPU or GPU
+- **No OCR model**: skip the download and move to manual text entry
 
 ![](imgs\10.png){#fig-process_ocr}
 

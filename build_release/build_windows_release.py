@@ -197,6 +197,27 @@ def build_windows_installer(package_dir: Path, release_dir: Path, version: str) 
               "the .zip is still available")
         return None
 
+    # package_dir doubles as this portable install's own base_path (see
+    # get_base_path() in gui.py), so anyone who actually launches it from
+    # here - a manual smoke test, the person building this - has it write
+    # pypottery_env/ (hundreds of MB with PyTorch), logs/, apps/, etc.
+    # straight into this folder. `File /r` below would happily bundle all of
+    # that into the installer. Strip it back to a clean install every time,
+    # regardless of whether that happened.
+    _RUNTIME_ONLY_DIRS = ("pypottery_env", "apps", "model_cache", "shared_assets", "logs")
+    removed = []
+    for name in _RUNTIME_ONLY_DIRS:
+        p = package_dir / name
+        if p.exists():
+            shutil.rmtree(p)
+            removed.append(name)
+    lock_file = package_dir / ".pypottery.lock"
+    if lock_file.exists():
+        lock_file.unlink()
+        removed.append(".pypottery.lock")
+    if removed:
+        print(f"   🧹 Removed runtime data left over from testing: {', '.join(removed)}")
+
     out_name = "PyPottery-Launcher-Setup.exe"
     out_path = release_dir / out_name
     icon_path = package_dir / "icon_app.ico"
@@ -356,6 +377,13 @@ def create_winpython_package(project_root: Path, release_dir: Path) -> Path:
     src_launcher = project_root / "launcher"
     for item in src_launcher.iterdir():
         if item.name == "__pycache__":
+            continue
+        if item.name == "dev_config.py":
+            # Gitignored, local-only developer-mode switch (see web_server.py's
+            # `from .dev_config import DEVELOPER_MODE`). Its mere presence -
+            # not its content - flips developer mode on, so if the build
+            # machine happens to have one (for local testing), copying it
+            # would ship Developer Mode on to every end user.
             continue
         dest = launcher_dir / item.name
         if item.is_dir():

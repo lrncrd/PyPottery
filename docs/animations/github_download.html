@@ -8,15 +8,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: #f3f4f6;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
         }
 
         .browser-window {
@@ -24,12 +30,12 @@
             height: 850px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            transform: scale(0.8);
+            transform: scale(0.85);
             transform-origin: center;
         }
 
@@ -40,6 +46,9 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            position: relative;
+            z-index: 50;
+            height: 48px;
         }
 
         .dots {
@@ -53,17 +62,9 @@
             border-radius: 50%;
         }
 
-        .red {
-            background: #ff5f56;
-        }
-
-        .yellow {
-            background: #ffbd2e;
-        }
-
-        .green {
-            background: #27c93f;
-        }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
 
         .url-bar {
             flex: 1;
@@ -84,7 +85,7 @@
             position: relative;
         }
 
-        /* GitHub UI Simulation */
+        /* GitHub UI */
         .gh-header {
             background: #24292f;
             color: white;
@@ -108,31 +109,12 @@
             gap: 24px;
         }
 
-        .timeline-line {
-            width: 2px;
-            background: #d0d7de;
-            position: relative;
-        }
-
         .release-main {
             flex: 1;
         }
 
-        .release-tag {
-            font-size: 14px;
-            color: #57606a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .tag-icon {
-            color: #57606a;
-        }
-
         .release-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
             color: #24292f;
             margin-bottom: 16px;
@@ -160,25 +142,23 @@
             border-bottom: 1px solid #d0d7de;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             background: white;
             cursor: pointer;
-            transition: background 0.1s;
+            transition: background 0.15s, transform 0.1s;
         }
 
         .asset-row:last-child {
             border-bottom: none;
         }
 
-        .asset-row:hover {
-            background: #f6f8fa;
-            color: #0969da;
+        .asset-row.active {
+            background: #eff6ff !important;
         }
 
         .asset-name {
             font-size: 14px;
             color: #0969da;
-            /* Pro blue */
             font-weight: 600;
             flex: 1;
         }
@@ -188,75 +168,233 @@
             color: #57606a;
         }
 
-        /* Cursor */
+        /* Mouse Cursor */
         .cursor {
             width: 18px;
             height: 24px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1.2" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
             position: absolute;
             top: 110%;
             left: 110%;
-            z-index: 9999;
+            z-index: 99999;
             transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
             pointer-events: none;
         }
 
-        /* Download Fly Animation */
+        /* Sleek High-Visibility Flying Pill */
         .download-item {
             position: absolute;
-            z-index: 1000;
+            left: 0;
+            top: 0;
+            z-index: 9000;
             opacity: 0;
             pointer-events: none;
-            color: #57606a;
-            background: white;
-            border: 1px solid #d0d7de;
-            padding: 8px;
-            border-radius: 6px;
+            background: #ffffff;
+            border: 2px solid #0969da;
+            border-radius: 20px;
+            padding: 6px 14px 6px 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 250px;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(9, 105, 218, 0.35), 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            will-change: transform, opacity;
         }
 
-        /* Safari Download Button in Chrome */
-        .dl-icon-chrome {
-            width: 30px;
-            height: 30px;
+        .dl-pill-icon {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: #e3e3e3;
+            background: #0969da;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: auto;
-            color: #57606a;
-            transition: all 0.3s;
+            font-size: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(9, 105, 218, 0.4);
         }
 
-        .dl-active {
+        .dl-pill-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .dl-pill-size {
+            font-size: 11px;
+            font-weight: 600;
+            color: #0969da;
+            margin-left: 4px;
+        }
+
+        /* Luminous Flight Trail Dots */
+        .trail-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 8px rgba(14, 165, 233, 0.85);
+            pointer-events: none;
+            z-index: 8990;
+            transform: translate(-50%, -50%);
+            animation: dotFade 0.45s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+
+        @keyframes dotFade {
+            0% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+        }
+
+        /* Modern Chrome Download Button with SVG Progress Ring */
+        .dl-btn-container {
+            margin-left: auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .dl-icon-chrome {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+            transition: all 0.25s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .dl-icon-chrome.dl-active {
+            background: #eff6ff;
+            color: #0969da;
+            transform: scale(1.15);
+        }
+
+        .dl-icon-chrome.dl-success {
+            background: #10b981;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.55);
+        }
+
+        /* SVG Circular Progress Ring */
+        .progress-ring {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 36px;
+            height: 36px;
+            pointer-events: none;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke-dasharray: 100.5;
+            stroke-dashoffset: 100.5;
+            transition: stroke-dashoffset 0.85s linear, stroke 0.3s ease;
+        }
+
+        /* Ripple Effect upon Absorption */
+        .dl-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2.5px solid #0969da;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .dl-ripple.pulse {
+            animation: rippleAnim 0.75s ease-out forwards;
+        }
+
+        .dl-ripple.pulse-green {
+            border-color: #10b981;
+            animation: rippleAnim 0.75s ease-out forwards;
+        }
+
+        @keyframes rippleAnim {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.95;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Completed Download Flyout Notification */
+        .dl-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 16px;
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 10px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0,0,0,0.06);
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 325px;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .dl-dropdown.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .dl-dropdown-icon {
+            width: 40px;
+            height: 40px;
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            color: #16a34a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .open-file-btn {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0969da;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .open-file-btn.hovered {
             background: #0969da;
             color: white;
-        }
-
-        @keyframes flyToTopRight {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-                top: var(--start-top);
-                left: var(--start-left);
-            }
-
-            20% {
-                transform: scale(0.8);
-            }
-
-            100% {
-                transform: scale(0.1);
-                opacity: 0;
-                top: 10px;
-                left: 750px;
-            }
+            border-color: #0969da;
+            box-shadow: 0 2px 8px rgba(9, 105, 218, 0.35);
         }
     </style>
 </head>
@@ -264,6 +402,7 @@
 <body>
 
     <div class="browser-window" id="window">
+        <!-- Chrome Bar -->
         <div class="browser-chrome">
             <div class="dots">
                 <div class="dot red"></div>
@@ -278,17 +417,40 @@
                 <i class="fas fa-lock text-gray-400"></i>
                 github.com/lrncrd/PyPottery/releases/latest
             </div>
-            <div class="dl-icon-chrome" id="dlIcon">
-                <i class="fas fa-arrow-down"></i>
+
+            <!-- Download Button with SVG Ring -->
+            <div class="dl-btn-container">
+                <div class="dl-icon-chrome" id="dlIcon">
+                    <svg class="progress-ring" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="16" fill="none" stroke="#e5e7eb" stroke-width="2.5"></circle>
+                        <circle id="ringCircle" class="progress-ring-circle" cx="18" cy="18" r="16" fill="none" stroke="#0969da" stroke-width="2.5" stroke-linecap="round"></circle>
+                    </svg>
+                    <i class="fas fa-arrow-down text-xs" id="dlIconSymbol"></i>
+                    <div class="dl-ripple" id="dlRipple"></div>
+                </div>
             </div>
         </div>
 
+        <!-- Download Completion Dropdown Notification -->
+        <div class="dl-dropdown" id="dlDropdown">
+            <div class="dl-dropdown-icon">
+                <i class="fas fa-box-archive"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="text-xs font-bold text-gray-900 truncate">PyPottery-Launcher-Setup.exe</div>
+                <div class="text-[11px] text-green-600 font-semibold">52.4 MB • Download completato</div>
+            </div>
+            <button class="open-file-btn" id="openBtn">Apri file</button>
+        </div>
+
+        <!-- GitHub Header -->
         <div class="gh-header">
             <i class="fab fa-github text-3xl"></i>
             <div class="font-bold">PyPottery</div>
         </div>
 
-        <div class="content">
+        <!-- Main Content -->
+        <div class="content" id="contentArea">
             <div class="gh-repo-header">
                 <div class="flex items-center gap-2 text-lg mb-4">
                     <span class="text-blue-600">lrncrd</span>
@@ -298,68 +460,74 @@
                 <div class="flex gap-6 text-sm text-gray-600">
                     <div class="flex items-center gap-2 py-2"><i class="fas fa-code"></i> Code</div>
                     <div class="flex items-center gap-2 py-2"><i class="far fa-circle-dot"></i> Issues</div>
-                    <div class="flex items-center gap-2 py-2"><i class="fas fa-code-pull-request"></i> Pull requests
-                    </div>
-                    <div class="flex items-center gap-2 py-2 text-black font-semibold border-b-2 border-[#fd8c73]"><i
-                            class="fas fa-tag"></i> Releases</div>
+                    <div class="flex items-center gap-2 py-2"><i class="fas fa-code-pull-request"></i> Pull requests</div>
+                    <div class="flex items-center gap-2 py-2 text-black font-semibold border-b-2 border-[#fd8c73]"><i class="fas fa-tag"></i> Releases</div>
                 </div>
             </div>
 
             <div class="release-container">
                 <div class="flex flex-col items-end gap-2 w-32 border-r border-[#d0d7de] pr-6 pt-2">
                     <div class="flex items-center gap-2 font-semibold text-gray-600">
-                        <i class="fas fa-tag transform rotate-90"></i> v1.0.0
+                        <i class="fas fa-tag transform rotate-90"></i> v1.1.0
                     </div>
                     <div class="text-xs text-green-600 border border-green-600 rounded-full px-2 py-0.5 font-medium">
-                        Latest</div>
+                        Latest
+                    </div>
                 </div>
 
                 <div class="release-main">
-                    <div class="release-title">PyPottery Suite Launcher v1.0.0</div>
+                    <div class="release-title">PyPottery Suite Launcher v1.1.0</div>
                     <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
                         <img src="https://github.com/lrncrd.png" class="w-5 h-5 rounded-full bg-gray-300">
                         <span class="font-bold text-gray-700">lrncrd</span>
-                        <span>released this 2 days ago</span>
+                        <span>released today</span>
                     </div>
 
                     <div class="prose prose-sm text-gray-800 mb-6">
-                        <p>Initial release of the PyPottery Suite Launcher!</p>
-                        <ul class="list-disc pl-4 mt-2 mb-4">
-                            <li>One-click installation for PyPotteryInk</li>
-                            <li>Automatic environment configuration</li>
-                            <li>Hardware detection (MPS/CUDA support)</li>
+                        <p class="font-medium text-gray-700">Windows Installer Release for PyPottery Suite Launcher!</p>
+                        <ul class="list-disc pl-4 mt-2 mb-4 text-xs text-gray-600 space-y-1">
+                            <li><strong>New:</strong> Windows Setup Wizard (.exe) per-user installation</li>
+                            <li>Automatic Python environment &amp; hardware detection</li>
+                            <li>Desktop &amp; Start Menu shortcuts included</li>
                         </ul>
                     </div>
 
+                    <!-- Assets Box -->
                     <div class="assets-box">
                         <div class="assets-header">
                             <span>Assets</span>
-                            <span class="text-gray-500 font-normal">4</span>
+                            <span class="text-gray-500 font-normal">5</span>
                         </div>
-                        <!-- Files -->
+
+                        <!-- Target: Windows Installer EXE -->
+                        <div class="asset-row" id="targetAsset" style="background: #f0fdf4;">
+                            <i class="fas fa-box-archive text-emerald-600"></i>
+                            <span class="asset-name text-emerald-700 font-bold" id="targetFileName">PyPottery-Launcher-Setup.exe</span>
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-300 px-1.5 py-0.5 rounded mr-2">Installer</span>
+                            <span class="asset-size">52.4 MB</span>
+                        </div>
+
                         <div class="asset-row opacity-60">
                             <i class="far fa-file-zipper text-gray-500"></i>
-                            <span class="asset-name text-gray-500">PyPottery-Launcher-linux-x86_64.zip</span>
-                            <span class="asset-size">52.3 MB</span>
-                        </div>
-                        <div class="asset-row" id="targetAsset">
-                            <i class="far fa-file-zipper text-gray-500"></i>
-                            <span class="asset-name">PyPottery-Launcher-macos-arm64.zip</span>
-                            <span class="asset-size">21.8 MB</span>
-                        </div>
-                        <div class="asset-row opacity-60">
-                            <i class="far fa-file-zipper text-gray-500"></i>
-                            <span class="asset-name text-gray-500">PyPottery-Launcher-macos-x86_64.zip</span>
-                            <span class="asset-size">21.8 MB</span>
-                        </div>
-                        <div class="asset-row opacity-60">
-                            <i class="far fa-file-zipper text-gray-500"></i>
-                            <span class="asset-name text-gray-500">PyPottery-Launcher-Windows.zip</span>
+                            <span class="asset-name text-gray-600">PyPottery-Launcher-Windows.zip</span>
                             <span class="asset-size">48.2 MB</span>
                         </div>
+
                         <div class="asset-row opacity-60">
-                            <i class="fas fa-box text-gray-500"></i>
-                            <span class="asset-name text-gray-500">Source code (zip)</span>
+                            <i class="far fa-file-zipper text-gray-500"></i>
+                            <span class="asset-name text-gray-600">PyPottery-Launcher-macos-arm64.zip</span>
+                            <span class="asset-size">21.8 MB</span>
+                        </div>
+
+                        <div class="asset-row opacity-60">
+                            <i class="far fa-file-zipper text-gray-500"></i>
+                            <span class="asset-name text-gray-600">PyPottery-Launcher-macos-x86_64.zip</span>
+                            <span class="asset-size">21.8 MB</span>
+                        </div>
+
+                        <div class="asset-row opacity-60">
+                            <i class="fas fa-file-code text-gray-500"></i>
+                            <span class="asset-name text-gray-600">Source code (zip)</span>
                         </div>
                     </div>
                 </div>
@@ -367,97 +535,235 @@
 
         </div>
 
+        <!-- Simulated Cursor -->
         <div class="cursor" id="cursor"></div>
 
-        <!-- Floating Download Element -->
+        <!-- Sleek Floating Flying Pill -->
         <div id="dlItem" class="download-item">
-            <i class="far fa-file-zipper text-gray-500 text-xl"></i>
-            <div class="flex-1">
-                <div class="font-bold text-sm text-gray-700">PyPottery-Lau...zip</div>
-                <div class="text-xs text-gray-500">21.8 MB</div>
+            <div class="dl-pill-icon">
+                <i class="fas fa-file-arrow-down"></i>
             </div>
+            <span class="dl-pill-title">PyPottery-Launcher-Setup.exe</span>
+            <span class="dl-pill-size">52.4 MB</span>
         </div>
     </div>
 
     <script>
         const cursor = document.getElementById('cursor');
         const target = document.getElementById('targetAsset');
+        const targetFileName = document.getElementById('targetFileName');
         const dlItem = document.getElementById('dlItem');
         const dlIcon = document.getElementById('dlIcon');
+        const dlIconSymbol = document.getElementById('dlIconSymbol');
+        const ringCircle = document.getElementById('ringCircle');
+        const dlRipple = document.getElementById('dlRipple');
+        const dlDropdown = document.getElementById('dlDropdown');
+        const openBtn = document.getElementById('openBtn');
         const windowEl = document.getElementById('window');
 
-        function getPos(el) {
+        // Robust unscaled coordinate resolution relative to 800x850 container
+        function getWindowCoords(el) {
             const r = el.getBoundingClientRect();
             const w = windowEl.getBoundingClientRect();
-            const scale = 0.8;
+            const scale = w.width / 800;
             return {
-                x: ((r.left - w.left) + (r.width / 2)) / scale,
-                y: ((r.top - w.top) + (r.height / 2)) / scale
+                x: (r.left - w.left) / scale,
+                y: (r.top - w.top) / scale,
+                cx: (r.left - w.left + r.width / 2) / scale,
+                cy: (r.top - w.top + r.height / 2) / scale,
+                w: r.width / scale,
+                h: r.height / scale
             };
         }
 
         function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+        // Spawn a subtle luminous trail dot behind the flying item
+        function spawnTrail(x, y) {
+            const dot = document.createElement('div');
+            dot.className = 'trail-dot';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            windowEl.appendChild(dot);
+            setTimeout(() => dot.remove(), 450);
+        }
+
+        // Smooth cubic easing for physical acceleration into the icon
+        function easeInQuad(t) { return t * t; }
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+        function easeInOutSine(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+
+        // Animate flying pill along an upward-right parabolic arc into the download button
+        function flyToDownload(start, dest, durationMs) {
+            return new Promise((resolve) => {
+                const startTime = performance.now();
+
+                // Control point: curves gently upwards towards the icon, staying strictly below the toolbar
+                const p0 = { x: start.cx, y: start.cy };
+                const p2 = { x: dest.cx, y: dest.cy };
+                const p1 = {
+                    x: start.cx + (dest.cx - start.cx) * 0.45,
+                    y: dest.cy + 75
+                };
+
+                let lastTrailTime = 0;
+
+                function frame(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / durationMs, 1);
+                    const t = easeInOutSine(progress);
+
+                    // Quadratic Bézier: B(t) = (1-t)^2 * P0 + 2(1-t)t * P1 + t^2 * P2
+                    const invT = 1 - t;
+                    const curX = invT * invT * p0.x + 2 * invT * t * p1.x + t * t * p2.x;
+                    const curY = invT * invT * p0.y + 2 * invT * t * p1.y + t * t * p2.y;
+
+                    // Smooth scale down from 1.0 to 0.28 as it approaches the icon
+                    const curScale = 1.0 - (0.72 * progress);
+                    // Slight gentle dynamic tilt (-2deg up to +6deg) along the flight path
+                    const curRot = -2 + (8 * progress);
+
+                    // Fade out strictly at the very last 5% as it gets absorbed into the icon
+                    const curOpacity = progress > 0.94 ? (1 - progress) / 0.06 : 1;
+
+                    dlItem.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%) scale(${curScale}) rotate(${curRot}deg)`;
+                    dlItem.style.opacity = curOpacity;
+
+                    // Spawn visual trail dots periodically
+                    if (now - lastTrailTime > 45 && progress < 0.92) {
+                        spawnTrail(curX, curY);
+                        lastTrailTime = now;
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(frame);
+                    } else {
+                        dlItem.style.opacity = '0';
+                        resolve();
+                    }
+                }
+
+                requestAnimationFrame(frame);
+            });
+        }
+
         async function sequence() {
-            // Reset
+            // 1. Initial State Reset
             cursor.style.transition = 'none';
             cursor.style.top = '110%';
             cursor.style.left = '110%';
+            cursor.style.transform = 'scale(1)';
+
             dlItem.style.opacity = '0';
-            dlItem.style.animation = 'none';
+            dlItem.style.transform = 'translate(-9999px, -9999px)';
+
+            dlDropdown.classList.remove('show');
+            openBtn.classList.remove('hovered');
+
+            dlRipple.className = 'dl-ripple';
             dlIcon.className = 'dl-icon-chrome';
-            dlIcon.innerHTML = '<i class="fas fa-arrow-down"></i>';
+            dlIconSymbol.className = 'fas fa-arrow-down text-xs';
 
-            await wait(1000);
+            ringCircle.style.transition = 'none';
+            ringCircle.style.strokeDashoffset = '100.5';
+            ringCircle.style.stroke = '#0969da';
 
-            // Move to target
-            const pos = getPos(target);
+            target.classList.remove('active');
+            target.style.transform = 'scale(1)';
+
+            await wait(900);
+
+            // 2. Cursor moves directly over target link "PyPottery-Launcher-Setup.exe"
+            const namePos = getWindowCoords(targetFileName);
             cursor.style.transition = 'all 1s cubic-bezier(0.22, 1, 0.36, 1)';
-            cursor.style.top = (pos.y + 10) + 'px';
-            cursor.style.left = (pos.x - 100) + 'px'; // Center-ish
+            cursor.style.top = (namePos.cy + 4) + 'px';
+            cursor.style.left = (namePos.x + 40) + 'px';
 
-            await wait(1200);
+            await wait(1050);
 
-            // Hover effect
-            target.style.background = '#f6f8fa';
-            target.querySelector('.asset-name').style.textDecoration = 'underline';
+            // Hover state
+            target.classList.add('active');
+            await wait(350);
 
-            await wait(400);
-
-            // Click
+            // Click down animation
             cursor.style.transform = 'scale(0.9)';
-            setTimeout(() => cursor.style.transform = 'scale(1)', 100);
+            target.style.transform = 'scale(0.98)';
+            await wait(140);
+            cursor.style.transform = 'scale(1)';
+            target.style.transform = 'scale(1)';
 
-            await wait(200);
+            // 3. Pop up the flying pill directly at the clicked text
+            const startCoords = getWindowCoords(targetFileName);
+            const iconCoords = getWindowCoords(dlIcon);
 
-            // Start Download Animation
-            const startPos = getPos(target);
-            dlItem.style.setProperty('--start-top', (startPos.y - 20) + 'px');
-            dlItem.style.setProperty('--start-left', (startPos.x - 120) + 'px');
-            dlItem.style.animation = 'flyToTopRight 0.8s cubic-bezier(0.2, 0, 0, 1) forwards';
+            dlItem.style.transition = 'none';
+            dlItem.style.transform = `translate(${startCoords.cx}px, ${startCoords.cy}px) translate(-50%, -50%) scale(0.7)`;
+            dlItem.style.opacity = '0';
 
-            await wait(600);
-            dlIcon.className = 'dl-icon-chrome dl-active';
+            await wait(20);
 
-            await wait(200);
-            dlIcon.innerHTML = '<i class="fas fa-check"></i>';
+            // Snappy lift-off pop
+            dlItem.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease';
+            dlItem.style.transform = `translate(${startCoords.cx}px, ${startCoords.cy - 6}px) translate(-50%, -50%) scale(1.04)`;
+            dlItem.style.opacity = '1';
 
-            // Reset hover
-            target.style.background = 'white';
-            target.querySelector('.asset-name').style.textDecoration = 'none';
+            await wait(240);
 
-            await wait(2000);
+            // Disengage CSS transition so requestAnimationFrame has complete smooth control
+            dlItem.style.transition = 'none';
 
-            // Move away
+            // 4. Fly along smooth upward-right parabolic arc into download button (950ms)
+            await flyToDownload(
+                { cx: startCoords.cx, cy: startCoords.cy - 6 },
+                { cx: iconCoords.cx, cy: iconCoords.cy },
+                950
+            );
+
+            // 5. Arrival! Ripple and start circular progress ring
+            dlIcon.classList.add('dl-active');
+            dlRipple.className = 'dl-ripple pulse';
+
+            // Animate SVG progress ring filling up (850ms)
+            ringCircle.style.transition = 'stroke-dashoffset 0.85s ease-out';
+            ringCircle.style.strokeDashoffset = '0';
+
+            await wait(850);
+
+            // Download Complete: turn green, switch to checkmark, pulse green ripple
+            ringCircle.style.stroke = '#10b981';
+            dlIcon.className = 'dl-icon-chrome dl-success';
+            dlIconSymbol.className = 'fas fa-check text-xs';
+            dlRipple.className = 'dl-ripple pulse-green';
+
+            await wait(250);
+
+            // 6. Show the Chrome-style download completion flyout
+            dlDropdown.classList.add('show');
+
+            await wait(700);
+
+            // 7. Cursor moves up to hover on "Apri file" button!
+            const btnCoords = getWindowCoords(openBtn);
+            cursor.style.transition = 'all 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+            cursor.style.top = (btnCoords.cy + 4) + 'px';
+            cursor.style.left = (btnCoords.cx - 10) + 'px';
+
+            await wait(850);
+            openBtn.classList.add('hovered');
+
+            await wait(2600);
+
+            // Fade out dropdown and reset cursor out of view
+            dlDropdown.classList.remove('show');
+            openBtn.classList.remove('hovered');
             cursor.style.top = '110%';
             cursor.style.left = '110%';
 
-            await wait(3000);
+            await wait(1800);
             sequence();
         }
 
         setTimeout(sequence, 500);
-
     </script>
 </body>
 

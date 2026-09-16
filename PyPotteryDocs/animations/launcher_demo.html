@@ -4,445 +4,1376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyPottery Launcher Demo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <title>PyPottery Suite Launcher Demo</title>
+    <!-- Bootstrap Icons & Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        :root {
+            --bg-main: #fbf9f5;
+            --bg-gradient: radial-gradient(circle at 50% 0%, #f7f2ea 0%, #fbf9f5 70%, #f4eee5 100%);
+            --bg-card: #ffffff;
+            --bg-subtle: #f6f3ed;
+            --border-light: #e8e3d8;
+            --border-hover: #d4a373;
+            --text-main: #1c1917;
+            --text-dim: #57534e;
+            --text-muted: #78716c;
+
+            /* Terracotta & Clay Palette */
+            --primary: #c2410c;
+            --primary-hover: #9a3412;
+            --primary-soft: #fff7ed;
+            --primary-border: #ffedd5;
+
+            /* Mediterranean Glaze Teal */
+            --teal: #0d9488;
+            --teal-hover: #0f766e;
+            --teal-soft: #f0fdf4;
+            --teal-border: #bbf7d0;
+
+            /* Status */
+            --success: #15803d;
+            --danger: #e11d48;
+            --warning: #d97706;
+
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+
+            --shadow-card: 0 4px 18px -2px rgba(120, 53, 15, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 24px -3px rgba(120, 53, 15, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            background-color: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100vw;
             height: 100vh;
-            background-color: #f3f4f6;
-            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-main);
         }
 
-        /* Variables */
-        :root {
-            --primary: #667eea;
-            --success: #10b981;
-            --bg-color: #f8fafc;
-            --border-color: #e5e7eb;
-        }
-
+        /* Scaled Container Window */
         .window {
-            width: 950px;
-            height: 850px;
-            background: var(--bg-color);
-            border-radius: 10px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            width: 1040px;
+            height: 870px;
+            background: var(--bg-gradient);
+            border-radius: 12px;
+            box-shadow: 0 15px 45px -8px rgba(44, 30, 20, 0.25), 0 0 0 1px rgba(194, 65, 12, 0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            transform: scale(0.75);
-            transform-origin: center;
+            transform-origin: center center;
+            flex-shrink: 0;
         }
 
+        /* macOS / Desktop Title Bar */
         .title-bar {
-            height: 32px;
-            background: #e3e3e3;
+            height: 34px;
+            background: #f1ecdf;
             display: flex;
             align-items: center;
-            padding: 0 16px;
+            padding: 0 14px;
             gap: 8px;
-            border-bottom: 1px solid #d1d5db;
+            border-bottom: 1px solid var(--border-light);
+            user-select: none;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
         }
 
-        .dot.red {
-            background: #ff5f57;
-            border: 1px solid #e0443e;
-        }
+        .dot.red { background: #ff5f57; border: 1px solid #e0443e; }
+        .dot.yellow { background: #febc2e; border: 1px solid #d89e24; }
+        .dot.green { background: #28c840; border: 1px solid #1aab29; }
 
-        .dot.yellow {
-            background: #febc2e;
-            border: 1px solid #d89e24;
-        }
-
-        .dot.green {
-            background: #28c840;
-            border: 1px solid #1aab29;
-        }
-
-        .app-body {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-        }
-
-        .panel {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 12px 16px 8px 16px;
+        .title-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-left: 8px;
             display: flex;
             align-items: center;
+            gap: 6px;
+        }
+
+        /* App Header */
+        .app-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 22px;
+            display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .panel-title {
-            font-size: 14px;
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 6px rgba(194, 65, 12, 0.25);
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .brand-accent {
+            color: var(--primary);
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .version-badge {
+            font-size: 0.68rem;
             font-weight: 700;
-            color: #374151;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid var(--primary-border);
+            padding: 1px 7px;
+            border-radius: 10px;
         }
 
-        .panel-content {
-            padding: 0 16px 16px 16px;
-        }
-
-        .btn {
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: 13px;
+        .status-chip {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
             font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+        }
+
+        .status-dot-pulse {
+            width: 7px;
+            height: 7px;
+            background: var(--teal);
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(13, 148, 136, 0.6);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(13, 148, 136, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Buttons */
+        .btn {
             border: none;
+            outline: none;
+            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
             color: white;
+            box-shadow: 0 2px 8px rgba(194, 65, 12, 0.25);
         }
 
         .btn-success {
-            background-color: var(--success);
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
             color: white;
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
         }
 
-        .btn-purple {
-            background-color: #764ba2;
-            color: white;
+        .btn-outline {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
         }
 
-        .btn-disabled {
-            background-color: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
+        .btn-quiet {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            color: var(--text-dim);
         }
 
-        /* App Details */
-        .app-details {
+        .btn-icon-only {
+            padding: 6px 8px;
+        }
+
+        /* Scrollable Content */
+        .app-body {
+            flex: 1;
+            padding: 16px 22px;
+            overflow-y: auto;
             display: flex;
-            gap: 15px;
-            margin: 8px 0;
-            color: #9ca3af;
-            font-size: 10px;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        /* Console */
-        .console-header {
-            background: #f1f5f9;
-            height: 32px;
+        /* Hero Frontmatter */
+        .hero-banner {
+            background: linear-gradient(180deg, #ffffff 0%, #fffdfa 100%);
+            border: 1px solid var(--border-light);
+            border-top: 3px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 12px 16px 10px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+
+        .hero-ascii {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8.5px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--primary);
+            white-space: pre;
+            user-select: none;
+        }
+
+        .hero-quote {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
             display: flex;
             align-items: center;
-            padding: 0 12px;
-            border-bottom: 1px solid var(--border-color);
+            gap: 6px;
         }
 
-        .console-body {
-            background: #1e1e2e;
-            height: 120px;
-            padding: 8px;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: #cdd6f4;
-            line-height: 1.5;
+        /* Dashboard Top Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        .hw-row {
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-header {
             display: flex;
-            padding: 4px 0;
-            font-size: 11px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title-group i {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .card-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .card-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+
+        /* Hardware Specs Grid */
+        .hw-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .hw-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 6px 9px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hw-card-full {
+            grid-column: span 2;
+        }
+
+        .hw-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .hw-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
         }
 
         .hw-label {
-            width: 70px;
+            font-size: 0.65rem;
             font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .hw-value {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ram-bar {
+            width: 100%;
+            height: 3px;
+            background: #e7e2d9;
+            border-radius: 2px;
+            margin-top: 3px;
+            overflow: hidden;
+        }
+
+        .ram-fill {
+            width: 48%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal), var(--primary));
+        }
+
+        /* Python Environment Card */
+        .env-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .env-badge.not-configured {
+            background: #fff1f2;
+            color: var(--danger);
+            border: 1px solid #fecdd3;
+        }
+
+        .env-badge.ready {
+            background: #f0fdf4;
+            color: var(--success);
+            border: 1px solid #bbf7d0;
+        }
+
+        .env-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 7px;
+            background: #e7e2d9;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--teal), var(--primary));
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-label {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        .env-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Apps Section */
+        .section-header {
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .app-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 12px 14px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+            position: relative;
+        }
+
+        .app-card.running {
+            border-color: #86efac;
+            background: #fafdfb;
+        }
+
+        .app-top {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .app-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: #fdfbf7;
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-title-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .app-name {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .pill {
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        .pill-not-installed {
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+        }
+
+        .pill-installed {
+            background: var(--primary-soft);
             color: var(--primary);
+            border: 1px solid var(--primary-border);
         }
 
-        .hw-val {
-            color: #4b5563;
+        .pill-running {
+            background: #f0fdf4;
+            color: var(--success);
+            border: 1px solid #bbf7d0;
         }
 
-        /* Cursor - Better SVG for precision */
+        .app-desc {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            line-height: 1.35;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .app-chips {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            font-size: 0.64rem;
+            font-weight: 600;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            color: var(--text-dim);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .chip-gpu {
+            background: #fff7ed;
+            color: var(--primary);
+            border-color: #ffedd5;
+        }
+
+        .app-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 6px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* Console */
+        .console-card {
+            background: #1c1917;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid #292524;
+            color: #f5f5f4;
+        }
+
+        .console-header {
+            background: #292524;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.72rem;
+            border-bottom: 1px solid #332d29;
+        }
+
+        .console-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: #e7e5e4;
+        }
+
+        .console-stream {
+            height: 90px;
+            padding: 8px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            overflow-y: auto;
+            color: #d6d3d1;
+        }
+
+        .console-stream div {
+            margin-bottom: 2px;
+        }
+
+        .log-time { color: #78716c; }
+        .log-info { color: #38bdf8; }
+        .log-success { color: #4ade80; }
+        .log-warn { color: #fbbf24; }
+
+        /* Simulated Cursor */
         .cursor {
             width: 18px;
             height: 24px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24"><path fill="black" stroke="white" stroke-width="1.2" d="M0,0 L0,20 L5,16 L9,24 L12,22 L8,15 L14,14 Z"/></svg>') no-repeat;
             position: absolute;
             top: 110%;
             left: 110%;
             z-index: 9999;
-            /* Improved transition for mouse-like feel */
-            transition: top 0.6s cubic-bezier(0.22, 1, 0.36, 1), left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+            transition: all 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
             pointer-events: none;
         }
 
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.5);
+        /* Interactive Installer Modal */
+        .installer-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(28, 25, 23, 0.65);
+            backdrop-filter: blur(5px);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s ease;
         }
 
-        .modal-content {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        .installer-modal {
+            width: 480px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-light);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             transform: scale(0.95);
-            transition: transform 0.2s;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Simplified App Window */
-        .browser-window {
-            z-index: 200;
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-logo {
+            width: 44px;
+            height: 44px;
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .modal-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .modal-sub {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        /* Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-sm);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .step.active { color: var(--primary); }
+        .step.completed { color: var(--teal); }
+
+        .step-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+        }
+
+        .step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: var(--teal);
+            color: white;
+        }
+
+        .step-conn {
+            flex: 1;
+            height: 2px;
+            background: #e5e7eb;
+            margin: 0 8px;
+        }
+
+        /* Circular Progress Hero */
+        .progress-hero {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 6px 0;
+        }
+
+        .ring-box {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .ring-svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            stroke: #e8e3d8;
+            stroke-width: 6;
+            fill: transparent;
+        }
+
+        .ring-fill {
+            stroke: var(--primary);
+            stroke-width: 6;
+            stroke-dasharray: 219.9;
+            stroke-dashoffset: 219.9;
+            stroke-linecap: round;
+            fill: transparent;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .ring-pct {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .status-hero {
+            flex: 1;
+        }
+
+        .status-hero-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .status-hero-detail {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        /* New App Window with Bouncing Pen */
+        .preview-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 780px;
+            height: 520px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(194, 65, 12, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2000;
+        }
+
+        .preview-titlebar {
+            height: 34px;
+            background: #f6f3ed;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 10px;
+        }
+
+        .preview-url {
+            flex: 1;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            padding: 3px 12px;
+            font-size: 11px;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .preview-url i {
+            color: var(--teal);
+            font-size: 10px;
+        }
+
+        /* Clean Bouncing Pen Splash Screen */
+        .preview-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 40%, #ffffff 0%, #faf6ef 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle archaeological background dots */
+        .preview-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(#d4a373 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .pen-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bouncing-pen {
+            font-size: 5rem;
+            line-height: 1;
+            animation: penJump 1.2s ease-in-out infinite;
+            filter: drop-shadow(0 8px 12px rgba(194, 65, 12, 0.25));
+            transform-origin: center bottom;
+            user-select: none;
+        }
+
+        .pen-shadow {
+            width: 50px;
+            height: 10px;
+            background: rgba(120, 53, 15, 0.2);
+            border-radius: 50%;
+            margin-top: -6px;
+            margin-bottom: 24px;
+            animation: shadowShrink 1.2s ease-in-out infinite;
+        }
+
+        @keyframes penJump {
+            0%, 100% {
+                transform: translateY(0) rotate(-12deg);
+            }
+            50% {
+                transform: translateY(-38px) rotate(8deg) scale(1.08);
+            }
+        }
+
+        @keyframes shadowShrink {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.35;
+            }
+            50% {
+                transform: scale(0.45);
+                opacity: 0.1;
+            }
+        }
+
+        .pen-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pen-title span {
+            color: var(--primary);
+        }
+
+        .pen-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .pen-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .pen-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: dotWave 1.4s infinite ease-in-out both;
+        }
+
+        .pen-dot:nth-child(1) { animation-delay: -0.32s; }
+        .pen-dot:nth-child(2) { animation-delay: -0.16s; }
+        .pen-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes dotWave {
+            0%, 80%, 100% { transform: scale(0.5); opacity: 0.3; }
+            40% { transform: scale(1.1); opacity: 1; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="window" id="appWindow">
+    <div class="window" id="window">
+        <!-- Title Bar -->
         <div class="title-bar">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-            <div style="margin-left: auto; margin-right: auto; font-size: 13px; color: #4b5563; font-weight: 500;">
-                PyPottery Suite Launcher v1.0.0</div>
+            <div class="dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="title-text">
+                <i class="bi bi-window"></i> PyPottery Suite Launcher — localhost:5000
+            </div>
         </div>
 
+        <!-- Top Warm Header -->
+        <header class="app-header">
+            <div class="brand-section">
+                <div class="logo-box">🏺</div>
+                <div>
+                    <h1 class="brand-title">PyPottery <span class="brand-accent">Suite</span></h1>
+                    <div class="brand-meta">
+                        <span class="version-badge">v1.1</span>
+                        <span class="status-chip">
+                            <span class="status-dot-pulse"></span> Launcher Ready
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-outline"><i class="bi bi-journal-text"></i> Changelog</button>
+                <button class="btn btn-outline"><i class="bi bi-arrow-repeat"></i> Updates</button>
+                <button class="btn btn-outline"><i class="bi bi-info-circle"></i> Info</button>
+            </div>
+        </header>
+
+        <!-- Main Body -->
         <div class="app-body">
-            <div class="grid grid-cols-12 gap-5">
-                <!-- Left Column -->
-                <div class="col-span-12 lg:col-span-5 flex flex-col gap-5">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">💻 System Information</div>
-                        </div>
-                        <div class="panel-content">
-                            <div class="hw-row"><span class="hw-label">OS:</span><span class="hw-val">macOS 14.2
-                                    (arm64)</span></div>
-                            <div class="hw-row"><span class="hw-label">CPU:</span><span class="hw-val">Apple M2 Pro (10
-                                    cores)</span></div>
-                            <div class="hw-row"><span class="hw-label">RAM:</span><span class="hw-val">32.0 GB total,
-                                    18.5 GB free</span></div>
-                            <div class="hw-row"><span class="hw-label">GPU:</span><span class="hw-val">✅ Apple Silicon
-                                    (MPS)</span></div>
-                            <div class="hw-row"><span class="hw-label">PyTorch:</span><span class="hw-val">Recommended:
-                                    MPS (Metal)</span></div>
-                        </div>
-                    </div>
+            <!-- Hero Front Matter -->
+            <div class="hero-banner">
+                <pre class="hero-ascii">
+    ____        ____        __  __                  
+   / __ \__  __/ __ \____  / /_/ /____  _______  __ 
+  / /_/ / / / / /_/ / __ \/ __/ __/ _ \/ ___/ / / / 
+ / ____/ /_/ / ____/ /_/ / /_/ /_/  __/ /  / /_/ /  
+/_/    \__, /_/    \____/\__/\__/\___/_/   \__, /   
+      /____/                              /____/    </pre>
+                <div class="hero-quote">
+                    <span>“It belongs in a museum!”</span>
+                    <span style="color: var(--primary);">— Indiana Jones and the Last Crusade</span>
+                </div>
+            </div>
 
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">🐍 Python Environment</div>
-                            <span id="envStatus" class="text-[11px] text-gray-500">Not configured</span>
+            <!-- Top Row: Specs & Environment -->
+            <div class="dashboard-grid">
+                <!-- Specs Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <i class="bi bi-motherboard"></i>
+                            <h2 class="card-title">System &amp; Hardware Specs</h2>
                         </div>
-                        <div class="panel-content">
-                            <div class="w-full bg-gray-200 rounded h-2 mb-2 overflow-hidden">
-                                <div id="envProgress"
-                                    class="h-full bg-[#667eea] w-0 transition-all duration-100 ease-linear"></div>
+                        <span class="card-tag">Specs</span>
+                    </div>
+                    <div class="hw-grid">
+                        <div class="hw-card">
+                            <span class="hw-icon"><i class="bi bi-display"></i></span>
+                            <div class="hw-details">
+                                <span class="hw-label">Operating System</span>
+                                <span class="hw-value">Windows 11 (64-bit)</span>
                             </div>
-                            <div id="envProgressText" class="text-[10px] text-gray-500 h-4 mb-2"></div>
-                            <div class="flex gap-2">
-                                <button id="setupBtn" class="btn btn-primary">Setup Environment</button>
-                                <button class="btn btn-purple w-20">Verify</button>
+                        </div>
+                        <div class="hw-card">
+                            <span class="hw-icon"><i class="bi bi-cpu"></i></span>
+                            <div class="hw-details">
+                                <span class="hw-label">Processor</span>
+                                <span class="hw-value">8 Cores / 16 Threads</span>
+                            </div>
+                        </div>
+                        <div class="hw-card">
+                            <span class="hw-icon"><i class="bi bi-memory"></i></span>
+                            <div class="hw-details">
+                                <span class="hw-label">Memory</span>
+                                <span class="hw-value">16 GB RAM</span>
+                                <div class="ram-bar"><div class="ram-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="hw-card">
+                            <span class="hw-icon"><i class="bi bi-gpu-card"></i></span>
+                            <div class="hw-details">
+                                <span class="hw-label">GPU Acceleration</span>
+                                <span class="hw-value" style="color: var(--teal);">NVIDIA CUDA (Active)</span>
+                            </div>
+                        </div>
+                        <div class="hw-card hw-card-full">
+                            <span class="hw-icon"><i class="bi bi-lightning-charge"></i></span>
+                            <div class="hw-details">
+                                <span class="hw-label">PyTorch Backend</span>
+                                <span class="hw-value">CUDA 12.4 Engine</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column -->
-                <div class="col-span-12 lg:col-span-7 flex flex-col gap-4">
-                    <div class="panel">
-                        <div class="panel-header !pb-0">
-                            <div class="flex items-center gap-3 w-full">
-                                <div class="text-3xl">✒️</div>
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-gray-800 text-base">PyPotteryInk</h3>
-                                    <p class="text-[11px] text-gray-500">AI-based inking of pottery drawings</p>
+                <!-- Environment Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <i class="bi bi-terminal-split"></i>
+                            <h2 class="card-title">Python Environment</h2>
+                        </div>
+                        <span id="env-badge" class="env-badge not-configured">
+                            <i class="bi bi-exclamation-triangle"></i> Not Configured
+                        </span>
+                    </div>
+                    <p class="env-desc">Isolated Python environment for pottery documentation tools and AI models.</p>
+                    <div class="progress-track">
+                        <div id="env-bar" class="progress-fill"></div>
+                    </div>
+                    <p id="env-label" class="progress-label">Virtualenv configuration required.</p>
+                    <div class="env-actions">
+                        <button id="btn-env-setup" class="btn btn-primary">
+                            <i class="bi bi-gear-wide-connected"></i> <span>Setup Environment</span>
+                        </button>
+                        <button class="btn btn-outline"><i class="bi bi-check2-circle"></i> Verify</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications Section -->
+            <div>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="bi bi-collection" style="color: var(--primary);"></i>
+                        Archaeological Suite Applications
+                    </h2>
+                </div>
+                <div class="apps-grid">
+                    <!-- App 1: PyPotteryInk -->
+                    <div class="app-card" id="card-ink">
+                        <div class="app-top">
+                            <div class="app-logo">🖋️</div>
+                            <div class="app-info">
+                                <div class="app-title-line">
+                                    <span class="app-name">PyPottery Ink</span>
+                                    <span id="badge-ink" class="pill pill-not-installed">○ NOT INSTALLED</span>
                                 </div>
-                                <span id="inkStatus" class="bg-gray-200 text-gray-500 text-[10px] px-2 py-1 rounded">Not
-                                    installed</span>
+                                <p class="app-desc">AI-assisted digital inking of pottery drawings and pencil profile sketches.</p>
+                                <div class="app-chips">
+                                    <span class="chip"><i class="bi bi-ethernet"></i> 5003</span>
+                                    <span class="chip"><i class="bi bi-memory"></i> 8GB</span>
+                                    <span class="chip chip-gpu"><i class="bi bi-gpu-card"></i> GPU</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel-content !pt-0">
-                            <div class="app-details">
-                                <span>Port: 8001</span>
-                                <span>RAM: 4GB min</span>
-                                <span>GPU required</span>
-                            </div>
-                            <div class="flex items-center mt-3">
-                                <div class="flex gap-2">
-                                    <button id="inkInstallBtn" class="btn btn-disabled w-24">Install</button>
-                                    <button id="inkLaunchBtn" class="btn btn-disabled w-24 hidden">Launch</button>
-                                    <button class="btn btn-disabled w-20">Stop</button>
-                                    <button class="btn btn-disabled w-20">Update</button>
-                                </div>
-                                <button class="ml-auto btn bg-gray-200 text-gray-700 w-10">📁</button>
-                            </div>
+                        <div class="app-bottom">
+                            <button id="btn-ink-action" class="btn btn-primary">
+                                <i class="bi bi-download"></i> <span>Install</span>
+                            </button>
+                            <button class="btn btn-quiet btn-icon-only"><i class="bi bi-folder2-open"></i></button>
                         </div>
                     </div>
 
-                    <div class="panel opacity-80">
-                        <div class="panel-header !pb-0">
-                            <div class="flex items-center gap-3 w-full">
-                                <div class="text-3xl">📐</div>
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-gray-800 text-base">PyPotteryLayout</h3>
-                                    <p class="text-[11px] text-gray-500">Create publication-ready layouts</p>
+                    <!-- App 2: PyPotteryLayout -->
+                    <div class="app-card">
+                        <div class="app-top">
+                            <div class="app-logo">📐</div>
+                            <div class="app-info">
+                                <div class="app-title-line">
+                                    <span class="app-name">PyPottery Layout</span>
+                                    <span class="pill pill-installed">● INSTALLED</span>
                                 </div>
-                                <span class="bg-gray-200 text-gray-500 text-[10px] px-2 py-1 rounded">Not
-                                    installed</span>
+                                <p class="app-desc">Creates archaeological artefacts publication plates and scaled layout tables.</p>
+                                <div class="app-chips">
+                                    <span class="chip"><i class="bi bi-ethernet"></i> 5005</span>
+                                    <span class="chip"><i class="bi bi-memory"></i> 4GB</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel-content !pt-0">
-                            <div class="app-details">
-                                <span>Port: 8002</span>
-                                <span>RAM: 2GB min</span>
-                                <span>CPU OK</span>
-                            </div>
-                            <div class="flex items-center mt-3">
-                                <div class="flex gap-2">
-                                    <button class="btn btn-disabled w-24">Install</button>
-                                    <button class="btn btn-disabled w-20">Stop</button>
+                        <div class="app-bottom">
+                            <button class="btn btn-success">
+                                <i class="bi bi-play-fill"></i> <span>Launch App</span>
+                            </button>
+                            <button class="btn btn-quiet btn-icon-only"><i class="bi bi-folder2-open"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- App 3: PyPotteryLens -->
+                    <div class="app-card">
+                        <div class="app-top">
+                            <div class="app-logo">🔍</div>
+                            <div class="app-info">
+                                <div class="app-title-line">
+                                    <span class="app-name">PyPottery Lens</span>
+                                    <span class="pill pill-not-installed">○ NOT INSTALLED</span>
                                 </div>
-                                <button class="ml-auto btn btn-disabled w-10">📁</button>
+                                <p class="app-desc">AI-powered pottery documentation tool with object detection and PDF extraction.</p>
+                                <div class="app-chips">
+                                    <span class="chip"><i class="bi bi-ethernet"></i> 5001</span>
+                                    <span class="chip"><i class="bi bi-memory"></i> 8GB</span>
+                                </div>
                             </div>
+                        </div>
+                        <div class="app-bottom">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-download"></i> <span>Install</span>
+                            </button>
+                            <button class="btn btn-quiet btn-icon-only"><i class="bi bi-folder2-open"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="panel flex-1 flex flex-col min-h-0">
+            <!-- Console Log -->
+            <div class="console-card">
                 <div class="console-header">
-                    <span class="text-[11px] font-bold text-[#667eea]">● Console</span>
-                    <button class="ml-auto px-2 py-0.5 bg-gray-200 text-gray-600 rounded text-[10px]">Clear</button>
+                    <div class="console-title">
+                        <span style="color: var(--teal);">●</span>
+                        <i class="bi bi-terminal"></i> System &amp; Application Logs
+                    </div>
+                    <span id="console-last-msg" style="color: #a8a29e;">Ready</span>
                 </div>
-                <div class="console-body" id="consoleOutput">
-                    <div class="text-gray-500">[System] Launcher started successfully.</div>
-                    <div class="text-gray-500">[System] Detecting hardware...</div>
-                    <div class="text-[#89b4fa]">[info] Hardware detection complete. found Apple M2 Pro.</div>
+                <div class="console-stream" id="console-stream">
+                    <div><span class="log-time">[14:32:01]</span> <span class="log-info">[SYS]</span> PyPottery Suite Launcher v1.1 initialized.</div>
+                    <div><span class="log-time">[14:32:01]</span> <span class="log-info">[HW]</span> Hardware detection: NVIDIA CUDA enabled (GeForce RTX).</div>
                 </div>
             </div>
         </div>
 
-        <div id="downloadModal" class="modal-overlay absolute inset-0 z-50 flex items-center justify-center">
-            <div class="modal-content bg-[#f8fafc] w-[480px] p-6 rounded-xl border border-gray-200 shadow-2xl">
-                <div class="flex items-center gap-4 mb-4">
-                    <span class="text-4xl">📦</span>
-                    <div class="flex-1">
-                        <h3 class="font-bold text-lg text-gray-800">Installing PyPotteryInk</h3>
-                        <p id="dlStatus" class="text-sm text-gray-500">Preparing download...</p>
+        <!-- Simulated Cursor -->
+        <div class="cursor" id="cursor"></div>
+
+        <!-- Interactive Installer Hub Modal -->
+        <div class="installer-overlay" id="installer-overlay">
+            <div class="installer-modal">
+                <div class="modal-header">
+                    <div class="modal-logo">🖋️</div>
+                    <div>
+                        <h3 class="modal-title">PyPottery Ink</h3>
+                        <p class="modal-sub">Archaeological Suite Installation Pipeline</p>
                     </div>
                 </div>
-                <div class="w-full bg-gray-200 rounded h-3 overflow-hidden mb-1">
-                    <div id="dlProgress" class="h-full bg-[#667eea] w-0"></div>
+
+                <div class="stepper">
+                    <div class="step active" id="step-1">
+                        <div class="step-circle">1</div>
+                        <span>Download</span>
+                    </div>
+                    <div class="step-conn"></div>
+                    <div class="step" id="step-2">
+                        <div class="step-circle">2</div>
+                        <span>Unpack</span>
+                    </div>
+                    <div class="step-conn"></div>
+                    <div class="step" id="step-3">
+                        <div class="step-circle">3</div>
+                        <span>Ready</span>
+                    </div>
                 </div>
-                <div id="dlDetails" class="text-xs text-center text-gray-500 mb-6">0%</div>
-                <div class="flex justify-center">
-                    <button id="dlCloseBtn" class="btn btn-disabled w-24">Close</button>
+
+                <div class="progress-hero">
+                    <div class="ring-box">
+                        <svg class="ring-svg" width="80" height="80">
+                            <circle class="ring-bg" cx="40" cy="40" r="35"></circle>
+                            <circle class="ring-fill" id="ring-fill" cx="40" cy="40" r="35"></circle>
+                        </svg>
+                        <div class="ring-pct" id="ring-pct">0%</div>
+                    </div>
+                    <div class="status-hero">
+                        <div class="status-hero-title" id="modal-status-title">Downloading release archive...</div>
+                        <div class="status-hero-detail" id="modal-status-detail">Fetching PyPotteryInk from GitHub (38.4 MB)</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button id="btn-modal-close" class="btn btn-primary" style="opacity: 0.5;" disabled>
+                        <span>Installing...</span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Simulated App Window (Simplified) -->
-        <div id="browserWindow"
-            class="browser-window absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[600px] bg-white rounded-lg shadow-2xl opacity-0 transform scale-90 transition-all duration-500 pointer-events-none flex flex-col border border-gray-200">
-            <div class="bg-gray-100 border-b border-gray-300 px-3 py-2 flex items-center gap-3 rounded-t-lg">
-                <div class="flex gap-1.5">
-                    <div class="w-2.5 h-2.5 rounded-full bg-red-400 border border-red-500"></div>
-                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-400 border border-yellow-500"></div>
-                    <div class="w-2.5 h-2.5 rounded-full bg-green-400 border border-green-500"></div>
+        <!-- App Window with Bouncing Pen Loading Screen -->
+        <div class="preview-window" id="preview-window">
+            <div class="preview-titlebar">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
                 </div>
-                <div
-                    class="flex-1 bg-white border border-gray-300 rounded px-2 py-0.5 text-xs text-gray-600 flex items-center gap-2">
-                    <svg width="10" height="10" fill="gray" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                    </svg>
-                    http://localhost:8001
+                <div class="preview-url">
+                    <i class="bi bi-lock-fill"></i> http://localhost:5003 — PyPottery Ink
                 </div>
             </div>
-            <!-- Simple Content -->
-            <div
-                class="flex-1 bg-white flex flex-col items-center justify-center animate-fade-in relative overflow-hidden">
-                <!-- Background pattern -->
-                <div class="absolute inset-0 opacity-[0.03]"
-                    style="background-image: radial-gradient(#667eea 1px, transparent 1px); background-size: 20px 20px;">
+            <div class="preview-content">
+                <div class="pen-wrapper">
+                    <div class="bouncing-pen">🖋️</div>
+                    <div class="pen-shadow"></div>
+                    <h3 class="pen-title">PyPottery <span>Ink</span></h3>
+                    <p class="pen-subtitle">Starting application server &amp; loading AI models...</p>
+                    <div class="pen-dots">
+                        <div class="pen-dot"></div>
+                        <div class="pen-dot"></div>
+                        <div class="pen-dot"></div>
+                    </div>
                 </div>
-
-                <div class="text-8xl mb-6 text-[#667eea] animate-bounce">✒️</div>
-                <div class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">PyPotteryInk</div>
-                <div class="text-gray-400 font-mono text-sm">v1.2.0 • Ready</div>
             </div>
         </div>
 
-        <div id="cursor" class="cursor"></div>
     </div>
 
     <script>
-        const qs = (s) => document.querySelector(s);
-        const cursor = qs('#cursor');
-        const setupBtn = qs('#setupBtn');
-        const envProgress = qs('#envProgress');
-        const envProgressText = qs('#envProgressText');
-        const envStatus = qs('#envStatus');
-        const inkInstallBtn = qs('#inkInstallBtn');
-        const inkLaunchBtn = qs('#inkLaunchBtn');
-        const inkStatus = qs('#inkStatus');
-        const modal = qs('#downloadModal');
-        const dlProgress = qs('#dlProgress');
-        const dlStatus = qs('#dlStatus');
-        const dlDetails = qs('#dlDetails');
-        const dlCloseBtn = qs('#dlCloseBtn');
-        const browser = qs('#browserWindow');
-        const consoleOutput = qs('#consoleOutput');
-        const appWindow = qs('#appWindow');
+        const windowEl = document.getElementById('window');
+        const cursor = document.getElementById('cursor');
 
-        function log(msg, type = 'info') {
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
-            let color = '#cdd6f4';
-            let prefix = '•';
-            if (type === 'info') { color = '#89b4fa'; prefix = '•'; }
-            if (type === 'success') { color = '#a6e3a1'; prefix = '✓'; }
-            if (type === 'progress') { color = '#cba6f7'; prefix = '○'; }
-            if (type === 'warning') { color = '#f9e2af'; prefix = '▲'; }
+        const btnEnvSetup = document.getElementById('btn-env-setup');
+        const envBar = document.getElementById('env-bar');
+        const envLabel = document.getElementById('env-label');
+        const envBadge = document.getElementById('env-badge');
 
-            const line = document.createElement('div');
-            line.innerHTML = `<span style="color:#6b7280">[${time}]</span> <span style="color:${color}">${prefix}</span> ${msg}`;
-            consoleOutput.appendChild(line);
-            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        const cardInk = document.getElementById('card-ink');
+        const badgeInk = document.getElementById('badge-ink');
+        const btnInkAction = document.getElementById('btn-ink-action');
+
+        const installerOverlay = document.getElementById('installer-overlay');
+        const ringFill = document.getElementById('ring-fill');
+        const ringPct = document.getElementById('ring-pct');
+        const modalStatusTitle = document.getElementById('modal-status-title');
+        const modalStatusDetail = document.getElementById('modal-status-detail');
+        const btnModalClose = document.getElementById('btn-modal-close');
+
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+
+        const consoleStream = document.getElementById('console-stream');
+        const consoleLastMsg = document.getElementById('console-last-msg');
+        const previewWindow = document.getElementById('preview-window');
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function log(msg, type = "info") {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            const colorClass = type === "success" ? "log-success" : type === "warn" ? "log-warn" : "log-info";
+            div.innerHTML = `<span class="log-time">[${time}]</span> <span class="${colorClass}">[${type.toUpperCase()}]</span> ${msg}`;
+            consoleStream.appendChild(div);
+            consoleStream.scrollTop = consoleStream.scrollHeight;
+            consoleLastMsg.textContent = msg;
         }
 
-        // Precise offset calculation
-        function getTargetPos(el) {
+        function getPos(el) {
             const r = el.getBoundingClientRect();
-            const w = appWindow.getBoundingClientRect();
-            const scale = 0.75;
+            const w = windowEl.getBoundingClientRect();
+            const scale = 0.85;
             return {
                 x: ((r.left - w.left) + (r.width / 2)) / scale,
                 y: ((r.top - w.top) + (r.height / 2)) / scale
@@ -450,141 +1381,197 @@
         }
 
         async function moveCursor(el) {
-            const pos = getTargetPos(el);
+            const pos = getPos(el);
             cursor.style.top = pos.y + 'px';
             cursor.style.left = pos.x + 'px';
             await wait(700);
 
-            // Click animation
-            el.style.transform = 'scale(0.95)';
-            setTimeout(() => el.style.transform = '', 150);
-            await wait(200);
+            // Button click squeeze effect
+            if (el.style) {
+                el.style.transform = 'scale(0.96)';
+                setTimeout(() => el.style.transform = '', 160);
+            }
+            await wait(220);
         }
 
-        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+        function setRingProgress(percent) {
+            const total = 219.9;
+            const offset = total - (percent / 100 * total);
+            ringFill.style.strokeDashoffset = offset;
+            ringPct.textContent = Math.round(percent) + '%';
+        }
 
-        async function sequence() {
-            reset();
-            await wait(1000);
+        function resetState() {
+            // Reset Environment
+            envBar.style.transition = 'none';
+            envBar.style.width = '0%';
+            envLabel.textContent = 'Virtualenv configuration required.';
+            envBadge.className = 'env-badge not-configured';
+            envBadge.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Not Configured';
+            btnEnvSetup.innerHTML = '<i class="bi bi-gear-wide-connected"></i> <span>Setup Environment</span>';
+            btnEnvSetup.className = 'btn btn-primary';
 
-            // 1. Setup Environment
-            await moveCursor(setupBtn);
+            // Reset Ink Card
+            cardInk.classList.remove('running');
+            badgeInk.className = 'pill pill-not-installed';
+            badgeInk.textContent = '○ NOT INSTALLED';
+            btnInkAction.className = 'btn btn-primary';
+            btnInkAction.innerHTML = '<i class="bi bi-download"></i> <span>Install</span>';
 
-            setupBtn.innerText = "Installing...";
-            envProgressText.innerText = "Creating virtual environment...";
-            log("Creating virtual environment...", "progress");
+            // Reset Modal
+            installerOverlay.style.display = 'none';
+            installerOverlay.style.opacity = '0';
+            setRingProgress(0);
+            step1.className = 'step active';
+            step2.className = 'step';
+            step3.className = 'step';
+            modalStatusTitle.textContent = 'Downloading release archive...';
+            modalStatusDetail.textContent = 'Fetching PyPotteryInk from GitHub (38.4 MB)';
+            btnModalClose.disabled = true;
+            btnModalClose.style.opacity = '0.5';
+            btnModalClose.innerHTML = '<span>Installing...</span>';
 
-            envProgress.style.transition = 'width 1s ease-out';
-            envProgress.style.width = '30%';
-            await wait(1000);
+            // Reset Preview
+            previewWindow.style.opacity = '0';
+            previewWindow.style.pointerEvents = 'none';
 
-            envProgressText.innerText = "Installing dependencies...";
-            log("Installing requirements...", "progress");
-            envProgress.style.width = '80%';
-            await wait(1200);
-
-            envProgress.style.width = '100%';
-            envStatus.innerText = "✅ Ready";
-            envStatus.className = "text-[11px] text-[#10b981] font-medium";
-            envProgressText.innerText = "";
-            setupBtn.innerText = "Reinstall"; // Confirmed behavior
-            setupBtn.className = "btn btn-disabled";
-            log("Environment configured successfully!", "success");
-
-            inkInstallBtn.className = "btn btn-primary w-24";
-
-            await wait(800);
-
-            // 2. Install App
-            await moveCursor(inkInstallBtn);
-
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                qs('.modal-content').style.transform = 'scale(1)';
-            }, 50);
-
-            const modalPos = { x: 475, y: 350 };
-            cursor.style.top = modalPos.y + 'px';
-            cursor.style.left = modalPos.x + 'px';
-
-            log("Downloading PyPotteryInk...", "info");
-
-            for (let i = 0; i <= 100; i += 2) {
-                dlProgress.style.width = i + '%';
-                dlDetails.innerText = i + '% - ' + (i * 0.5).toFixed(1) + ' MB / 50.0 MB';
-                if (i == 40) dlStatus.innerText = "Extracting files...";
-                await wait(20);
-            }
-
-            dlStatus.innerText = "✅ Installation Complete";
-            dlStatus.className = "text-sm text-green-500 font-bold";
-            dlProgress.style.backgroundColor = "#10b981";
-            dlCloseBtn.className = "btn btn-primary w-24";
-            log("PyPotteryInk installed v1.2.0", "success");
-
-            await wait(500);
-            await moveCursor(dlCloseBtn);
-
-            modal.style.opacity = '0';
-            qs('.modal-content').style.transform = 'scale(0.95)';
-            setTimeout(() => modal.style.display = 'none', 200);
-
-            inkStatus.innerText = "Installed";
-            inkStatus.className = "bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded";
-            inkInstallBtn.classList.add('hidden');
-            inkLaunchBtn.classList.remove('hidden', 'btn-disabled');
-            inkLaunchBtn.classList.add('btn-success', 'flex');
-
-            await wait(800);
-
-            // 3. Launch App
-            await moveCursor(inkLaunchBtn);
-            log("Launching PyPotteryInk...", "info");
-
-            await wait(300);
-            browser.style.opacity = '1';
-            browser.style.transform = 'translate(-50%, -50%) scale(1)';
-
-            await wait(3000);
-
-            browser.style.opacity = '0';
-            browser.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            // Reset Cursor
             cursor.style.top = '110%';
             cursor.style.left = '110%';
-            log("App stopped.", "warning");
 
+            consoleStream.innerHTML = `
+                <div><span class="log-time">[14:32:01]</span> <span class="log-info">[SYS]</span> PyPottery Suite Launcher v1.1 initialized.</div>
+                <div><span class="log-time">[14:32:01]</span> <span class="log-info">[HW]</span> Hardware detection: NVIDIA CUDA enabled (GeForce RTX).</div>
+            `;
+            consoleLastMsg.textContent = 'Ready';
+        }
+
+        async function runSequence() {
+            resetState();
+            await wait(1200);
+
+            // Step 1: Move to "Setup Environment"
+            await moveCursor(btnEnvSetup);
+            log("Initializing isolated virtual environment (pypottery_env)...", "info");
+            btnEnvSetup.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> <span>Setting up...</span>';
+
+            envBar.style.transition = 'width 0.9s ease-out';
+            envBar.style.width = '35%';
+            envLabel.textContent = 'Creating virtual environment...';
+            await wait(1000);
+
+            log("Installing PyTorch with CUDA 12.4 acceleration...", "info");
+            envBar.style.width = '80%';
+            envLabel.textContent = 'Installing CUDA-enabled dependencies...';
+            await wait(1100);
+
+            envBar.style.width = '100%';
+            envLabel.textContent = 'Virtualenv configured successfully.';
+            envBadge.className = 'env-badge ready';
+            envBadge.innerHTML = '<i class="bi bi-check-circle-fill"></i> Active &amp; Ready';
+            btnEnvSetup.innerHTML = '<i class="bi bi-check2"></i> <span>Configured</span>';
+            btnEnvSetup.className = 'btn btn-outline';
+            log("Virtual environment ready and verified!", "success");
+            await wait(900);
+
+            // Step 2: Move to "Install" PyPottery Ink
+            await moveCursor(btnInkAction);
+            log("Triggered installation of PyPotteryInk...", "info");
+
+            // Open Installer Modal
+            installerOverlay.style.display = 'flex';
+            await wait(30);
+            installerOverlay.style.opacity = '1';
+
+            // Stepper 1: Download
+            step1.className = 'step active';
+            for (let i = 0; i <= 60; i += 5) {
+                setRingProgress(i);
+                modalStatusDetail.textContent = `Downloading package: ${(i * 0.38).toFixed(1)} MB / 38.4 MB`;
+                await wait(45);
+            }
+
+            // Stepper 2: Extract
+            step1.className = 'step completed';
+            step2.className = 'step active';
+            modalStatusTitle.textContent = 'Extracting and preparing assets...';
+            log("Extracting PyPotteryInk release package...", "info");
+            for (let i = 65; i <= 95; i += 5) {
+                setRingProgress(i);
+                modalStatusDetail.textContent = 'Verifying integrity & entry point...';
+                await wait(40);
+            }
+
+            // Stepper 3: Finalize
+            step2.className = 'step completed';
+            step3.className = 'step completed';
+            setRingProgress(100);
+            modalStatusTitle.textContent = 'Installation Complete!';
+            modalStatusDetail.textContent = 'PyPotteryInk v1.1 is ready for execution.';
+            btnModalClose.disabled = false;
+            btnModalClose.style.opacity = '1';
+            btnModalClose.innerHTML = '<i class="bi bi-check-lg"></i> <span>Complete</span>';
+            log("PyPotteryInk installed successfully.", "success");
+            await wait(600);
+
+            // Move cursor to close modal
+            await moveCursor(btnModalClose);
+            installerOverlay.style.opacity = '0';
+            setTimeout(() => installerOverlay.style.display = 'none', 300);
+
+            // Update Ink card to "Launch App"
+            badgeInk.className = 'pill pill-installed';
+            badgeInk.textContent = '● INSTALLED';
+            btnInkAction.className = 'btn btn-success';
+            btnInkAction.innerHTML = '<i class="bi bi-play-fill"></i> <span>Launch App</span>';
+            await wait(900);
+
+            // Step 3: Launch PyPottery Ink
+            await moveCursor(btnInkAction);
+            log("Starting PyPotteryInk local web server (port 5003)...", "info");
+            cardInk.classList.add('running');
+            badgeInk.className = 'pill pill-running';
+            badgeInk.textContent = '● RUNNING';
+
+            await wait(400);
+            // Show new app window with the bouncing pen
+            previewWindow.style.opacity = '1';
+            previewWindow.style.pointerEvents = 'auto';
+            previewWindow.style.transform = 'translate(-50%, -50%) scale(1)';
+            log("Opened PyPotteryInk in new browser window: http://localhost:5003", "success");
+
+            // Pause to show the bouncing pen loading screen
+            await wait(2000);
+
+            // Close and reset
+            previewWindow.style.opacity = '0';
+            previewWindow.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            cursor.style.top = '110%';
+            cursor.style.left = '110%';
+            log("Application session terminated.", "warn");
             await wait(1500);
-            sequence();
+
+            runSequence();
         }
 
-        function reset() {
-            envStatus.innerText = "Not configured";
-            envStatus.className = "text-[11px] text-gray-500";
-            envProgress.style.transition = 'none';
-            envProgress.style.width = '0';
-            setupBtn.innerText = "Setup Environment";
-            setupBtn.className = "btn btn-primary";
-
-            inkStatus.innerText = "Not installed";
-            inkStatus.className = "bg-gray-200 text-gray-500 text-[10px] px-2 py-1 rounded";
-            inkInstallBtn.classList.remove('hidden');
-            inkLaunchBtn.classList.add('hidden');
-            inkInstallBtn.className = "btn btn-disabled w-24";
-
-            dlProgress.style.width = '0%';
-            dlProgress.style.backgroundColor = '#667eea';
-            dlStatus.innerText = "Preparing download...";
-            dlStatus.className = "text-sm text-gray-500";
-            dlCloseBtn.className = "btn btn-disabled w-24";
-
-            consoleOutput.innerHTML = '';
-            log("[System] Launcher started successfully.");
-            log("[System] Detecting hardware...");
-            log("[info] Hardware detection complete. found Apple M2 Pro.");
+        // Viewport-aware auto-scaling so the entire 1040x870 window fits perfectly inside any iframe
+        function scaleWindowToFit() {
+            const win = document.getElementById('window');
+            if (!win) return;
+            const w = window.innerWidth || document.documentElement.clientWidth;
+            const h = window.innerHeight || document.documentElement.clientHeight;
+            if (!w || !h) return;
+            const scale = Math.min(w / 1040, h / 870);
+            win.style.transform = `scale(${scale})`;
+            win.style.transformOrigin = 'center center';
         }
 
-        setTimeout(sequence, 1000);
+        window.addEventListener('resize', scaleWindowToFit);
+        window.addEventListener('DOMContentLoaded', scaleWindowToFit);
+        window.addEventListener('load', scaleWindowToFit);
+        scaleWindowToFit();
+
+        setTimeout(runSequence, 600);
     </script>
 </body>
 
