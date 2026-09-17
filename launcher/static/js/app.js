@@ -78,9 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
     logCount: document.getElementById("log-count"),
     connectionLostBanner: document.getElementById("banner-connection-lost"),
     btnConnectionRetry: document.getElementById("btn-connection-retry"),
+    modelCachePanel: document.getElementById("model-cache-panel"),
     modelCacheList: document.getElementById("model-cache-list"),
     modelCacheTotal: document.getElementById("model-cache-total"),
     btnModelsRefresh: document.getElementById("btn-models-refresh"),
+    btnModelsToggle: document.getElementById("btn-models-toggle"),
     btnCheckUpdates: document.getElementById("btn-check-updates"),
     btnQuit: document.getElementById("btn-quit"),
     btnChangelog: document.getElementById("btn-changelog"),
@@ -111,12 +113,19 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteDayBadge: document.getElementById("quote-day-badge"),
     heroQuoteText: document.getElementById("hero-quote-text"),
     btnNextQuote: document.getElementById("btn-next-quote"),
+    launchModal: document.getElementById("app-launch-modal"),
+    launchModalLogoBox: document.getElementById("launch-modal-logo-box"),
+    launchModalTitle: document.getElementById("launch-modal-title"),
+    launchModalMsg: document.getElementById("launch-modal-message"),
+    btnLaunchModalClose: document.getElementById("btn-launch-modal-close"),
+    btnLaunchModalBg: document.getElementById("btn-launch-modal-bg"),
   };
 
   const store = {
     apps: {},             // app_id -> app dict
     appOrder: [],          // preserves display order
     downloadProgress: {},  // app_id -> {stage, message, percent}
+    launchingApps: {},     // app_id -> boolean (starting up)
     pendingUpdateVersion: null,
     developerMode: false,
     envExists: false,
@@ -312,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---- Collapsible Dashboard Panel ----
+  // ---- Collapsible Panels ----
 
   function initCollapsiblePanels() {
     const dashPanel = els.systemDashboardPanel || document.getElementById("system-dashboard-panel");
@@ -327,6 +336,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const collapsed = dashPanel.classList.toggle("panel-collapsed");
         dashToggle.setAttribute("aria-expanded", !collapsed);
         localStorage.setItem("pypottery_dashboard_collapsed", collapsed);
+      });
+    }
+
+    const modelsPanel = els.modelCachePanel || document.getElementById("model-cache-panel");
+    const modelsToggle = els.btnModelsToggle || document.getElementById("btn-models-toggle");
+    if (modelsPanel && modelsToggle) {
+      const isCollapsed = localStorage.getItem("pypottery_models_collapsed") === "true";
+      if (isCollapsed) {
+        modelsPanel.classList.add("panel-collapsed");
+        modelsToggle.setAttribute("aria-expanded", "false");
+      }
+      modelsToggle.addEventListener("click", () => {
+        const collapsed = modelsPanel.classList.toggle("panel-collapsed");
+        modelsToggle.setAttribute("aria-expanded", !collapsed);
+        localStorage.setItem("pypottery_models_collapsed", collapsed);
       });
     }
   }
@@ -772,6 +796,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- App Cards Rendering ----
 
   function actionState(app) {
+    if (store.launchingApps[app.id] || app.is_starting) {
+      return { label: "Starting...", cls: "btn-launching", action: "starting" };
+    }
     if (app.is_running) return { label: "Stop App", cls: "btn-danger", action: "stop" };
     if (app.installed) return { label: "Launch App", cls: "btn-success", action: "launch" };
     if (app.developer_mode) return { label: "Checkout Not Found", cls: "btn-outline btn-dev-mode", action: "none" };
@@ -779,15 +806,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function statusBadge(app) {
+    if (store.launchingApps[app.id] || app.is_starting) {
+      return { text: "STARTING", cls: "starting", dot: '<i class="bi bi-arrow-repeat spinner"></i>' };
+    }
     if (app.is_running) return { text: "RUNNING", cls: "running", dot: "●" };
     if (app.installed) return { text: "INSTALLED", cls: "ready", dot: "●" };
     return { text: "NOT&nbsp;INSTALLED", cls: "", dot: "○" };
   }
 
   function appCardHtml(app) {
+    const isStarting = !!(store.launchingApps[app.id] || app.is_starting);
     const action = actionState(app);
     const badge = statusBadge(app);
-    const isRunning = app.is_running;
+    const isRunning = app.is_running && !isStarting;
     const isLocked = !store.envExists;
     
     const versionText = app.installed_version
@@ -819,6 +850,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <span><i class="bi bi-exclamation-circle-fill"></i> ${escapeHtml(dl.message || "Installation error")}</span>
           </div>
         </div>`;
+    } else if (isStarting) {
+      progressHtml = `
+        <div class="app-progress-box app-starting-box">
+          <div class="progress-info-line">
+            <span><i class="bi bi-arrow-repeat spinner" style="margin-right: 4px;"></i> Starting ${escapeHtml(app.name)}...</span>
+            <span class="starting-hint">Opening browser soon</span>
+          </div>
+          <div class="progress-track-app">
+            <div class="progress-fill-app indeterminate"></div>
+          </div>
+        </div>`;
     }
 
     const openBrowserBtn = isRunning
@@ -847,7 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <div class="app-info-body">
             <div class="app-title-line">
-              <span class="app-name">${escapeHtml(app.name)}</span>
+              <span class="app-name">${formatAppNameHtml(app.name)}</span>
               ${badgePillHtml}
             </div>
             <p class="app-desc">${escapeHtml(app.description)}</p>
@@ -866,12 +908,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="app-actions-row">
             <div class="app-actions-left">
               <button class="btn ${action.cls} main-action" data-action="${action.action}" data-app-id="${app.id}"
-                ${isLocked
-                  ? "disabled title='Please set up the Python Environment first to unlock'"
+                ${isLocked || isStarting
+                  ? `disabled title='${isStarting ? "Application is starting up..." : "Please set up the Python Environment first to unlock"}'`
                   : action.action === 'none'
                     ? `disabled title='Clone ${escapeHtml(app.repo_name)} into the repo root to enable it in developer mode'`
                     : ""}>
-                ${action.action === 'launch' ? '<i class="bi bi-play-fill"></i> ' : action.action === 'stop' ? '<i class="bi bi-stop-fill"></i> ' : action.action === 'none' ? '<i class="bi bi-search"></i> ' : '<i class="bi bi-download"></i> '}${action.label}
+                ${action.action === 'starting' ? '<i class="bi bi-arrow-repeat spinner"></i> ' : action.action === 'launch' ? '<i class="bi bi-play-fill"></i> ' : action.action === 'stop' ? '<i class="bi bi-stop-fill"></i> ' : action.action === 'none' ? '<i class="bi bi-search"></i> ' : '<i class="bi bi-download"></i> '}${action.label}
               </button>
               ${openBrowserBtn}
             </div>
@@ -889,6 +931,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const div = document.createElement("div");
     div.textContent = str == null ? "" : String(str);
     return div.innerHTML;
+  }
+
+  function formatAppNameHtml(name) {
+    if (!name) return "";
+    const str = String(name);
+    if (str.startsWith("PyPottery ") && str.length > 10) {
+      return `PyPottery <span class="brand-accent launch-modal-accent app-name-accent">${escapeHtml(str.slice(10))}</span>`;
+    }
+    if (str.startsWith("PyPottery") && str.length > 9) {
+      return `PyPottery<span class="brand-accent launch-modal-accent app-name-accent">${escapeHtml(str.slice(9))}</span>`;
+    }
+    return escapeHtml(str);
   }
 
   let appFilterQuery = "";
@@ -940,6 +994,11 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const app of appsArray) {
       store.apps[app.id] = app;
       store.appOrder.push(app.id);
+      if (app.is_starting) {
+        store.launchingApps[app.id] = true;
+      } else if (app.is_running || app.last_error) {
+        delete store.launchingApps[app.id];
+      }
     }
     renderApps();
   }
@@ -951,18 +1010,106 @@ document.addEventListener("DOMContentLoaded", () => {
       store.appOrder.push(app.id);
     }
 
+    const wasStarting = !!(store.launchingApps[app.id] || (previous && previous.is_starting));
+
+    if (app.is_starting) {
+      store.launchingApps[app.id] = true;
+    } else if (app.is_running || app.last_error) {
+      delete store.launchingApps[app.id];
+    }
+
     // Toast feedback on status changes
     if (previous) {
-      if (!previous.is_running && app.is_running) {
+      if (wasStarting && !app.is_starting && app.is_running) {
+        closeAppLaunchModal(app.id);
+        showToast(`${app.name} is ready! Opening in browser...`, "success", 5000);
+      } else if (wasStarting && !app.is_starting && !app.is_running && app.last_error) {
+        closeAppLaunchModal(app.id);
+        showToast(app.last_error, "error", 6000);
+      } else if (!previous.is_running && app.is_running && !app.is_starting) {
+        closeAppLaunchModal(app.id);
         showToast(`${app.name} is now running`, "success", 5000);
       } else if (previous.is_running && !app.is_running) {
+        closeAppLaunchModal(app.id);
         showToast(`${app.name} has been stopped`, "info", 3000);
       } else if (!previous.installed && app.installed) {
         showToast(`${app.name} installed successfully!`, "success", 5000);
       }
     }
 
+    // Update modal message with live port feedback if open
+    if (activeLaunchingAppId === app.id && els.launchModalMsg) {
+      if (app.port && app.default_port && app.port !== app.default_port) {
+        els.launchModalMsg.textContent = `Starting local server on alternative port ${app.port}...`;
+      }
+    }
+
     renderApps();
+  }
+
+  let activeLaunchingAppId = null;
+
+  function openAppLaunchModal(app) {
+    if (!app || !els.launchModal) return;
+    activeLaunchingAppId = app.id;
+
+    if (els.launchModalLogoBox) {
+      if (app.logo_path) {
+        els.launchModalLogoBox.innerHTML = `<img src="/assets/${app.logo_path}" alt="${escapeHtml(app.name)}">`;
+      } else {
+        const fallbackIcon = app.icon || "bi-collection";
+        els.launchModalLogoBox.innerHTML = `<i class="bi ${fallbackIcon}"></i>`;
+      }
+    }
+
+    if (els.launchModalTitle) {
+      els.launchModalTitle.innerHTML = `Starting ${formatAppNameHtml(app.name)}...`;
+    }
+
+    if (els.launchModalMsg) {
+      els.launchModalMsg.textContent = "Loading AI models & starting local server...";
+    }
+
+    els.launchModal.classList.remove("hidden");
+  }
+
+  function closeAppLaunchModal(appId = null) {
+    if (!els.launchModal) return;
+    if (appId && activeLaunchingAppId && activeLaunchingAppId !== appId) {
+      return;
+    }
+    activeLaunchingAppId = null;
+    els.launchModal.classList.add("hidden");
+  }
+
+  function launchAppAction(appId) {
+    const app = store.apps[appId];
+    store.launchingApps[appId] = true;
+    renderApps();
+    openAppLaunchModal(app || { id: appId, name: appId });
+    showToast(`Starting ${app ? app.name : appId}... The browser window will open automatically when ready.`, "info", 5000);
+    api(`/api/apps/${appId}/launch`, { method: "POST", quiet: true }).then(({ ok, data, error }) => {
+      if (!ok || (data && data.success === false)) {
+        delete store.launchingApps[appId];
+        closeAppLaunchModal(appId);
+        renderApps();
+        const err = (data && data.error) || error || "Failed to start application";
+        showToast(err, "error", 6000);
+      }
+    }).catch((err) => {
+      delete store.launchingApps[appId];
+      closeAppLaunchModal(appId);
+      renderApps();
+      showToast(`Network error trying to start ${app ? app.name : appId}: ${err && err.message ? err.message : err}`, "error", 6000);
+    });
+
+    setTimeout(() => {
+      if (store.launchingApps[appId]) {
+        delete store.launchingApps[appId];
+        closeAppLaunchModal(appId);
+        renderApps();
+      }
+    }, 90000);
   }
 
   // ---- Interactive Installer Hub Controller ----
@@ -974,7 +1121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     store.activeInstallerAppId = appId;
     if (!store.installerLogs[appId]) store.installerLogs[appId] = [];
 
-    if (els.installerAppName) els.installerAppName.textContent = `Installing ${app.name}`;
+    if (els.installerAppName) els.installerAppName.innerHTML = `Installing ${formatAppNameHtml(app.name)}`;
     if (els.installerAppSubtitle) els.installerAppSubtitle.textContent = app.description || "Archaeological Suite Tool";
 
     if (els.installerLogoBox) {
@@ -1182,6 +1329,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---- App Launching Modal Listeners ----
+  if (els.btnLaunchModalClose) {
+    els.btnLaunchModalClose.addEventListener("click", () => closeAppLaunchModal());
+  }
+  if (els.btnLaunchModalBg) {
+    els.btnLaunchModalBg.addEventListener("click", () => closeAppLaunchModal());
+  }
+  if (els.launchModal) {
+    els.launchModal.addEventListener("click", (e) => {
+      if (e.target === els.launchModal) {
+        closeAppLaunchModal();
+      }
+    });
+  }
+
   // ---- Disclaimer Modal Overlay Controller (Forced acceptance on first run) ----
   if (els.disclaimerModal) {
     if (localStorage.getItem("pypottery_disclaimer_accepted") !== "1") {
@@ -1303,7 +1465,7 @@ document.addEventListener("DOMContentLoaded", () => {
           els.btnInstallerLaunch.classList.remove("hidden");
           els.btnInstallerLaunch.onclick = () => {
             closeInstallerModal();
-            api(`/api/apps/${appId}/launch`, { method: "POST" });
+            launchAppAction(appId);
           };
         }
         if (els.btnInstallerDone) {
@@ -1419,9 +1581,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!ok) closeInstallerModal();
       });
     } else if (action === "launch") {
-      showToast(`Launching ${app ? app.name : appId}...`, "info", 3000);
-      api(`/api/apps/${appId}/launch`, { method: "POST" });
+      launchAppAction(appId);
     } else if (action === "stop") {
+      delete store.launchingApps[appId];
       showToast(`Stopping ${app ? app.name : appId}...`, "warning", 3000);
       api(`/api/apps/${appId}/stop`, { method: "POST" });
     } else if (action === "folder") {

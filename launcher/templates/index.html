@@ -9,7 +9,7 @@
   <!-- Local Offline Vendor Assets with CDN Fallback -->
   <link rel="stylesheet" href="../static/vendor/bootstrap-icons/bootstrap-icons.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';">
   <link rel="stylesheet" href="../static/vendor/fonts/fonts.css">
-  <link rel="stylesheet" href="../static/css/style.css?v=1.2.2">
+  <link rel="stylesheet" href="../static/css/style.css?v=1.2.3">
 </head>
 <body>
 <a href="#main-container" class="skip-link">Skip to main content</a>
@@ -288,11 +288,18 @@
           <button id="btn-models-refresh" class="btn btn-outline btn-icon-only" title="Rescan model cache" aria-label="Rescan model cache">
             <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
           </button>
+          <button id="btn-models-toggle" class="btn btn-outline btn-icon-only btn-xs card-toggle-btn" aria-expanded="true" aria-controls="model-cache-body" title="Collapse / Expand Model Cache" aria-label="Collapse or expand downloaded AI models">
+            <i class="bi bi-chevron-up" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
-      <p class="panel-subtitle">AI models are downloaded once and shared across every tool in the suite, so reinstalling or updating an app never re-downloads them. Remove anything you no longer need to free up disk space — the owning app fetches it again next time it's needed.</p>
-      <div id="model-cache-list" class="model-cache-list">
-        <p class="apps-empty">No models downloaded yet. They'll appear here once a tool downloads one.</p>
+      <div class="panel-collapsible-wrapper" id="model-cache-body">
+        <div class="panel-collapsible-inner">
+          <p class="panel-subtitle">AI models are downloaded once and shared across every tool in the suite, so reinstalling or updating an app never re-downloads them. Remove anything you no longer need to free up disk space — the owning app fetches it again next time it's needed.</p>
+          <div id="model-cache-list" class="model-cache-list">
+            <p class="apps-empty">No models downloaded yet. They'll appear here once a tool downloads one.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -574,10 +581,37 @@
   </div>
 </div>
 
+<!-- App Launch Loading Modal (with Bouncing Logo) -->
+<div id="app-launch-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="launch-modal-title">
+  <div class="launch-modal-card">
+    <button id="btn-launch-modal-close" class="about-close-btn" title="Run in background" aria-label="Close dialog and run in background"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+    <div class="launch-modal-logo-stage">
+      <div id="launch-modal-logo-box" class="launch-modal-logo-box">
+        <!-- Injected dynamically: app logo or icon -->
+      </div>
+      <div class="launch-modal-shadow"></div>
+    </div>
+    <h2 id="launch-modal-title" class="launch-modal-title">Starting Application...</h2>
+    <p id="launch-modal-message" class="launch-modal-message">Loading AI models &amp; starting local server...</p>
+    
+    <div class="launch-modal-progress">
+      <div class="progress-track-app">
+        <div class="progress-fill-app indeterminate"></div>
+      </div>
+    </div>
+    
+    <p class="launch-modal-hint"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> A new browser window will open automatically when ready.</p>
+    
+    <div class="launch-modal-actions">
+      <button id="btn-launch-modal-bg" class="btn btn-outline btn-sm">Run in Background</button>
+    </div>
+  </div>
+</div>
+
 <!-- Floating Toast Container -->
 <div id="toast-container" class="toast-container"></div>
 
-<script src="{{ url_for('static', filename='js/app.js') }}?v=1.2.2"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v=1.2.3"></script>
 </body>
 </html>
 

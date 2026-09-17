@@ -648,13 +648,17 @@ body {
   overflow: hidden;
 }
 
-.system-dashboard-panel.panel-collapsed .panel-collapsible-wrapper {
+.card.panel-collapsed .panel-collapsible-wrapper,
+.system-dashboard-panel.panel-collapsed .panel-collapsible-wrapper,
+.model-cache-panel.panel-collapsed .panel-collapsible-wrapper {
   grid-template-rows: 0fr;
   opacity: 0;
   pointer-events: none;
 }
 
-.system-dashboard-panel.panel-collapsed .card-toggle-btn i {
+.card.panel-collapsed .card-toggle-btn i,
+.system-dashboard-panel.panel-collapsed .card-toggle-btn i,
+.model-cache-panel.panel-collapsed .card-toggle-btn i {
   transform: rotate(180deg);
 }
 
@@ -1023,6 +1027,14 @@ body {
   margin-bottom: 24px;
 }
 
+.model-cache-panel .card-header {
+  transition: margin-bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.model-cache-panel.panel-collapsed .card-header {
+  margin-bottom: 0;
+}
+
 .model-cache-list {
   display: flex;
   flex-direction: column;
@@ -1279,6 +1291,11 @@ body {
   line-height: 1.2;
 }
 
+.app-name .app-name-accent,
+.app-name .brand-accent {
+  color: #ea580c;
+}
+
 .status-badge-pill {
   font-size: 0.70rem;
   font-weight: 700;
@@ -1309,6 +1326,18 @@ body {
   color: #166534;
   border-color: #bbf7d0;
   font-weight: 800;
+}
+
+.status-badge-pill.starting {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fcd34d;
+  font-weight: 800;
+}
+
+.status-badge-pill.starting .spinner {
+  font-size: 0.72rem;
+  color: #d97706;
 }
 
 .app-desc {
@@ -1422,6 +1451,55 @@ body {
   background: linear-gradient(90deg, var(--teal), var(--primary));
   border-radius: 3px;
   will-change: width;
+}
+
+.progress-fill-app.indeterminate {
+  width: 45% !important;
+  background: linear-gradient(90deg, #f59e0b, var(--primary));
+  animation: indeterminateBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes indeterminateBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.app-starting-box {
+  background: #fefce8;
+  border-color: #fef08a;
+  animation: startingBoxFade 0.3s ease;
+}
+
+@keyframes startingBoxFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.app-starting-box .progress-info-line {
+  color: #854d0e;
+  font-weight: 600;
+}
+
+.app-starting-box .starting-hint {
+  color: #a16207;
+  font-weight: 500;
+  font-size: 0.72rem;
+}
+
+.btn-launching {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border: 1px solid #fcd34d !important;
+  cursor: wait !important;
+  opacity: 0.95;
+}
+
+.btn-launching .spinner {
+  margin-right: 4px;
 }
 
 /* Buttons System */
@@ -2085,6 +2163,10 @@ body {
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.01em;
+}
+
+.installer-app-name .brand-accent {
+  color: #ea580c;
 }
 
 .installer-app-subtitle {
@@ -3205,4 +3287,133 @@ body {
 }
 .app-footer a:hover {
   text-decoration-color: var(--primary);
+}
+
+/* ── App Launch Loading Modal (with Bouncing Logo) ── */
+.launch-modal-card {
+  position: relative;
+  background: linear-gradient(175deg, #ffffff 0%, #fdfbf7 55%, #f7f1e7 100%);
+  border-radius: 22px;
+  width: 90%;
+  max-width: 440px;
+  padding: 34px 28px 26px;
+  box-shadow: 0 16px 40px -8px rgba(28, 25, 23, 0.25), 0 2px 6px rgba(28, 25, 23, 0.08);
+  border: 1px solid var(--border-light);
+  animation: modalPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  overflow: hidden;
+}
+
+.launch-modal-logo-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 105px;
+  margin: 0 auto 16px;
+}
+
+.launch-modal-logo-box {
+  width: 78px;
+  height: 78px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  z-index: 2;
+  animation: logoBounce 1.1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+  will-change: transform;
+}
+
+.launch-modal-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.launch-modal-logo-box i {
+  font-size: 2.4rem;
+  color: var(--primary);
+}
+
+.launch-modal-shadow {
+  width: 56px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(41, 37, 36, 0.28) 0%, rgba(41, 37, 36, 0) 70%);
+  margin-top: 6px;
+  animation: shadowScale 1.1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes logoBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  16% {
+    transform: translateY(3px) scale(1.1, 0.9);
+  }
+  48% {
+    transform: translateY(-28px) scale(0.95, 1.05);
+  }
+  78% {
+    transform: translateY(0) scale(1.04, 0.96);
+  }
+}
+
+@keyframes shadowScale {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  48% {
+    transform: scale(0.5);
+    opacity: 0.25;
+  }
+}
+
+.launch-modal-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.launch-modal-title .launch-modal-accent,
+.launch-modal-title .brand-accent {
+  color: #ea580c;
+}
+
+.launch-modal-message {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.launch-modal-progress {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.launch-modal-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.launch-modal-actions {
+  display: flex;
+  justify-content: center;
 }

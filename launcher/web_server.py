@@ -223,6 +223,7 @@ def serialize_app(app: AppInfo) -> dict:
         "repo_owner": app.repo_owner,
         "repo_name": app.repo_name,
         "port": app.port,
+        "default_port": getattr(app, "default_port", app.port),
         "min_ram_gb": app.min_ram_gb,
         "recommended_ram_gb": app.recommended_ram_gb,
         "requires_gpu": app.requires_gpu,
@@ -233,6 +234,8 @@ def serialize_app(app: AppInfo) -> dict:
         "latest_version": app.latest_version,
         "update_available": app.update_available,
         "is_running": app.is_running,
+        "is_starting": getattr(app, "is_starting", False),
+        "last_error": getattr(app, "last_error", None),
         "developer_mode": DEVELOPER_MODE,
     }
 
@@ -763,7 +766,10 @@ def create_app(state: LauncherState) -> Flask:
 
         ok = state.app_manager.launch_app(app_id)
         app_info = state.app_manager.apps.get(app_id)
-        return jsonify(success=ok, app=serialize_app(app_info) if app_info else None)
+        if not ok:
+            err = (app_info.last_error if app_info else None) or "Failed to start application"
+            return jsonify(success=False, error=err, app=serialize_app(app_info) if app_info else None), 409
+        return jsonify(success=True, app=serialize_app(app_info) if app_info else None)
 
     @app.route("/api/apps/<app_id>/stop", methods=["POST"])
     def stop_app(app_id):
@@ -771,7 +777,10 @@ def create_app(state: LauncherState) -> Flask:
             return jsonify(success=False, error="Not initialized"), 409
         ok = state.app_manager.stop_app(app_id)
         app_info = state.app_manager.apps.get(app_id)
-        return jsonify(success=ok, app=serialize_app(app_info) if app_info else None)
+        if not ok:
+            err = (app_info.last_error if app_info else None) or f"Failed to stop {app_id}"
+            return jsonify(success=False, error=err, app=serialize_app(app_info) if app_info else None), 409
+        return jsonify(success=True, app=serialize_app(app_info) if app_info else None)
 
     @app.route("/api/apps/<app_id>/folder", methods=["POST"])
     def open_folder(app_id):

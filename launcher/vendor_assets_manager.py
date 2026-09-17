@@ -152,6 +152,15 @@ class VendorAssetsManager:
             shutil.copytree(self.shared_vendor_path, target_vendor)
             print(f"  [Vendor] Synchronized vendor assets to {target_vendor}")
 
+            # Also sync to app/static/vendor if present (e.g., PyPotteryScan)
+            app_static = Path(app_dir) / "app" / "static"
+            if app_static.exists():
+                app_target = app_static / "vendor"
+                if app_target.exists():
+                    shutil.rmtree(app_target)
+                shutil.copytree(self.shared_vendor_path, app_target)
+                print(f"  [Vendor] Synchronized vendor assets to {app_target}")
+
             # Also sync to interactive_app/static/vendor if present (e.g., PyPotteryTrace)
             interactive_static = Path(app_dir) / "interactive_app" / "static"
             if interactive_static.exists():

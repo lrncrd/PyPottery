@@ -24,7 +24,12 @@ from urllib.error import URLError
 
 from .error_messages import classify
 from .logging_setup import app_log_dir, guarded
-from .process_utils import no_window_kwargs, open_path
+from .process_utils import (
+    find_available_port_for_app,
+    find_port_owner,
+    no_window_kwargs,
+    open_path,
+)
 
 logger = logging.getLogger("launcher.apps")
 
@@ -47,12 +52,15 @@ class AppInfo:
     recommended_ram_gb: int
     requires_gpu: bool
     icon: str
+    default_port: int = 5000
     logo_path: Optional[str] = None
     installed: bool = False
     installed_version: Optional[str] = None
     latest_version: Optional[str] = None
     update_available: bool = False
     is_running: bool = False
+    is_starting: bool = False
+    last_error: Optional[str] = None
     process: Optional[subprocess.Popen] = None
 
 
@@ -64,6 +72,7 @@ class AppStatus:
     port: int
     pid: Optional[int] = None
     url: Optional[str] = None
+    is_starting: bool = False
 
 
 @dataclass
@@ -132,6 +141,7 @@ class AppManager:
                 config = json.load(f)
             
             for app_id, app_config in config.get("apps", {}).items():
+                port_val = app_config.get("port", 5000)
                 self.apps[app_id] = AppInfo(
                     id=app_id,
                     name=app_config.get("name", app_id),
@@ -139,7 +149,8 @@ class AppManager:
                     repo_owner=app_config.get("repo_owner", "lrncrd"),
                     repo_name=app_config.get("repo_name", app_id),
                     entry_script=app_config.get("entry_script", "app.py"),
-                    port=app_config.get("port", 5000),
+                    port=port_val,
+                    default_port=port_val,
                     min_ram_gb=app_config.get("min_ram_gb", 4),
                     recommended_ram_gb=app_config.get("recommended_ram_gb", 8),
                     requires_gpu=app_config.get("requires_gpu", False),
@@ -573,6 +584,31 @@ class AppManager:
         self._report_status(app_id, f"{app.name} uninstalled")
         return True
     
+    def _is_our_app_running(self, app: AppInfo, port: int) -> bool:
+        """Check if an active listener on port belongs to this application."""
+        if app.id in self._processes:
+            proc = self._processes[app.id]
+            if proc.poll() is None:
+                return True
+        # Check HTTP health/probe endpoint
+        try:
+            req = Request(f"http://127.0.0.1:{port}/health", headers={"User-Agent": "PyPotteryLauncher"})
+            with urlopen(req, timeout=0.8) as resp:
+                if resp.status == 200:
+                    return True
+        except Exception:
+            pass
+        # Check root page
+        try:
+            req = Request(f"http://127.0.0.1:{port}/", headers={"User-Agent": "PyPotteryLauncher"})
+            with urlopen(req, timeout=0.8) as resp:
+                data = resp.read(4096).decode("utf-8", errors="ignore")
+                if app.id.lower() in data.lower() or "pypottery" in data.lower():
+                    return True
+        except Exception:
+            pass
+        return False
+
     def launch_app(self, app_id: str, open_browser: bool = True) -> bool:
         """
         Launch an application.
@@ -589,31 +625,59 @@ class AppManager:
             self._report_status(app_id, f"Unknown application: {app_id}")
             return False
         
+        app.last_error = None
+
         if not app.installed:
-            self._report_status(app_id, f"{app.name} is not installed")
+            app.last_error = f"{app.name} is not installed"
+            self._report_status(app_id, app.last_error)
             return False
         
-        # Check if already running
-        if app_id in self._processes:
-            proc = self._processes[app_id]
-            if proc.poll() is None:
-                self._report_status(app_id, f"{app.name} is already running")
-                if open_browser:
-                    webbrowser.open(f"http://localhost:{app.port}")
-                return True
-        
-        # Check port
-        if self.is_port_in_use(app.port):
-            self._report_status(app_id, f"Port {app.port} is already in use")
-            return False
-        
+        # Check if already running on its current or default port
+        active_port = app.port or app.default_port
+        if self.is_port_in_use(active_port) and self._is_our_app_running(app, active_port):
+            app.is_running = True
+            app.is_starting = False
+            self._report_status(app_id, f"{app.name} is already running on port {active_port}")
+            if open_browser:
+                webbrowser.open(f"http://localhost:{active_port}")
+            return True
+
+        # Mark application as starting
+        app.is_starting = True
+        app.is_running = False
+
+        # Determine target port:
+        # If default port is available, use it.
+        # If default port is in use by another process, allocate an alternative port.
+        target_port = app.default_port
+        if self.is_port_in_use(target_port):
+            owner = find_port_owner(target_port)
+            try:
+                target_port = find_available_port_for_app(app.default_port)
+                logger.info(
+                    "Default port %s busy (%s). Starting %s on alternative port %s",
+                    app.default_port, owner or "another process", app.name, target_port
+                )
+                self._report_status(
+                    app_id,
+                    f"Port {app.default_port} in use ({owner or 'occupied'}). Starting on port {target_port}..."
+                )
+            except Exception as e:
+                msg = f"Port {app.default_port} is in use and no alternative port was found: {e}"
+                app.is_starting = False
+                app.last_error = msg
+                self._report_status(app_id, msg)
+                return False
+
+        app.port = target_port
+
         app_path = self._app_path(app_id)
         script_path = app_path / app.entry_script
 
         self._report_status(app_id, f"Syncing offline web assets for {app.name}...")
         self.vendor_assets_manager.sync_to_app(app_path)
 
-        self._report_status(app_id, f"Starting {app.name}...")
+        self._report_status(app_id, f"Starting {app.name} on port {target_port}...")
         
         # Set environment
         env = os.environ.copy()
@@ -623,6 +687,9 @@ class AppManager:
         # fetched by one app isn't downloaded again by another. Apps run standalone
         # (this var unset) keep caching locally, unchanged.
         env["PYPOTTERY_MODEL_CACHE"] = str(self.base_path / "model_cache")
+        env["PORT"] = str(target_port)
+        env["PYPOTTERY_PORT"] = str(target_port)
+        env["FLASK_RUN_PORT"] = str(target_port)
         # Fix encoding issues on Windows with emoji in print statements
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUTF8"] = "1"
@@ -668,19 +735,55 @@ class AppManager:
                 self._log_files[app_id] = log_file
 
             app.is_running = True
+            app.is_starting = True
             app.process = process
 
-            # NOTE: Don't open browser here - Flask apps open it themselves
-            # The Flask apps already have browser opening logic built-in
+            threading.Thread(
+                target=self._watch_app_startup,
+                args=(app_id, process),
+                daemon=True,
+            ).start()
 
-            self._report_status(app_id, f"{app.name} started on port {app.port}")
+            self._report_status(app_id, f"Starting {app.name}...")
             return True
 
         except Exception as e:
             logger.exception("Failed to start %s", app_id)
             self._close_app_log(app_id)
-            self._report_status(app_id, f"Failed to start {app.name}. {classify(e).message}")
+            app.is_starting = False
+            msg = f"Failed to start {app.name}. {classify(e).message}"
+            app.last_error = msg
+            self._report_status(app_id, msg)
             return False
+
+    def _watch_app_startup(self, app_id: str, process: subprocess.Popen):
+        """
+        Poll app until its port is in use and accepting connections,
+        then mark is_starting = False and emit updated status.
+        """
+        app = self.apps.get(app_id)
+        if not app:
+            return
+        port = app.port
+        start_time = time.time()
+        # Wait up to 120 seconds for port to open
+        while time.time() - start_time < 120:
+            if process.poll() is not None:
+                # App process terminated unexpectedly before port opened
+                app.is_running = False
+                app.is_starting = False
+                self._close_app_log(app_id)
+                msg = f"{app.name} process exited before becoming ready. Check logs/apps/{app_id}.log"
+                app.last_error = msg
+                self._report_status(app_id, msg)
+                return
+            if self.is_port_in_use(port):
+                app.is_starting = False
+                self._report_status(app_id, f"{app.name} is ready on port {port}")
+                return
+            time.sleep(0.4)
+        if app_id in self.apps:
+            self.apps[app_id].is_starting = False
 
     def _open_app_log(self, app_id: str):
         """
@@ -740,6 +843,9 @@ class AppManager:
             del self._processes[app_id]
             self._close_app_log(app_id)
             app.is_running = False
+            app.is_starting = False
+            app.last_error = None
+            app.port = app.default_port
             app.process = None
 
             self._report_status(app_id, f"{app.name} stopped")
@@ -747,7 +853,9 @@ class AppManager:
 
         except Exception as e:
             logger.exception("Failed to stop %s", app_id)
-            self._report_status(app_id, f"Failed to stop {app.name}: {e}")
+            msg = f"Failed to stop {app.name}: {e}"
+            app.last_error = msg
+            self._report_status(app_id, msg)
             return False
 
     def _terminate_tree(self, process: subprocess.Popen):
@@ -831,7 +939,8 @@ class AppManager:
             is_running=is_running,
             port=app.port,
             pid=pid,
-            url=f"http://localhost:{app.port}" if is_running else None
+            url=f"http://localhost:{app.port}" if is_running else None,
+            is_starting=app.is_starting if is_running else False,
         )
     
     def stop_all_apps(self):
