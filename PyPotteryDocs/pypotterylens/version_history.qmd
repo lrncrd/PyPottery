@@ -19,7 +19,7 @@ format: html
 
 **Annotation tab**
 
--   Nested vessel support: new Polygon tool (LabelMe-style) to outline by hand vessels drawn inside other vessels, which the model would otherwise miss; each polygon is extracted as its own card
+-   Nested vessel support: new Polygon tool (LabelMe-style) to outline by hand vessels drawn inside other vessels, which the model would otherwise miss; each polygon is extracted as its own card, and the inner area is whitened out of the containing card
 -   Zoom & pan on the canvas, and a visible ring cursor for the brush and eraser
 -   Colorize mode: every disconnected mask region gets a distinct hue, so fused regions are immediately visible
 

@@ -25,6 +25,8 @@ Purpose: give readers the map before the details.
 **Project Manager** → **1. PDF Document Processing** → **2. Apply Model** → **3. Review Annotations & Masks** → **4. Tabular Information** → **5. Post Processing** → **Export ZIP**
 :::
 
+<iframe src="animations/workflow_overview.html" style="width: 100%; height: 310px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## Key terms
 
 | Term | Meaning |
@@ -201,13 +203,13 @@ becomes a clean polygon; 4) status text confirms saving.
 
 Some draughtsmen draw a small vessel *inside* the section of a larger one. The model was trained on isolated vessels, so it usually finds only the outer silhouette and the inner vessel is missed.
 
-Use **Polygon** (`P`) to outline the inner vessel by hand. **Each polygon becomes its own card** when you extract, so the inner vessel gets its own image and its own row in the table.
+Use **Polygon** (`P`) to outline the inner vessel by hand. **Each polygon becomes its own card** when you extract, so the inner vessel gets its own image and its own row in the table. The inner vessel is also **automatically whitened out of the larger card**, so it does not appear twice. A polygon counts as "inside" another one when it is smaller and its center falls within the larger one.
 
 <!--
 ANIMATION (NEW, priority: high) - "Nested vessel"
 Storyboard: 1) a large vessel with a small one drawn inside; 2) P, click 5 vertices around
 the small one, double-click to close; 3) the Vessels & Polygons counter goes 1 -> 2;
-4) two cards after extraction.
+4) two cards after extraction: the small vessel alone, and the big one with a white gap where it was.
 -->
 
 ## Check the outlines with Colorize

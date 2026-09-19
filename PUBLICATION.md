@@ -114,6 +114,13 @@ optional overrides with an in-app default, never required.
 - **Minor uniformity**: `FUNDING.yml` added to Scan/Trace (`release.yml` was
   already byte-identical in all 5). `PRODUCT.md` in Scan is gitignored, so it
   was never a real drift.
+- **Lens nested-vessel whiteout restored** (2026-09-19, on `beta`). The call to
+  the old region-based helper was dropped in `6801f72` when extraction moved to
+  polygon-per-card, so an inner vessel showed up in both its own card and the
+  outer one. New `_whiteout_nested_polygons()` in `PyPotteryLens/utils.py`
+  clears polygons that are strictly smaller than the card's polygon and whose
+  centroid lies inside it (duplicates never blank each other). Tested on a
+  synthetic plate; **still to check on a real plate with a nested vessel**.
 
 ## P0 - blocks a multi-platform release
 
@@ -153,16 +160,6 @@ optional overrides with an in-app default, never required.
 
 ## P2 - polish, fine to ship without and follow up later
 
-- [ ] **Lens: nested vessels are no longer whitened out of the containing card.**
-  Found while verifying the docs against the code (2026-09-19). The 0.3.0
-  notes/README said an inner vessel's area is subtracted from the outer card,
-  but the call to `_whiteout_inner_polygons()` in `PyPotteryLens/utils.py`
-  was removed in commit `6801f72` ("upgrade") when extraction moved to
-  polygon-per-card, and the function is now dead code. Today each polygon
-  becomes its own card and the outer card still shows the inner vessel. Decide:
-  restore the whiteout for `extract_masks_from_project` (a polygon whose
-  centroid falls inside another polygon), or keep the current behaviour. The
-  docs and README now describe the current behaviour.
 - [ ] **Lens: exported IDs follow a plain alphabetical file order**
   (`sorted(card_images)` in `export_project_results`), so `..._page_10_...`
   sorts before `..._page_2_...`. The extraction step already uses natural

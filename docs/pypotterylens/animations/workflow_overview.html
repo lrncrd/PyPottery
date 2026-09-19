@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPotteryLens — Workflow Pipeline Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c2410c;
+            --primary-light: #ea580c;
+            --primary-soft: rgba(194, 65, 12, 0.08);
+            --primary-glow: rgba(194, 65, 12, 0.22);
+            --teal: #0d9488;
+            --teal-soft: rgba(13, 148, 136, 0.10);
+            --gold: #d97706;
+            --bg-page: #fbf9f5;
+            --bg-surface: #f5efe6;
+            --border: #e8e3d8;
+            --text-main: #1c1917;
+            --text-dim: #57534e;
+            --text-muted: #78716c;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius-xs: 5px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            font-family: var(--font-sans);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 6px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Container Card */
+        .pipeline-window {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 32px -4px rgba(120, 53, 15, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+            width: 100%;
+            max-width: 960px;
+            height: 286px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Top Header Strip */
+        .pipeline-header {
+            height: 38px;
+            background: #fdfbf7;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .pipeline-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-accent {
+            color: var(--primary);
+        }
+
+        /* Dynamic Step Indicator Pill */
+        .step-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-soft);
+            border: 1px solid rgba(194, 65, 12, 0.2);
+            color: var(--primary);
+            padding: 2px 9px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+        }
+
+        .step-pill .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: pulseDot 1.4s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+
+        /* Progress Bar Track */
+        .progress-track {
+            height: 3px;
+            width: 100%;
+            background: #f1ede4;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c2410c, #ea580c, #0d9488);
+            transition: width 0.4s ease;
+        }
+
+        /* Main Stages Strip */
+        .stages-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            gap: 4px;
+            background: #ffffff;
+            position: relative;
+        }
+
+        /* Single Stage Card */
+        .stage-card {
+            flex: 1;
+            min-width: 0;
+            height: 220px;
+            background: #ffffff;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            padding: 7px 6px;
+            gap: 6px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .stage-card.active {
+            border-color: var(--primary);
+            background: #fffbf7;
+            box-shadow: 0 6px 18px var(--primary-glow);
+            transform: translateY(-4px) scale(1.02);
+            z-index: 10;
+        }
+
+        .stage-card.completed {
+            border-color: rgba(194, 65, 12, 0.4);
+            background: #ffffff;
+        }
+
+        /* Stage Header Tab */
+        .stage-tab-header {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stage-num-badge {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #f1ede4;
+            color: var(--text-dim);
+            font-size: 0.62rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .stage-card.active .stage-num-badge {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .stage-card.completed .stage-num-badge {
+            background: #0d9488;
+            color: #ffffff;
+        }
+
+        .stage-name {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s ease;
+        }
+
+        .stage-card.active .stage-name {
+            color: var(--primary);
+        }
+
+        /* Thumbnail Canvas Box */
+        .stage-thumbnail {
+            flex: 1;
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stage-card.active .stage-thumbnail {
+            background: #ffffff;
+            border-color: rgba(194, 65, 12, 0.3);
+            box-shadow: inset 0 0 0 1px rgba(194, 65, 12, 0.1);
+        }
+
+        /* Output Pill at bottom */
+        .stage-output-pill {
+            background: #f5efe6;
+            color: var(--text-dim);
+            font-size: 0.62rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 2.5px 4px;
+            border-radius: var(--radius-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.25s ease;
+        }
+
+        .stage-card.active .stage-output-pill {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .stage-card.completed .stage-output-pill {
+            background: var(--teal-soft);
+            color: var(--teal);
+        }
+
+        /* Connector Arrow */
+        .pipeline-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d6cbbe;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            width: 12px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .pipeline-connector.flow-active {
+            color: var(--primary);
+            transform: scale(1.25);
+        }
+
+        /* Final Stage 7: Export ZIP */
+        .stage-card.export-stage {
+            border-style: dashed;
+            background: #fcfcfc;
+        }
+
+        .stage-card.export-stage.active {
+            border-style: solid;
+            border-color: #0d9488;
+            background: #f0fdfa;
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25);
+        }
+
+        .stage-card.export-stage.active .stage-num-badge {
+            background: #0d9488;
+            color: #ffffff;
+        }
+
+        .stage-card.export-stage.active .stage-name {
+            color: #0d9488;
+        }
+
+        /* SVG Thumbnail Graphics */
+        .thumb-svg {
+            width: 100%;
+            height: 100%;
+            max-height: 112px;
+            display: block;
+        }
+
+        /* Hover hint */
+        .pipeline-footer {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding-bottom: 5px;
+            background: #ffffff;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pipeline-window" id="pipelineWindow">
+        <!-- Header -->
+        <div class="pipeline-header">
+            <div class="header-left">
+                <div class="traffic-lights">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="pipeline-title">
+                    PyPottery<span class="brand-accent">Lens</span>
+                    <span style="color: var(--text-muted); font-weight: 500;">Workflow Pipeline Map</span>
+                </div>
+            </div>
+
+            <div class="step-pill" id="stepPill">
+                <span class="pill-dot"></span>
+                <span id="stepPillText">Step 1: Project Manager</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-track">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Stages Grid Container -->
+        <div class="stages-container">
+
+            <!-- Stage 1: Project Manager -->
+            <div class="stage-card" id="stage1">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">0</span>
+                    <span class="stage-name">Project</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- Mini Project Card -->
+                        <rect x="8" y="10" width="84" height="60" rx="6" fill="#ffffff" stroke="#e8e3d8" stroke-width="1.5"/>
+                        <rect x="8" y="10" width="84" height="3" fill="#0d9488"/>
+                        <!-- Stamp Icon -->
+                        <rect x="14" y="18" width="20" height="20" rx="3" fill="#f5efe6" stroke="#e8e3d8" stroke-width="1"/>
+                        <circle cx="24" cy="28" r="5" fill="#c2410c"/>
+                        <!-- Card title & active pill -->
+                        <rect x="38" y="18" width="34" height="6" rx="2" fill="#1c1917"/>
+                        <rect x="38" y="27" width="22" height="7" rx="3.5" fill="#0d9488"/>
+                        <text x="49" y="32.5" font-family="sans-serif" font-size="4.5" fill="#fff" text-anchor="middle" font-weight="bold">ACTIVE</text>
+                        <!-- Stats rows -->
+                        <rect x="14" y="44" width="72" height="18" rx="3" fill="#fbf9f5" stroke="#f1ede4" stroke-width="1"/>
+                        <rect x="18" y="49" width="16" height="3" rx="1.5" fill="#a8a29e"/>
+                        <rect x="18" y="54" width="10" height="4" rx="1.5" fill="#c2410c"/>
+                        <rect x="42" y="49" width="16" height="3" rx="1.5" fill="#a8a29e"/>
+                        <rect x="42" y="54" width="8" height="4" rx="1.5" fill="#1c1917"/>
+                        <rect x="66" y="49" width="14" height="3" rx="1.5" fill="#a8a29e"/>
+                        <rect x="66" y="54" width="8" height="4" rx="1.5" fill="#1c1917"/>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">Project Dossier</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn1">➔</div>
+
+            <!-- Stage 2: 1. PDF Processing -->
+            <div class="stage-card" id="stage2">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">1</span>
+                    <span class="stage-name">PDF Extract</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- Book split spread into two plates -->
+                        <rect x="10" y="14" width="36" height="52" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                        <rect x="54" y="14" width="36" height="52" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                        <!-- Spine cut mark -->
+                        <line x1="50" y1="12" x2="50" y2="68" stroke="#c2410c" stroke-width="1.5" stroke-dasharray="2 2"/>
+                        <!-- Plate page drawings: Left page -->
+                        <path d="M16 26 Q28 22 40 26 Q36 34 28 36 Q20 34 16 26 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                        <path d="M18 44 Q28 41 38 44 Q35 52 28 54 Q21 52 18 44 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                        <!-- Plate page drawings: Right page -->
+                        <path d="M60 26 Q72 22 84 26 Q80 34 72 36 Q64 34 60 26 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                        <path d="M62 44 Q72 41 82 44 Q79 52 72 54 Q65 52 62 44 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                        <!-- Page tags -->
+                        <text x="28" y="63" font-family="sans-serif" font-size="4" fill="#a8a29e" text-anchor="middle">page_0a.jpg</text>
+                        <text x="72" y="63" font-family="sans-serif" font-size="4" fill="#a8a29e" text-anchor="middle">page_0b.jpg</text>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">Plates Extracted</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn2">➔</div>
+
+            <!-- Stage 3: 2. Apply Model -->
+            <div class="stage-card" id="stage3">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">2</span>
+                    <span class="stage-name">AI Vision</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- Plate with YOLO detection masks -->
+                        <rect x="14" y="10" width="72" height="60" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                        <!-- Upper vessel with mask -->
+                        <path d="M26 22 Q50 18 74 22 Q68 34 50 36 Q32 34 26 22 Z" fill="rgba(194, 65, 12, 0.25)" stroke="#c2410c" stroke-width="1.4"/>
+                        <rect x="22" y="18" width="56" height="21" fill="none" stroke="#ea580c" stroke-width="1" stroke-dasharray="2 1.5"/>
+                        <rect x="22" y="14" width="22" height="5" rx="1" fill="#ea580c"/>
+                        <text x="33" y="17.8" font-family="sans-serif" font-size="3.5" fill="#fff" text-anchor="middle" font-weight="bold">vessel 0.96</text>
+                        <!-- Lower vessel with mask -->
+                        <path d="M30 46 Q50 43 70 46 Q66 58 50 60 Q34 58 30 46 Z" fill="rgba(13, 148, 136, 0.25)" stroke="#0d9488" stroke-width="1.4"/>
+                        <rect x="26" y="42" width="48" height="21" fill="none" stroke="#0d9488" stroke-width="1" stroke-dasharray="2 1.5"/>
+                        <rect x="26" y="38" width="22" height="5" rx="1" fill="#0d9488"/>
+                        <text x="37" y="41.8" font-family="sans-serif" font-size="3.5" fill="#fff" text-anchor="middle" font-weight="bold">vessel 0.91</text>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">AI Masks Outline</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn3">➔</div>
+
+            <!-- Stage 4: 3. Annotations & Masks -->
+            <div class="stage-card" id="stage4">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">3</span>
+                    <span class="stage-name">Review</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- Single extracted card with polygon vertices & scale -->
+                        <rect x="16" y="10" width="68" height="60" rx="4" fill="#ffffff" stroke="#e8e3d8" stroke-width="1.5"/>
+                        <!-- Isolated vessel drawing -->
+                        <path d="M26 26 Q50 20 74 26 Q68 44 50 48 Q32 44 26 26 Z" fill="#fff7ed" stroke="#c2410c" stroke-width="1.6"/>
+                        <!-- Polygon vertices dots -->
+                        <circle cx="26" cy="26" r="2" fill="#c2410c"/>
+                        <circle cx="50" cy="20" r="2" fill="#c2410c"/>
+                        <circle cx="74" cy="26" r="2" fill="#c2410c"/>
+                        <circle cx="68" cy="44" r="2" fill="#c2410c"/>
+                        <circle cx="50" cy="48" r="2" fill="#c2410c"/>
+                        <circle cx="32" cy="44" r="2" fill="#c2410c"/>
+                        <!-- Editing brush cursor ring -->
+                        <circle cx="58" cy="32" r="5.5" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="2 2"/>
+                        <!-- Scale calibration ruler at bottom -->
+                        <line x1="28" y1="58" x2="72" y2="58" stroke="#1c1917" stroke-width="1.2"/>
+                        <line x1="28" y1="56" x2="28" y2="60" stroke="#1c1917" stroke-width="1.2"/>
+                        <line x1="72" y1="56" x2="72" y2="60" stroke="#1c1917" stroke-width="1.2"/>
+                        <text x="50" y="65" font-family="sans-serif" font-size="4" fill="#57534e" text-anchor="middle">10 cm (42 px/cm)</text>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">Individual Cards</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn4">➔</div>
+
+            <!-- Stage 5: 4. Tabular Info -->
+            <div class="stage-card" id="stage5">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">4</span>
+                    <span class="stage-name">Tabular</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- Spreadsheet Grid -->
+                        <rect x="10" y="12" width="80" height="56" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+                        <!-- Table header row (Terracotta) -->
+                        <rect x="10" y="12" width="80" height="12" rx="3" fill="#c2410c"/>
+                        <text x="22" y="20" font-family="sans-serif" font-size="4" fill="#fff" font-weight="bold" text-anchor="middle">ID</text>
+                        <text x="44" y="20" font-family="sans-serif" font-size="4" fill="#fff" font-weight="bold" text-anchor="middle">[Trench]</text>
+                        <text x="68" y="20" font-family="sans-serif" font-size="4" fill="#fff" font-weight="bold" text-anchor="middle">[Type]</text>
+                        <text x="83" y="20" font-family="sans-serif" font-size="4" fill="#fff" font-weight="bold" text-anchor="middle">Diam</text>
+                        <!-- Row 1 -->
+                        <rect x="10" y="24" width="80" height="10" fill="#fdfbf7"/>
+                        <text x="22" y="31" font-family="sans-serif" font-size="3.8" fill="#1c1917" text-anchor="middle">0</text>
+                        <text x="44" y="31" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Settore A</text>
+                        <text x="68" y="31" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Olla</text>
+                        <text x="83" y="31" font-family="sans-serif" font-size="3.8" fill="#c2410c" font-weight="bold" text-anchor="middle">18</text>
+                        <line x1="10" y1="34" x2="90" y2="34" stroke="#f1ede4" stroke-width="1"/>
+                        <!-- Row 2 -->
+                        <rect x="10" y="34" width="80" height="10" fill="#ffffff"/>
+                        <text x="22" y="41" font-family="sans-serif" font-size="3.8" fill="#1c1917" text-anchor="middle">1</text>
+                        <text x="44" y="41" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Settore B</text>
+                        <text x="68" y="41" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Ciotola</text>
+                        <text x="83" y="41" font-family="sans-serif" font-size="3.8" fill="#c2410c" font-weight="bold" text-anchor="middle">24</text>
+                        <line x1="10" y1="44" x2="90" y2="44" stroke="#f1ede4" stroke-width="1"/>
+                        <!-- Row 3 -->
+                        <rect x="10" y="44" width="80" height="10" fill="#fdfbf7"/>
+                        <text x="22" y="51" font-family="sans-serif" font-size="3.8" fill="#1c1917" text-anchor="middle">2</text>
+                        <text x="44" y="51" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Settore B</text>
+                        <text x="68" y="51" font-family="sans-serif" font-size="3.8" fill="#57534e" text-anchor="middle">Anfora</text>
+                        <text x="83" y="51" font-family="sans-serif" font-size="3.8" fill="#c2410c" font-weight="bold" text-anchor="middle">32</text>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">OCR Metadata</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn5">➔</div>
+
+            <!-- Stage 6: 5. Post Processing -->
+            <div class="stage-card" id="stage6">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">5</span>
+                    <span class="stage-name">Post-Proc</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- 2x2 Relative scale grid with ENT/FRAG colored borders -->
+                        <!-- Card 1 (ENT - Blue border) -->
+                        <rect x="10" y="10" width="37" height="27" rx="3" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+                        <path d="M16 18 Q28 15 40 18 Q36 24 28 26 Q20 24 16 18 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+                        <rect x="12" y="12" width="10" height="4" rx="1" fill="#2563eb"/>
+                        <text x="17" y="15.2" font-family="sans-serif" font-size="3" fill="#fff" text-anchor="middle" font-weight="bold">ENT</text>
+                        <!-- Card 2 (FRAG - Orange border) -->
+                        <rect x="53" y="10" width="37" height="27" rx="3" fill="#ffffff" stroke="#ea580c" stroke-width="1.6"/>
+                        <path d="M59 18 Q71 16 77 18 Q73 25 65 24 Z" fill="#fff7ed" stroke="#ea580c" stroke-width="1"/>
+                        <rect x="55" y="12" width="13" height="4" rx="1" fill="#ea580c"/>
+                        <text x="61.5" y="15.2" font-family="sans-serif" font-size="3" fill="#fff" text-anchor="middle" font-weight="bold">FRAG</text>
+                        <!-- Card 3 (ENT - Blue border) -->
+                        <rect x="10" y="42" width="37" height="27" rx="3" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+                        <path d="M18 50 Q28 47 38 50 Q35 58 28 60 Q21 58 18 50 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+                        <rect x="12" y="44" width="10" height="4" rx="1" fill="#2563eb"/>
+                        <text x="17" y="47.2" font-family="sans-serif" font-size="3" fill="#fff" text-anchor="middle" font-weight="bold">ENT</text>
+                        <!-- Card 4 (FRAG - Orange border) -->
+                        <rect x="53" y="42" width="37" height="27" rx="3" fill="#ffffff" stroke="#ea580c" stroke-width="1.6"/>
+                        <path d="M60 50 Q68 48 76 52 Q70 60 62 58 Z" fill="#fff7ed" stroke="#ea580c" stroke-width="1"/>
+                        <rect x="55" y="44" width="13" height="4" rx="1" fill="#ea580c"/>
+                        <text x="61.5" y="47.2" font-family="sans-serif" font-size="3" fill="#fff" text-anchor="middle" font-weight="bold">FRAG</text>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">Card Grid Review</div>
+            </div>
+
+            <div class="pipeline-connector" id="conn6">➔</div>
+
+            <!-- Stage 7: Export ZIP -->
+            <div class="stage-card export-stage" id="stage7">
+                <div class="stage-tab-header">
+                    <span class="stage-num-badge">📦</span>
+                    <span class="stage-name">Export</span>
+                </div>
+                <div class="stage-thumbnail">
+                    <svg class="thumb-svg" viewBox="0 0 100 80">
+                        <!-- ZIP Archive Package -->
+                        <rect x="16" y="14" width="68" height="52" rx="6" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.8"/>
+                        <!-- Zipper ribbon down center -->
+                        <rect x="46" y="14" width="8" height="30" fill="#ccfbf1"/>
+                        <line x1="47" y1="18" x2="53" y2="18" stroke="#0d9488" stroke-width="1.2"/>
+                        <line x1="47" y1="23" x2="53" y2="23" stroke="#0d9488" stroke-width="1.2"/>
+                        <line x1="47" y1="28" x2="53" y2="28" stroke="#0d9488" stroke-width="1.2"/>
+                        <line x1="47" y1="33" x2="53" y2="33" stroke="#0d9488" stroke-width="1.2"/>
+                        <circle cx="50" cy="38" r="3.5" fill="#0d9488"/>
+                        <!-- Large ZIP label & Download arrow -->
+                        <rect x="22" y="46" width="56" height="15" rx="4" fill="#0d9488"/>
+                        <text x="44" y="56.5" font-family="sans-serif" font-size="7.5" fill="#ffffff" font-weight="800">.ZIP</text>
+                        <!-- Download arrow -->
+                        <path d="M62 51 L66 55 L70 51 M66 48 L66 55" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <!-- Sparkles -->
+                        <path d="M78 18 L80 22 L84 24 L80 26 L78 30 L76 26 L72 24 L76 22 Z" fill="#d97706"/>
+                    </svg>
+                </div>
+                <div class="stage-output-pill">Ready Dataset</div>
+            </div>
+
+        </div>
+
+        <div class="pipeline-footer">
+            <span>Hover over any stage to pause and inspect the workflow step</span>
+        </div>
+    </div>
+
+    <script>
+        const stages = [
+            document.getElementById('stage1'),
+            document.getElementById('stage2'),
+            document.getElementById('stage3'),
+            document.getElementById('stage4'),
+            document.getElementById('stage5'),
+            document.getElementById('stage6'),
+            document.getElementById('stage7')
+        ];
+
+        const connectors = [
+            document.getElementById('conn1'),
+            document.getElementById('conn2'),
+            document.getElementById('conn3'),
+            document.getElementById('conn4'),
+            document.getElementById('conn5'),
+            document.getElementById('conn6')
+        ];
+
+        const progressBar = document.getElementById('progressBar');
+        const stepPill = document.getElementById('stepPill');
+        const stepPillText = document.getElementById('stepPillText');
+        const pipelineWindow = document.getElementById('pipelineWindow');
+
+        const stepDescriptions = [
+            'Step 0: Project Manager (Dossier & Workspace)',
+            'Step 1: PDF Document Processing (Extract Plates)',
+            'Step 2: Apply Vision Model (YOLO Mask Detection)',
+            'Step 3: Review Annotations (Scale & Cut Cards)',
+            'Step 4: Tabular Information (Vision OCR & CSV)',
+            'Step 5: Post Processing (Scale Grid & Classification)',
+            'Export Archive (.ZIP Package with Images & CSV)'
+        ];
+
+        let currentStepIndex = 0;
+        let isPaused = false;
+        let animationTimer = null;
+
+        // Hover pause listener
+        pipelineWindow.addEventListener('mouseenter', () => { isPaused = true; });
+        pipelineWindow.addEventListener('mouseleave', () => { isPaused = false; });
+
+        // Click on individual card to inspect
+        stages.forEach((card, idx) => {
+            card.addEventListener('click', () => {
+                activateStep(idx);
+            });
+        });
+
+        function activateStep(index) {
+            stages.forEach((card, i) => {
+                card.classList.remove('active', 'completed');
+                if (i < index) {
+                    card.classList.add('completed');
+                } else if (i === index) {
+                    card.classList.add('active');
+                }
+            });
+
+            connectors.forEach((conn, i) => {
+                if (i < index) {
+                    conn.classList.add('flow-active');
+                } else {
+                    conn.classList.remove('flow-active');
+                }
+            });
+
+            // Update Progress Bar
+            const percent = ((index + 1) / stages.length) * 100;
+            progressBar.style.width = `${percent}%`;
+
+            // Update Pill
+            stepPillText.textContent = stepDescriptions[index];
+            if (index === 6) {
+                stepPill.style.background = '#f0fdfa';
+                stepPill.style.borderColor = '#0d9488';
+                stepPill.style.color = '#0d9488';
+            } else {
+                stepPill.style.background = 'var(--primary-soft)';
+                stepPill.style.borderColor = 'rgba(194, 65, 12, 0.2)';
+                stepPill.style.color = 'var(--primary)';
+            }
+        }
+
+        async function runPipelineLoop() {
+            while (true) {
+                for (let i = 0; i < stages.length; i++) {
+                    while (isPaused) {
+                        await new Promise(r => setTimeout(r, 200));
+                    }
+                    activateStep(i);
+                    await new Promise(r => setTimeout(r, 1400));
+                }
+
+                // Hold final complete state for 3 seconds so reader can view the full map
+                let holdElapsed = 0;
+                while (holdElapsed < 3000) {
+                    if (!isPaused) {
+                        holdElapsed += 200;
+                    }
+                    await new Promise(r => setTimeout(r, 200));
+                }
+
+                // Brief clean reset
+                stages.forEach(card => card.classList.remove('active', 'completed'));
+                connectors.forEach(conn => conn.classList.remove('flow-active'));
+                progressBar.style.width = '0%';
+                await new Promise(r => setTimeout(r, 350));
+            }
+        }
+
+        runPipelineLoop();
+    </script>
+</body>
+
+</html>

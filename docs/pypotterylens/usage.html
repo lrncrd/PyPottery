@@ -458,6 +458,8 @@ The workflow at a glance
 <p><strong>Project Manager</strong> → <strong>1. PDF Document Processing</strong> → <strong>2. Apply Model</strong> → <strong>3. Review Annotations &amp; Masks</strong> → <strong>4. Tabular Information</strong> → <strong>5. Post Processing</strong> → <strong>Export ZIP</strong></p>
 </div>
 </div>
+<iframe src="animations/workflow_overview.html" style="width: 100%; height: 310px; border: none; overflow: hidden;" scrolling="no">
+</iframe>
 <section id="key-terms" class="level2">
 <h2 class="anchored" data-anchor-id="key-terms">Key terms</h2>
 <table class="caption-top table">
@@ -749,12 +751,12 @@ becomes a clean polygon; 4) status text confirms saving.
 <section id="vessels-drawn-inside-other-vessels" class="level2">
 <h2 class="anchored" data-anchor-id="vessels-drawn-inside-other-vessels">Vessels drawn inside other vessels</h2>
 <p>Some draughtsmen draw a small vessel <em>inside</em> the section of a larger one. The model was trained on isolated vessels, so it usually finds only the outer silhouette and the inner vessel is missed.</p>
-<p>Use <strong>Polygon</strong> (<code>P</code>) to outline the inner vessel by hand. <strong>Each polygon becomes its own card</strong> when you extract, so the inner vessel gets its own image and its own row in the table.</p>
+<p>Use <strong>Polygon</strong> (<code>P</code>) to outline the inner vessel by hand. <strong>Each polygon becomes its own card</strong> when you extract, so the inner vessel gets its own image and its own row in the table. The inner vessel is also <strong>automatically whitened out of the larger card</strong>, so it does not appear twice. A polygon counts as “inside” another one when it is smaller and its center falls within the larger one.</p>
 <!--
 ANIMATION (NEW, priority: high) - "Nested vessel"
 Storyboard: 1) a large vessel with a small one drawn inside; 2) P, click 5 vertices around
 the small one, double-click to close; 3) the Vessels & Polygons counter goes 1 -> 2;
-4) two cards after extraction.
+4) two cards after extraction: the small vessel alone, and the big one with a white gap where it was.
 -->
 </section>
 <section id="check-the-outlines-with-colorize" class="level2">
