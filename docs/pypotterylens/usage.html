@@ -974,7 +974,7 @@ Warning
 <p>Click <strong>Export Results</strong>, enter an <strong>Export Acronym</strong> (letters, numbers and underscores only, for example <code>OSA_2024</code>) and choose <strong>Export ZIP</strong>. The acronym becomes the prefix of every file, so choose one that identifies the publication or the dataset.</p>
 <p>The ZIP contains:</p>
 <ul>
-<li>The cards, renamed <code>OSA_2024_1.png</code>, <code>OSA_2024_2.png</code>, … in the order of their file names, <strong>leaving out the cards you excluded</strong>. If you post-processed, they are the cards from <code>cards_modified/</code>; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.</li>
+<li>The cards, renamed <code>OSA_2024_1.png</code>, <code>OSA_2024_2.png</code>, … in plate order (plate 2 before plate 10, then by vessel ID), <strong>leaving out the cards you excluded</strong>. If you post-processed, they are the cards from <code>cards_modified/</code>; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.</li>
 <li><code>OSA_2024_metadata.csv</code>, one row per exported image. The first column is <code>id</code> (the new file name), then <code>type</code> (ENT/FRAG), then the other columns in alphabetical order: your own columns (page, plate, figure, number, Notes, and any you added), the classifier’s <code>position</code> and <code>rotation</code>, and <code>px_per_cm</code> if you calibrated scales. Every value is written as plain text, so nothing is silently turned into a number or a date.</li>
 </ul>
 <!--

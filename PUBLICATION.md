@@ -121,6 +121,9 @@ optional overrides with an in-app default, never required.
   clears polygons that are strictly smaller than the card's polygon and whose
   centroid lies inside it (duplicates never blank each other). Tested on a
   synthetic plate; **still to check on a real plate with a nested vessel**.
+- **Lens export numbering fixed** (2026-09-19, on `beta`): exported IDs
+  (`OSA_2024_<n>`) now follow natural plate order, not alphabetical order
+  (`export_project_results` in `PyPotteryLens/app.py`).
 
 ## P0 - blocks a multi-platform release
 
@@ -160,10 +163,6 @@ optional overrides with an in-app default, never required.
 
 ## P2 - polish, fine to ship without and follow up later
 
-- [ ] **Lens: exported IDs follow a plain alphabetical file order**
-  (`sorted(card_images)` in `export_project_results`), so `..._page_10_...`
-  sorts before `..._page_2_...`. The extraction step already uses natural
-  sorting; using it in the export would make `OSA_2024_<n>` follow plate order.
 - [ ] **Docs restructure: Getting Started + Usage + Version History per app.**
   Pilot done on PyPotteryLens (2026-09-19, on `beta`): `index.qmd` is now
   "Getting Started" (intro + install + first launch + troubleshooting, with a

@@ -376,7 +376,7 @@ Click **Export Results**, enter an **Export Acronym** (letters, numbers and unde
 
 The ZIP contains:
 
-- The cards, renamed `OSA_2024_1.png`, `OSA_2024_2.png`, ... in the order of their file names, **leaving out the cards you excluded**. If you post-processed, they are the cards from `cards_modified/`; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.
+- The cards, renamed `OSA_2024_1.png`, `OSA_2024_2.png`, ... in plate order (plate 2 before plate 10, then by vessel ID), **leaving out the cards you excluded**. If you post-processed, they are the cards from `cards_modified/`; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.
 - `OSA_2024_metadata.csv`, one row per exported image. The first column is `id` (the new file name), then `type` (ENT/FRAG), then the other columns in alphabetical order: your own columns (page, plate, figure, number, Notes, and any you added), the classifier's `position` and `rotation`, and `px_per_cm` if you calibrated scales. Every value is written as plain text, so nothing is silently turned into a number or a date.
 
 <!--
