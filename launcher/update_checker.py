@@ -6,6 +6,7 @@ Checks GitHub releases for new versions of applications
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple
@@ -42,6 +43,66 @@ class UpdateInfo:
     published_at: str
 
 
+def extract_docs_notes(qmd_text: str, tag_name: str) -> Optional[str]:
+    """
+    Turn the "## Latest Release" section of a PyPotteryDocs version_history.qmd
+    into plain text for the launcher's changelog panel (which shows text, not
+    markdown).
+
+    Returns None - so the caller falls back to the GitHub release body - unless
+    the section's "### Version X.Y.Z" heading matches `tag_name`. That guard
+    stops notes for an older release being shown under a newer version (every
+    push to main auto-releases a patch, but the docs are written by hand).
+    """
+    lines = qmd_text.splitlines()
+
+    start = None
+    for i, line in enumerate(lines):
+        if line.strip().lower() == "## latest release":
+            start = i + 1
+            break
+    if start is None:
+        return None
+
+    section = []
+    for line in lines[start:]:
+        if line.startswith("## "):
+            break
+        section.append(line)
+
+    heading = None
+    body = []
+    for line in section:
+        if heading is None and line.startswith("### "):
+            heading = line[4:].strip()
+            continue
+        body.append(line)
+    if heading is None:
+        return None
+
+    found = re.search(r"([0-9]+[.][0-9]+[.][0-9]+)", heading)
+    if not found or found.group(1) != str(tag_name).strip().lstrip("vV"):
+        return None
+
+    out = []
+    for line in body:
+        text = line.rstrip()
+        if not text.strip():
+            if out and out[-1] != "":
+                out.append("")
+            continue
+        stripped = text.lstrip()
+        indent = len(text) - len(stripped)
+        if stripped[:1] in ("-", "*") and stripped[1:2] == " ":
+            text = " " * indent + "• " + stripped[1:].lstrip()
+        text = re.sub(r"\[([^]]+)\]\([^)]*\)", lambda m: m.group(1), text)
+        text = text.replace("**", "").replace("`", "")
+        out.append(text)
+
+    result = chr(10).join(out).strip()
+    return result or None
+
+
 class UpdateChecker:
     """
     Checks for updates from GitHub releases.
@@ -57,6 +118,8 @@ class UpdateChecker:
         
         self._cache_file = self.cache_dir / "releases_cache.json"
         self._cache: Dict = self._load_cache()
+        # folder -> (expires_at, qmd text or None); see get_docs_release_notes()
+        self._docs_cache: Dict[str, Tuple[float, Optional[str]]] = {}
         
         # GitHub API token (optional, for higher rate limits)
         self._github_token = os.environ.get("GITHUB_TOKEN")
@@ -392,6 +455,46 @@ class UpdateChecker:
         thread.start()
         return thread
     
+    # Hand-written changelog that lives next to the docs site. The GitHub
+    # release body is auto-generated ("Full Changelog: <compare link>") and
+    # useless in the launcher's changelog panel.
+    DOCS_RAW_URL = ("https://raw.githubusercontent.com/lrncrd/PyPottery/main/"
+                    "PyPotteryDocs/{folder}/version_history.qmd")
+    DOCS_CACHE_SECONDS = 2 * 3600
+    DOCS_FAILURE_RETRY_SECONDS = 300
+
+    def get_docs_release_notes(self, app_id: str, tag_name: str) -> Optional[str]:
+        """
+        Plain-text notes for `tag_name` from the app's version_history.qmd, or
+        None if unavailable/out of date (caller then uses the release body).
+        Never raises: the changelog panel must render even when offline.
+        """
+        folder = app_id.lower()
+        now = time.time()
+        cached = self._docs_cache.get(folder)
+        if cached and now < cached[0]:
+            qmd = cached[1]
+        else:
+            qmd = None
+            try:
+                from .vendor_assets_manager import _open_url_resilient
+                request = Request(self.DOCS_RAW_URL.format(folder=folder),
+                                  headers={"User-Agent": "PyPottery-Launcher"})
+                with _open_url_resilient(request, timeout=8) as response:
+                    qmd = response.read().decode("utf-8")
+            except Exception as exc:
+                logger.info("No docs changelog for %s: %s", app_id, exc)
+            ttl = self.DOCS_CACHE_SECONDS if qmd else self.DOCS_FAILURE_RETRY_SECONDS
+            self._docs_cache[folder] = (now + ttl, qmd)
+
+        if not qmd:
+            return None
+        try:
+            return extract_docs_notes(qmd, tag_name)
+        except Exception:
+            logger.exception("Could not parse docs changelog for %s", app_id)
+            return None
+
     def clear_cache(self):
         """Clear all cached release information"""
         self._cache = {"releases": {}, "last_check": {}}

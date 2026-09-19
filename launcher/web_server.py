@@ -638,13 +638,15 @@ def create_app(state: LauncherState) -> Flask:
                 rel = state.update_checker.get_latest_release(app.repo_owner, app.repo_name)
                 curr_v = str(app.installed_version).lstrip("v") if app.installed_version else "Not installed"
                 latest_v = str(rel.tag_name).lstrip("v") if rel and rel.tag_name else "unknown"
+                docs_notes = (state.update_checker.get_docs_release_notes(app_id, rel.tag_name)
+                              if rel and rel.tag_name else None)
                 releases_data[app_id] = {
                     "name": app.name,
                     "icon": app.icon,
                     "logo_path": app.logo_path or f"imgs/Logo{app_id.replace('PyPottery', '')}.png",
                     "current_version": curr_v,
                     "latest_version": latest_v,
-                    "release_notes": rel.body if rel and rel.body else "No release notes available for this release.",
+                    "release_notes": docs_notes or (rel.body if rel and rel.body else "No release notes available for this release."),
                     "published_at": rel.published_at if rel else "",
                     "html_url": rel.html_url if rel else f"https://github.com/{app.repo_owner}/{app.repo_name}",
                 }
