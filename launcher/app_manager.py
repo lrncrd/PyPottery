@@ -232,15 +232,17 @@ class AppManager:
     
     def _detect_version(self, app_path: Path) -> Optional[str]:
         """Detect version from application files"""
-        # 1. Try version.txt / VERSION
-        for v_file in ["version.txt", "VERSION"]:
-            vf = app_path / v_file
-            if vf.exists():
-                try:
-                    return vf.read_text(encoding='utf-8').strip()
-                except:
-                    pass
-            
+        # 1. Try VERSION - the file each app's auto-release workflow bumps on
+        # every release. `version.txt` used to be checked here too, but it's
+        # a legacy file the automation never touches, so it silently drifts
+        # out of sync and made the launcher display a stale version.
+        vf = app_path / "VERSION"
+        if vf.exists():
+            try:
+                return vf.read_text(encoding='utf-8').strip()
+            except:
+                pass
+
         # 2. Try __init__.py or _version.py in package directory
         # Look for __version__ = "..."
         try:
