@@ -52,6 +52,7 @@ class VendorAssetsManager:
             self.shared_vendor_path / "bootstrap-icons" / "bootstrap-icons.min.css",
             self.shared_vendor_path / "bootstrap-icons" / "fonts" / "bootstrap-icons.woff2",
             self.shared_vendor_path / "fonts" / "fonts.css",
+            self.shared_vendor_path / "xlsx" / "xlsx.full.min.js",
         ]
 
         # Check if all files exist
@@ -63,13 +64,14 @@ class VendorAssetsManager:
 
     def _download_vendor_assets(self) -> bool:
         """
-        Download Bootstrap 5, Bootstrap Icons v1.11.3, and Plus Jakarta Sans fonts.
+        Download Bootstrap 5, Bootstrap Icons v1.11.3, Plus Jakarta Sans fonts and SheetJS (xlsx).
         """
         try:
             os.makedirs(self.shared_vendor_path / "bootstrap" / "css", exist_ok=True)
             os.makedirs(self.shared_vendor_path / "bootstrap" / "js", exist_ok=True)
             os.makedirs(self.shared_vendor_path / "bootstrap-icons" / "fonts", exist_ok=True)
             os.makedirs(self.shared_vendor_path / "fonts" / "files", exist_ok=True)
+            os.makedirs(self.shared_vendor_path / "xlsx", exist_ok=True)
 
             headers = {'User-Agent': 'PyPotterySuite/1.0'}
 
@@ -128,6 +130,12 @@ class VendorAssetsManager:
 '''
             with open(self.shared_vendor_path / "fonts" / "fonts.css", 'w', encoding='utf-8') as f:
                 f.write(fonts_css)
+
+            # 4. Download SheetJS (Excel export in PyPotteryScan)
+            print("  [Vendor] Downloading SheetJS (xlsx) 0.18.5...")
+            req = urllib.request.Request('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js', headers=headers)
+            with _open_url_resilient(req, timeout=30) as resp, open(self.shared_vendor_path / "xlsx" / "xlsx.full.min.js", 'wb') as f:
+                f.write(resp.read())
 
             print("  [Vendor] Offline vendor assets successfully installed!")
             return True
