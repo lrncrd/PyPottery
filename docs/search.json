@@ -440,7 +440,7 @@
     "href": "pypotterylens/version_history.html#version-history",
     "title": "Version History",
     "section": "Version History",
-    "text": "Version History\n\nVersion 0.3.0\nAnnotation tab\n\nNested vessel support: new Polygon tool (LabelMe-style) to outline vessels drawn inside other vessels; the inner area is subtracted from the containing card at extraction time\nZoom & pan on the canvas, and a visible ring cursor for the brush and eraser\nColorize mode: every disconnected mask region gets a distinct hue, so fused regions are immediately visible\n\nTabular tab\n\nAI extraction improvements: dynamic token budget prevents truncated JSON, and a robust parser recovers partial responses\nCanonical column names via [square brackets] in the prompt\n“Numbers from crops” option for small inventory numbers, for both single-page and batch extraction\nBox visibility toggle and a Clear Table button\n“Export Combined CSV” removed: tabular data is read directly from cards/mask_info.csv at export time\n\nPost Processing tab\n\nGrid view showing all pieces at real relative size, replacing the one-at-a-time navigator\nPer-card hover controls (flip, ENT/FRAG toggle, exclude from export) and a full-screen lightbox\nBlue/orange borders for ENT/FRAG; auto-flip options are now toggle switches\n\nExport and fixes\n\nAll metadata fields are written as plain text in the output CSV\nFixed the flip endpoint acting on the wrong card when filenames sorted lexicographically rather than naturally\nFixed the small-vessel area filter (it was 4x too large because it counted RGBA channels)\n\n\n\nVersion 0.2.1 (December 2025)\nKey Features:\n\nAdded Pixel\nMinor UI improvements\n\n\n\nVersion 0.2.0 (December 2025)\nKey Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery\n\n\n\nVersion 0.1.3 (August 2025)\nKey Features:\n\nMinor bug fixes and performance improvements\n\n\n\nVersion 0.1.0 (April 2025)\nKey Features:\n\nInitial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
+    "text": "Version History\n\nVersion 0.3.0\nAnnotation tab\n\nNested vessel support: new Polygon tool (LabelMe-style) to outline by hand vessels drawn inside other vessels, which the model would otherwise miss; each polygon is extracted as its own card\nZoom & pan on the canvas, and a visible ring cursor for the brush and eraser\nColorize mode: every disconnected mask region gets a distinct hue, so fused regions are immediately visible\n\nTabular tab\n\nAI extraction improvements: dynamic token budget prevents truncated JSON, and a robust parser recovers partial responses\nCanonical column names via [square brackets] in the prompt\n“Numbers from crops” option for small inventory numbers, for both single-page and batch extraction\nBox visibility toggle and a Clear Table button\n“Export Combined CSV” removed: tabular data is read directly from cards/mask_info.csv at export time\n\nPost Processing tab\n\nGrid view showing all pieces at real relative size, replacing the one-at-a-time navigator\nPer-card hover controls (flip, ENT/FRAG toggle, exclude from export) and a full-screen lightbox\nBlue/orange borders for ENT/FRAG; auto-flip options are now toggle switches\n\nExport and fixes\n\nAll metadata fields are written as plain text in the output CSV\nFixed the flip endpoint acting on the wrong card when filenames sorted lexicographically rather than naturally\nFixed the small-vessel area filter (it was 4x too large because it counted RGBA channels)\n\n\n\nVersion 0.2.1 (December 2025)\nKey Features:\n\nAdded Pixel\nMinor UI improvements\n\n\n\nVersion 0.2.0 (December 2025)\nKey Features:\n\nMajor architectural change: Migrated from Gradio to Flask web framework\nProject Management System: Introduced project-based workflow with dedicated workspaces\nModern Web Interface: Native HTML/CSS/JavaScript frontend with improved UX\nRESTful API: Full API for programmatic access and future integrations\nEnhanced Canvas Editor: Improved annotation tools with better performance\nReal-time Progress Tracking: Live updates for long-running operations\nAuto-save Everything: Automatic persistence for all user changes\nWorkflow Status Tracking: Visual indicators for project completion stages\nMulti-project Support: Work on multiple datasets simultaneously\nImproved Error Handling: Better user feedback and error recovery\n\n\n\nVersion 0.1.3 (August 2025)\nKey Features:\n\nMinor bug fixes and performance improvements\n\n\n\nVersion 0.1.0 (April 2025)\nKey Features:\n\nInitial release of documentation.\nBasic project management and PDF processing.\nIntegration of CV models for mask extraction.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1612,7 +1612,19 @@
     "href": "pypotterylens/usage.html",
     "title": "Using PyPotteryLens",
     "section": "",
-    "text": "This guide follows the workflow tab by tab, in the order you will use them. Each step builds on the previous one, and everything is saved automatically inside your project.",
+    "text": "PyPotteryLens turns a published monograph (a PDF full of plates with pottery drawings) into a clean dataset: one image per vessel, oriented the same way, with the data you attach to it. This guide follows the app tab by tab, in the order you will use them. Every step builds on the previous one, and everything is saved automatically inside your project, so you can stop at any time and pick up later.",
+    "crumbs": [
+      "Project Home",
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#key-terms",
+    "href": "pypotterylens/usage.html#key-terms",
+    "title": "Using PyPotteryLens",
+    "section": "Key terms",
+    "text": "Key terms\n\n\n\n\n\n\n\nTerm\nMeaning\n\n\n\n\nPlate (or page)\nOne page image extracted from the PDF. A plate usually carries several drawings.\n\n\nMask / polygon\nThe outline the model draws around a vessel. It is stored as a simple polygon (a dozen or so vertices), so it is easy to edit.\n\n\nCard\nThe cropped image of a single vessel: the drawing cut out of the plate, with the rest of the plate painted white and a white margin around it.\n\n\nID\nThe number of a vessel on its plate (0, 1, 2…). It is what links a card to a row of your table.\n\n\nENT / FRAG\nClassification of a card: entire (a substantially complete profile) or fragment.\n\n\npx/cm\nThe scale of a plate, in pixels per centimetre, measured from the printed scale bar.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1624,7 +1636,7 @@
     "href": "pypotterylens/usage.html#create-a-project",
     "title": "Using PyPotteryLens",
     "section": "Create a project",
-    "text": "Create a project\n\nIn New Project Dossier, type a Project Name (required), for example Scavi_Capena_2024.\nOptionally add a Description (site context, trench, assemblage notes) and pick a Project Icon Stamp.\nClick Create Project.",
+    "text": "Create a project\n\nIn New Project Dossier, type a Project Name (required), for example Scavi_Capena_2024.\nOptionally add a Description (site context, trench, assemblage notes) and pick a Project Icon Stamp to recognize it at a glance.\nClick Create Project.\n\nThe project folder is named after your project plus a timestamp (for example Scavi_Capena_2024_20260918_083330), so two projects with the same name never collide. The project name is also used to name the page images, so pick something short and clear.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1636,7 +1648,7 @@
     "href": "pypotterylens/usage.html#open-refresh-and-delete",
     "title": "Using PyPotteryLens",
     "section": "Open, refresh and delete",
-    "text": "Open, refresh and delete\nExisting projects are listed in the Project Repository. Click a project card to activate it: from that moment every tab works on that project. Use Refresh if you added a project from outside the app.\n\n\n\n\n\n\nWarning\n\n\n\nDeleting a project removes everything inside it: the source PDF, extracted images, masks and annotations, and exported data. The app asks for confirmation, and it cannot be undone.",
+    "text": "Open, refresh and delete\nExisting projects are listed in the Project Repository. Click a project card to activate it: from that moment every tab works on that project. Use Refresh if you added a project folder from outside the app.\n\n\n\n\n\n\nWarning\n\n\n\nDeleting a project removes everything inside it: the source PDF, extracted images, masks and annotations, and exported data. The app lists what will be deleted and asks you to confirm; it cannot be undone.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1648,7 +1660,7 @@
     "href": "pypotterylens/usage.html#choose-the-model-and-the-confidence",
     "title": "Using PyPotteryLens",
     "section": "Choose the model and the confidence",
-    "text": "Choose the model and the confidence\n\nActive Vision Model: the YOLO model trained on archaeological profiles. The default is fine for most publications.\nConfidence Threshold (0.10-1.00, default 0.50):\n\nHigher values give fewer detections with higher precision, but may miss difficult drawings.\nLower values catch subtle drawings, but may add false positives.\nStart at 0.50 and adjust on a sample.",
+    "text": "Choose the model and the confidence\n\nActive Vision Model: the YOLO model trained on archaeological pottery profiles. Use the one that is already selected unless you have a custom model in models_vision/.\nConfidence Threshold (0.10 to 1.00, default 0.50): how sure the model must be before it reports a vessel.\n\nHow to choose the confidence, by what you see in the results:\n\n\n\n\n\n\n\nIf you see…\nThen…\n\n\n\n\nVessels missing (a drawing has no outline)\nLower the threshold (for example 0.30-0.40)\n\n\nExtra outlines on things that are not vessels (page numbers, decorations, stray marks)\nRaise the threshold (for example 0.60-0.70)\n\n\nMostly correct results\nKeep 0.50 and fix the few errors by hand in the next tab\n\n\n\nThese values are starting points, not rules: the right setting depends on the print quality of your monograph. In general it is easier to delete a wrong outline than to draw a missing one, so if in doubt, lean lower.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1660,7 +1672,7 @@
     "href": "pypotterylens/usage.html#full-dataset-or-a-quick-test",
     "title": "Using PyPotteryLens",
     "section": "Full dataset or a quick test",
-    "text": "Full dataset or a quick test\nUnder Execution Mode choose:\n\nFull Dataset: process all the images selected in the project.\nDiagnostic Test: process only the first 25 images, to try parameters quickly before committing to a long run.",
+    "text": "Full dataset or a quick test\nUnder Execution Mode choose:\n\nFull Dataset: process every image you have selected in the project.\nDiagnostic Test: process only the first 25 images. Use it to try a confidence value in a couple of minutes instead of waiting for the whole book.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1672,7 +1684,7 @@
     "href": "pypotterylens/usage.html#choose-which-images-to-process",
     "title": "Using PyPotteryLens",
     "section": "Choose which images to process",
-    "text": "Choose which images to process\nThe Project Figures gallery shows all the extracted pages. Use Select All or Deselect All and click single pages to include or exclude them (title pages, indexes, blank sheets). The badge shows how many images are queued.\nClick Apply Model to Project. A full-screen overlay shows the progress and the current file, and Stop Processing cancels the run.\n\n\n\n\n\n\nTip\n\n\n\nRun a Diagnostic Test first, look at the result in the next tab, and only then run the full dataset with the confidence you settled on.",
+    "text": "Choose which images to process\nThe Project Figures gallery shows all the extracted pages, and the badge tells you how many are queued (for example “12 to process”). Select All and Deselect All act on the whole gallery; click single pages to include or exclude them. Excluding is useful for the cover, the text pages, indexes and blank sheets: it saves time and avoids false detections.\nIf you excluded some images, the app shows a short summary (how many will be processed and how many skipped) before starting.\nClick Apply Model to Project. A full-screen overlay shows the progress and the file being processed, and Stop Processing cancels the run.\nWhat you will see. When the run ends, the masks are ready in the next tab. Each plate has its polygons saved in the project’s masks/ folder; running the model again on a plate replaces its previous polygons, so do your manual corrections after you are happy with the model run.\n\n\n\n\n\n\nTip\n\n\n\nA good routine: run a Diagnostic Test, open a few plates in the next tab, adjust the confidence, and repeat. Only when the first 25 plates look right, run the Full Dataset.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1684,7 +1696,7 @@
     "href": "pypotterylens/usage.html#tools",
     "title": "Using PyPotteryLens",
     "section": "Tools",
-    "text": "Tools\n\n\n\n\n\n\n\n\nTool\nWhat it does\nKey\n\n\n\n\nBrush\nPaint with a round cursor; on release the stroke becomes a clean vector polygon\nB\n\n\nPolygon\nClick to place vertices; click the first point (or double-click, or Enter) to close; Backspace removes the last vertex, Esc cancels\nP\n\n\nEraser\nSweep over vertices to erase them\nE\n\n\nColorize\nShow each vessel mask in a different color\n\n\n\nClear\nRemove all polygons on the current image\n\n\n\n\nThe Size slider sets the diameter of the brush and eraser (5-100 px). The Expansion slider (0-100 px, default 8 px) adds padding around every vessel, so cards are cut with a little margin.",
+    "text": "Tools\n\n\n\n\n\n\n\n\nTool\nWhat it does\nKey\n\n\n\n\nBrush\nPaint with a round cursor. When you release, the stroke becomes a clean vector polygon\nB\n\n\nPolygon\nClick to place vertices; click the first point (or double-click, or press Enter) to close. Backspace removes the last vertex, Esc cancels\nP\n\n\nEraser\nSweep the round cursor over polygon vertices to erase them\nE\n\n\nColorize\nPaint each polygon in a different color (on by default)\n\n\n\nClear\nRemove all polygons on the current image\n\n\n\n\nThe Size slider sets the diameter of the brush and eraser (5-100 px). The Expansion slider (0-100 px, default 8 px) adds padding around every vessel when the cards are cut, so the drawing is not cropped too tightly: raise it if lines at the edge of a vessel are being cut off, lower it if neighbouring drawings creep into the card.\nSelect a polygon in the list and press Delete to remove it.\n\nWhat to look for on each plate. Go through the plates in order and check four things: every vessel has an outline; no outline covers two vessels; no outline covers something that is not a vessel; and the outline does not cut through the drawing (a cut rim or base is the most common problem). Your changes are saved automatically when you move to another plate.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1696,7 +1708,7 @@
     "href": "pypotterylens/usage.html#vessels-drawn-inside-other-vessels",
     "title": "Using PyPotteryLens",
     "section": "Vessels drawn inside other vessels",
-    "text": "Vessels drawn inside other vessels\nSome drawings show a small vessel inside a larger one. Use Polygon to outline the inner vessel: each polygon becomes a separate card when you extract, and the inner area is automatically whitened out of the containing card. The Vessels & Polygons panel lists every polygon; click one to select it, and use Delete to remove it.",
+    "text": "Vessels drawn inside other vessels\nSome draughtsmen draw a small vessel inside the section of a larger one. The model was trained on isolated vessels, so it usually finds only the outer silhouette and the inner vessel is missed.\nUse Polygon (P) to outline the inner vessel by hand. Each polygon becomes its own card when you extract, so the inner vessel gets its own image and its own row in the table.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1704,11 +1716,11 @@
     ]
   },
   {
-    "objectID": "pypotterylens/usage.html#spot-fused-masks-with-colorize",
-    "href": "pypotterylens/usage.html#spot-fused-masks-with-colorize",
+    "objectID": "pypotterylens/usage.html#check-the-outlines-with-colorize",
+    "href": "pypotterylens/usage.html#check-the-outlines-with-colorize",
     "title": "Using PyPotteryLens",
-    "section": "Spot fused masks with Colorize",
-    "text": "Spot fused masks with Colorize\nTurn on Colorize: every vessel mask gets its own color. If two vessels share one color, their masks are fused: separate them with the eraser. Colors update live after every stroke.",
+    "section": "Check the outlines with Colorize",
+    "text": "Check the outlines with Colorize\nColorize (on by default) paints every polygon in its own color. Use it as a quick check that each vessel has its own outline: if what looks like two vessels is a single blob of one color, one polygon covers both, so redraw them as two. Colors update live after every change.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1720,7 +1732,7 @@
     "href": "pypotterylens/usage.html#calibrate-the-scale-optional",
     "title": "Using PyPotteryLens",
     "section": "Calibrate the scale (optional)",
-    "text": "Calibrate the scale (optional)\nIf you want real-world sizes, tell PyPotteryLens what the printed scale bar measures:\n\nSelect the Scale tool.\nClick the two ends of the graphic scale bar on the plate.\nType the length in cm and confirm (Enter); Esc cancels.\n\nThe ratio is saved in Scale calibrations and used to fill the px_per_cm value when you extract the cards. For pages with more than one scale, use the Zone button on a scale and draw a rectangle to limit it to that part of the page.\nOnce you have measured scales on several plates, Calibrate Scales opens a histogram of all the ratios in the project. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then Apply Calibration to snap outlier measurements to consistent values.",
+    "text": "Calibrate the scale (optional)\nIf you want real-world sizes in your data, tell PyPotteryLens what the printed scale bar measures:\n\nSelect the Scale tool.\nClick the two ends of the graphic scale bar on the plate.\nType the length in cm in the small box and confirm (Enter); Esc cancels.\n\nThe measure appears in Scale calibrations, and it is used to fill a px_per_cm column when you extract the cards. Each card takes the scale that applies to its position:\n\nA plate with one scale applies it to every vessel on the plate.\nA plate with several scales (for example, different drawings at different reductions): click Zone on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate’s general (non-zone) scale.\n\nOnce you have measured scales on several plates, Calibrate Scales opens a histogram of all the px/cm ratios in the project. Measurements taken with a few pixels of click imprecision show up as scattered values around the true one. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then Apply Calibration to snap outlier measurements to the value you chose. Ratios are rounded to one decimal.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1732,7 +1744,7 @@
     "href": "pypotterylens/usage.html#extract-the-cards",
     "title": "Using PyPotteryLens",
     "section": "Extract the cards",
-    "text": "Extract the cards\nWhen the masks on all plates look right, click Extract Cards. A dialog asks you to confirm:\n\nOverwrite warning: cards already extracted in this project will be regenerated.\nClean Artifacts & Numbers (optional): removes isolated inventory numbers, section cuts and stray fragments outside the vessel.\n\nA progress overlay (Extracting Cards from Masks) shows the run, and Stop Processing cancels it. The cards are saved in the project and are what the next tabs work on.",
+    "text": "Extract the cards\nWhen the outlines on all plates look right, click Extract Cards. A dialog asks you to confirm two things:\n\nOverwrite warning: cards already extracted in this project are regenerated, so any earlier cards are replaced.\nClean Artifacts & Numbers (optional): removes the small extras that sit around the drawing inside its outline: detached inventory numbers, section profiles, projection dashes and fragments of neighbouring drawings. The vessel itself is left untouched, including its inner lines, hatching and stippling dots. Turn it on for clean results; turn it off if it removes something you want to keep.\n\nA progress overlay (Extracting Cards from Masks) shows the run, and Stop Processing cancels it.\nWhat you will see. One image per outline, saved in the project’s cards/ folder as {page}_mask_layer_{ID}.png, with everything outside the outline painted white and a white margin around it. Two identical cards are never saved twice (exact duplicates are skipped and reported). The app also writes mask_info.csv, the table that the next tab fills, with one row per card and the px_per_cm column when you calibrated scales.\n\n\n\n\n\n\nImportant\n\n\n\nExtract the cards after you are happy with all the outlines. Extracting again regenerates the cards, and the cards are what the next tabs work on.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1744,7 +1756,7 @@
     "href": "pypotterylens/usage.html#the-table",
     "title": "Using PyPotteryLens",
     "section": "The table",
-    "text": "The table\nThe center shows the plate with a bounding box and an ID on each vessel (toggle them with Show boxes; click a vessel to inspect it). On the right is the table with one row per vessel. Move between plates with Prev / Next or from the Project Plates list.\n\nAdd Column: type a name and click Add Column. Columns are persistent across the whole project.\nEdit: click a cell and type. Every edit is saved immediately.\nFill Column: choose a column, type a value and click Fill Column to set it for every row of the current plate.\nClear Page Data: empties the values on the current plate and keeps the columns.\nMark as Reviewed: flag a plate as done, to keep track of your progress.\n\n\n\n\n\n\n\nNote\n\n\n\nAvoid commas inside cell values (CSV limitation).",
+    "text": "The table\nThe center shows the plate with a bounding box and an ID on each vessel; toggle the boxes with Show boxes, and click a vessel to inspect it. On the right is the table, with one row per vessel. Move between plates with Prev / Next or from the Project Plates list; the counter shows Plate X of Y.\nA new project starts with two columns, ID and Notes.\n\nAdd Column: type a name and click Add Column. Columns are persistent across the whole project.\nEdit: click a cell and type. Every edit is saved immediately.\nFill Column: choose a column, type a value and click Fill Column to set it for every row of the current plate (handy for a value shared by all the vessels on the plate). The app asks for confirmation, because it overwrites the values already in that column, on that plate only.\nClear Page Data: empties the values on the current plate and keeps the columns and the IDs.\nMark as Reviewed: flag a plate as done, so you can see your progress in the plate list.\n\n\n\n\n\n\n\nNote\n\n\n\nAvoid commas inside cell values (a CSV limitation).",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -1756,7 +1768,31 @@
     "href": "pypotterylens/usage.html#ai-assisted-extraction-optional",
     "title": "Using PyPotteryLens",
     "section": "AI-assisted extraction (optional)",
-    "text": "AI-assisted extraction (optional)\nPlates often print a table number, figure number and caption next to each drawing. The AI can read them for you.\n\nClick Backend and pick the engine:\n\nLocal (Gemma 4 E2B): runs on your machine, after a one-time model download (~10 GB). It is only offered if your hardware qualifies (see Hardware Requirements); otherwise the interface explains why.\nOpenRouter API: enter your API key and a vision-capable model name.\n\nOptionally open Prompt to add context, such as how plate numbers are printed in this publication.\nClick Extract References for the current plate, or Batch Extract for the project (you can limit it to a page range with the from/to fields). A progress overlay shows the tokens used, and Stop Processing cancels it.\n\nCanonical column names. Put a column name in [square brackets] inside the prompt and that exact name becomes the column: “Extract also [Scale] indicated next to the rim” or “Transcribe the [Ceramic Class]”. This keeps column names identical across all pages.\nUse Crops. Turn it on to read small inventory numbers from cropped, enlarged versions of each drawing. This improves accuracy for tiny labels.\n\n\n\n\n\n\nTip\n\n\n\nAlways check AI output. Try the extraction on one plate, adjust the prompt, and only then run the batch.",
+    "text": "AI-assisted extraction (optional)\nMonograph plates print, next to the drawings, a page number, a plate number, a figure number and a catalogue number for each vessel. The AI can read these for you and fill four columns: page, plate, figure and number. It does this by looking at the whole plate, with each vessel marked by a coloured box and a letter, and answering for every box. The letters are used only to match answers to boxes; the values it returns are the ones printed in the publication.\n\nClick Backend and pick the engine:\n\nLocal (Gemma 4 E2B): runs on your machine, after a one-time download of about 10 GB. It is offered only if your computer is powerful enough: an NVIDIA GPU with at least 8 GB of free video memory, or an Apple Silicon Mac with at least 16 GB of memory, or a high-end CPU (i7/i9, Ryzen 7/9, Xeon, or 8+ physical cores) with at least 16 GB of RAM. Otherwise the interface tells you what is missing instead of attempting a download that would fail.\nOpenRouter API: uses a remote model. Enter your API key and the name of a vision-capable model.\n\nOptionally open Prompt and describe how numbers appear in this publication (for example, that plate numbers look like “Tav. IV” at the top-left corner). The more specific you are, the better the result.\nClick Extract References for the current plate, or Batch Extract for the whole project. You can limit the batch to some plates with the from / to fields (they use the same numbering as the Plate X of Y counter, starting at 1). An overlay shows the progress and the tokens used, and Stop Processing cancels it.\n\nAdd your own columns. Put a column name in [square brackets] inside the prompt and that exact name becomes a column that the AI fills, for example “Extract also [Scale] indicated next to the rim” or “Transcribe the [Ceramic Class]”. This keeps the column name identical on every page, instead of drifting (“Scale”, “scale”, “Scala”…).\nUse Crops. Turn it on to read the catalogue number from a cropped, enlarged view of each drawing instead of from the whole plate. It improves accuracy for tiny numbers.\n\n\n\n\n\n\nWarning\n\n\n\nA batch overwrites the values in the AI columns of the plates it processes. If some of them already contain data, the app warns you and asks you to confirm (Overwrite and run). If you have already corrected some plates by hand, exclude them with the from / to range.\n\n\n\n\n\n\n\n\nTip\n\n\n\nAlways check the AI output. Try Extract References on one plate, adjust the prompt, and only then run the batch. The AI is told to leave a value empty when it cannot find it, but it can still misread a number, so check the results.",
+    "crumbs": [
+      "Project Home",
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#what-the-classifier-does",
+    "href": "pypotterylens/usage.html#what-the-classifier-does",
+    "title": "Using PyPotteryLens",
+    "section": "What the classifier does",
+    "text": "What the classifier does\nFor every card, a small neural network answers three questions: is it ENT or FRAG, is the rim at the top or at the bottom, and does the profile face left or right. Then, according to the options you chose, it corrects the card:\n\nAuto V-flip on: if the rim is at the bottom, the card is flipped upside-down, so every vessel is drawn with the rim at the top.\nAuto H-flip on: if the profile faces left, the card is mirrored, so every vessel has its profile on the right.\n\nThe result is a set of cards in the standard archaeological orientation (profile on the right, rim upwards). The ENT/FRAG label is always assigned, even if you turn both flip options off.",
+    "crumbs": [
+      "Project Home",
+      "PyPotteryLens",
+      "Using PyPotteryLens"
+    ]
+  },
+  {
+    "objectID": "pypotterylens/usage.html#steps",
+    "href": "pypotterylens/usage.html#steps",
+    "title": "Using PyPotteryLens",
+    "section": "Steps",
+    "text": "Steps\n\nChoose the automatic corrections with Auto V-flip and Auto H-flip (both on by default).\nClick Process All Images. A progress overlay shows the run and Stop Processing cancels it.\nReview the grid. All cards are shown at their real relative size (the largest one fills the maximum thumbnail), which makes an oddly small or oddly large card easy to spot. Cards with a blue border are ENT, cards with an orange border are FRAG. Hover over a card to reveal its controls:\n\nFlip vertical / Flip horizontal: fix an orientation the classifier got wrong.\nENT / FRAG pill: change the classification.\nExclude: leave the card out of the export (it is greyed out); click again to include it again.\nClick the image to open a full-screen lightbox.\n\n\nWhat you will see. The processed cards are saved in the project’s cards_modified/ folder, together with classifications.csv, which records for each card the type, position and rotation the classifier predicted.\n\n\n\n\n\n\nImportant\n\n\n\nPost-processed cards are saved in grayscale, which suits line drawings. If your drawings use color, keep in mind that the exported images come from this step.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nClicking Process All Images again starts from the extracted cards, so the flips and ENT/FRAG changes you made by hand are recalculated. Finish reviewing the classifier’s work only once, after the last run.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",

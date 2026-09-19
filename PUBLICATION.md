@@ -153,6 +153,20 @@ optional overrides with an in-app default, never required.
 
 ## P2 - polish, fine to ship without and follow up later
 
+- [ ] **Lens: nested vessels are no longer whitened out of the containing card.**
+  Found while verifying the docs against the code (2026-09-19). The 0.3.0
+  notes/README said an inner vessel's area is subtracted from the outer card,
+  but the call to `_whiteout_inner_polygons()` in `PyPotteryLens/utils.py`
+  was removed in commit `6801f72` ("upgrade") when extraction moved to
+  polygon-per-card, and the function is now dead code. Today each polygon
+  becomes its own card and the outer card still shows the inner vessel. Decide:
+  restore the whiteout for `extract_masks_from_project` (a polygon whose
+  centroid falls inside another polygon), or keep the current behaviour. The
+  docs and README now describe the current behaviour.
+- [ ] **Lens: exported IDs follow a plain alphabetical file order**
+  (`sorted(card_images)` in `export_project_results`), so `..._page_10_...`
+  sorts before `..._page_2_...`. The extraction step already uses natural
+  sorting; using it in the export would make `OSA_2024_<n>` follow plate order.
 - [ ] **Docs restructure: Getting Started + Usage + Version History per app.**
   Pilot done on PyPotteryLens (2026-09-19, on `beta`): `index.qmd` is now
   "Getting Started" (intro + install + first launch + troubleshooting, with a

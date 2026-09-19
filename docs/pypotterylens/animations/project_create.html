@@ -4,9 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Creation Animation</title>
+    <title>PyPotteryLens — Project Creation Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* Base Styles from Reference */
+        :root {
+            --primary: #c2410c;
+            --primary-hover: #9a3412;
+            --primary-soft: rgba(194, 65, 12, 0.08);
+            --primary-border: rgba(194, 65, 12, 0.25);
+            --teal: #0d9488;
+            --teal-soft: rgba(13, 148, 136, 0.08);
+            --teal-border: rgba(13, 148, 136, 0.25);
+            --bg-page: #fbf9f5;
+            --bg-surface: #f5efe6;
+            --border: #e8e3d8;
+            --border-dark: #cbd5e1;
+            --text-main: #1c1917;
+            --text-dim: #57534e;
+            --text-muted: #78716c;
+            --radius-xs: 6px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-full: 9999px;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: transparent;
             display: flex;
@@ -14,202 +45,653 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
+            padding: 10px;
+            font-family: var(--font-sans);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* App Window Frame */
         .window {
-            background: white;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 16px 40px -8px rgba(120, 53, 15, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 14px;
             overflow: hidden;
-            width: 800px;
-            height: 525px;
+            width: 880px;
+            max-width: 100%;
+            height: 590px;
             position: relative;
             display: flex;
             flex-direction: column;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
+            background-color: #ffffff;
         }
 
-        /* Header */
-        .header {
-            height: 40px;
-            min-height: 40px;
-            max-height: 40px;
-            background: #f1f3f4;
+        /* Top Header Chrome */
+        .app-header {
+            height: 48px;
+            min-height: 48px;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(194, 65, 12, 0.18);
             display: flex;
             align-items: center;
             padding: 0 16px;
-            gap: 8px;
-            border-bottom: 1px solid #e5e7eb;
+            gap: 12px;
             flex-shrink: 0;
+            user-select: none;
+        }
+
+        .traffic-lights {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 6px;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
-            background: #dadce0;
         }
 
-        .dot.red {
-            background: #ff5f56;
-        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
 
-        .dot.yellow {
-            background: #ffbd2e;
-        }
-
-        .dot.green {
-            background: #27c93f;
-        }
-
-        /* Tabs */
-        .tabs {
+        .brand-title {
             display: flex;
-            padding: 10px 20px;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            gap: 10px;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
         }
 
-        .tab {
-            padding: 8px 16px;
+        .brand-accent {
+            color: var(--primary);
+        }
+
+        .version-badge {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid var(--primary-border);
+            border-radius: var(--radius-full);
+            margin-left: 2px;
+        }
+
+        /* Header Active Project Pill */
+        .header-project-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 500;
+            margin-left: auto;
+            transition: all 0.3s ease;
+        }
+
+        .header-project-badge.has-project {
+            background: #fff7ed;
+            border-color: rgba(194, 65, 12, 0.35);
+            color: var(--primary);
+            box-shadow: 0 1px 4px rgba(194, 65, 12, 0.12);
+        }
+
+        .header-project-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .header-project-badge.has-project .header-project-label {
+            color: rgba(194, 65, 12, 0.9);
+        }
+
+        .header-project-name {
+            font-weight: 700;
+            color: var(--text-dim);
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .header-project-badge.has-project .header-project-name {
+            color: var(--primary);
+        }
+
+        /* Pixel Assistant Mascot */
+        .pixel-assistant {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 6px;
             border-radius: 6px;
-            font-size: 0.9em;
-            color: #6b7280;
-            cursor: default;
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        /* Dossier Tabs Bar */
+        .tabs-bar {
+            display: flex;
+            gap: 4px;
+            padding: 6px 16px 0 16px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 7px 7px 0 0;
+            background: var(--bg-surface);
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            border-color: var(--border);
+            border-top: 3px solid var(--primary);
+            padding-top: 5px;
+            font-weight: 700;
+            margin-bottom: -1px;
+            box-shadow: 0 -2px 6px rgba(120, 53, 15, 0.05);
+        }
+
+        .tab-btn.tab-locked {
+            opacity: 0.55;
+            color: var(--text-muted);
+            background: #f3ece1;
+        }
+
+        /* Main Workspace Container */
+        .workspace-body {
+            flex: 1;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .tab-heading {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tab-heading h2 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .tab.active {
-            background: white;
-            color: #c2410c;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            font-weight: 500;
+        .tab-heading .subtitle {
+            font-size: 0.78rem;
+            color: var(--text-muted);
         }
 
-        /* Content */
-        .content {
+        /* 2-Column Split Workspace */
+        .projects-workspace {
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            gap: 16px;
+            align-items: start;
             flex: 1;
-            padding: 30px;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
         }
 
-        .form-section {
+        /* Left Column: Create Panel */
+        .project-create-panel {
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+        }
+
+        .panel-section-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-section-title svg {
+            color: var(--primary);
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
         }
 
-        label {
+        .form-group label {
+            font-size: 0.78rem;
             font-weight: 600;
-            font-size: 0.9em;
-            color: #374151;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .required-mark {
+            color: var(--primary);
+        }
+
+        .optional-label {
+            font-size: 0.70rem;
+            color: var(--text-muted);
+            font-weight: normal;
         }
 
         .form-control {
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 0.9em;
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            font-size: 0.82rem;
             font-family: inherit;
+            background: #ffffff;
+            color: var(--text-main);
+            transition: all 0.2s;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #c2410c;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-soft);
         }
 
         textarea.form-control {
-            resize: vertical;
-            font-family: inherit;
+            resize: none;
+            height: 48px;
         }
 
+        /* Icon Selector (Stamps) */
         .icon-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            padding: 6px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
         }
 
         .icon-option {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            aspect-ratio: 1;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xs);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
             cursor: pointer;
+            background: #ffffff;
+            padding: 4px;
             transition: all 0.2s;
         }
 
+        .icon-option svg {
+            width: 22px;
+            height: 22px;
+            fill: #78716c;
+            transition: fill 0.2s;
+        }
+
+        .icon-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        .icon-option:hover svg {
+            fill: var(--primary);
+        }
+
         .icon-option.selected {
-            border-color: #c2410c;
-            background: #eff6ff;
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            box-shadow: 0 0 0 2px rgba(194, 65, 12, 0.2);
+        }
+
+        .icon-option.selected svg {
+            fill: var(--primary);
         }
 
         .btn-primary {
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
+            background: var(--primary);
+            color: #ffffff;
+            padding: 8px 14px;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: var(--radius-xs);
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(194, 65, 12, 0.2);
+            transition: all 0.15s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 10px rgba(194, 65, 12, 0.28);
+        }
+
+        /* Right Column: Project Repository */
+        .projects-collection-column {
+            display: flex;
+            flex-direction: column;
             gap: 8px;
-            font-size: 1rem;
-            transition: transform 0.1s;
-            width: fit-content;
+            height: 100%;
         }
 
-        .success-msg {
-            background: #ecfdf5;
-            color: #065f46;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #10b981;
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .collection-title-group h3 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .collection-hint {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .btn-refresh {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: var(--radius-xs);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: #fbf9f5;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
             text-align: center;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
+            gap: 6px;
+            transition: opacity 0.3s ease;
         }
 
-        .success-msg.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .empty-state svg {
+            width: 38px;
+            height: 38px;
+            fill: #a8a29e;
         }
 
-        /* Cursor */
-        .cursor {
+        .empty-state .empty-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .empty-state .empty-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Active Project Card (Generated on creation) */
+        .project-card {
+            background: #ffffff;
+            border: 1px solid var(--teal);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(13, 148, 136, 0.12);
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--teal);
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .project-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-card-stamp {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+            background: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .project-card-stamp svg {
             width: 20px;
-            height: 29px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
+            height: 20px;
+            fill: var(--primary);
+        }
+
+        .project-card-title-group {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .project-badge {
+            background: var(--teal);
+            color: #ffffff;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .project-card-desc {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .project-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: #fbf9f5;
+            padding: 6px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.70rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .stat-val {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .project-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .btn-card-select {
+            background: var(--teal);
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-xs);
+            padding: 4px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-card-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: 1px solid #fca5a5;
+            border-radius: var(--radius-xs);
+            padding: 4px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Status Toast Message */
+        .status-toast {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.80rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.2);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .status-toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Animated Pointer Cursor */
+        .cursor {
+            width: 22px;
+            height: 28px;
             background-size: contain;
             background-repeat: no-repeat;
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 9999;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-            transform: translate(-50px, -50px);
+            z-index: 99999;
             pointer-events: none;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35));
+            transform: translate(900px, 600px);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
     </style>
 </head>
@@ -217,78 +699,302 @@
 <body>
 
     <div class="window" id="appWindow">
-        <!-- Header -->
-        <div class="header">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.1
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="traffic-lights">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
             </div>
-        </div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab active">🗂️ Project Manager</div>
-            <div class="tab">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab">Review</div>
-            <div class="tab">Tabular Info</div>
-            <div class="tab">Post-Processing</div>
-        </div>
+            <div class="brand-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                    <path d="M11 8a3 3 0 0 0-3 3"></path>
+                </svg>
+                PyPottery<span class="brand-accent">Lens</span>
+                <span class="version-badge">v0.3.1</span>
+            </div>
 
-        <!-- Content -->
-        <div class="content">
-            <h2 style="color: #1f2937; margin: 0;">Create New Project</h2>
+            <!-- Active Project Badge Pill -->
+            <div class="header-project-badge" id="headerProjectBadge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+                </svg>
+                <span class="header-project-label">Project:</span>
+                <strong class="header-project-name" id="headerProjectName">No project selected</strong>
+            </div>
 
-            <div class="form-section">
-                <div class="form-group">
-                    <label>Project Name *</label>
-                    <input type="text" class="form-control" id="projectName" placeholder="E.g.: Scavi_Capena_2024">
-                </div>
+            <!-- Pixel Assistant CRT Mascot -->
+            <div class="pixel-assistant">
+                <svg width="16" height="14" viewBox="0 0 24 20" fill="none">
+                    <rect x="2" y="2" width="20" height="14" rx="3" fill="#d6cbbe" stroke="#78716c" stroke-width="1.5" />
+                    <rect x="5" y="4" width="14" height="10" rx="1.5" fill="#1c1917" />
+                    <circle cx="9" cy="8.5" r="1.2" fill="#22c55e" />
+                    <circle cx="15" cy="8.5" r="1.2" fill="#22c55e" />
+                    <path d="M10 11.5 Q12 13 14 11.5" stroke="#22c55e" stroke-width="1.2" fill="none" stroke-linecap="round" />
+                    <rect x="9" y="16" width="6" height="3" fill="#a8a29e" />
+                </svg>
+                <span>Need help?</span>
+            </div>
+        </header>
 
-                <div class="form-group">
-                    <label>Description (optional)</label>
-                    <textarea class="form-control" id="projectDesc" rows="2"
-                        placeholder="Project description..."></textarea>
-                </div>
+        <!-- Dossier Tabs -->
+        <nav class="tabs-bar">
+            <div class="tab-btn active">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+                </svg>
+                Project Manager
+            </div>
+            <div class="tab-btn tab-locked" id="tab1">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                1. PDF Document Processing
+            </div>
+            <div class="tab-btn tab-locked" id="tab2">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                </svg>
+                2. Apply Model
+            </div>
+            <div class="tab-btn tab-locked" id="tab3">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+                3. Review Annotations &amp; Masks
+            </div>
+            <div class="tab-btn tab-locked" id="tab4">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path>
+                </svg>
+                4. Tabular Information
+            </div>
+            <div class="tab-btn tab-locked" id="tab5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                5. Post Processing
+            </div>
+        </nav>
 
-                <div class="form-group">
-                    <label>Project Icon</label>
-                    <div class="icon-selector">
-                        <div class="icon-option" data-icon="🏺">🏺</div>
-                        <div class="icon-option selected" data-icon="📦" id="selectedIcon">📦</div>
-                        <div class="icon-option" data-icon="🗂️">🗂️</div>
-                        <div class="icon-option" data-icon="🔍">🔍</div>
+        <!-- Main Workspace -->
+        <main class="workspace-body">
+            <div class="tab-heading">
+                <h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2">
+                        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+                    </svg>
+                    Project Manager
+                </h2>
+                <span class="subtitle">Create, configure, and activate your archaeological ceramic documentation projects</span>
+            </div>
+
+            <div class="projects-workspace">
+                <!-- Left: Create Dossier Form -->
+                <aside class="project-create-panel">
+                    <div class="panel-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+                            <line x1="12" y1="11" x2="12" y2="17"></line>
+                            <line x1="9" y1="14" x2="15" y2="14"></line>
+                        </svg>
+                        New Project Dossier
                     </div>
-                </div>
 
-                <button class="btn-primary" id="createBtn">
-                    ➕ Create Project
-                </button>
+                    <div class="form-group">
+                        <label>Project Name <span class="required-mark">*</span></label>
+                        <input type="text" id="projectName" class="form-control" placeholder="e.g. Scavi_Capena_2024" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description <span class="optional-label">(optional)</span></label>
+                        <textarea id="projectDesc" class="form-control" placeholder="Site context, trench, or ceramic assemblage notes..." readonly></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Icon Stamp</label>
+                        <div class="icon-selector" id="iconSelector">
+                            <!-- Stamp 1: Amphora -->
+                            <div class="icon-option selected" id="stamp1" title="Vase Stamp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2a2 2 0 0 0-2 2c0 .7.3 1.3.8 1.6L10 8c-2.2 0-4 1.8-4 4 0 2.2 1.3 4 3 4.8V20h6v-3.2c1.7-.8 3-2.6 3-4.8 0-2.2-1.8-4-4-4l-.8-2.4c.5-.3.8-.9.8-1.6a2 2 0 0 0-2-2Z"/>
+                                </svg>
+                            </div>
+                            <!-- Stamp 2: Krater / Bowl -->
+                            <div class="icon-option" id="stamp2" title="Bowl Stamp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 8h18v2a9 9 0 0 1-18 0V8zm4 11h10v2H7v-2z"/>
+                                </svg>
+                            </div>
+                            <!-- Stamp 3: Ceramic Profile/Sherd -->
+                            <div class="icon-option" id="stamp3" title="Profile Stamp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 12V3zm0 0v9l7.03 5.61C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/>
+                                </svg>
+                            </div>
+                            <!-- Stamp 4: Storage Crate -->
+                            <div class="icon-option" id="stamp4" title="Crate Stamp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" id="createBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        <span id="btnText">Create Project</span>
+                    </button>
+                </aside>
+
+                <!-- Right: Repository Collection -->
+                <section class="projects-collection-column">
+                    <div class="projects-header">
+                        <div class="collection-title-group">
+                            <h3>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                Project Repository
+                            </h3>
+                            <span class="collection-hint">Select a project card to activate it across all tabs</span>
+                        </div>
+                        <div class="btn-refresh">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                            </svg>
+                            Refresh
+                        </div>
+                    </div>
+
+                    <!-- Initial Empty State -->
+                    <div class="empty-state" id="emptyState">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2zM9.5 14.5l5-5m0 5l-5-5"/>
+                        </svg>
+                        <div class="empty-title">No projects found</div>
+                        <div class="empty-sub">Create your first project dossier using the form on the left</div>
+                    </div>
+
+                    <!-- Active Project Card (spawned dynamically) -->
+                    <div class="project-card" id="projectCard" style="display: none;">
+                        <div class="project-card-header">
+                            <div class="project-card-stamp" id="cardStamp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 8h18v2a9 9 0 0 1-18 0V8zm4 11h10v2H7v-2z"/>
+                                </svg>
+                            </div>
+                            <div class="project-card-title-group">
+                                <span class="project-card-title">Scavi_Capena_2024</span>
+                                <span class="project-badge">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                    </svg>
+                                    ACTIVE
+                                </span>
+                            </div>
+                        </div>
+
+                        <p class="project-card-desc" id="cardDesc">Excavation 2024</p>
+
+                        <div class="project-stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">PDF</span>
+                                <span class="stat-val">—</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Images</span>
+                                <span class="stat-val">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Masks</span>
+                                <span class="stat-val">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Cards</span>
+                                <span class="stat-val">0</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card-footer">
+                            <button class="btn-card-select">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Selected
+                            </button>
+                            <button class="btn-card-delete">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div class="success-msg" id="successMsg">
-                ✅ Project "Scavi_Capena_2024" created successfully!
+            <!-- Toast Success Message -->
+            <div class="status-toast" id="statusToast">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Project "Scavi_Capena_2024" created successfully!</span>
             </div>
+        </main>
+
+        <!-- Animated Mouse Pointer -->
+        <div class="cursor" id="cursor">
+            <svg viewBox="0 0 24 24" width="22" height="28">
+                <path d="M3 2l16 11.5-6.8.6 3.8 8.4-2.8 1.2-3.8-8.5-4.4 4.8V2z" fill="#1c1917" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
         </div>
-
-        <div class="cursor" id="cursor"></div>
     </div>
 
     <script>
+        const appWindow = document.getElementById('appWindow');
         const cursor = document.getElementById('cursor');
         const projectName = document.getElementById('projectName');
         const projectDesc = document.getElementById('projectDesc');
-        const selectedIcon = document.getElementById('selectedIcon');
+        const stamp1 = document.getElementById('stamp1');
+        const stamp2 = document.getElementById('stamp2');
         const createBtn = document.getElementById('createBtn');
-        const successMsg = document.getElementById('successMsg');
-        const appWindow = document.getElementById('appWindow');
+        const btnText = document.getElementById('btnText');
+        const emptyState = document.getElementById('emptyState');
+        const projectCard = document.getElementById('projectCard');
+        const statusToast = document.getElementById('statusToast');
+        const headerBadge = document.getElementById('headerProjectBadge');
+        const headerName = document.getElementById('headerProjectName');
+        const lockedTabs = [
+            document.getElementById('tab1'),
+            document.getElementById('tab2'),
+            document.getElementById('tab3'),
+            document.getElementById('tab4'),
+            document.getElementById('tab5')
+        ];
 
-        function moveCursorTo(element, duration = 1000, delay = 0) {
+        function moveCursorTo(element, duration = 800, delay = 0) {
             const rect = element.getBoundingClientRect();
             const containerRect = appWindow.getBoundingClientRect();
-            const x = rect.left - containerRect.left + rect.width / 2;
-            const y = rect.top - containerRect.top + rect.height / 2;
+            const x = rect.left - containerRect.left + (rect.width * 0.45);
+            const y = rect.top - containerRect.top + (rect.height * 0.45);
 
             return new Promise(resolve => {
                 setTimeout(() => {
@@ -299,65 +1005,102 @@
             });
         }
 
-        async function typeText(element, text) {
+        async function typeText(element, text, speed = 65) {
             element.value = '';
             for (let i = 0; i < text.length; i++) {
                 element.value += text[i];
-                await new Promise(r => setTimeout(r, 80));
+                await new Promise(r => setTimeout(r, speed));
             }
         }
 
         function reset() {
             projectName.value = '';
             projectDesc.value = '';
-            successMsg.classList.remove('visible');
-            cursor.style.transform = 'translate(850px, 600px)';
+            stamp1.classList.add('selected');
+            stamp2.classList.remove('selected');
+            emptyState.style.display = 'flex';
+            projectCard.style.display = 'none';
+            statusToast.classList.remove('visible');
+            headerBadge.classList.remove('has-project');
+            headerName.textContent = 'No project selected';
+            btnText.textContent = 'Create Project';
+            lockedTabs.forEach(t => t.classList.add('tab-locked'));
+            cursor.style.transition = 'none';
+            cursor.style.transform = 'translate(900px, 600px)';
         }
 
         async function runAnimation() {
             reset();
+            await new Promise(r => setTimeout(r, 100));
 
-            // 1. Move to Project Name
-            await moveCursorTo(projectName, 800, 500);
+            // 1. Pause briefly then glide to Project Name
+            await moveCursorTo(projectName, 850, 400);
 
-            // 2. Click and Type
-            // projectName.focus(); // Removed to prevent stealing focus
-            await new Promise(r => setTimeout(r, 200));
-            await typeText(projectName, 'Scavi_Capena_2024');
+            // 2. Type Project Name
+            await new Promise(r => setTimeout(r, 180));
+            await typeText(projectName, 'Scavi_Capena_2024', 60);
 
             // 3. Move to Description
-            await moveCursorTo(projectDesc, 800, 300);
+            await moveCursorTo(projectDesc, 700, 250);
 
-            // 4. Click and Type
-            // projectDesc.focus(); // Removed to prevent stealing focus
-            await new Promise(r => setTimeout(r, 200));
-            await typeText(projectDesc, 'Excavation 2024');
+            // 4. Type Description
+            await new Promise(r => setTimeout(r, 180));
+            await typeText(projectDesc, 'Excavation 2024', 60);
 
-            // 5. Move to Icon
-            await moveCursorTo(selectedIcon, 800, 300);
+            // 5. Move to Stamp 2 (Bowl stamp)
+            await moveCursorTo(stamp2, 650, 250);
 
-            // 6. Click Icon (already selected)
-            await new Promise(r => setTimeout(r, 200));
+            // 6. Click Stamp 2
+            await new Promise(r => setTimeout(r, 150));
+            stamp1.classList.remove('selected');
+            stamp2.classList.add('selected');
 
-            // 7. Move to Create Button
-            await moveCursorTo(createBtn, 800, 300);
+            // 7. Move to Create Project Button
+            await moveCursorTo(createBtn, 700, 300);
 
-            // 8. Click Create
-            createBtn.style.transform = 'scale(0.95)';
-            await new Promise(r => setTimeout(r, 200));
+            // 8. Press Create Button
+            await new Promise(r => setTimeout(r, 180));
+            createBtn.style.transform = 'scale(0.96)';
+            btnText.textContent = 'Creating...';
+            await new Promise(r => setTimeout(r, 220));
             createBtn.style.transform = 'scale(1)';
 
-            // 9. Show Success
-            await new Promise(r => setTimeout(r, 300));
-            successMsg.classList.add('visible');
+            // 9. Instant Creation Effect
+            await new Promise(r => setTimeout(r, 250));
+            btnText.textContent = 'Create Project';
+            projectName.value = '';
+            projectDesc.value = '';
+            stamp1.classList.add('selected');
+            stamp2.classList.remove('selected');
 
-            // 10. Move Away
-            await new Promise(r => setTimeout(r, 1000));
-            cursor.style.transform = 'translate(850px, 600px)';
+            // Show Project Card in Repository
+            emptyState.style.display = 'none';
+            projectCard.style.display = 'flex';
+
+            // Update Header Active Project Badge
+            headerBadge.classList.add('has-project');
+            headerName.textContent = 'Scavi_Capena_2024';
+
+            // Unlock Subsequent Tabs
+            lockedTabs.forEach(t => t.classList.remove('tab-locked'));
+
+            // Show Toast Success
+            statusToast.classList.add('visible');
+
+            // 10. Hover over newly created project card in the repository
+            await moveCursorTo(projectCard, 850, 450);
+
+            // 11. Hold state for review
+            await new Promise(r => setTimeout(r, 2200));
+
+            // 12. Move cursor away
+            cursor.style.transition = 'transform 800ms cubic-bezier(0.25, 1, 0.5, 1)';
+            cursor.style.transform = 'translate(900px, 600px)';
         }
 
-        setInterval(runAnimation, 12000);
-        setTimeout(runAnimation, 100);
+        // Loop animation every 13.5 seconds
+        setInterval(runAnimation, 13500);
+        setTimeout(runAnimation, 300);
     </script>
 </body>
 

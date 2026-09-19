@@ -372,7 +372,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#project-manager" id="toc-project-manager" class="nav-link active" data-scroll-target="#project-manager">Project Manager</a>
+  <li><a href="#key-terms" id="toc-key-terms" class="nav-link active" data-scroll-target="#key-terms">Key terms</a></li>
+  <li><a href="#project-manager" id="toc-project-manager" class="nav-link" data-scroll-target="#project-manager">Project Manager</a>
   <ul class="collapse">
   <li><a href="#create-a-project" id="toc-create-a-project" class="nav-link" data-scroll-target="#create-a-project">Create a project</a></li>
   <li><a href="#open-refresh-and-delete" id="toc-open-refresh-and-delete" class="nav-link" data-scroll-target="#open-refresh-and-delete">Open, refresh and delete</a></li>
@@ -388,7 +389,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
   <li><a href="#vessels-drawn-inside-other-vessels" id="toc-vessels-drawn-inside-other-vessels" class="nav-link" data-scroll-target="#vessels-drawn-inside-other-vessels">Vessels drawn inside other vessels</a></li>
-  <li><a href="#spot-fused-masks-with-colorize" id="toc-spot-fused-masks-with-colorize" class="nav-link" data-scroll-target="#spot-fused-masks-with-colorize">Spot fused masks with Colorize</a></li>
+  <li><a href="#check-the-outlines-with-colorize" id="toc-check-the-outlines-with-colorize" class="nav-link" data-scroll-target="#check-the-outlines-with-colorize">Check the outlines with Colorize</a></li>
   <li><a href="#calibrate-the-scale-optional" id="toc-calibrate-the-scale-optional" class="nav-link" data-scroll-target="#calibrate-the-scale-optional">Calibrate the scale (optional)</a></li>
   <li><a href="#extract-the-cards" id="toc-extract-the-cards" class="nav-link" data-scroll-target="#extract-the-cards">Extract the cards</a></li>
   </ul></li>
@@ -397,10 +398,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-table" id="toc-the-table" class="nav-link" data-scroll-target="#the-table">The table</a></li>
   <li><a href="#ai-assisted-extraction-optional" id="toc-ai-assisted-extraction-optional" class="nav-link" data-scroll-target="#ai-assisted-extraction-optional">AI-assisted extraction (optional)</a></li>
   </ul></li>
-  <li><a href="#post-processing" id="toc-post-processing" class="nav-link" data-scroll-target="#post-processing">5. Post Processing</a></li>
+  <li><a href="#post-processing" id="toc-post-processing" class="nav-link" data-scroll-target="#post-processing">5. Post Processing</a>
+  <ul class="collapse">
+  <li><a href="#what-the-classifier-does" id="toc-what-the-classifier-does" class="nav-link" data-scroll-target="#what-the-classifier-does">What the classifier does</a></li>
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  </ul></li>
   <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">Export</a></li>
+  <li><a href="#a-complete-example" id="toc-a-complete-example" class="nav-link" data-scroll-target="#a-complete-example">A complete example</a></li>
   <li><a href="#where-your-files-are" id="toc-where-your-files-are" class="nav-link" data-scroll-target="#where-your-files-are">Where your files are</a></li>
-  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#frequently-asked-questions" id="toc-frequently-asked-questions" class="nav-link" data-scroll-target="#frequently-asked-questions">Frequently asked questions</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -429,7 +436,7 @@ ul.task-list li input[type="checkbox"] {
 <div style="text-align: center;">
 <p><img src="../imgs/LogoLens.png" style="max-width: 25%; height: auto; margin-bottom: 1em;"></p>
 </div>
-<p>This guide follows the workflow tab by tab, in the order you will use them. Each step builds on the previous one, and everything is saved automatically inside your project.</p>
+<p>PyPotteryLens turns a published monograph (a PDF full of plates with pottery drawings) into a clean dataset: one image per vessel, oriented the same way, with the data you attach to it. This guide follows the app tab by tab, in the order you will use them. Every step builds on the previous one, and everything is saved automatically inside your project, so you can stop at any time and pick up later.</p>
 <!--
 ANIMATION (overview, NEW, priority: medium)
 Storyboard, ~12 s loop: 1) the six tab names light up one after the other
@@ -451,9 +458,50 @@ The workflow at a glance
 <p><strong>Project Manager</strong> → <strong>1. PDF Document Processing</strong> → <strong>2. Apply Model</strong> → <strong>3. Review Annotations &amp; Masks</strong> → <strong>4. Tabular Information</strong> → <strong>5. Post Processing</strong> → <strong>Export ZIP</strong></p>
 </div>
 </div>
+<section id="key-terms" class="level2">
+<h2 class="anchored" data-anchor-id="key-terms">Key terms</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Plate</strong> (or page)</td>
+<td>One page image extracted from the PDF. A plate usually carries several drawings.</td>
+</tr>
+<tr class="even">
+<td><strong>Mask / polygon</strong></td>
+<td>The outline the model draws around a vessel. It is stored as a simple polygon (a dozen or so vertices), so it is easy to edit.</td>
+</tr>
+<tr class="odd">
+<td><strong>Card</strong></td>
+<td>The cropped image of a single vessel: the drawing cut out of the plate, with the rest of the plate painted white and a white margin around it.</td>
+</tr>
+<tr class="even">
+<td><strong>ID</strong></td>
+<td>The number of a vessel on its plate (0, 1, 2…). It is what links a card to a row of your table.</td>
+</tr>
+<tr class="odd">
+<td><strong>ENT / FRAG</strong></td>
+<td>Classification of a card: <em>entire</em> (a substantially complete profile) or <em>fragment</em>.</td>
+</tr>
+<tr class="even">
+<td><strong>px/cm</strong></td>
+<td>The scale of a plate, in pixels per centimetre, measured from the printed scale bar.</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="project-manager" class="level1">
 <h1>Project Manager</h1>
-<p>Every dataset lives in its own project: a self-contained folder with your PDF, images, masks, tables and exports. Create one project per monograph, site or assemblage.</p>
+<p>Every dataset lives in its own project: a self-contained folder with your PDF, images, masks, tables and exports. Create one project per monograph, site or assemblage; you can keep as many as you like and switch between them freely.</p>
 <iframe src="animations/project_create.html" style="width: 100%; height: 620px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <!--
@@ -466,13 +514,14 @@ carry numbers ("1. PDF Document Processing"...), and the header/About match the 
 <h2 class="anchored" data-anchor-id="create-a-project">Create a project</h2>
 <ol type="1">
 <li>In <strong>New Project Dossier</strong>, type a <strong>Project Name</strong> (required), for example <code>Scavi_Capena_2024</code>.</li>
-<li>Optionally add a <strong>Description</strong> (site context, trench, assemblage notes) and pick a <strong>Project Icon Stamp</strong>.</li>
+<li>Optionally add a <strong>Description</strong> (site context, trench, assemblage notes) and pick a <strong>Project Icon Stamp</strong> to recognize it at a glance.</li>
 <li>Click <strong>Create Project</strong>.</li>
 </ol>
+<p>The project folder is named after your project plus a timestamp (for example <code>Scavi_Capena_2024_20260918_083330</code>), so two projects with the same name never collide. The project name is also used to name the page images, so pick something short and clear.</p>
 </section>
 <section id="open-refresh-and-delete" class="level2">
 <h2 class="anchored" data-anchor-id="open-refresh-and-delete">Open, refresh and delete</h2>
-<p>Existing projects are listed in the <strong>Project Repository</strong>. Click a project card to activate it: from that moment every tab works on that project. Use <strong>Refresh</strong> if you added a project from outside the app.</p>
+<p>Existing projects are listed in the <strong>Project Repository</strong>. Click a project card to activate it: from that moment every tab works on that project. Use <strong>Refresh</strong> if you added a project folder from outside the app.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -483,14 +532,14 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Deleting a project removes <strong>everything</strong> inside it: the source PDF, extracted images, masks and annotations, and exported data. The app asks for confirmation, and it cannot be undone.</p>
+<p>Deleting a project removes <strong>everything</strong> inside it: the source PDF, extracted images, masks and annotations, and exported data. The app lists what will be deleted and asks you to confirm; it cannot be undone.</p>
 </div>
 </div>
 </section>
 </section>
 <section id="pdf-document-processing" class="level1">
 <h1>1. PDF Document Processing</h1>
-<p>Upload the PDF of the monograph or report. PyPotteryLens extracts every page as a high-resolution image.</p>
+<p>Upload the PDF of the monograph or report. PyPotteryLens renders every page as a high-resolution image (300 DPI), one JPG per page, ready for the model.</p>
 <iframe src="animations/pdf_process.html" style="width: 100%; height: 720px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <!--
@@ -500,16 +549,30 @@ the "Split Scanned Spreads" toggle with the single-page vs two-page-spread compa
 and the "Ingestion Status & Active Target" box that shows the active PDF and locks the
 dropzone (one PDF per project, "Remove PDF" to replace).
 Storyboard for the split toggle: 1) a scanned spread (two facing pages) appears;
-2) toggle ON; 3) a dashed line marks the spine; 4) two separate plates slide apart.
+2) toggle ON; 3) a dashed line marks the exact middle; 4) two separate plates slide apart.
 -->
 <ol type="1">
-<li><strong>Select the project</strong> first (the PDF is attached to the active project).</li>
-<li>Decide whether the PDF is made of <strong>single pages</strong> or <strong>scanned spreads</strong> (two facing pages on one sheet, as when a book is laid open on a scanner).</li>
-<li>If it is a spread, switch <strong>Split Scanned Spreads</strong> <strong>ON before</strong> choosing the file. Each sheet is cut at the spine into two separate plates. For a normal digital PDF leave it OFF.</li>
-<li>Click <strong>Select PDF File</strong> (or drag the file onto the box) and wait for the processing to finish.</li>
+<li><strong>Select the project</strong> first: the PDF is attached to the active project.</li>
+<li>Look at your PDF. Is each PDF page <strong>one book page</strong> (a normal digital monograph), or is it a <strong>scanned spread</strong>, with two facing pages side by side on one sheet (a book laid open on a scanner)?</li>
+<li>If it is a spread, switch <strong>Split Scanned Spreads</strong> <strong>ON before</strong> choosing the file. Each sheet is cut <strong>down the exact middle</strong> into a left and a right plate. For a normal PDF leave it OFF.</li>
+<li>Click <strong>Select PDF File</strong> (or drag the file onto the box) and wait for the processing to finish. The <strong>Ingestion Status</strong> box then shows the active file.</li>
 </ol>
 <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin: 10px 0;">
 <p><img src="imgs/example_pag_1.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"> <img src="imgs/example_pag_2.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></p>
+</div>
+<p><strong>What you will see.</strong> A success message with the number of images extracted. The pages are saved in the project’s <code>images/</code> folder, named after the <em>project</em> (not the PDF): <code>Scavi_Capena_2024_page_0.jpg</code>, <code>..._page_1.jpg</code>, and so on. With splitting, each sheet gives two files, <code>..._page_0a.jpg</code> (left) and <code>..._page_0b.jpg</code> (right).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The split cuts exactly in the middle of the sheet. If the two pages on your scans are not centred (for example a large margin on one side), a vessel close to the spine can be cut in two. Check a few plates after the upload.</p>
+</div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -521,7 +584,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A project can hold <strong>only one PDF</strong>. To use a different document, click <strong>Remove PDF</strong> in the <em>Ingestion Status</em> box (this deletes the PDF and its extracted page images, and you will need to upload a new one) or create a new project.</p>
+<p>A project can hold <strong>only one PDF</strong>. To use a different document, click <strong>Remove PDF</strong> in the <em>Ingestion Status</em> box: this deletes the PDF and its extracted page images, and you must upload a new one. Or simply create another project.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -534,13 +597,13 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Use simple file names without spaces or special characters (<code>Cardarelli_2022.pdf</code>, not <code>My Document (2024) v2.pdf</code>). Extracted pages are saved as <code>{project}_page_0.jpg</code>, <code>{project}_page_1.jpg</code>, … and, with splitting, <code>..._page_0a.jpg</code>, <code>..._page_0b.jpg</code>.</p>
+<p>Very large PDFs (hundreds of pages) take a while, because every page is rendered at 300 DPI. If a monograph has a long text section and a short plates section, consider extracting only the plates into a smaller PDF first.</p>
 </div>
 </div>
 </section>
 <section id="apply-model" class="level1">
 <h1>2. Apply Model</h1>
-<p>The detection model looks at every plate and outlines each pottery drawing with a mask.</p>
+<p>The detection model looks at every plate and outlines each pottery drawing. For each detected vessel it saves a <strong>polygon</strong>, which you will review in the next tab.</p>
 <iframe src="animations/apply_model.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <!--
@@ -556,27 +619,52 @@ get coloured masks one by one.
 <section id="choose-the-model-and-the-confidence" class="level2">
 <h2 class="anchored" data-anchor-id="choose-the-model-and-the-confidence">Choose the model and the confidence</h2>
 <ul>
-<li><strong>Active Vision Model</strong>: the YOLO model trained on archaeological profiles. The default is fine for most publications.</li>
-<li><strong>Confidence Threshold</strong> (0.10-1.00, default 0.50):
-<ul>
-<li><strong>Higher</strong> values give fewer detections with higher precision, but may miss difficult drawings.</li>
-<li><strong>Lower</strong> values catch subtle drawings, but may add false positives.</li>
-<li>Start at 0.50 and adjust on a sample.</li>
-</ul></li>
+<li><strong>Active Vision Model</strong>: the YOLO model trained on archaeological pottery profiles. Use the one that is already selected unless you have a custom model in <code>models_vision/</code>.</li>
+<li><strong>Confidence Threshold</strong> (0.10 to 1.00, default 0.50): how sure the model must be before it reports a vessel.</li>
 </ul>
+<p>How to choose the confidence, by what you see in the results:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>If you see…</th>
+<th>Then…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Vessels <strong>missing</strong> (a drawing has no outline)</td>
+<td>Lower the threshold (for example 0.30-0.40)</td>
+</tr>
+<tr class="even">
+<td><strong>Extra outlines</strong> on things that are not vessels (page numbers, decorations, stray marks)</td>
+<td>Raise the threshold (for example 0.60-0.70)</td>
+</tr>
+<tr class="odd">
+<td>Mostly correct results</td>
+<td>Keep 0.50 and fix the few errors by hand in the next tab</td>
+</tr>
+</tbody>
+</table>
+<p>These values are starting points, not rules: the right setting depends on the print quality of your monograph. In general it is easier to delete a wrong outline than to draw a missing one, so if in doubt, lean lower.</p>
 </section>
 <section id="full-dataset-or-a-quick-test" class="level2">
 <h2 class="anchored" data-anchor-id="full-dataset-or-a-quick-test">Full dataset or a quick test</h2>
 <p>Under <strong>Execution Mode</strong> choose:</p>
 <ul>
-<li><strong>Full Dataset</strong>: process all the images selected in the project.</li>
-<li><strong>Diagnostic Test</strong>: process only the <strong>first 25 images</strong>, to try parameters quickly before committing to a long run.</li>
+<li><strong>Full Dataset</strong>: process every image you have selected in the project.</li>
+<li><strong>Diagnostic Test</strong>: process only the <strong>first 25 images</strong>. Use it to try a confidence value in a couple of minutes instead of waiting for the whole book.</li>
 </ul>
 </section>
 <section id="choose-which-images-to-process" class="level2">
 <h2 class="anchored" data-anchor-id="choose-which-images-to-process">Choose which images to process</h2>
-<p>The <strong>Project Figures</strong> gallery shows all the extracted pages. Use <strong>Select All</strong> or <strong>Deselect All</strong> and click single pages to include or exclude them (title pages, indexes, blank sheets). The badge shows how many images are queued.</p>
-<p>Click <strong>Apply Model to Project</strong>. A full-screen overlay shows the progress and the current file, and <strong>Stop Processing</strong> cancels the run.</p>
+<p>The <strong>Project Figures</strong> gallery shows all the extracted pages, and the badge tells you how many are queued (for example <em>“12 to process”</em>). <strong>Select All</strong> and <strong>Deselect All</strong> act on the whole gallery; click single pages to include or exclude them. Excluding is useful for the cover, the text pages, indexes and blank sheets: it saves time and avoids false detections.</p>
+<p>If you excluded some images, the app shows a short summary (how many will be processed and how many skipped) before starting.</p>
+<p>Click <strong>Apply Model to Project</strong>. A full-screen overlay shows the progress and the file being processed, and <strong>Stop Processing</strong> cancels the run.</p>
+<p><strong>What you will see.</strong> When the run ends, the masks are ready in the next tab. Each plate has its polygons saved in the project’s <code>masks/</code> folder; running the model again on a plate replaces its previous polygons, so do your manual corrections <em>after</em> you are happy with the model run.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -587,14 +675,14 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Run a <strong>Diagnostic Test</strong> first, look at the result in the next tab, and only then run the full dataset with the confidence you settled on.</p>
+<p>A good routine: run a <strong>Diagnostic Test</strong>, open a few plates in the next tab, adjust the confidence, and repeat. Only when the first 25 plates look right, run the <strong>Full Dataset</strong>.</p>
 </div>
 </div>
 </section>
 </section>
 <section id="review-annotations-masks" class="level1">
 <h1>3. Review Annotations &amp; Masks</h1>
-<p>The model is good, not perfect. Here you check every plate, correct the masks, and finally cut out the individual drawings (“cards”).</p>
+<p>The model is good, not perfect. Here you check every plate, correct the outlines, and finally cut out the individual drawings.</p>
 <iframe src="animations/model_review.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <!--
@@ -604,7 +692,7 @@ Eraser, Colorize, Size and Expansion sliders, Scale, Clear, zoom/fit, the
 "Vessels & Polygons" and "Scale calibrations" panels, Calibrate Scales and Extract Cards.
 Suggest splitting into 3 short clips instead of one long one (see below).
 -->
-<p>Open a plate by clicking it in the <strong>Images List</strong> (the sidebar can be collapsed with <em>Images List</em>). Use <strong>Prev / Next</strong> to move between plates and the <strong>+ / − / Fit</strong> controls, or the mouse wheel, to zoom and pan.</p>
+<p>Open a plate by clicking it in the <strong>Images List</strong> (the sidebar can be collapsed with <em>Images List</em>). Use <strong>Prev / Next</strong> to move between plates, and the <strong>+ / − / Fit</strong> controls, or the mouse wheel, to zoom and pan. The <strong>Vessels &amp; Polygons</strong> panel lists every outline on the current plate.</p>
 <section id="tools" class="level2">
 <h2 class="anchored" data-anchor-id="tools">Tools</h2>
 <table class="caption-top table">
@@ -623,22 +711,22 @@ Suggest splitting into 3 short clips instead of one long one (see below).
 <tbody>
 <tr class="odd">
 <td><strong>Brush</strong></td>
-<td>Paint with a round cursor; on release the stroke becomes a clean vector polygon</td>
+<td>Paint with a round cursor. When you release, the stroke becomes a clean vector polygon</td>
 <td><code>B</code></td>
 </tr>
 <tr class="even">
 <td><strong>Polygon</strong></td>
-<td>Click to place vertices; click the first point (or double-click, or <code>Enter</code>) to close; <code>Backspace</code> removes the last vertex, <code>Esc</code> cancels</td>
+<td>Click to place vertices; click the first point (or double-click, or press <code>Enter</code>) to close. <code>Backspace</code> removes the last vertex, <code>Esc</code> cancels</td>
 <td><code>P</code></td>
 </tr>
 <tr class="odd">
 <td><strong>Eraser</strong></td>
-<td>Sweep over vertices to erase them</td>
+<td>Sweep the round cursor over polygon vertices to erase them</td>
 <td><code>E</code></td>
 </tr>
 <tr class="even">
 <td><strong>Colorize</strong></td>
-<td>Show each vessel mask in a different color</td>
+<td>Paint each polygon in a different color (on by default)</td>
 <td></td>
 </tr>
 <tr class="odd">
@@ -648,44 +736,50 @@ Suggest splitting into 3 short clips instead of one long one (see below).
 </tr>
 </tbody>
 </table>
-<p>The <strong>Size</strong> slider sets the diameter of the brush and eraser (5-100 px). The <strong>Expansion</strong> slider (0-100 px, default 8 px) adds padding around every vessel, so cards are cut with a little margin.</p>
+<p>The <strong>Size</strong> slider sets the diameter of the brush and eraser (5-100 px). The <strong>Expansion</strong> slider (0-100 px, default 8 px) adds padding around every vessel when the cards are cut, so the drawing is not cropped too tightly: raise it if lines at the edge of a vessel are being cut off, lower it if neighbouring drawings creep into the card.</p>
+<p>Select a polygon in the list and press <code>Delete</code> to remove it.</p>
 <!--
 ANIMATION (NEW, priority: high) - "Fix a mask"
 Storyboard: 1) a plate with a mask that spills over a nearby label; 2) Eraser (E) sweeps
 the vertices, the outline snaps back; 3) Brush (B) paints over a missing rim, releases,
 becomes a clean polygon; 4) status text confirms saving.
 -->
+<p><strong>What to look for on each plate.</strong> Go through the plates in order and check four things: every vessel has an outline; no outline covers two vessels; no outline covers something that is not a vessel; and the outline does not cut through the drawing (a cut rim or base is the most common problem). Your changes are saved automatically when you move to another plate.</p>
 </section>
 <section id="vessels-drawn-inside-other-vessels" class="level2">
 <h2 class="anchored" data-anchor-id="vessels-drawn-inside-other-vessels">Vessels drawn inside other vessels</h2>
-<p>Some drawings show a small vessel inside a larger one. Use <strong>Polygon</strong> to outline the inner vessel: <strong>each polygon becomes a separate card</strong> when you extract, and the inner area is automatically whitened out of the containing card. The <strong>Vessels &amp; Polygons</strong> panel lists every polygon; click one to select it, and use <code>Delete</code> to remove it.</p>
+<p>Some draughtsmen draw a small vessel <em>inside</em> the section of a larger one. The model was trained on isolated vessels, so it usually finds only the outer silhouette and the inner vessel is missed.</p>
+<p>Use <strong>Polygon</strong> (<code>P</code>) to outline the inner vessel by hand. <strong>Each polygon becomes its own card</strong> when you extract, so the inner vessel gets its own image and its own row in the table.</p>
 <!--
 ANIMATION (NEW, priority: high) - "Nested vessel"
 Storyboard: 1) a large vessel with a small one drawn inside; 2) P, click 5 vertices around
 the small one, double-click to close; 3) the Vessels & Polygons counter goes 1 -> 2;
-4) split view: two cards after extraction, the big one with a white hole where the small
-vessel was.
+4) two cards after extraction.
 -->
 </section>
-<section id="spot-fused-masks-with-colorize" class="level2">
-<h2 class="anchored" data-anchor-id="spot-fused-masks-with-colorize">Spot fused masks with Colorize</h2>
-<p>Turn on <strong>Colorize</strong>: every vessel mask gets its own color. If two vessels share one color, their masks are <strong>fused</strong>: separate them with the eraser. Colors update live after every stroke.</p>
+<section id="check-the-outlines-with-colorize" class="level2">
+<h2 class="anchored" data-anchor-id="check-the-outlines-with-colorize">Check the outlines with Colorize</h2>
+<p><strong>Colorize</strong> (on by default) paints every polygon in its own color. Use it as a quick check that each vessel has its own outline: if what looks like two vessels is a single blob of one color, one polygon covers both, so redraw them as two. Colors update live after every change.</p>
 <!--
 ANIMATION (NEW, priority: medium) - "Colorize"
-Storyboard: 1) two adjacent vessels both orange; 2) Colorize ON, they become one blob of
-the same hue; 3) eraser cuts the bridge; 4) the two now show different hues.
+Storyboard: 1) two adjacent vessels covered by one polygon, a single blob of one color; 2) the user
+redraws them as two polygons; 3) the two now show different hues.
 -->
 </section>
 <section id="calibrate-the-scale-optional" class="level2">
 <h2 class="anchored" data-anchor-id="calibrate-the-scale-optional">Calibrate the scale (optional)</h2>
-<p>If you want real-world sizes, tell PyPotteryLens what the printed scale bar measures:</p>
+<p>If you want real-world sizes in your data, tell PyPotteryLens what the printed scale bar measures:</p>
 <ol type="1">
 <li>Select the <strong>Scale</strong> tool.</li>
 <li>Click the two ends of the graphic scale bar on the plate.</li>
-<li>Type the length in <strong>cm</strong> and confirm (<code>Enter</code>); <code>Esc</code> cancels.</li>
+<li>Type the length in <strong>cm</strong> in the small box and confirm (<code>Enter</code>); <code>Esc</code> cancels.</li>
 </ol>
-<p>The ratio is saved in <strong>Scale calibrations</strong> and used to fill the <code>px_per_cm</code> value when you extract the cards. For pages with more than one scale, use the <strong>Zone</strong> button on a scale and draw a rectangle to limit it to that part of the page.</p>
-<p>Once you have measured scales on several plates, <strong>Calibrate Scales</strong> opens a histogram of all the ratios in the project. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then <strong>Apply Calibration</strong> to snap outlier measurements to consistent values.</p>
+<p>The measure appears in <strong>Scale calibrations</strong>, and it is used to fill a <code>px_per_cm</code> column when you extract the cards. Each card takes the scale that applies to its position:</p>
+<ul>
+<li>A plate with <strong>one scale</strong> applies it to every vessel on the plate.</li>
+<li>A plate with <strong>several scales</strong> (for example, different drawings at different reductions): click <strong>Zone</strong> on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate’s general (non-zone) scale.</li>
+</ul>
+<p>Once you have measured scales on several plates, <strong>Calibrate Scales</strong> opens a histogram of all the px/cm ratios in the project. Measurements taken with a few pixels of click imprecision show up as scattered values around the true one. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then <strong>Apply Calibration</strong> to snap outlier measurements to the value you chose. Ratios are rounded to one decimal.</p>
 <!--
 ANIMATION (NEW, priority: medium) - "Scale"
 Storyboard A (ruler): 1) plate with a printed bar; 2) two clicks on its ends; 3) popup
@@ -696,12 +790,26 @@ a center line is added, the outlier snaps to it, Apply Calibration.
 </section>
 <section id="extract-the-cards" class="level2">
 <h2 class="anchored" data-anchor-id="extract-the-cards">Extract the cards</h2>
-<p>When the masks on all plates look right, click <strong>Extract Cards</strong>. A dialog asks you to confirm:</p>
+<p>When the outlines on all plates look right, click <strong>Extract Cards</strong>. A dialog asks you to confirm two things:</p>
 <ul>
-<li><strong>Overwrite warning</strong>: cards already extracted in this project will be regenerated.</li>
-<li><strong>Clean Artifacts &amp; Numbers</strong> (optional): removes isolated inventory numbers, section cuts and stray fragments outside the vessel.</li>
+<li><strong>Overwrite warning</strong>: cards already extracted in this project are regenerated, so any earlier cards are replaced.</li>
+<li><strong>Clean Artifacts &amp; Numbers</strong> (optional): removes the small extras that sit around the drawing inside its outline: detached inventory numbers, section profiles, projection dashes and fragments of neighbouring drawings. The vessel itself is left untouched, including its inner lines, hatching and stippling dots. Turn it on for clean results; turn it off if it removes something you want to keep.</li>
 </ul>
-<p>A progress overlay (<em>Extracting Cards from Masks</em>) shows the run, and <strong>Stop Processing</strong> cancels it. The cards are saved in the project and are what the next tabs work on.</p>
+<p>A progress overlay (<em>Extracting Cards from Masks</em>) shows the run, and <strong>Stop Processing</strong> cancels it.</p>
+<p><strong>What you will see.</strong> One image per outline, saved in the project’s <code>cards/</code> folder as <code>{page}_mask_layer_{ID}.png</code>, with everything outside the outline painted white and a white margin around it. Two identical cards are never saved twice (exact duplicates are skipped and reported). The app also writes <code>mask_info.csv</code>, the table that the next tab fills, with one row per card and the <code>px_per_cm</code> column when you calibrated scales.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Extract the cards <strong>after</strong> you are happy with all the outlines. Extracting again regenerates the cards, and the cards are what the next tabs work on.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="tabular-information" class="level1">
@@ -717,13 +825,14 @@ Use Crops, Backend and Prompt panels. Split into "manual entry" and "AI extracti
 -->
 <section id="the-table" class="level2">
 <h2 class="anchored" data-anchor-id="the-table">The table</h2>
-<p>The center shows the plate with a <strong>bounding box and an ID</strong> on each vessel (toggle them with <strong>Show boxes</strong>; click a vessel to inspect it). On the right is the table with one row per vessel. Move between plates with <strong>Prev / Next</strong> or from the <strong>Project Plates</strong> list.</p>
+<p>The center shows the plate with a <strong>bounding box and an ID</strong> on each vessel; toggle the boxes with <strong>Show boxes</strong>, and click a vessel to inspect it. On the right is the table, with one row per vessel. Move between plates with <strong>Prev / Next</strong> or from the <strong>Project Plates</strong> list; the counter shows <em>Plate X of Y</em>.</p>
+<p>A new project starts with two columns, <strong>ID</strong> and <strong>Notes</strong>.</p>
 <ul>
 <li><strong>Add Column</strong>: type a name and click <strong>Add Column</strong>. Columns are persistent across the whole project.</li>
 <li><strong>Edit</strong>: click a cell and type. Every edit is saved immediately.</li>
-<li><strong>Fill Column</strong>: choose a column, type a value and click <strong>Fill Column</strong> to set it for every row of the current plate.</li>
-<li><strong>Clear Page Data</strong>: empties the values on the current plate and keeps the columns.</li>
-<li><strong>Mark as Reviewed</strong>: flag a plate as done, to keep track of your progress.</li>
+<li><strong>Fill Column</strong>: choose a column, type a value and click <strong>Fill Column</strong> to set it for every row of the current plate (handy for a value shared by all the vessels on the plate). The app asks for confirmation, because it overwrites the values already in that column, on that plate only.</li>
+<li><strong>Clear Page Data</strong>: empties the values on the current plate and keeps the columns and the IDs.</li>
+<li><strong>Mark as Reviewed</strong>: flag a plate as done, so you can see your progress in the plate list.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -735,7 +844,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Avoid commas inside cell values (CSV limitation).</p>
+<p>Avoid commas inside cell values (a CSV limitation).</p>
 </div>
 </div>
 <!--
@@ -747,18 +856,31 @@ Storyboard: 1) plate with two boxed vessels #1 #2; 2) type "Context" -> Add Colu
 </section>
 <section id="ai-assisted-extraction-optional" class="level2">
 <h2 class="anchored" data-anchor-id="ai-assisted-extraction-optional">AI-assisted extraction (optional)</h2>
-<p>Plates often print a table number, figure number and caption next to each drawing. The AI can read them for you.</p>
+<p>Monograph plates print, next to the drawings, a page number, a plate number, a figure number and a catalogue number for each vessel. The AI can read these for you and fill four columns: <strong>page</strong>, <strong>plate</strong>, <strong>figure</strong> and <strong>number</strong>. It does this by looking at the whole plate, with each vessel marked by a coloured box and a letter, and answering for every box. The letters are used only to match answers to boxes; the values it returns are the ones printed in the publication.</p>
 <ol type="1">
 <li>Click <strong>Backend</strong> and pick the engine:
 <ul>
-<li><strong>Local (Gemma 4 E2B)</strong>: runs on your machine, after a one-time model download (~10 GB). It is only offered if your hardware qualifies (see <a href="../requirements.html">Hardware Requirements</a>); otherwise the interface explains why.</li>
-<li><strong>OpenRouter API</strong>: enter your API key and a vision-capable model name.</li>
+<li><strong>Local (Gemma 4 E2B)</strong>: runs on your machine, after a one-time download of about 10 GB. It is offered only if your computer is powerful enough: an NVIDIA GPU with at least 8 GB of free video memory, or an Apple Silicon Mac with at least 16 GB of memory, or a high-end CPU (i7/i9, Ryzen 7/9, Xeon, or 8+ physical cores) with at least 16 GB of RAM. Otherwise the interface tells you what is missing instead of attempting a download that would fail.</li>
+<li><strong>OpenRouter API</strong>: uses a remote model. Enter your API key and the name of a vision-capable model.</li>
 </ul></li>
-<li>Optionally open <strong>Prompt</strong> to add context, such as how plate numbers are printed in this publication.</li>
-<li>Click <strong>Extract References</strong> for the current plate, or <strong>Batch Extract</strong> for the project (you can limit it to a page range with the <em>from/to</em> fields). A progress overlay shows the tokens used, and <strong>Stop Processing</strong> cancels it.</li>
+<li>Optionally open <strong>Prompt</strong> and describe how numbers appear in <em>this</em> publication (for example, that plate numbers look like “Tav. IV” at the top-left corner). The more specific you are, the better the result.</li>
+<li>Click <strong>Extract References</strong> for the current plate, or <strong>Batch Extract</strong> for the whole project. You can limit the batch to some plates with the <em>from / to</em> fields (they use the same numbering as the <em>Plate X of Y</em> counter, starting at 1). An overlay shows the progress and the tokens used, and <strong>Stop Processing</strong> cancels it.</li>
 </ol>
-<p><strong>Canonical column names.</strong> Put a column name in <code>[square brackets]</code> inside the prompt and that exact name becomes the column: <em>“Extract also [Scale] indicated next to the rim”</em> or <em>“Transcribe the [Ceramic Class]”</em>. This keeps column names identical across all pages.</p>
-<p><strong>Use Crops.</strong> Turn it on to read small inventory numbers from cropped, enlarged versions of each drawing. This improves accuracy for tiny labels.</p>
+<p><strong>Add your own columns.</strong> Put a column name in <code>[square brackets]</code> inside the prompt and that exact name becomes a column that the AI fills, for example <em>“Extract also [Scale] indicated next to the rim”</em> or <em>“Transcribe the [Ceramic Class]”</em>. This keeps the column name identical on every page, instead of drifting (“Scale”, “scale”, “Scala”…).</p>
+<p><strong>Use Crops.</strong> Turn it on to read the catalogue number from a cropped, enlarged view of each drawing instead of from the whole plate. It improves accuracy for tiny numbers.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A batch <strong>overwrites</strong> the values in the AI columns of the plates it processes. If some of them already contain data, the app warns you and asks you to confirm (<em>Overwrite and run</em>). If you have already corrected some plates by hand, exclude them with the <em>from / to</em> range.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -769,7 +891,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Always check AI output. Try the extraction on one plate, adjust the prompt, and only then run the batch.</p>
+<p>Always check the AI output. Try <strong>Extract References</strong> on one plate, adjust the prompt, and only then run the batch. The AI is told to leave a value empty when it cannot find it, but it can still misread a number, so check the results.</p>
 </div>
 </div>
 <!--
@@ -783,7 +905,7 @@ Include a 1-second frame of the hardware guardrail message for underpowered mach
 </section>
 <section id="post-processing" class="level1">
 <h1>5. Post Processing</h1>
-<p>The last step standardizes the extracted cards: orientation and completeness.</p>
+<p>The last step standardizes the extracted cards so that all the profiles look the same: same orientation, and a label saying whether each one is complete or a fragment.</p>
 <iframe src="animations/post_process.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <!--
@@ -794,61 +916,164 @@ Storyboard: 1) click Process All Images; 2) progress overlay "Processing Extract
 4) hover a card: flip V, flip H, exclude, ENT/FRAG pill appear; 5) click V-flip on an
 upside-down rim; 6) exclude a card, it greys out; 7) click a card for the lightbox.
 -->
+<section id="what-the-classifier-does" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-classifier-does">What the classifier does</h2>
+<p>For every card, a small neural network answers three questions: is it <strong>ENT</strong> or <strong>FRAG</strong>, is the rim at the <strong>top</strong> or at the <strong>bottom</strong>, and does the profile face <strong>left</strong> or <strong>right</strong>. Then, according to the options you chose, it corrects the card:</p>
+<ul>
+<li><strong>Auto V-flip</strong> on: if the rim is at the bottom, the card is flipped upside-down, so every vessel is drawn with the rim at the top.</li>
+<li><strong>Auto H-flip</strong> on: if the profile faces left, the card is mirrored, so every vessel has its profile on the right.</li>
+</ul>
+<p>The result is a set of cards in the standard archaeological orientation (profile on the right, rim upwards). The ENT/FRAG label is always assigned, even if you turn both flip options off.</p>
+</section>
+<section id="steps" class="level2">
+<h2 class="anchored" data-anchor-id="steps">Steps</h2>
 <ol type="1">
-<li>Choose the automatic corrections:
+<li>Choose the automatic corrections with <strong>Auto V-flip</strong> and <strong>Auto H-flip</strong> (both on by default).</li>
+<li>Click <strong>Process All Images</strong>. A progress overlay shows the run and <strong>Stop Processing</strong> cancels it.</li>
+<li>Review the <strong>grid</strong>. All cards are shown at their real relative size (the largest one fills the maximum thumbnail), which makes an oddly small or oddly large card easy to spot. Cards with a <strong>blue</strong> border are ENT, cards with an <strong>orange</strong> border are FRAG. Hover over a card to reveal its controls:
 <ul>
-<li><strong>Auto V-flip</strong> turns upside-down vessels the right way up (rim at the top).</li>
-<li><strong>Auto H-flip</strong> standardizes the side of the profile.</li>
-</ul></li>
-<li>Click <strong>Process All Images</strong>. A classifier also labels each card <strong>ENT</strong> (a substantially complete profile, blue border) or <strong>FRAG</strong> (a fragment, orange border).</li>
-<li>Review the <strong>grid</strong>. All cards are shown at their real relative size (the largest one fills the maximum thumbnail). Hover over a card to reveal its controls:
-<ul>
-<li><strong>Flip vertical / Flip horizontal</strong>: override the automatic orientation.</li>
+<li><strong>Flip vertical / Flip horizontal</strong>: fix an orientation the classifier got wrong.</li>
 <li><strong>ENT / FRAG pill</strong>: change the classification.</li>
-<li><strong>Exclude</strong>: leave the card out of the export (it is greyed out); click again to include it.</li>
+<li><strong>Exclude</strong>: leave the card out of the export (it is greyed out); click again to include it again.</li>
 <li><strong>Click the image</strong> to open a full-screen lightbox.</li>
 </ul></li>
 </ol>
+<p><strong>What you will see.</strong> The processed cards are saved in the project’s <code>cards_modified/</code> folder, together with <code>classifications.csv</code>, which records for each card the type, position and rotation the classifier predicted.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Post-processed cards are saved in <strong>grayscale</strong>, which suits line drawings. If your drawings use color, keep in mind that the exported images come from this step.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Clicking <strong>Process All Images</strong> again starts from the extracted cards, so the flips and ENT/FRAG changes you made by hand are recalculated. Finish reviewing the classifier’s work only once, after the last run.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="export" class="level1">
 <h1>Export</h1>
-<p>Click <strong>Export Results</strong>, enter an <strong>Export Acronym</strong> (letters, numbers and underscores only, for example <code>OSA_2024</code>) and choose <strong>Export ZIP</strong>.</p>
+<p>Click <strong>Export Results</strong>, enter an <strong>Export Acronym</strong> (letters, numbers and underscores only, for example <code>OSA_2024</code>) and choose <strong>Export ZIP</strong>. The acronym becomes the prefix of every file, so choose one that identifies the publication or the dataset.</p>
 <p>The ZIP contains:</p>
 <ul>
-<li>the cards renamed with your acronym (<code>OSA_2024_1.png</code>, <code>OSA_2024_2.png</code>, …), leaving out the excluded ones;</li>
-<li><code>OSA_2024_metadata.csv</code>, which merges your tabular data with the ENT/FRAG classification, with every field written as plain text. If you calibrated scales, it also carries the <code>px_per_cm</code> column.</li>
+<li>The cards, renamed <code>OSA_2024_1.png</code>, <code>OSA_2024_2.png</code>, … in the order of their file names, <strong>leaving out the cards you excluded</strong>. If you post-processed, they are the cards from <code>cards_modified/</code>; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.</li>
+<li><code>OSA_2024_metadata.csv</code>, one row per exported image. The first column is <code>id</code> (the new file name), then <code>type</code> (ENT/FRAG), then the other columns in alphabetical order: your own columns (page, plate, figure, number, Notes, and any you added), the classifier’s <code>position</code> and <code>rotation</code>, and <code>px_per_cm</code> if you calibrated scales. Every value is written as plain text, so nothing is silently turned into a number or a date.</li>
 </ul>
 <!--
 ANIMATION (NEW, priority: low) - "Export"
 Storyboard: 1) Export Results; 2) type an acronym, invalid characters are rejected;
 3) ZIP opens showing renamed images and the CSV; 4) CSV preview with a few rows.
 -->
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The metadata is read straight from your table, so you can fix a value in the Tabular Information tab and export again at any time.</p>
+</div>
+</div>
+</section>
+<section id="a-complete-example" class="level1">
+<h1>A complete example</h1>
+<p>Suppose you want to catalogue the pottery in a 90-page excavation report, where the plates are the last 30 pages and the book was scanned as facing pages.</p>
+<ol type="1">
+<li><strong>Project Manager</strong>: create <code>Capena_2018</code> with a short description.</li>
+<li><strong>1. PDF</strong>: switch <strong>Split Scanned Spreads</strong> ON, then upload the PDF. Check a few pages: each sheet has become two plates.</li>
+<li><strong>2. Apply Model</strong>: in the gallery, <strong>Deselect All</strong>, then click only the plate pages. Run a <strong>Diagnostic Test</strong>, look at the first results in the next tab, adjust the confidence, and repeat until the first plates look right. Then run <strong>Full Dataset</strong>.</li>
+<li><strong>3. Review</strong>: go through the plates, fixing outlines with the Brush, Eraser and Polygon. Measure the scale bar on a few plates and run <strong>Calibrate Scales</strong>. Click <strong>Extract Cards</strong> with <strong>Clean Artifacts &amp; Numbers</strong> on.</li>
+<li><strong>4. Tabular</strong>: try <strong>Extract References</strong> on one plate, adjust the prompt, then <strong>Batch Extract</strong>. Fill the rest by hand (for example the context, with <strong>Fill Column</strong>), and <strong>Mark as Reviewed</strong> as you go.</li>
+<li><strong>5. Post Processing</strong>: <strong>Process All Images</strong>, scan the grid, fix the few wrong flips, <strong>Exclude</strong> anything that is not a vessel.</li>
+<li><strong>Export</strong>: acronym <code>CAP_2018</code>. You obtain <code>CAP_2018.zip</code>, with <code>CAP_2018_1.png</code>, <code>CAP_2018_2.png</code>, … and <code>CAP_2018_metadata.csv</code>.</li>
+</ol>
 </section>
 <section id="where-your-files-are" class="level1">
 <h1>Where your files are</h1>
 <pre><code>projects/
-└── YourProject_20250104_123456/
-    ├── project.json              # Project metadata
+└── YourProject_20260918_083330/
+    ├── project.json              # Project metadata and workflow status
     ├── pdf_source/               # Original PDF
-    ├── images/                   # Extracted page images
-    ├── masks/                    # Detection masks
-    ├── cards/                    # Individual vessels
-    │   ├── mask_info.csv         # Your tabular data
+    ├── images/                   # Page images (300 DPI JPG)
+    ├── masks/                    # Polygons (and scales) per plate, as JSON
+    ├── cards/                    # Extracted vessels
+    │   ├── mask_info.csv         # Your tabular data (+ px_per_cm)
     │   └── mask_info_annots.csv  # Bounding boxes
     ├── cards_modified/           # Oriented and classified cards
-    │   └── classifications.csv   # ENT / FRAG results
-    └── exports/                  # Exported data</code></pre>
-<p>Projects are timestamped automatically, so names never collide, and you can work on several at once.</p>
+    │   └── classifications.csv   # ENT / FRAG, position, rotation
+    ├── exports/                  # Exported data
+    └── models/                   # Model files used by the project</code></pre>
 </section>
-<section id="tips" class="level1">
-<h1>Tips</h1>
-<ul>
-<li>Do a <strong>Diagnostic Test</strong> before every big run.</li>
-<li>Review the masks <strong>before</strong> extracting cards: it is much cheaper than fixing cards afterwards.</li>
-<li>Keep project names descriptive (<code>Capena_2018_Vol_II</code>).</li>
-<li>Very large PDFs (500+ pages) take a long time: consider splitting them into sections.</li>
-<li>Something not working? See <a href="../pypotterylens/index.html#troubleshooting">Troubleshooting</a>.</li>
-</ul>
+<section id="common-mistakes" class="level1">
+<h1>Common mistakes</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mistake</th>
+<th>What happens</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Uploading a spread with <strong>Split Scanned Spreads</strong> OFF</td>
+<td>Each plate holds two book pages, so plate and page data are ambiguous</td>
+<td>Remove the PDF and upload it again with the toggle ON</td>
+</tr>
+<tr class="even">
+<td>Extracting cards <strong>before</strong> fixing the outlines</td>
+<td>Cards with cut rims or two vessels in one</td>
+<td>Fix the outlines, then <strong>Extract Cards</strong> again (it regenerates them)</td>
+</tr>
+<tr class="odd">
+<td>Running the model again after manual edits</td>
+<td>The polygons of that plate are replaced</td>
+<td>Run the model first, edit afterwards</td>
+</tr>
+<tr class="even">
+<td>Running a <strong>Batch Extract</strong> over corrected plates</td>
+<td>Your manual values in the AI columns are overwritten</td>
+<td>Limit the batch with the <em>from / to</em> range</td>
+</tr>
+<tr class="odd">
+<td>Re-running <strong>Process All Images</strong> after manual flips</td>
+<td>The flips and ENT/FRAG changes are recalculated</td>
+<td>Review the grid only after the final run</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="frequently-asked-questions" class="level1">
+<h1>Frequently asked questions</h1>
+<p><strong>Do I need a GPU?</strong> No.&nbsp;Everything works on CPU, just more slowly (mainly the model run and the post-processing). The local AI extraction has stricter requirements (see above), but you can use OpenRouter instead.</p>
+<p><strong>Can I stop and come back later?</strong> Yes. Everything is saved automatically in the project folder. Open the project from the <strong>Project Repository</strong> and continue from any tab.</p>
+<p><strong>Can I use images that are not from a PDF?</strong> The workflow starts from a PDF. To use loose images, make a PDF out of them first.</p>
+<p><strong>The classifier got a card wrong.</strong> Use the flip buttons and the ENT/FRAG pill on the card in the grid. The exported CSV uses your corrected values.</p>
+<p><strong>Something is not working.</strong> See the <a href="../pypotterylens/index.html#troubleshooting">troubleshooting table</a> in <em>Getting Started</em>.</p>
 
 
 </section>
