@@ -82,7 +82,38 @@ optional overrides with an in-app default, never required.
   Chrome (fonts.css + woff2 served locally, no errors). Lens's own
   suite-style header/About-modal redesign (hardware chip, copy-citation) was
   committed on `beta` in the same pass.
-
+- **Release-notes disconnect fixed at the launcher** (2026-09-19, on `beta`).
+  The launcher's changelog panel now shows the hand-written entry from
+  `PyPotteryDocs/<app>/version_history.qmd` (fetched from GitHub raw, cached
+  2h, plain-text conversion) when its `### Version X.Y.Z` heading matches the
+  release tag, and falls back to the GitHub release body otherwise
+  (`launcher/update_checker.py`). No workflow changes in the 5 repos. **Needs
+  the docs pushed to `main` to go live**, and Scan/Trace `version_history.qmd`
+  need a `### Version X.Y.Z` heading under `## Latest Release` before they
+  benefit (Trace's page is still "under construction").
+- **Crash diagnostics in all 5 apps** (2026-09-19, on `beta`). The old P1
+  "no launcher-grade logging" item overstated the gap: the launcher already
+  captures each sub-app's stdout/stderr, including unhandled tracebacks from
+  threads, in `logs/apps/<id>.log`. The real hole was native crashes
+  (torch/OpenCV segfaults) and context-free tracebacks, now covered by an
+  identical ~30-line block at the top of each `app.py` (`faulthandler` +
+  timestamped/thread-named excepthooks). Deliberately not a shared module or
+  a copy of `launcher/logging_setup.py` (standalone principle, and not needed).
+- **Standardized README rolled out to Ink, Lens, Scan, Trace** (2026-09-19,
+  on `beta`). Content that was only in the old READMEs was moved to the docs
+  instead of dropped: Lens workflow details/troubleshooting/platform notes/
+  0.3.0 changelog, Scan straighten tool + shortcuts, a new Trace "Technical
+  Reference" page. Ink keeps its AI-disclosure/citation block. Trace's stale
+  technical claims (routes, port, parameters) were dropped rather than moved.
+- **Docs site rebuilt** (2026-09-19, root `beta`): Layout 0.3.3 notes, the
+  new pages above, and previously-missing rendered images. Root cause of the
+  missing files: the root `.gitignore` had unanchored `PyPotteryTrace/` etc.,
+  which (case-insensitive on Windows) also hid new files under
+  `PyPotteryDocs/pypotterytrace/` and `docs/pypotterytrace/`; anchored to
+  `/PyPotteryTrace/`. Same class of bug as Scan's `static/` rule.
+- **Minor uniformity**: `FUNDING.yml` added to Scan/Trace (`release.yml` was
+  already byte-identical in all 5). `PRODUCT.md` in Scan is gitignored, so it
+  was never a real drift.
 
 ## P0 - blocks a multi-platform release
 
@@ -99,44 +130,19 @@ optional overrides with an in-app default, never required.
 
 ## P1 - should fix before calling it done, each is small
 
-- [ ] **Finish the auto-shutdown/beacon rollout on Ink, Scan, Trace.** The
-  heartbeat + exit-confirmation + beacon mechanism (see
-  `AUTO_SHUTDOWN_MODULES_GUIDE.md`) is **committed locally on `beta` (2026-09-19,
-  together with each app's UI redesign) but not pushed and not merged to `main`.
-  HTTP-level lifecycle test passed on all three (2026-09-19, standalone with `PORT`
-  override: heartbeat 200, beacon 204, survives beacon+heartbeat within grace = F5,
-  process exits ~5.3s after a lone beacon). The browser-side JS (`beforeunload`
-  prompt, `sendBeacon` on `pagehide`) is still not browser-tested** for these three. Scan's `.gitignore` is already fixed
-  (`/static/`). Remaining: manual QA, push `beta`, backup + merge to `main`.
-  Original notes on the uncommitted state:
-  - PyPotteryInk: `app.py` + `static/js/app.js`, sitting uncommitted in the
-    working tree alongside unrelated pre-existing WIP (`ink.py`, CSS/templates).
-  - PyPotteryScan: `app/routes.py` + `app/__init__.py` + a new
-    `app/static/js/beacon.js`. **`beacon.js` currently falls under this
-    repo's `.gitignore` rule `static/` (line 226, matches at any depth) and
-    will not be picked up by a plain `git add` — chosen fix: anchor the
-    `.gitignore` rule rather than `git add -f`, so future files don't hit it.** Also has unrelated
-    uncommitted logo changes mixed into the working tree.
-  - PyPotteryTrace: `app.py` + `interactive_app/main.py` +
-    `interactive_app/static/js/app.js`, also uncommitted, also mixed with
-    unrelated pre-existing WIP.
-  - PyPotteryLens and PyPotteryLayout are done and released.
-- [ ] **GitHub auto-release workflow produces useless release notes.** Every
-  app's `release.yml` creates its GitHub Release with
-  `generate_release_notes: true`, which - since these repos release via
-  direct pushes to `main`, not merged PRs - produces nothing but
-  `**Full Changelog**: <compare link>` (confirmed on the just-published
-  PyPotteryLayout v0.3.3 via the API). The launcher's "Changelog & Release
-  Notes" panel (`launcher/web_server.py:647`, reads `rel.body` straight from
-  the GitHub Release) shows exactly that generic line to end users instead
-  of anything readable - even though a proper, hand-written changelog entry
-  exists in parallel on `PyPotteryDocs/<app>/version_history.qmd`, which the
-  launcher never reads. Two separate things that need to become one: either
-  make the release workflow pull its body from a changelog file committed
-  alongside the code (e.g. a small `CHANGELOG.md` with an "Unreleased"
-  section per app), or otherwise stop maintaining two disconnected changelog
-  surfaces. Needs its own careful design pass, not a quick patch - it changes
-  the release workflow for every future release for every app.
+- [ ] **Ship everything that is sitting on `beta`.** All 5 app repos and the
+  root launcher repo have committed, tested-at-HTTP-level work on `beta`, none
+  of it pushed and none merged to `main` (a push to `main` auto-releases):
+  Ink/Scan/Trace (redesign + beacon + crash diagnostics + fonts + README),
+  Lens (redesign + fonts + crash diagnostics + README), Layout (fonts + crash
+  diagnostics on top of the released 0.3.3), Scan (single Blueprint + external
+  JS). Per app: back up `main` as a branch (as done for Layout:
+  `main-backup-2026-09-19`), merge `beta`, push, confirm the release. Do one
+  app at a time. Beacon: the HTTP lifecycle passed on Ink/Trace/Scan
+  (standalone, `PORT` override, F5 tolerance, exit ~5.3s after a lone beacon);
+  the browser-side JS (`beforeunload` prompt, `sendBeacon` on `pagehide`) is
+  still not browser-tested. Also push the root `beta` (launcher + docs) and
+  re-check the docs site after merge.
 - [ ] **Confirm the GLM-OCR fixes actually hold.** `PyPotteryScan/GLM_OCR_STATUS.md`
   documents two real bugs already patched (`TokenizerBackend` missing class
   after the `transformers` upgrade to 5.17.0; empty-output bug from using
@@ -144,58 +150,18 @@ optional overrides with an in-app default, never required.
   polling bug. Status doc says fixed but ends on "restart the server and
   retry" - no confirmation on record that the retry happened. Worth one
   clean end-to-end OCR run before release, not just re-reading the notes.
-- [ ] **No sub-app has launcher-grade error logging.** Checked directly:
-
-  | App | uses `logging` module | `print()` calls |
-  |---|---|---|
-  | PyPotteryInk | no | 243 |
-  | PyPotteryLayout | no | 26 |
-  | PyPotteryLens | no | 235 |
-  | PyPotteryScan | only `logging.basicConfig(level=INFO)` to stdout | 202 |
-  | PyPotteryTrace | no | 516 |
-
-  None of the 5 apps have anything like `launcher/logging_setup.py`
-  (rotating file handler, `sys.excepthook`, `threading.excepthook`,
-  `faulthandler`). Partial mitigation: the launcher already redirects each
-  sub-app's stdout/stderr to `logs/apps/<id>.log`
-  (`app_manager.py`'s `_open_app_log`), so `print()` output isn't lost when
-  launched normally. Real gap: an unhandled exception on a background
-  thread (model downloads in Lens, OCR model loading in Scan, diffusion
-  inference in Ink) dies silently with no trace - the exact failure mode
-  the launcher itself hit and fixed with `guarded()`. The pattern already
-  exists and works in `launcher/logging_setup.py`; per the standalone
-  principle above, copy it as a `logging_setup.py` *inside each app repo*
-  (same content, no import from `launcher/` or a sibling repo) - low effort
-  for real reliability gain.
 
 ## P2 - polish, fine to ship without and follow up later
 
-- [ ] **Standardized README rollout to Ink, Lens, Scan, Trace.** Only
-  PyPotteryLayout has the new lean template (see "Resolved" above).
-  Deliberately deferred - the other 4 have wildly different lengths (238 to
-  615 lines) and depth (Lens/Trace carry detailed workflow/architecture
-  content the lean template doesn't have room for); each one links to
-  `version_history.html` instead of duplicating a changelog inline once
-  this is done. Note: Lens is GPLv3, the other four are Apache 2.0 - keep as
-  is, don't unify licenses.
-- [ ] **Aesthetic/structural drift across the 5 sub-apps** (narrowed - the
-  modal/header visual drift itself is fixed, see "Resolved" above). Still
-  not standardized:
-  - `release.yml` and `FUNDING.yml` duplicated near-identically across all 5
-    repos (auto-versioning workflow, VERSION-file lockstep).
-  - The "Pixel Assistant" help widget is copy-pasted into each app's
-    `templates/index.html` rather than shared.
-  - Each app vendors its own copy of Bootstrap (and PyPotteryScan also
-    vendors SheetJS/xlsx) instead of a shared vendor directory.
-  - `PyPottery Color Palette Design Tokens` is documented only in
-    `PyPotteryScan/PRODUCT.md` (graph shows it as an isolated, degree-1
-    node) - not referenced by the other 4 apps, so unclear whether it's
-    actually followed anywhere else or just an intention written once.
-  - Decide scope before touching this: aligning CSS/visual conventions is
-    cheap; unifying code structure is constrained by the standalone
-    principle - no shared `ProjectManager`/vendor package imported across
-    repos. Alignment means keeping copies in sync (same interface, per-repo
-    copy), not extracting a common dependency.
+- [ ] **Residual drift across the 5 sub-apps** (mostly resolved - see
+  "Resolved"). Left: the "Pixel Assistant" widget is a per-app copy (correct
+  under the standalone principle, just keep the copies in sync), and Bootstrap
+  is vendored per app by the launcher's shared `vendor/` sync. Nothing here
+  needs a shared package.
+- [ ] **Offline-standalone decision.** `vendor/` is gitignored and launcher-managed,
+  so a plain `git clone` of one app falls back to CDNs (online works, offline
+  does not). Options: track `vendor/` (~0.7 MB + 0.9 MB xlsx) in each repo, or
+  let each app download it on first start. Your call.
 - [ ] **Native window with custom title bar.** Deliberately deferred by the
   project itself (`NATIVE_WINDOW_ROADMAP.md`) - a working `pywebview`
   implementation was built and reverted because the native OS title bar

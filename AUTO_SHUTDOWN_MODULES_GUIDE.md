@@ -4,9 +4,9 @@ Questo documento descrive l'architettura e la procedura passo-passo per implemen
 
 * [x] **PyPotteryLens** *(già implementato, testato e rilasciato)*
 * [x] **PyPotteryLayout** *(implementato e rilasciato in v0.3.3, 2026-09-19)*
-* [~] **PyPotteryInk** *(codice scritto in `app.py`/`static/js/app.js`, non ancora committato né rilasciato)*
-* [~] **PyPotteryScan** *(codice scritto in `app/routes.py`/`app/__init__.py`/`app/static/js/beacon.js`, non ancora committato — attenzione: `beacon.js` cade sotto la regola `static/` del `.gitignore` di questo repo e va aggiunto con `git add -f` o correggendo il `.gitignore`, altrimenti sparisce silenziosamente)*
-* [~] **PyPotteryTrace** *(codice scritto in `app.py`/`interactive_app/main.py`/`interactive_app/static/js/app.js`, non ancora committato né rilasciato)*
+* [x] **PyPotteryInk** *(committato su `beta` il 2026-09-19, test HTTP ok; non ancora in `main`/rilasciato)*
+* [x] **PyPotteryScan** *(committato su `beta` il 2026-09-19, test HTTP ok; `.gitignore` corretto con `/static/`, `beacon.js` ora tracciato; non ancora in `main`/rilasciato)*
+* [x] **PyPotteryTrace** *(committato su `beta` il 2026-09-19, test HTTP ok; non ancora in `main`/rilasciato)*
 
 Il "Blocco Schede senza Progetto Attivo" (sezione 4) non è stato applicato a Ink/Scan/Trace/Layout per scelta esplicita (solo Lens ce l'ha).
 
@@ -380,6 +380,6 @@ updateTabsState(window.projectManager ? window.projectManager.getCurrentProject(
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **PyPotteryLens** | `5001` | ✅ Implementato | ✅ Implementato | ✅ Implementato | Rilascia VRAM modelli YOLO/VLM |
 | **PyPotteryLayout** | `5005` | ✅ Rilasciato (v0.3.3) | ✅ Rilasciato (v0.3.3) | — | Rilascio VRAM non applicabile (no modelli AI) |
-| **PyPotteryInk** | `5003` | 🟡 Scritto, da committare | 🟡 Scritto, da committare | — | Rilascio modelli PyTorch/SD |
-| **PyPotteryScan** | `5002` | 🟡 Scritto, da committare | 🟡 Scritto, da committare | — | Rilascio modelli OCR — `beacon.js` da forzare nel git (vedi nota sopra) |
-| **PyPotteryTrace** | `5004` | 🟡 Scritto, da committare | 🟡 Scritto, da committare | — | Rilascio modelli SAM2/CUDA |
+| **PyPotteryInk** | `5003` | ✅ Su `beta` (non rilasciato) | ✅ Su `beta` (non rilasciato) | — | Rilascio modelli PyTorch/SD |
+| **PyPotteryScan** | `5002` | ✅ Su `beta` (non rilasciato) | ✅ Su `beta` (non rilasciato) | — | Rilascio modelli OCR |
+| **PyPotteryTrace** | `5004` | ✅ Su `beta` (non rilasciato) | ✅ Su `beta` (non rilasciato) | — | Rilascio modelli SAM2/CUDA |
