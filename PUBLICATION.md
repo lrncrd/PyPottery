@@ -153,6 +153,16 @@ optional overrides with an in-app default, never required.
 
 ## P2 - polish, fine to ship without and follow up later
 
+- [ ] **Docs restructure: Getting Started + Usage + Version History per app.**
+  Pilot done on PyPotteryLens (2026-09-19, on `beta`): `index.qmd` is now
+  "Getting Started" (intro + install + first launch + troubleshooting, with a
+  Quarto alias so the old `installation.html` redirects), `installation.qmd`
+  removed, `usage.qmd` rewritten against the real UI as one linear guide.
+  Storyboards for the animations live as `<!-- ANIMATION ... -->` comments in
+  `pypotterylens/usage.qmd` (the 6 existing mock-ups still show the v0.2.1
+  UI: 1 keep+retouch, 2 retouch, 3 redo; ~6 new ones proposed). Next: same
+  schema for Scan, Ink, Trace, Layout, then build the animations once the UIs
+  settle. Note: Lens docs now cite the local AI model as "Gemma 4 E2B (~10 GB)".
 - [ ] **Residual drift across the 5 sub-apps** (mostly resolved - see
   "Resolved"). Left: the "Pixel Assistant" widget is a per-app copy (correct
   under the standalone principle, just keep the copies in sync), and Bootstrap

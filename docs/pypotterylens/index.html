@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction – PyPottery</title>
+<title>Getting Started – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -121,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/index.html">Introduction</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/index.html">Getting Started</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -163,13 +197,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylens/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotterylens/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -378,7 +406,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-features" id="toc-key-features" class="nav-link active" data-scroll-target="#key-features">Key Features</a></li>
+  <li><a href="#what-you-can-do" id="toc-what-you-can-do" class="nav-link active" data-scroll-target="#what-you-can-do">What you can do</a></li>
+  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
+  <li><a href="#first-launch" id="toc-first-launch" class="nav-link" data-scroll-target="#first-launch">First launch</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#next-step" id="toc-next-step" class="nav-link" data-scroll-target="#next-step">Next step</a></li>
   <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors">Contributors</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -386,9 +418,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/index.html">Introduction</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylens/index.html">PyPotteryLens</a></li><li class="breadcrumb-item"><a href="../pypotterylens/index.html">Getting Started</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title">Getting Started</h1>
 </div>
 
 
@@ -443,17 +475,103 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p><br></p>
-<p><strong>PyPotteryLens</strong> is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.</p>
-<section id="key-features" class="level2">
-<h2 class="anchored" data-anchor-id="key-features">Key Features</h2>
+<p><strong>PyPotteryLens</strong> extracts pottery drawings from published monograph PDFs, lets you review and label them, and exports a clean, standardized dataset. This page gets you from zero to a running app; the full workflow is in the <a href="../pypotterylens/usage.html">Usage guide</a>.</p>
+<section id="what-you-can-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-can-do">What you can do</h2>
+<ol type="1">
+<li><strong>Create a project</strong> for each dataset (a monograph, a site, an assemblage).</li>
+<li><strong>Extract the plates</strong> from a PDF at full resolution.</li>
+<li><strong>Apply the detection model</strong> to find the drawings automatically.</li>
+<li><strong>Review the masks</strong>: fix them, outline nested vessels, calibrate the scale.</li>
+<li><strong>Add tabular data</strong> for every vessel, optionally with AI-assisted extraction.</li>
+<li><strong>Post-process and export</strong>: orient and classify the cards, then download a ZIP with images and metadata.</li>
+</ol>
+</section>
+<section id="install" class="level2">
+<h2 class="anchored" data-anchor-id="install">Install</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Launcher (recommended)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">From source</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The <a href="../suite_installation.html">PyPottery Suite Launcher</a> installs and updates PyPotteryLens for you, with no Python setup. Download it from the <a href="https://github.com/lrncrd/PyPottery/releases/latest">latest release</a>, open it, and start PyPotteryLens from its interface.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Requires <strong>Python 3.12</strong> (3.10-3.12 supported).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/lrncrd/PyPotteryLens.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> PyPotteryLens</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt   <span class="co"># includes PyTorch</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> app.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then open <strong>http://127.0.0.1:5001</strong> in your browser. Installer scripts that also create a virtual environment are included: double-click <code>PyPotteryLens_WIN.bat</code> on Windows, or run <code>chmod +x PyPotteryLens_UNIX.sh &amp;&amp; ./PyPotteryLens_UNIX.sh</code> on Linux/macOS.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+GPU acceleration
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>requirements.txt</code> installs PyTorch with CUDA support when an NVIDIA GPU is available, otherwise the CPU build. Apple Silicon uses MPS automatically. For a specific CUDA build, install PyTorch first from <a href="https://pytorch.org/get-started/locally/">pytorch.org</a>.</p>
+</div>
+</div>
+</section>
+<section id="first-launch" class="level2">
+<h2 class="anchored" data-anchor-id="first-launch">First launch</h2>
 <ul>
-<li><strong>📂 Project Management</strong>: Organize your work in portable, self-contained project folders.</li>
-<li><strong>📄 PDF Processing</strong>: Convert PDF documents into processable images.</li>
-<li><strong>🤖 Apply Model</strong>: Use Computer Vision models to extract information and masks from images.</li>
-<li><strong>✏️ Review Annotations</strong>: Review and modify the masks identified by the model.</li>
-<li><strong>📊 Tabular Information</strong>: Associate tabular data with identified elements.</li>
-<li><strong>🔄 Post Processing</strong>: Standardize images (orientation, positioning) and export results.</li>
+<li>The app opens in your browser and shows the initialization progress. The detection and classification models (<code>BasicModelv8_v01.pt</code>, <code>model_classifier.pth</code>) are downloaded from <a href="https://huggingface.co/lrncrd/PyPotteryLens">HuggingFace</a> if missing. To download them manually, place them in <code>models_vision/</code> and <code>models_classifier/</code>.</li>
+<li><strong>AI-assisted extraction</strong> (Tabular Information tab) is optional and uses either a local model (a ~10 GB download, only offered if your hardware qualifies - see <a href="../requirements.html">Hardware Requirements</a>) or an OpenRouter API key.</li>
+<li>To stop the app, press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</li>
 </ul>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>What to try</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The app won’t start</td>
+<td>Delete the <code>venv</code>/<code>.venv</code> folder and reinstall; check <code>python --version</code> (3.10-3.12); make sure port 5001 is free</td>
+</tr>
+<tr class="even">
+<td>“Connection refused” in the browser</td>
+<td>Check that <code>app.py</code> is running without errors; try <code>http://127.0.0.1:5001</code>; check your firewall</td>
+</tr>
+<tr class="odd">
+<td>Model download fails</td>
+<td>Check your connection and free disk space (~500 MB); download the models manually (see above)</td>
+</tr>
+<tr class="even">
+<td>CUDA not detected</td>
+<td>Run <code>nvidia-smi</code>; reinstall PyTorch with the CUDA build that matches your drivers</td>
+</tr>
+<tr class="odd">
+<td>MPS not working (macOS)</td>
+<td>You need Apple Silicon and macOS 12.3 or later</td>
+</tr>
+<tr class="even">
+<td>Very slow processing</td>
+<td>Use a GPU, use <strong>Diagnostic Test</strong> mode to try settings on 25 images, close heavy applications</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Platform notes.</strong> <em>macOS up to Monterey 12.7.5</em>: the newest supported PyTorch is <code>2.2.2</code>, so pin <code>torch==2.2.2</code> in <code>requirements.txt</code>. <em>Windows</em>: some antivirus software flags the batch script (a false positive); you may need to relax the PowerShell execution policy. <em>Linux</em>: install <code>python3-venv</code> (<code>sudo apt install python3-venv</code>) and, for GPU support, the NVIDIA drivers and CUDA toolkit. Tested on Windows 11, Ubuntu 24.10 and macOS Sonoma 14 to Tahoe 26.</p>
+</section>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next step</h2>
+<p>Head to the <a href="../pypotterylens/usage.html">Usage guide</a> for a walkthrough of the whole workflow.</p>
 </section>
 <section id="contributors" class="level2">
 <h2 class="anchored" data-anchor-id="contributors">Contributors</h2>

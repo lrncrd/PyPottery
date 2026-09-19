@@ -492,7 +492,7 @@ Developer Mode runs the launcher against your local Git checkout instead of down
 
 To run a single tool outside the launcher, see its dedicated installation guide:
 
-- [PyPotteryLens](pypotterylens/installation.qmd)
+- [PyPotteryLens](pypotterylens/index.qmd)
 - [PyPotteryScan](pypotteryscan/installation.qmd)
 - [PyPotteryInk](pypotteryink/installation.qmd)
 - [PyPotteryTrace](pypotterytrace/installation.qmd)

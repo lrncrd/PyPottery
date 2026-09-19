@@ -2,270 +2,341 @@
 title: "Using PyPotteryLens"
 format: html
 toc: true
+toc-depth: 2
 ---
 
 <div style="text-align: center;">
-  <img src="../imgs/LogoLens.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
-  <br>
-  </span>
+  <img src="../imgs/LogoLens.png" style="max-width: 25%; height: auto; margin-bottom: 1em;">
 </div>
 
-```{=html}
-<div style="
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 1px solid #e1e4e8;
-    border-left: 5px solid #c2410c;
-    border-radius: 12px;
-    padding: 15px 25px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-">
-    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
-        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
-            Need a hand?
-        </div>
-        <div style="line-height: 1.5;">
-            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
-            Clicking on him brings you straight back to this guide.
-        </div>
-    </div>
-    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
-    </div>
-</div>
-```
+This guide follows the workflow tab by tab, in the order you will use them. Each step builds on the previous one, and everything is saved automatically inside your project.
 
+<!--
+ANIMATION (overview, NEW, priority: medium)
+Storyboard, ~12 s loop: 1) the six tab names light up one after the other
+(Project Manager > 1 PDF > 2 Model > 3 Annotations > 4 Tabular > 5 Post Processing);
+2) under each one a tiny thumbnail of what it produces (project card, plate pages,
+masks over a plate, table, card grid); 3) final frame: the exported ZIP icon.
+Purpose: give readers the map before the details.
+-->
 
-# GUI Overview
+::: {.callout-note}
+## The workflow at a glance
+**Project Manager** → **1. PDF Document Processing** → **2. Apply Model** → **3. Review Annotations & Masks** → **4. Tabular Information** → **5. Post Processing** → **Export ZIP**
+:::
 
-The program is composed of a series of tab that represent the image extraction process:
+# Project Manager
 
-- **Project Manager**
-- **PDF Document Processing**
-- **Apply Model**
-- **Review Annotations and extract masks**
-- **Tabular Information**
-- **Post Processing**
+Every dataset lives in its own project: a self-contained folder with your PDF, images, masks, tables and exports. Create one project per monograph, site or assemblage.
 
-## Project Manager
+<iframe src="animations/project_create.html" style="width: 100%; height: 620px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
-Like other tools in the PyPottery suite, PyPotteryLens uses a project management system.
+<!--
+ANIMATION verdict: KEEP + LIGHT RETOUCH (priority: low)
+The existing mock-up is the right flow but shows the v0.2.1 chrome. Update: the section
+title is now "New Project Dossier", the icon field is "Project Icon Stamp", the tab names
+carry numbers ("1. PDF Document Processing"...), and the header/About match the new design.
+-->
 
-You can create a project by entering a name in the text box, along with an optional description and an icon.
+## Create a project
 
-Once created, the project will appear in the "**Your Projects**" list.
+1. In **New Project Dossier**, type a **Project Name** (required), for example `Scavi_Capena_2024`.
+2. Optionally add a **Description** (site context, trench, assemblage notes) and pick a **Project Icon Stamp**.
+3. Click **Create Project**.
 
-Selecting a project will display its name in the status bar.
+## Open, refresh and delete
 
-<iframe src="animations/project_create.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
+Existing projects are listed in the **Project Repository**. Click a project card to activate it: from that moment every tab works on that project. Use **Refresh** if you added a project from outside the app.
 
-## PDF Document Processing
+::: {.callout-warning}
+Deleting a project removes **everything** inside it: the source PDF, extracted images, masks and annotations, and exported data. The app asks for confirmation, and it cannot be undone.
+:::
 
-In this tab, you can upload and process a PDF file, transforming it into a series of images.
+# 1. PDF Document Processing
 
-<iframe src="animations/pdf_process.html" style="width: 100%; height: 900px; border: none; overflow: hidden;" scrolling="no"></iframe>
+Upload the PDF of the monograph or report. PyPotteryLens extracts every page as a high-resolution image.
 
-Clicking on **Upload PDF to current project** will open a dialog window to select the PDF file.
+<iframe src="animations/pdf_process.html" style="width: 100%; height: 720px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
-::: {.callout-important}
-The **Split Scanned** checkbox must be checked **BEFORE** selecting the file if the PDF to be processed has 2 pages side-by-side.
+<!--
+ANIMATION verdict: RETOUCH (priority: medium)
+Keep: drop/select a PDF, progress, success message. Add what is missing from the mock-up:
+the "Split Scanned Spreads" toggle with the single-page vs two-page-spread comparison,
+and the "Ingestion Status & Active Target" box that shows the active PDF and locks the
+dropzone (one PDF per project, "Remove PDF" to replace).
+Storyboard for the split toggle: 1) a scanned spread (two facing pages) appears;
+2) toggle ON; 3) a dashed line marks the spine; 4) two separate plates slide apart.
+-->
 
-<div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 10px;">
+1. **Select the project** first (the PDF is attached to the active project).
+2. Decide whether the PDF is made of **single pages** or **scanned spreads** (two facing pages on one sheet, as when a book is laid open on a scanner).
+3. If it is a spread, switch **Split Scanned Spreads** **ON before** choosing the file. Each sheet is cut at the spine into two separate plates. For a normal digital PDF leave it OFF.
+4. Click **Select PDF File** (or drag the file onto the box) and wait for the processing to finish.
+
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin: 10px 0;">
   <img src="imgs/example_pag_1.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
   <img src="imgs/example_pag_2.png" style="height: 300px; width: auto; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
 </div>
+
+::: {.callout-important}
+A project can hold **only one PDF**. To use a different document, click **Remove PDF** in the *Ingestion Status* box (this deletes the PDF and its extracted page images, and you will need to upload a new one) or create a new project.
 :::
-
-Once the PDF is processed, you can proceed to the next tab.
-
-## Apply Model
-
-In this tab, you can use the Computer Vision (CV) model to extract information.
-
-<iframe src="animations/apply_model.html" scrolling="no" style="width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
-
-### GUI Layout
-
-The GUI is divided into two parts:
-
-- **Right Side**: A gallery containing the images. Clicking on an image opens it in full screen. In the top right of each image, there is an icon that allows you to exclude the page from processing. To re-include an image, simply click the checkmark again.
-- **Left Side**: Contains the model parameters.
-
-### Parameters
-
-- **Model Selection**: Allows you to select the model to apply.
-- **Model Parameters**: You can define the confidence threshold for the model as well as some post-processing operations for the masks. Here the parameters: 
-  - **Confidence**: The confidence threshold for the model.
-  - **Kernel size**: The size of the kernel for the post-processing operations.
-  - **Iterations**: The number of iterations for the post-processing operations.
-- **Advanced Options**: Includes the possibility to limit the application to 25 pages for debugging purposes.
-
-
-::: {.callout-note}
-The results of applying different Kernel size and Iterations are shown.
-![](imgs/parameter_comparison.png)
-:::
-
-Once you click on **🚀 Apply Model to Project**, a progress bar will indicate the status of the process.
-
-::: {.callout-note}
-To use a different model, place it in the appropriate folder.
-:::
-
-## Review Annotations
-
-In this tab, you can review and modify the model's annotations.
-
-<iframe src="animations/model_review.html" style="width: 100%; height: 700px; border: none; overflow: hidden;" scrolling="no"></iframe>
-
-- **Left**: A list of files indicating the pages.
-- **Right**: A canvas showing the image.
-
-You can navigate between images by selecting the name or using the buttons below the image.
-
-In the list:
-
-- **Green Checkmark (✔️)**: Images where the model has identified vases.
-- **White Dot (•)**: Images where the model has not recognized any vases.
-
-### Editing Masks
-
-You can modify the masks identified by the model using the buttons below the canvas:
-
-- **🖌️ Brush**: To draw new masks.
-- **🧹 Eraser**: To delete existing masks.
-- **🗑️ Clear**: To delete all masks.
-
-New masks will appear in transparent red.
-
-Once an image without masks (white dot) is modified, the indicator will update to a green checkmark.
-
-Changing the image or clicking on **💾 Save Current Mask** will save the changes.
-
-Once you have reviewed the images, you can extract them by clicking on **📤 Extract Cards**.
-
-## Tabular Information
-
-This tab allows you to insert tabular information for the images.
-
-<iframe src="animations/tabular_info.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
-
-- **Center**: A canvas displaying the image where each identified element is associated with a bounding box and an ID.
-- **Left**: A file list for navigation.
-- **Right**: A table where you can enter tabular information.
-
-Each record is indicated by an ID visible on the canvas. To add a column, write the name and click **➕ Add Column**.
-Once the information is entered, you can click on **👁️ Mark as Reviewed**. The inserted columns are persistent across the project's images.
 
 ::: {.callout-tip}
-## AI-Assisted Extraction (optional)
-This tab can optionally use a local vision-language model (Gemma) to help fill in tabular fields automatically. Because this model runs entirely on your machine, PyPotteryLens first checks that your hardware is capable enough - see [Hardware Requirements](../requirements.qmd) for the exact thresholds. If your machine doesn't qualify, the option is disabled and the interface explains why, instead of attempting a slow or unstable download.
+Use simple file names without spaces or special characters (`Cardarelli_2022.pdf`, not `My Document (2024) v2.pdf`). Extracted pages are saved as `{project}_page_0.jpg`, `{project}_page_1.jpg`, ... and, with splitting, `..._page_0a.jpg`, `..._page_0b.jpg`.
 :::
 
-## Post Processing
+# 2. Apply Model
 
-Finally, you can post-process the images to standardize them (e.g., profile on the right and rim facing upwards).
+The detection model looks at every plate and outlines each pottery drawing with a mask.
+
+<iframe src="animations/apply_model.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
+<!--
+ANIMATION verdict: RETOUCH (priority: high, this is the "wow" step)
+The mock-up only has model + confidence. Real screen also has: Execution Mode
+(Full Dataset / Diagnostic Test), the gallery with per-image selection
+("0 to process", Select All / Deselect All), and the full-screen "Applying Vision Model"
+overlay with progress, file name and Stop Processing.
+Storyboard: 1) pick the model; 2) drag Confidence 0.50 -> 0.30 and back; 3) click
+Apply Model to Project; 4) the overlay counts 0 -> N images; 5) plates in the gallery
+get coloured masks one by one.
+-->
+
+## Choose the model and the confidence
+
+- **Active Vision Model**: the YOLO model trained on archaeological profiles. The default is fine for most publications.
+- **Confidence Threshold** (0.10-1.00, default 0.50):
+    - **Higher** values give fewer detections with higher precision, but may miss difficult drawings.
+    - **Lower** values catch subtle drawings, but may add false positives.
+    - Start at 0.50 and adjust on a sample.
+
+## Full dataset or a quick test
+
+Under **Execution Mode** choose:
+
+- **Full Dataset**: process all the images selected in the project.
+- **Diagnostic Test**: process only the **first 25 images**, to try parameters quickly before committing to a long run.
+
+## Choose which images to process
+
+The **Project Figures** gallery shows all the extracted pages. Use **Select All** or **Deselect All** and click single pages to include or exclude them (title pages, indexes, blank sheets). The badge shows how many images are queued.
+
+Click **Apply Model to Project**. A full-screen overlay shows the progress and the current file, and **Stop Processing** cancels the run.
+
+::: {.callout-tip}
+Run a **Diagnostic Test** first, look at the result in the next tab, and only then run the full dataset with the confidence you settled on.
+:::
+
+# 3. Review Annotations & Masks
+
+The model is good, not perfect. Here you check every plate, correct the masks, and finally cut out the individual drawings ("cards").
+
+<iframe src="animations/model_review.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
+<!--
+ANIMATION verdict: REDO (priority: high)
+The mock-up shows only Brush / Eraser / Clear. The real editor has: Brush, Polygon,
+Eraser, Colorize, Size and Expansion sliders, Scale, Clear, zoom/fit, the
+"Vessels & Polygons" and "Scale calibrations" panels, Calibrate Scales and Extract Cards.
+Suggest splitting into 3 short clips instead of one long one (see below).
+-->
+
+Open a plate by clicking it in the **Images List** (the sidebar can be collapsed with *Images List*). Use **Prev / Next** to move between plates and the **+ / − / Fit** controls, or the mouse wheel, to zoom and pan.
+
+## Tools
+
+| Tool | What it does | Key |
+|---|---|---|
+| **Brush** | Paint with a round cursor; on release the stroke becomes a clean vector polygon | `B` |
+| **Polygon** | Click to place vertices; click the first point (or double-click, or `Enter`) to close; `Backspace` removes the last vertex, `Esc` cancels | `P` |
+| **Eraser** | Sweep over vertices to erase them | `E` |
+| **Colorize** | Show each vessel mask in a different color | |
+| **Clear** | Remove all polygons on the current image | |
+
+The **Size** slider sets the diameter of the brush and eraser (5-100 px). The **Expansion** slider (0-100 px, default 8 px) adds padding around every vessel, so cards are cut with a little margin.
+
+<!--
+ANIMATION (NEW, priority: high) - "Fix a mask"
+Storyboard: 1) a plate with a mask that spills over a nearby label; 2) Eraser (E) sweeps
+the vertices, the outline snaps back; 3) Brush (B) paints over a missing rim, releases,
+becomes a clean polygon; 4) status text confirms saving.
+-->
+
+## Vessels drawn inside other vessels
+
+Some drawings show a small vessel inside a larger one. Use **Polygon** to outline the inner vessel: **each polygon becomes a separate card** when you extract, and the inner area is automatically whitened out of the containing card. The **Vessels & Polygons** panel lists every polygon; click one to select it, and use `Delete` to remove it.
+
+<!--
+ANIMATION (NEW, priority: high) - "Nested vessel"
+Storyboard: 1) a large vessel with a small one drawn inside; 2) P, click 5 vertices around
+the small one, double-click to close; 3) the Vessels & Polygons counter goes 1 -> 2;
+4) split view: two cards after extraction, the big one with a white hole where the small
+vessel was.
+-->
+
+## Spot fused masks with Colorize
+
+Turn on **Colorize**: every vessel mask gets its own color. If two vessels share one color, their masks are **fused**: separate them with the eraser. Colors update live after every stroke.
+
+<!--
+ANIMATION (NEW, priority: medium) - "Colorize"
+Storyboard: 1) two adjacent vessels both orange; 2) Colorize ON, they become one blob of
+the same hue; 3) eraser cuts the bridge; 4) the two now show different hues.
+-->
+
+## Calibrate the scale (optional)
+
+If you want real-world sizes, tell PyPotteryLens what the printed scale bar measures:
+
+1. Select the **Scale** tool.
+2. Click the two ends of the graphic scale bar on the plate.
+3. Type the length in **cm** and confirm (`Enter`); `Esc` cancels.
+
+The ratio is saved in **Scale calibrations** and used to fill the `px_per_cm` value when you extract the cards. For pages with more than one scale, use the **Zone** button on a scale and draw a rectangle to limit it to that part of the page.
+
+Once you have measured scales on several plates, **Calibrate Scales** opens a histogram of all the ratios in the project. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then **Apply Calibration** to snap outlier measurements to consistent values.
+
+<!--
+ANIMATION (NEW, priority: medium) - "Scale"
+Storyboard A (ruler): 1) plate with a printed bar; 2) two clicks on its ends; 3) popup
+"Distance (cm)" gets 5; 4) entry appears in Scale calibrations.
+Storyboard B (Calibrate Scales): a histogram with a few clusters and one outlier;
+a center line is added, the outlier snaps to it, Apply Calibration.
+-->
+
+## Extract the cards
+
+When the masks on all plates look right, click **Extract Cards**. A dialog asks you to confirm:
+
+- **Overwrite warning**: cards already extracted in this project will be regenerated.
+- **Clean Artifacts & Numbers** (optional): removes isolated inventory numbers, section cuts and stray fragments outside the vessel.
+
+A progress overlay (*Extracting Cards from Masks*) shows the run, and **Stop Processing** cancels it. The cards are saved in the project and are what the next tabs work on.
+
+# 4. Tabular Information
+
+Attach archaeological data to each extracted vessel.
+
+<iframe src="animations/tabular_info.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
+<!--
+ANIMATION verdict: REDO (priority: high)
+The mock-up covers only "Add Column" and typing in cells. Missing: Fill Column,
+Clear Page Data, Show boxes, Mark as Reviewed, Extract References / Batch Extract,
+Use Crops, Backend and Prompt panels. Split into "manual entry" and "AI extraction".
+-->
+
+## The table
+
+The center shows the plate with a **bounding box and an ID** on each vessel (toggle them with **Show boxes**; click a vessel to inspect it). On the right is the table with one row per vessel. Move between plates with **Prev / Next** or from the **Project Plates** list.
+
+- **Add Column**: type a name and click **Add Column**. Columns are persistent across the whole project.
+- **Edit**: click a cell and type. Every edit is saved immediately.
+- **Fill Column**: choose a column, type a value and click **Fill Column** to set it for every row of the current plate.
+- **Clear Page Data**: empties the values on the current plate and keeps the columns.
+- **Mark as Reviewed**: flag a plate as done, to keep track of your progress.
+
+::: {.callout-note}
+Avoid commas inside cell values (CSV limitation).
+:::
+
+<!--
+ANIMATION (NEW, priority: medium) - "Manual entry"
+Storyboard: 1) plate with two boxed vessels #1 #2; 2) type "Context" -> Add Column;
+3) click a cell, type "US 102"; 4) Fill Column "Period = Bronze Age" fills the whole column;
+5) Mark as Reviewed turns the plate tick green.
+-->
+
+## AI-assisted extraction (optional)
+
+Plates often print a table number, figure number and caption next to each drawing. The AI can read them for you.
+
+1. Click **Backend** and pick the engine:
+    - **Local (Gemma 4 E2B)**: runs on your machine, after a one-time model download (~10 GB). It is only offered if your hardware qualifies (see [Hardware Requirements](../requirements.qmd)); otherwise the interface explains why.
+    - **OpenRouter API**: enter your API key and a vision-capable model name.
+2. Optionally open **Prompt** to add context, such as how plate numbers are printed in this publication.
+3. Click **Extract References** for the current plate, or **Batch Extract** for the project (you can limit it to a page range with the *from/to* fields). A progress overlay shows the tokens used, and **Stop Processing** cancels it.
+
+**Canonical column names.** Put a column name in `[square brackets]` inside the prompt and that exact name becomes the column: *"Extract also [Scale] indicated next to the rim"* or *"Transcribe the [Ceramic Class]"*. This keeps column names identical across all pages.
+
+**Use Crops.** Turn it on to read small inventory numbers from cropped, enlarged versions of each drawing. This improves accuracy for tiny labels.
+
+::: {.callout-tip}
+Always check AI output. Try the extraction on one plate, adjust the prompt, and only then run the batch.
+:::
+
+<!--
+ANIMATION (NEW, priority: high) - "AI extraction"
+Storyboard: 1) Backend panel: switch Local / OpenRouter; 2) Prompt panel: type
+"Extract also [Scale]"; 3) Extract References: overlay with progress and token count;
+4) the [Scale] column appears already filled; 5) the user corrects one cell.
+Include a 1-second frame of the hardware guardrail message for underpowered machines.
+-->
+
+# 5. Post Processing
+
+The last step standardizes the extracted cards: orientation and completeness.
 
 <iframe src="animations/post_process.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
-### GUI Layout
+<!--
+ANIMATION verdict: REDO (priority: high)
+The mock-up shows a single card with Original/Processed. The real tab is a grid.
+Storyboard: 1) click Process All Images; 2) progress overlay "Processing Extracted Cards";
+3) grid fills, cards at real relative size, blue border ENT / orange border FRAG;
+4) hover a card: flip V, flip H, exclude, ENT/FRAG pill appear; 5) click V-flip on an
+upside-down rim; 6) exclude a card, it greys out; 7) click a card for the lightbox.
+-->
 
-- **Left**: List of images, processing options, and navigation buttons.
-- **Right**: A double canvas (initially only the left one is active).
+1. Choose the automatic corrections:
+    - **Auto V-flip** turns upside-down vessels the right way up (rim at the top).
+    - **Auto H-flip** standardizes the side of the profile.
+2. Click **Process All Images**. A classifier also labels each card **ENT** (a substantially complete profile, blue border) or **FRAG** (a fragment, orange border).
+3. Review the **grid**. All cards are shown at their real relative size (the largest one fills the maximum thumbnail). Hover over a card to reveal its controls:
+    - **Flip vertical / Flip horizontal**: override the automatic orientation.
+    - **ENT / FRAG pill**: change the classification.
+    - **Exclude**: leave the card out of the export (it is greyed out); click again to include it.
+    - **Click the image** to open a full-screen lightbox.
 
-### Workflow
+# Export
 
-To start post-processing, click on **🔍 Process All Images**. The model will highlight the position and conservation status of the pieces. The positioned vase will appear in "Processed Image".
+Click **Export Results**, enter an **Export Acronym** (letters, numbers and underscores only, for example `OSA_2024`) and choose **Export ZIP**.
 
-You can navigate through the records using the buttons and the file list.
+The ZIP contains:
 
-If the model has misclassified a vase, you can manually modify the classification.
+- the cards renamed with your acronym (`OSA_2024_1.png`, `OSA_2024_2.png`, ...), leaving out the excluded ones;
+- `OSA_2024_metadata.csv`, which merges your tabular data with the ENT/FRAG classification, with every field written as plain text. If you calibrated scales, it also carries the `px_per_cm` column.
 
-You can also set image transformations to lock specific transformations.
+<!--
+ANIMATION (NEW, priority: low) - "Export"
+Storyboard: 1) Export Results; 2) type an acronym, invalid characters are rejected;
+3) ZIP opens showing renamed images and the CSV; 4) CSV preview with a few rows.
+-->
 
-Once post-processing is complete, click on **📦 Export Results** to save the images in a ZIP folder.
-
-An Excel file (.xlsx) containing the previously added tabular information will be exported along with the images.
-
-# Project Management Details
-
-Once created, you can reopen a project. Available projects are listed in "Your Projects" within the **Project Manager** tab.
-
-The project card displays information about the work, such as:
-
-- Number of images
-- Number of masks and annotations
-- Progress
-- Creation date
-- Last modification date
-
-You can select or remove a project from this view.
-
-:::{.callout-warning}
-Removing a project will delete all associated data.
-:::
-
-# Workflow Details (v0.3)
-
-The sections below describe in more detail the tools introduced in version 0.3.0.
-
-## Nested Vessels (Polygon tool)
-
-In **Review Annotations**, the **Polygon (📐)** tool lets you draw free-form polygons around vessels that are drawn *inside* other vessels. Double-click (or click near the first vertex) to close a polygon.
-
-Each polygon becomes an independent card at extraction time, and the inner vessel area is automatically subtracted (whitened) from the containing card.
-
-## Zoom, Pan, Brush and Colorize
-
-- **Zoom & pan**: the canvas fits the full page on load; use the **+ / − / fit** controls or the mouse wheel to inspect details.
-- **Brush (🖌️) / Eraser (🧹)**: a visible ring follows the cursor so you always know which area you are painting or erasing.
-- **Colorize (🎨)**: toggles a political-map coloring where every disconnected mask region gets a distinct hue. Two regions sharing the same color are actually *fused* - use the eraser to separate them. Colors are recomputed live after each stroke.
-
-Changes are saved automatically when you navigate away. Click **Extract Masks** when the review is complete.
-
-## Tabular Information: AI Extraction Tips
-
-- **Batch mode**: use **🤖 Extract AI References** for the current page, or **🔄 Extract All (Batch)** for the whole project. The backend can be OpenRouter or a local Gemma model.
-- **Canonical column names**: write column names in `[square brackets]` inside the prompt (e.g. `Add also [Scale], [Context]`) to lock the exact JSON key the model will use. This prevents column names drifting across pages.
-- **Numbers from crops**: enable this toggle to extract inventory/reference numbers by cropping and upscaling each individual drawing, which improves accuracy for small labels.
-- **Box visibility**: an on/off switch hides or shows the bounding boxes on the canvas.
-- **Clear Table**: resets all values on the current page without losing the column structure.
-
-:::{.callout-note}
-Avoid commas in cell values (CSV limitation). For bulk editing you can export and edit in Excel or Google Sheets.
-:::
-
-## Post Processing: Grid View
-
-After clicking **Process All Images**, all pieces are shown in a proportional grid: the largest piece maps to the maximum thumbnail size, so every card is displayed at its real relative dimensions.
-
-- **Automatic orientation**: *Auto Vertical Flip* corrects upside-down vessels (mouth facing down); *Auto Horizontal Flip* standardizes the profile side.
-- **Classification**: **ENT** (substantially complete profiles, blue border) or **FRAG** (fragments, orange border).
-
-Hover over a card to reveal its controls: flip vertical / horizontal, the ENT/FRAG pill, **✕ Exclude** (the card is skipped at export and greyed out) and a full-screen lightbox on click.
-
-## Export
-
-Assign a short **acronym** (e.g. `CRD`, `VEII`) to name files systematically (`{acronym}_1.png`, `{acronym}_2.png`, ...). The export is a single ZIP containing the renamed images (excluded cards are omitted) and `{acronym}_metadata.csv`, which merges the tabular data and the classifications, with all fields written as plain text. Tabular data is read directly from the working `mask_info.csv`, so no intermediate export step is needed.
-
-## Project Folder Structure
+# Where your files are
 
 ```
 projects/
 └── YourProject_20250104_123456/
     ├── project.json              # Project metadata
-    ├── pdf_source/               # Original PDF files
+    ├── pdf_source/               # Original PDF
     ├── images/                   # Extracted page images
-    ├── masks/                    # Detection masks (PNG with segmentation)
-    ├── cards/                    # Individual pottery instances
-    │   ├── mask_info.csv         # Metadata spreadsheet
-    │   └── mask_info_annots.csv  # Bounding box annotations
-    ├── cards_modified/           # Oriented/classified instances
-    │   └── classifications.csv   # Classification results
-    └── exports/                  # Final exported data
+    ├── masks/                    # Detection masks
+    ├── cards/                    # Individual vessels
+    │   ├── mask_info.csv         # Your tabular data
+    │   └── mask_info_annots.csv  # Bounding boxes
+    ├── cards_modified/           # Oriented and classified cards
+    │   └── classifications.csv   # ENT / FRAG results
+    └── exports/                  # Exported data
 ```
 
-Projects are automatically timestamped to avoid name conflicts. Use descriptive names (e.g. `Capena_2018_Vol_II`) and avoid spaces or special characters in PDF file names (`Cardarelli_2022.pdf`, not `My Document (2024) v2.pdf`).
+Projects are timestamped automatically, so names never collide, and you can work on several at once.
+
+# Tips
+
+- Do a **Diagnostic Test** before every big run.
+- Review the masks **before** extracting cards: it is much cheaper than fixing cards afterwards.
+- Keep project names descriptive (`Capena_2018_Vol_II`).
+- Very large PDFs (500+ pages) take a long time: consider splitting them into sections.
+- Something not working? See [Troubleshooting](index.qmd#troubleshooting).

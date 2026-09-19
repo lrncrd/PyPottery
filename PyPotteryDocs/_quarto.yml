@@ -37,7 +37,6 @@ website:
       - section: "PyPotteryLens"
         contents:
           - pypotterylens/index.qmd
-          - pypotterylens/installation.qmd
           - pypotterylens/usage.qmd
           - pypotterylens/version_history.qmd
       - section: "PyPotteryScan"

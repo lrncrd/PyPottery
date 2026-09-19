@@ -1,5 +1,7 @@
 ---
-title: "Introduction"
+title: "Getting Started"
+aliases:
+  - installation.html
 format: html
 toc: true
 ---
@@ -47,17 +49,67 @@ toc: true
 
 <br>
 
-**PyPotteryLens** is a tool designed for the extraction and processing of pottery images from PDF documents. It streamlines the workflow of extracting drawings, applying computer vision models, and structuring the data for analysis.
+**PyPotteryLens** extracts pottery drawings from published monograph PDFs, lets you review and label them, and exports a clean, standardized dataset. This page gets you from zero to a running app; the full workflow is in the [Usage guide](usage.qmd).
 
+## What you can do
 
-## Key Features
+1.  **Create a project** for each dataset (a monograph, a site, an assemblage).
+2.  **Extract the plates** from a PDF at full resolution.
+3.  **Apply the detection model** to find the drawings automatically.
+4.  **Review the masks**: fix them, outline nested vessels, calibrate the scale.
+5.  **Add tabular data** for every vessel, optionally with AI-assisted extraction.
+6.  **Post-process and export**: orient and classify the cards, then download a ZIP with images and metadata.
 
-*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
-*   **📄 PDF Processing**: Convert PDF documents into processable images.
-*   **🤖 Apply Model**: Use Computer Vision models to extract information and masks from images.
-*   **✏️ Review Annotations**: Review and modify the masks identified by the model.
-*   **📊 Tabular Information**: Associate tabular data with identified elements.
-*   **🔄 Post Processing**: Standardize images (orientation, positioning) and export results.
+## Install
+
+::: {.panel-tabset}
+
+### Launcher (recommended)
+
+The [PyPottery Suite Launcher](../suite_installation.qmd) installs and updates PyPotteryLens for you, with no Python setup. Download it from the [latest release](https://github.com/lrncrd/PyPottery/releases/latest), open it, and start PyPotteryLens from its interface.
+
+### From source
+
+Requires **Python 3.12** (3.10-3.12 supported).
+
+```bash
+git clone https://github.com/lrncrd/PyPotteryLens.git
+cd PyPotteryLens
+pip install -r requirements.txt   # includes PyTorch
+python app.py
+```
+
+Then open **http://127.0.0.1:5001** in your browser. Installer scripts that also create a virtual environment are included: double-click `PyPotteryLens_WIN.bat` on Windows, or run `chmod +x PyPotteryLens_UNIX.sh && ./PyPotteryLens_UNIX.sh` on Linux/macOS.
+
+:::
+
+::: {.callout-note}
+## GPU acceleration
+`requirements.txt` installs PyTorch with CUDA support when an NVIDIA GPU is available, otherwise the CPU build. Apple Silicon uses MPS automatically. For a specific CUDA build, install PyTorch first from [pytorch.org](https://pytorch.org/get-started/locally/).
+:::
+
+## First launch
+
+- The app opens in your browser and shows the initialization progress. The detection and classification models (`BasicModelv8_v01.pt`, `model_classifier.pth`) are downloaded from [HuggingFace](https://huggingface.co/lrncrd/PyPotteryLens) if missing. To download them manually, place them in `models_vision/` and `models_classifier/`.
+- **AI-assisted extraction** (Tabular Information tab) is optional and uses either a local model (a ~10 GB download, only offered if your hardware qualifies - see [Hardware Requirements](../requirements.qmd)) or an OpenRouter API key.
+- To stop the app, press `Ctrl+C` in the terminal, or close it from the launcher.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| The app won't start | Delete the `venv`/`.venv` folder and reinstall; check `python --version` (3.10-3.12); make sure port 5001 is free |
+| "Connection refused" in the browser | Check that `app.py` is running without errors; try `http://127.0.0.1:5001`; check your firewall |
+| Model download fails | Check your connection and free disk space (~500 MB); download the models manually (see above) |
+| CUDA not detected | Run `nvidia-smi`; reinstall PyTorch with the CUDA build that matches your drivers |
+| MPS not working (macOS) | You need Apple Silicon and macOS 12.3 or later |
+| Very slow processing | Use a GPU, use **Diagnostic Test** mode to try settings on 25 images, close heavy applications |
+
+**Platform notes.** *macOS up to Monterey 12.7.5*: the newest supported PyTorch is `2.2.2`, so pin `torch==2.2.2` in `requirements.txt`. *Windows*: some antivirus software flags the batch script (a false positive); you may need to relax the PowerShell execution policy. *Linux*: install `python3-venv` (`sudo apt install python3-venv`) and, for GPU support, the NVIDIA drivers and CUDA toolkit. Tested on Windows 11, Ubuntu 24.10 and macOS Sonoma 14 to Tahoe 26.
+
+## Next step
+
+Head to the [Usage guide](usage.qmd) for a walkthrough of the whole workflow.
 
 ## Contributors
 
