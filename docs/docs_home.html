@@ -303,6 +303,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./pypotterytrace/technical_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Technical Reference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version History</span></a>
   </div>
@@ -404,7 +410,7 @@ ul.task-list li input[type="checkbox"] {
 
       <p class="drafting-hero-lead">
         Manually inking vessel drawings, building catalogue entries by hand from old publications, retyping the
-        notes off a stack of inventory cards, working out reduction scales by hand — this is where most of the
+        notes off a stack of inventory cards, working out reduction scales by hand: this is where most of the
         time in ceramic documentation actually goes, and it's a large part of why so much excavated material sits
         in a drawer for years before it ever gets published. PyPottery is a suite of five open-source tools that
         takes on each of these tasks computationally: extracting figures from monograph PDFs, digitizing field
@@ -413,8 +419,7 @@ ul.task-list li input[type="checkbox"] {
       </p>
 
       <p class="drafting-hero-lead" style="margin-bottom: 0 !important;">
-        Almost everything runs on your own machine, not in the cloud. It's free, open-source, and grounded in
-        peer-reviewed research rather than a set of experimental scripts.
+        Everything runs on your own machine (You can use remote models to simplify certain tasks). The full source code is public, so anyone can check exactly how it works - and improve it.
       </p>
     </div>
     <img src="imgs/icon_app_vase.png" alt="" style="flex: 1 0 auto; width: 130px; height: auto; image-rendering: pixelated; margin: 0 auto;">
@@ -424,31 +429,23 @@ ul.task-list li input[type="checkbox"] {
 <hr class="hero-pipeline-hr">
 <section id="tested-with-archaeologists" class="level2">
 <h2 class="anchored" data-anchor-id="tested-with-archaeologists">Made by archaeologists for archaeologists</h2>
-<p>The idea for PyPottery grew out of a set of needs the author first ran into during university: let’s be honest, documenting pottery isn’t boring work, but it is work that takes a great deal of time. That “lost” time takes away from the other stages of research — typological analysis, comparison with other contexts, writing up results. PyPottery exists to drastically cut the time spent on repetitive, mechanical tasks, leaving more room for interpretation and research.</p>
-<p>Using PyPottery has been shown to cut documentation time by roughly <strong>sixty times</strong> compared to the traditional routine of tracing paper, technical pens, and manually re-tracing everything in vector software.</p>
-<p>That doesn’t mean it gets everything right on the first pass: a transcribed word sometimes needs a correction, a traced profile sometimes needs a nudge. PyPottery is built around that expectation: every stage gives you the chance to check and correct before moving on, so what comes out the other end is something you stand behind, not something you’re asked to trust blindly.</p>
+<p>The idea for PyPottery grew out of a set of needs the author first ran into during university: let’s be honest, documenting pottery isn’t boring work, but it is work that takes a great deal of time. That “lost” time takes away from the other stages of research like typological analysis, comparison with other contexts, writing up results. PyPottery exists to drastically cut the time spent on repetitive, mechanical tasks, leaving more room for interpretation and research.</p>
+<p>Using PyPottery has been shown to cut documentation time by roughly <strong>60 times</strong> compared to the traditional routine of tracing paper, technical pens, and manually re-tracing everything in vector software.</p>
+<p>That doesn’t mean it gets everything right on the first pass: a transcribed word sometimes needs a correction, a traced profile sometimes needs a nudge. PyPottery is built around that expectation: <strong>every stage gives you the chance to check and correct before moving on</strong>, so what comes out the other end is something you stand behind, not something you’re asked to trust blindly.</p>
 </section>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>PyPottery is designed as an entirely <strong>modular suite</strong> rather than an all-or-nothing pipeline: you choose exactly how to use it according to your workflow, research needs, and personal documentation preferences:</p>
 <ul>
-<li><strong>Don’t need profile vectorization?</strong> You don’t have to use <a href="pypotterytrace/index.html">PyPotteryTrace</a> — keep your high-contrast inked drawings as your final raster publication figures.</li>
-<li><strong>Prefer assembling catalog plates by hand?</strong> If physical layout and manual composition aid your typological reasoning and ceramic classification, you don’t have to use <a href="pypotterylayout/index.html">PyPotteryLayout</a> — simply take the drawings from Ink, Scan, or Lens straight into your vector graphic editor or drafting desk.</li>
+<li><strong>Don’t need profile vectorization?</strong> You don’t have to use <a href="pypotterytrace/index.html">PyPotteryTrace</a>: keep your high-contrast inked drawings as your final raster publication figures.</li>
+<li><strong>Prefer assembling catalog plates by hand?</strong> If physical layout and manual composition aid your typological reasoning and ceramic classification, you don’t have to use <a href="pypotterylayout/index.html">PyPotteryLayout</a>: simply take the drawings from Ink, Scan, or Lens straight into your vector graphic editor or drafting desk.</li>
 <li><strong>Only need specific extraction tasks?</strong> Use <a href="pypotteryscan/index.html">PyPotteryScan</a> solely for transcribing handwritten cards into Excel, or <a href="pypotterylens/index.html">PyPotteryLens</a> just to mine monograph plates, without touching the downstream drawing tools.</li>
 </ul>
-<p>Choose your entry point based on your source material and goals:</p>
-<ol type="1">
-<li><strong>Published PDF literature or legacy monographs</strong> — start with <a href="pypotterylens/index.html">PyPotteryLens</a> to extract pottery figures and plates.</li>
-<li><strong>Physical excavation pottery cards (<em>schede di reperto</em>)</strong> — start with <a href="pypotteryscan/index.html">PyPotteryScan</a> to crop drawings and extract handwritten notes via OCR.</li>
-<li><strong>Field pencil sketches to publication ink</strong> — use <a href="pypotteryink/index.html">PyPotteryInk</a> for automatic inking.</li>
-<li><strong>Raster drawings to editable vector curves</strong> — use <a href="pypotterytrace/index.html">PyPotteryTrace</a> to isolate profiles and export SVG geometry.</li>
-<li><strong>Final catalog plates at standardized scales</strong> — use <a href="pypotterylayout/index.html">PyPotteryLayout</a> to generate publication-ready plates.</li>
-</ol>
 <p>For hardware requirements and environment setup on Windows, macOS, and Linux, see <a href="requirements.html">System Requirements</a> and the <a href="suite_installation.html">Suite Installation Guide</a>.</p>
 </section>
 <section id="suite-modules" class="level2">
 <h2 class="anchored" data-anchor-id="suite-modules">Suite Modules: The Archaeological Pipeline</h2>
-<p>Five integrated modules orchestrated into three operational phases, transforming raw archaeological field data and historical monographs into publication-grade vector plates.</p>
+<p>Five integrated modules orchestrated into three operational phases, transforming raw archaeological field data and historical monographs into publication-grade plates and structured data.</p>
 <div class="archaeo-pipeline-container">
 
   <!-- =========================================================================
@@ -457,9 +454,9 @@ ul.task-list li input[type="checkbox"] {
   <div class="pipeline-stage-card phase-ingestion">
     <div class="pipeline-stage-header">
       <div class="pipeline-stage-title-group">
-        <h3 class="pipeline-stage-title anchored">From Physical Cards &amp; Legacy PDFs to Structured Data</h3>
+        <h3 class="pipeline-stage-title anchored">From Physical Books &amp; Legacy PDFs to Structured Data</h3>
         <p class="pipeline-stage-lead">
-          Automates the tedious hours spent screenshotting monograph plates or hand-cropping excavation cards and retyping handwritten field notes — cutting clerical transcription time by roughly 90%.
+          Automates the tedious hours spent screenshotting monograph tables or hand-cropping drawing plates and retyping handwritten field notes — cutting transcription time by roughly 90%.
         </p>
       </div>
     </div>
@@ -473,7 +470,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
         <div class="flow-box-content">
           <div class="flow-box-title">Monographs &amp; Cards</div>
-          <div class="flow-box-details">PDF reports, scanned excavation cards (<code>schede reperto</code>), handwritten field notes</div>
+          <div class="flow-box-details">PDF reports, scanned *cards*, handwritten notes</div>
         </div>
       </div>
 
@@ -489,7 +486,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
         <div class="flow-box-content">
           <div class="flow-box-title">YOLOv8 + OCR + LLMs</div>
-          <div class="flow-box-details">Neural vessel bounding-box detection, field handwriting OCR, and metadata structuring</div>
+          <div class="flow-box-details">Vessel bounding-box detection, field handwriting OCR, and metadata structuring</div>
         </div>
       </div>
 
@@ -505,7 +502,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
         <div class="flow-box-content">
           <div class="flow-box-title">Segmented Corpora</div>
-          <div class="flow-box-details">Standardized card crops, linked inventory tables (<code>.xlsx</code>), structured catalog records</div>
+          <div class="flow-box-details">Standardized card crops, linked inventory tables (<code>.xlsx</code> or <code>.csv</code>), structured catalog records</div>
         </div>
       </div>
     </div>
@@ -523,11 +520,11 @@ ul.task-list li input[type="checkbox"] {
                 <span class="module-ver-badge">v0.2.1</span>
               </div>
               <p class="pipeline-tool-desc">
-                Mines published monographs and excavation report PDFs, detecting and segmenting pottery drawings with YOLOv8.
+                Mines published monographs and excavation report PDFs, detecting and segmenting pottery drawings with Computer Vision.
               </p>
             </div>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">YOLOv8 Detection</span> · Interactive Review · LLM Metadata · Cards Export</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">YOLO Detection</span> · Interactive Review · LLM Metadata · Cards Export</p>
         </div>
         <div class="pipeline-tool-actions">
           <a href="pypotterylens/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
@@ -548,11 +545,11 @@ ul.task-list li input[type="checkbox"] {
                 <span class="module-ver-badge">v0.2.0</span>
               </div>
               <p class="pipeline-tool-desc">
-                Digitizes handwritten excavation index cards: segments multi-sherd plates, reads context notes via OCR, and outputs relational Excel tables.
+                Digitizes handwritten drawing tables on index cards: segments multi-sherd plates, reads context notes via OCR, and outputs relational Excel tables.
               </p>
             </div>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">Field Handwriting OCR</span> · Auto Vessel Cropping · Relational Excel</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">Handwriting OCR</span> · Auto Vessel Cropping · Relational Excel</p>
         </div>
         <div class="pipeline-tool-actions">
           <a href="pypotteryscan/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
@@ -580,7 +577,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="pipeline-stage-title-group">
         <h3 class="pipeline-stage-title anchored">From Faded Pencil to Crisp SVG Vector Curves</h3>
         <p class="pipeline-stage-lead">
-          Replaces the manual ordeal of tracing paper, technical ink pens (0.2–0.5 mm), and point-by-point bezier retracing in vector software.
+          Replaces the manual ordeal of tracing paper and point-by-point bezier retracing in vector software.
         </p>
       </div>
     </div>
@@ -594,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
         <div class="flow-box-content">
           <div class="flow-box-title">Pencil Sketches &amp; Scans</div>
-          <div class="flow-box-details">Graph paper drawings, faded graphite, raster pottery figures (72–300 DPI)</div>
+          <div class="flow-box-details">Graph paper drawings, faded graphite, raster pottery figures</div>
         </div>
       </div>
 
@@ -626,7 +623,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
         <div class="flow-box-content">
           <div class="flow-box-title">Archival Ink &amp; Clean SVG</div>
-          <div class="flow-box-details">Pure high-contrast ink drawings and separated Bézier splines (rim, profile, section)</div>
+          <div class="flow-box-details">Pure high-contrast ink drawings and separated Bézier splines of each archaeological element (rim, profile, section)</div>
         </div>
       </div>
     </div>
@@ -644,11 +641,11 @@ ul.task-list li input[type="checkbox"] {
                 <span class="module-ver-badge">v2.1.0</span>
               </div>
               <p class="pipeline-tool-desc">
-                Transforms pencil field sketches into publication-grade ink drawings in seconds using a dedicated one-step diffusion architecture.
+                Transforms pencil sketches into publication-grade ink drawings in seconds using a dedicated diffusion architecture.
               </p>
             </div>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">One-Step Diffusion</span> · Diagnostic Line Weight · Batch Processing · CUDA / MPS / CPU</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">Diffusion</span> · Diagnostic Line Weight · Batch Processing · CUDA / MPS / CPU</p>
         </div>
         <div class="pipeline-tool-actions">
           <a href="pypotteryink/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
@@ -673,7 +670,7 @@ ul.task-list li input[type="checkbox"] {
               </p>
             </div>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">SAM 2 Interactive</span> · Bézier Spline Editor · Layered SVG Export · Rim Diameter Curvature</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">SAM 2 Interactive</span> · Bézier Spline Editor · Layered SVG Export</p>
         </div>
         <div class="pipeline-tool-actions">
           <a href="pypotterytrace/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
@@ -701,7 +698,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="pipeline-stage-title-group">
         <h3 class="pipeline-stage-title anchored">From Individual Vessels to Publication-Ready Plates</h3>
         <p class="pipeline-stage-lead">
-          Eliminates hand-recalculated reduction scales, hand-drawn millimeter bars, and tedious manual typography alignment — every plate holds a calibrated 1:3 or 1:4 accuracy throughout.
+          Eliminates hand-recalculated reduction scales, hand-drawn millimeter bars, and tedious manual alignment of figures on the page.
         </p>
       </div>
     </div>
@@ -769,7 +766,7 @@ ul.task-list li input[type="checkbox"] {
               </p>
             </div>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">Standardized Reduction (1:3, 1:4)</span> · Calibrated Metric Scale Bars · Automated Typography &amp; Numbers · Vector PDF &amp; SVG · CPU Universal</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">Automatic Layout</span> · Calibrated Metric Scale Bars · Automated Metadata Placement &amp; Numbers · Vector PDF &amp; SVG</p>
         </div>
         <div class="pipeline-tool-actions">
           <a href="pypotterylayout/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>

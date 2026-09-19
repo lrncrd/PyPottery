@@ -304,5 +304,31 @@ Opening a project allows you to resume work exactly where it was left off. Even 
 
 The **Load** table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the **Annotate** tab on that specific image.
 
+# Straighten Tool and Keyboard Shortcuts
 
+## Straighten Tool
 
+In the **Clean Drawings** tab, tilted drawings can be straightened before (or after) erasing text:
+
+- **Precision slider**: rotate from -45.0° to +45.0° in 0.1° steps, with a live angle readout.
+- **Micro-adjustment buttons**: `-0.5°`, `-0.1°`, `+0.1°`, `+0.5°`, plus `0° Reset` and `-90°` / `+90°` rotations.
+- **Alignment grid**: a semi-transparent horizontal and vertical grid with a central crosshair helps you level the vessel's rim or base.
+- **Fixed canvas size**: the canvas keeps stable dimensions while you rotate, so the drawing never shrinks or expands.
+- **Auto-Fit**: one click trims the excess blank margins around the drawing.
+
+## Keyboard Shortcuts
+
+| Tab | Key | Action |
+|---|---|---|
+| Annotate | `D` / `T` | Drawing tool / Text tool |
+| Annotate | `E` | Eraser |
+| Annotate | `←` / `→` | Previous / next image |
+| Annotate | `Ctrl+S` | Save current annotations |
+| Clean | `E` | Toggle eraser mode |
+| Clean | `G` | Toggle alignment grid |
+| Clean | `R` | Reset straighten rotation to 0.0° |
+| Clean | `[` / `]` | Decrease / increase eraser size |
+| Clean | `+` / `-` | Zoom in / out |
+| Clean | `M` | Mark current drawing as clean |
+| Clean | `Ctrl+Z` | Undo last stroke or rotation |
+| Clean | `←` / `→` | Previous / next drawing |

@@ -207,3 +207,65 @@ You can select or remove a project from this view.
 :::{.callout-warning}
 Removing a project will delete all associated data.
 :::
+
+# Workflow Details (v0.3)
+
+The sections below describe in more detail the tools introduced in version 0.3.0.
+
+## Nested Vessels (Polygon tool)
+
+In **Review Annotations**, the **Polygon (📐)** tool lets you draw free-form polygons around vessels that are drawn *inside* other vessels. Double-click (or click near the first vertex) to close a polygon.
+
+Each polygon becomes an independent card at extraction time, and the inner vessel area is automatically subtracted (whitened) from the containing card.
+
+## Zoom, Pan, Brush and Colorize
+
+- **Zoom & pan**: the canvas fits the full page on load; use the **+ / − / fit** controls or the mouse wheel to inspect details.
+- **Brush (🖌️) / Eraser (🧹)**: a visible ring follows the cursor so you always know which area you are painting or erasing.
+- **Colorize (🎨)**: toggles a political-map coloring where every disconnected mask region gets a distinct hue. Two regions sharing the same color are actually *fused* - use the eraser to separate them. Colors are recomputed live after each stroke.
+
+Changes are saved automatically when you navigate away. Click **Extract Masks** when the review is complete.
+
+## Tabular Information: AI Extraction Tips
+
+- **Batch mode**: use **🤖 Extract AI References** for the current page, or **🔄 Extract All (Batch)** for the whole project. The backend can be OpenRouter or a local Gemma model.
+- **Canonical column names**: write column names in `[square brackets]` inside the prompt (e.g. `Add also [Scale], [Context]`) to lock the exact JSON key the model will use. This prevents column names drifting across pages.
+- **Numbers from crops**: enable this toggle to extract inventory/reference numbers by cropping and upscaling each individual drawing, which improves accuracy for small labels.
+- **Box visibility**: an on/off switch hides or shows the bounding boxes on the canvas.
+- **Clear Table**: resets all values on the current page without losing the column structure.
+
+:::{.callout-note}
+Avoid commas in cell values (CSV limitation). For bulk editing you can export and edit in Excel or Google Sheets.
+:::
+
+## Post Processing: Grid View
+
+After clicking **Process All Images**, all pieces are shown in a proportional grid: the largest piece maps to the maximum thumbnail size, so every card is displayed at its real relative dimensions.
+
+- **Automatic orientation**: *Auto Vertical Flip* corrects upside-down vessels (mouth facing down); *Auto Horizontal Flip* standardizes the profile side.
+- **Classification**: **ENT** (substantially complete profiles, blue border) or **FRAG** (fragments, orange border).
+
+Hover over a card to reveal its controls: flip vertical / horizontal, the ENT/FRAG pill, **✕ Exclude** (the card is skipped at export and greyed out) and a full-screen lightbox on click.
+
+## Export
+
+Assign a short **acronym** (e.g. `CRD`, `VEII`) to name files systematically (`{acronym}_1.png`, `{acronym}_2.png`, ...). The export is a single ZIP containing the renamed images (excluded cards are omitted) and `{acronym}_metadata.csv`, which merges the tabular data and the classifications, with all fields written as plain text. Tabular data is read directly from the working `mask_info.csv`, so no intermediate export step is needed.
+
+## Project Folder Structure
+
+```
+projects/
+└── YourProject_20250104_123456/
+    ├── project.json              # Project metadata
+    ├── pdf_source/               # Original PDF files
+    ├── images/                   # Extracted page images
+    ├── masks/                    # Detection masks (PNG with segmentation)
+    ├── cards/                    # Individual pottery instances
+    │   ├── mask_info.csv         # Metadata spreadsheet
+    │   └── mask_info_annots.csv  # Bounding box annotations
+    ├── cards_modified/           # Oriented/classified instances
+    │   └── classifications.csv   # Classification results
+    └── exports/                  # Final exported data
+```
+
+Projects are automatically timestamped to avoid name conflicts. Use descriptive names (e.g. `Capena_2018_Vol_II`) and avoid spaces or special characters in PDF file names (`Cardarelli_2022.pdf`, not `My Document (2024) v2.pdf`).

@@ -160,3 +160,42 @@ If dependency installation fails:
 1. Make sure you have an active internet connection
 2. Try upgrading pip: `python -m pip install --upgrade pip`
 3. Install dependencies one at a time to identify which package is causing issues
+
+### Model download fails
+
+- Check your internet connection and free disk space (~500MB needed).
+- Download the models manually from [HuggingFace](https://huggingface.co/lrncrd/PyPotteryLens): `BasicModelv8_v01.pt` goes in `models_vision/`, `model_classifier.pth` in `models_classifier/`.
+
+### Application won't start
+
+- Delete the `venv` folder and rerun the installation script for a clean install.
+- Check the Python version (`python --version`, 3.10-3.12).
+- Verify that no other application is using port 5001.
+
+### Browser shows "Connection Refused"
+
+- Check that `app.py` is running without errors.
+- Verify that a firewall isn't blocking port 5001, or try `http://127.0.0.1:5001`.
+
+### CUDA not detected (Windows/Linux)
+
+- Run `nvidia-smi` to verify that the drivers are installed.
+- Reinstall PyTorch with the CUDA build matching your drivers (e.g. `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126`).
+
+### MPS not working (macOS)
+
+- Make sure you are on Apple Silicon (M1/M2/M3) and macOS 12.3 or later, with a PyTorch version that supports MPS.
+
+### Slow processing
+
+- Enable GPU acceleration if available, use *Diagnostic Mode* to test with fewer images, lower the image resolution in PDF processing and close other heavy applications. Very large PDFs (>500 pages) take a long time: split them into sections.
+
+## Platform-Specific Notes
+
+**macOS (≤ Monterey 12.7.5)**: the maximum supported PyTorch version is `2.2.2`; pin `torch==2.2.2` in `requirements.txt` before installing.
+
+**Windows**: some antivirus software may flag the batch script (a false positive), and you may need to adjust the PowerShell execution policy.
+
+**Linux**: install `python3-venv` (`sudo apt install python3-venv`); for GPU support install the NVIDIA drivers and the CUDA toolkit separately.
+
+**Tested on**: Windows 11, Ubuntu 24.10, macOS Sonoma 14, Sequoia 15.2 and Tahoe 26.

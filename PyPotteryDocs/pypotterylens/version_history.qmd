@@ -15,6 +15,34 @@ format: html
 
 ## Version History
 
+### Version 0.3.0
+
+**Annotation tab**
+
+-   Nested vessel support: new Polygon tool (LabelMe-style) to outline vessels drawn inside other vessels; the inner area is subtracted from the containing card at extraction time
+-   Zoom & pan on the canvas, and a visible ring cursor for the brush and eraser
+-   Colorize mode: every disconnected mask region gets a distinct hue, so fused regions are immediately visible
+
+**Tabular tab**
+
+-   AI extraction improvements: dynamic token budget prevents truncated JSON, and a robust parser recovers partial responses
+-   Canonical column names via `[square brackets]` in the prompt
+-   "Numbers from crops" option for small inventory numbers, for both single-page and batch extraction
+-   Box visibility toggle and a Clear Table button
+-   "Export Combined CSV" removed: tabular data is read directly from `cards/mask_info.csv` at export time
+
+**Post Processing tab**
+
+-   Grid view showing all pieces at real relative size, replacing the one-at-a-time navigator
+-   Per-card hover controls (flip, ENT/FRAG toggle, exclude from export) and a full-screen lightbox
+-   Blue/orange borders for ENT/FRAG; auto-flip options are now toggle switches
+
+**Export and fixes**
+
+-   All metadata fields are written as plain text in the output CSV
+-   Fixed the flip endpoint acting on the wrong card when filenames sorted lexicographically rather than naturally
+-   Fixed the small-vessel area filter (it was 4x too large because it counted RGBA channels)
+
 ### Version 0.2.1 (December 2025)
 
 **Key Features:**

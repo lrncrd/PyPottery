@@ -337,6 +337,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/technical_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Technical Reference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version History</span></a>
   </div>
@@ -424,7 +430,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#python-not-found" id="toc-python-not-found" class="nav-link" data-scroll-target="#python-not-found">Python not found</a></li>
   <li><a href="#dependency-installation-errors" id="toc-dependency-installation-errors" class="nav-link" data-scroll-target="#dependency-installation-errors">Dependency installation errors</a></li>
+  <li><a href="#model-download-fails" id="toc-model-download-fails" class="nav-link" data-scroll-target="#model-download-fails">Model download fails</a></li>
+  <li><a href="#application-wont-start" id="toc-application-wont-start" class="nav-link" data-scroll-target="#application-wont-start">Application won’t start</a></li>
+  <li><a href="#browser-shows-connection-refused" id="toc-browser-shows-connection-refused" class="nav-link" data-scroll-target="#browser-shows-connection-refused">Browser shows “Connection Refused”</a></li>
+  <li><a href="#cuda-not-detected-windowslinux" id="toc-cuda-not-detected-windowslinux" class="nav-link" data-scroll-target="#cuda-not-detected-windowslinux">CUDA not detected (Windows/Linux)</a></li>
+  <li><a href="#mps-not-working-macos" id="toc-mps-not-working-macos" class="nav-link" data-scroll-target="#mps-not-working-macos">MPS not working (macOS)</a></li>
+  <li><a href="#slow-processing" id="toc-slow-processing" class="nav-link" data-scroll-target="#slow-processing">Slow processing</a></li>
   </ul></li>
+  <li><a href="#platform-specific-notes" id="toc-platform-specific-notes" class="nav-link" data-scroll-target="#platform-specific-notes">Platform-Specific Notes</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/installation.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -619,9 +632,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Try upgrading pip: <code>python -m pip install --upgrade pip</code></li>
 <li>Install dependencies one at a time to identify which package is causing issues</li>
 </ol>
-
-
 </section>
+<section id="model-download-fails" class="level3">
+<h3 class="anchored" data-anchor-id="model-download-fails">Model download fails</h3>
+<ul>
+<li>Check your internet connection and free disk space (~500MB needed).</li>
+<li>Download the models manually from <a href="https://huggingface.co/lrncrd/PyPotteryLens">HuggingFace</a>: <code>BasicModelv8_v01.pt</code> goes in <code>models_vision/</code>, <code>model_classifier.pth</code> in <code>models_classifier/</code>.</li>
+</ul>
+</section>
+<section id="application-wont-start" class="level3">
+<h3 class="anchored" data-anchor-id="application-wont-start">Application won’t start</h3>
+<ul>
+<li>Delete the <code>venv</code> folder and rerun the installation script for a clean install.</li>
+<li>Check the Python version (<code>python --version</code>, 3.10-3.12).</li>
+<li>Verify that no other application is using port 5001.</li>
+</ul>
+</section>
+<section id="browser-shows-connection-refused" class="level3">
+<h3 class="anchored" data-anchor-id="browser-shows-connection-refused">Browser shows “Connection Refused”</h3>
+<ul>
+<li>Check that <code>app.py</code> is running without errors.</li>
+<li>Verify that a firewall isn’t blocking port 5001, or try <code>http://127.0.0.1:5001</code>.</li>
+</ul>
+</section>
+<section id="cuda-not-detected-windowslinux" class="level3">
+<h3 class="anchored" data-anchor-id="cuda-not-detected-windowslinux">CUDA not detected (Windows/Linux)</h3>
+<ul>
+<li>Run <code>nvidia-smi</code> to verify that the drivers are installed.</li>
+<li>Reinstall PyTorch with the CUDA build matching your drivers (e.g.&nbsp;<code>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126</code>).</li>
+</ul>
+</section>
+<section id="mps-not-working-macos" class="level3">
+<h3 class="anchored" data-anchor-id="mps-not-working-macos">MPS not working (macOS)</h3>
+<ul>
+<li>Make sure you are on Apple Silicon (M1/M2/M3) and macOS 12.3 or later, with a PyTorch version that supports MPS.</li>
+</ul>
+</section>
+<section id="slow-processing" class="level3">
+<h3 class="anchored" data-anchor-id="slow-processing">Slow processing</h3>
+<ul>
+<li>Enable GPU acceleration if available, use <em>Diagnostic Mode</em> to test with fewer images, lower the image resolution in PDF processing and close other heavy applications. Very large PDFs (&gt;500 pages) take a long time: split them into sections.</li>
+</ul>
+</section>
+</section>
+<section id="platform-specific-notes" class="level2">
+<h2 class="anchored" data-anchor-id="platform-specific-notes">Platform-Specific Notes</h2>
+<p><strong>macOS (≤ Monterey 12.7.5)</strong>: the maximum supported PyTorch version is <code>2.2.2</code>; pin <code>torch==2.2.2</code> in <code>requirements.txt</code> before installing.</p>
+<p><strong>Windows</strong>: some antivirus software may flag the batch script (a false positive), and you may need to adjust the PowerShell execution policy.</p>
+<p><strong>Linux</strong>: install <code>python3-venv</code> (<code>sudo apt install python3-venv</code>); for GPU support install the NVIDIA drivers and the CUDA toolkit separately.</p>
+<p><strong>Tested on</strong>: Windows 11, Ubuntu 24.10, macOS Sonoma 14, Sequoia 15.2 and Tahoe 26.</p>
+
+
 </section>
 
 </main> <!-- /main -->

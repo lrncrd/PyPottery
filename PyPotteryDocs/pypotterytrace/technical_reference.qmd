@@ -1,0 +1,94 @@
+---
+title: "Technical Reference"
+subtitle: "Categories, mirroring logic and vectorization pipeline"
+format: html
+toc: true
+---
+
+This page describes how PyPotteryTrace turns a segmented mask into structured SVG layers. For the step-by-step interface walkthrough, see [Using PyPotteryTrace](usage.qmd).
+
+## Archaeological Categories
+
+Each segmented element is assigned a category, which decides how it is vectorized and styled in the exported SVG.
+
+| Category | Description | Default stroke |
+|----------|-------------|---------------|
+| **Profile** | Vessel profile/outline | 1.5 pt |
+| **Profile_Mirrored** | Mirrored profile (around the rotation center) | 1.5 pt |
+| **Symmetry_Line** | Symmetry line (vertical axis of rotation) | 0.5 pt |
+| **Diameter** | Diameter line (horizontal) | 0.8 pt |
+| **Running_Element** | Ridges, grooves, bands (mirrored, no construction lines) | 1.0 pt |
+| **Running_Element_Mirrored** | Mirrored running element | 1.0 pt |
+| **Application** | Applied elements (handles, spouts) | 1.2 pt |
+| **Handle** | Handles and attachments | 1.0 pt |
+| **Prospectus** | Front/rear view | 1.0 pt |
+| **Decoration** | Painted decorations | 0.5 pt |
+| **Detail** | Detail or annotation | 0.8 pt |
+
+Only **Profile** and **Running_Element** are mirrored around the rotation center; all other categories use standard vectorization. Stroke widths can be adjusted in the interface before export.
+
+## Mirroring and Connection Logic
+
+**Profile**
+
+1. The outer contour is extracted from the mask.
+2. A `Symmetry_Line` (vertical, through the rotation center) and a `Diameter` line (horizontal, at maximum width) are created as construction lines.
+3. The outer contour is mirrored around the rotation center, producing `Profile_Mirrored`.
+4. The SVG groups `Profile`, `Symmetry_Line` and `Diameter`.
+
+**Running_Element**
+
+1. The outer contour is extracted as an *open* path (not closed).
+2. If a Profile exists, the endpoints are extended to touch it.
+3. The contour is mirrored, producing `Running_Element_Mirrored`.
+4. Right side (original): the extended Running_Element stays separate from the Profile.
+5. Left side (mirrored): `Profile_Mirrored` and `Running_Element_Mirrored` are merged into a single unified curve, and `Running_Element_Mirrored` is removed after the merge.
+
+No construction lines are generated for Running_Element, which keeps the output cleaner.
+
+## Vectorization Pipeline
+
+```
+1. Mask (binary PNG)
+   ↓
+2. cv2.findContours() → boundary points
+   ↓
+3. Filter contours (largest = outer contour)
+   ↓
+4. RDP (Douglas-Peucker) simplification, epsilon tolerance
+   ↓
+5. Optional Bézier smoothing
+   ↓
+6. SVG path with category styling
+   ↓
+7. Mirroring (Profile, Running_Element)
+   ↓
+8. Connection logic (extend / merge)
+   ↓
+9. Organized SVG with category-grouped layers
+```
+
+## Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `epsilon` | RDP simplification tolerance (higher = simpler paths) | 1.5 |
+| `smoothing_factor` | Bézier smoothing intensity | 0.3 |
+| `proximity_threshold` | Distance (px) used when merging the mirrored profile with the mirrored running element | 50.0 |
+
+## SAM2 Models
+
+Three SAM2 checkpoints are supported and downloaded on demand from the interface:
+
+| Model | Size | Notes |
+|-------|------|-------|
+| `tiny` | ~108MB | Fastest, good for quick tests |
+| `small` | ~180MB | Default |
+| `base_plus` | ~319MB | Slowest, best quality |
+
+## Exports
+
+- **Organized SVG**: category-grouped layers with proper z-ordering, easy to edit in Inkscape or Illustrator
+- **COCO annotations**: bounding boxes and polygons, ready for machine-learning use
+- **Individual masks**: one PNG per segmented element
+- **Project workspace**: originals, masks and annotations saved per project for iterative work

@@ -303,6 +303,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/technical_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Technical Reference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version History</span></a>
   </div>
@@ -400,6 +406,11 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#gui-elements-2" id="toc-gui-elements-2" class="nav-link" data-scroll-target="#gui-elements-2">GUI Elements</a></li>
   <li><a href="#load-a-project" id="toc-load-a-project" class="nav-link" data-scroll-target="#load-a-project">Load a Project</a></li>
+  </ul></li>
+  <li><a href="#straighten-tool-and-keyboard-shortcuts" id="toc-straighten-tool-and-keyboard-shortcuts" class="nav-link" data-scroll-target="#straighten-tool-and-keyboard-shortcuts">Straighten Tool and Keyboard Shortcuts</a>
+  <ul class="collapse">
+  <li><a href="#straighten-tool" id="toc-straighten-tool" class="nav-link" data-scroll-target="#straighten-tool">Straighten Tool</a></li>
+  <li><a href="#keyboard-shortcuts" id="toc-keyboard-shortcuts" class="nav-link" data-scroll-target="#keyboard-shortcuts">Keyboard Shortcuts</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryscan/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -863,6 +874,94 @@ Figure&nbsp;22
 </figure>
 </div>
 <p>The <strong>Load</strong> table will show the images loaded within the project, as well as the annotations created. Click on the preview to open the <strong>Annotate</strong> tab on that specific image.</p>
+</section>
+</section>
+<section id="straighten-tool-and-keyboard-shortcuts" class="level1">
+<h1>Straighten Tool and Keyboard Shortcuts</h1>
+<section id="straighten-tool" class="level2">
+<h2 class="anchored" data-anchor-id="straighten-tool">Straighten Tool</h2>
+<p>In the <strong>Clean Drawings</strong> tab, tilted drawings can be straightened before (or after) erasing text:</p>
+<ul>
+<li><strong>Precision slider</strong>: rotate from -45.0° to +45.0° in 0.1° steps, with a live angle readout.</li>
+<li><strong>Micro-adjustment buttons</strong>: <code>-0.5°</code>, <code>-0.1°</code>, <code>+0.1°</code>, <code>+0.5°</code>, plus <code>0° Reset</code> and <code>-90°</code> / <code>+90°</code> rotations.</li>
+<li><strong>Alignment grid</strong>: a semi-transparent horizontal and vertical grid with a central crosshair helps you level the vessel’s rim or base.</li>
+<li><strong>Fixed canvas size</strong>: the canvas keeps stable dimensions while you rotate, so the drawing never shrinks or expands.</li>
+<li><strong>Auto-Fit</strong>: one click trims the excess blank margins around the drawing.</li>
+</ul>
+</section>
+<section id="keyboard-shortcuts" class="level2">
+<h2 class="anchored" data-anchor-id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Tab</th>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Annotate</td>
+<td><code>D</code> / <code>T</code></td>
+<td>Drawing tool / Text tool</td>
+</tr>
+<tr class="even">
+<td>Annotate</td>
+<td><code>E</code></td>
+<td>Eraser</td>
+</tr>
+<tr class="odd">
+<td>Annotate</td>
+<td><code>←</code> / <code>→</code></td>
+<td>Previous / next image</td>
+</tr>
+<tr class="even">
+<td>Annotate</td>
+<td><code>Ctrl+S</code></td>
+<td>Save current annotations</td>
+</tr>
+<tr class="odd">
+<td>Clean</td>
+<td><code>E</code></td>
+<td>Toggle eraser mode</td>
+</tr>
+<tr class="even">
+<td>Clean</td>
+<td><code>G</code></td>
+<td>Toggle alignment grid</td>
+</tr>
+<tr class="odd">
+<td>Clean</td>
+<td><code>R</code></td>
+<td>Reset straighten rotation to 0.0°</td>
+</tr>
+<tr class="even">
+<td>Clean</td>
+<td><code>[</code> / <code>]</code></td>
+<td>Decrease / increase eraser size</td>
+</tr>
+<tr class="odd">
+<td>Clean</td>
+<td><code>+</code> / <code>-</code></td>
+<td>Zoom in / out</td>
+</tr>
+<tr class="even">
+<td>Clean</td>
+<td><code>M</code></td>
+<td>Mark current drawing as clean</td>
+</tr>
+<tr class="odd">
+<td>Clean</td>
+<td><code>Ctrl+Z</code></td>
+<td>Undo last stroke or rotation</td>
+</tr>
+<tr class="even">
+<td>Clean</td>
+<td><code>←</code> / <code>→</code></td>
+<td>Previous / next drawing</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

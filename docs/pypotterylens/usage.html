@@ -303,6 +303,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../pypotterytrace/technical_reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Technical Reference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/version_history.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version History</span></a>
   </div>
@@ -393,6 +399,15 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   </ul></li>
   <li><a href="#project-management-details" id="toc-project-management-details" class="nav-link" data-scroll-target="#project-management-details">Project Management Details</a></li>
+  <li><a href="#workflow-details-v0.3" id="toc-workflow-details-v0.3" class="nav-link" data-scroll-target="#workflow-details-v0.3">Workflow Details (v0.3)</a>
+  <ul class="collapse">
+  <li><a href="#nested-vessels-polygon-tool" id="toc-nested-vessels-polygon-tool" class="nav-link" data-scroll-target="#nested-vessels-polygon-tool">Nested Vessels (Polygon tool)</a></li>
+  <li><a href="#zoom-pan-brush-and-colorize" id="toc-zoom-pan-brush-and-colorize" class="nav-link" data-scroll-target="#zoom-pan-brush-and-colorize">Zoom, Pan, Brush and Colorize</a></li>
+  <li><a href="#tabular-information-ai-extraction-tips" id="toc-tabular-information-ai-extraction-tips" class="nav-link" data-scroll-target="#tabular-information-ai-extraction-tips">Tabular Information: AI Extraction Tips</a></li>
+  <li><a href="#post-processing-grid-view" id="toc-post-processing-grid-view" class="nav-link" data-scroll-target="#post-processing-grid-view">Post Processing: Grid View</a></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">Export</a></li>
+  <li><a href="#project-folder-structure" id="toc-project-folder-structure" class="nav-link" data-scroll-target="#project-folder-structure">Project Folder Structure</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylens/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -646,8 +661,78 @@ Warning
 <p>Removing a project will delete all associated data.</p>
 </div>
 </div>
+</section>
+<section id="workflow-details-v0.3" class="level1">
+<h1>Workflow Details (v0.3)</h1>
+<p>The sections below describe in more detail the tools introduced in version 0.3.0.</p>
+<section id="nested-vessels-polygon-tool" class="level2">
+<h2 class="anchored" data-anchor-id="nested-vessels-polygon-tool">Nested Vessels (Polygon tool)</h2>
+<p>In <strong>Review Annotations</strong>, the <strong>Polygon (📐)</strong> tool lets you draw free-form polygons around vessels that are drawn <em>inside</em> other vessels. Double-click (or click near the first vertex) to close a polygon.</p>
+<p>Each polygon becomes an independent card at extraction time, and the inner vessel area is automatically subtracted (whitened) from the containing card.</p>
+</section>
+<section id="zoom-pan-brush-and-colorize" class="level2">
+<h2 class="anchored" data-anchor-id="zoom-pan-brush-and-colorize">Zoom, Pan, Brush and Colorize</h2>
+<ul>
+<li><strong>Zoom &amp; pan</strong>: the canvas fits the full page on load; use the <strong>+ / − / fit</strong> controls or the mouse wheel to inspect details.</li>
+<li><strong>Brush (🖌️) / Eraser (🧹)</strong>: a visible ring follows the cursor so you always know which area you are painting or erasing.</li>
+<li><strong>Colorize (🎨)</strong>: toggles a political-map coloring where every disconnected mask region gets a distinct hue. Two regions sharing the same color are actually <em>fused</em> - use the eraser to separate them. Colors are recomputed live after each stroke.</li>
+</ul>
+<p>Changes are saved automatically when you navigate away. Click <strong>Extract Masks</strong> when the review is complete.</p>
+</section>
+<section id="tabular-information-ai-extraction-tips" class="level2">
+<h2 class="anchored" data-anchor-id="tabular-information-ai-extraction-tips">Tabular Information: AI Extraction Tips</h2>
+<ul>
+<li><strong>Batch mode</strong>: use <strong>🤖 Extract AI References</strong> for the current page, or <strong>🔄 Extract All (Batch)</strong> for the whole project. The backend can be OpenRouter or a local Gemma model.</li>
+<li><strong>Canonical column names</strong>: write column names in <code>[square brackets]</code> inside the prompt (e.g.&nbsp;<code>Add also [Scale], [Context]</code>) to lock the exact JSON key the model will use. This prevents column names drifting across pages.</li>
+<li><strong>Numbers from crops</strong>: enable this toggle to extract inventory/reference numbers by cropping and upscaling each individual drawing, which improves accuracy for small labels.</li>
+<li><strong>Box visibility</strong>: an on/off switch hides or shows the bounding boxes on the canvas.</li>
+<li><strong>Clear Table</strong>: resets all values on the current page without losing the column structure.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avoid commas in cell values (CSV limitation). For bulk editing you can export and edit in Excel or Google Sheets.</p>
+</div>
+</div>
+</section>
+<section id="post-processing-grid-view" class="level2">
+<h2 class="anchored" data-anchor-id="post-processing-grid-view">Post Processing: Grid View</h2>
+<p>After clicking <strong>Process All Images</strong>, all pieces are shown in a proportional grid: the largest piece maps to the maximum thumbnail size, so every card is displayed at its real relative dimensions.</p>
+<ul>
+<li><strong>Automatic orientation</strong>: <em>Auto Vertical Flip</em> corrects upside-down vessels (mouth facing down); <em>Auto Horizontal Flip</em> standardizes the profile side.</li>
+<li><strong>Classification</strong>: <strong>ENT</strong> (substantially complete profiles, blue border) or <strong>FRAG</strong> (fragments, orange border).</li>
+</ul>
+<p>Hover over a card to reveal its controls: flip vertical / horizontal, the ENT/FRAG pill, <strong>✕ Exclude</strong> (the card is skipped at export and greyed out) and a full-screen lightbox on click.</p>
+</section>
+<section id="export" class="level2">
+<h2 class="anchored" data-anchor-id="export">Export</h2>
+<p>Assign a short <strong>acronym</strong> (e.g.&nbsp;<code>CRD</code>, <code>VEII</code>) to name files systematically (<code>{acronym}_1.png</code>, <code>{acronym}_2.png</code>, …). The export is a single ZIP containing the renamed images (excluded cards are omitted) and <code>{acronym}_metadata.csv</code>, which merges the tabular data and the classifications, with all fields written as plain text. Tabular data is read directly from the working <code>mask_info.csv</code>, so no intermediate export step is needed.</p>
+</section>
+<section id="project-folder-structure" class="level2">
+<h2 class="anchored" data-anchor-id="project-folder-structure">Project Folder Structure</h2>
+<pre><code>projects/
+└── YourProject_20250104_123456/
+    ├── project.json              # Project metadata
+    ├── pdf_source/               # Original PDF files
+    ├── images/                   # Extracted page images
+    ├── masks/                    # Detection masks (PNG with segmentation)
+    ├── cards/                    # Individual pottery instances
+    │   ├── mask_info.csv         # Metadata spreadsheet
+    │   └── mask_info_annots.csv  # Bounding box annotations
+    ├── cards_modified/           # Oriented/classified instances
+    │   └── classifications.csv   # Classification results
+    └── exports/                  # Final exported data</code></pre>
+<p>Projects are automatically timestamped to avoid name conflicts. Use descriptive names (e.g.&nbsp;<code>Capena_2018_Vol_II</code>) and avoid spaces or special characters in PDF file names (<code>Cardarelli_2022.pdf</code>, not <code>My Document (2024) v2.pdf</code>).</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

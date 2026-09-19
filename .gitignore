@@ -231,11 +231,11 @@ launcher/dev_config.py
 shared_assets/
 **/static/vendor/
 
-PyPotteryInk/
-PyPotteryLayout/
-PyPotteryLens/
-PyPotteryScan/
-PyPotteryTrace/
+/PyPotteryInk/
+/PyPotteryLayout/
+/PyPotteryLens/
+/PyPotteryScan/
+/PyPotteryTrace/
 ArchaeoVision/
 .gemini/
 PyPotteryDocs/.agent

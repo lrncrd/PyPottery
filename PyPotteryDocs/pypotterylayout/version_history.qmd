@@ -6,6 +6,21 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.3 (September 2026)
+
+- **New features**:
+  - Independent top spacing control for grid and puzzle layouts, separate from the outer page margin
+  - Margin border overlay now also included in SVG exports (previously PDF/JPG only)
+  - Table numbering: added "Bottom Left" and "Bottom Right" position options
+  - Interface redesigned to match the shared PyPottery design system (header, tabs, buttons and "About" panel now consistent with the rest of the suite)
+  - Settings panel reorganized into "Basic" and "Advanced" tabs
+- **Reliability**:
+  - The app now shuts itself down a few seconds after the browser tab is closed, freeing memory automatically, with a confirmation prompt to prevent accidental closures
+  - Fixed a startup issue that could keep the app from launching correctly when the PyPottery Launcher had to fall back to an alternate port
+
+
+## Version History
+
 ### Version 0.3.2 (July 2026)
 
 - **New features**:
@@ -15,9 +30,6 @@ format: html
   - Table number label is now inset from the page border when Show Margin Border is enabled
   - "Bottom Right" added as an Object Numbering position
   - Loading overlay shown while images are uploading, so the app no longer looks stuck on large batches
-
-
-## Version History
 
 ### Version 0.3.1 (December 2025)
 
