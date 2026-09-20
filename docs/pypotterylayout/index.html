@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction – PyPottery</title>
+<title>Getting Started – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -121,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">PyPotteryLayout</a></li><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">Introduction</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">PyPotteryLayout</a></li><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">Getting Started</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -303,13 +337,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylayout/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotterylayout/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -354,7 +382,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-features" id="toc-key-features" class="nav-link active" data-scroll-target="#key-features">Key Features</a></li>
+  <li><a href="#what-you-can-do" id="toc-what-you-can-do" class="nav-link active" data-scroll-target="#what-you-can-do">What you can do</a></li>
+  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
+  <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
+  <li><a href="#where-the-files-go" id="toc-where-the-files-go" class="nav-link" data-scroll-target="#where-the-files-go">Where the files go</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#updating" id="toc-updating" class="nav-link" data-scroll-target="#updating">Updating</a></li>
+  <li><a href="#next-step" id="toc-next-step" class="nav-link" data-scroll-target="#next-step">Next step</a></li>
   <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors">Contributors</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylayout/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -362,9 +396,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">PyPotteryLayout</a></li><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">Introduction</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">PyPotteryLayout</a></li><li class="breadcrumb-item"><a href="../pypotterylayout/index.html">Getting Started</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title">Getting Started</h1>
 </div>
 
 
@@ -385,32 +419,119 @@ ul.task-list li input[type="checkbox"] {
   <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
   <br>
   <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.3.2
+    version 0.3.4
   </span>
 
-    <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 1;"></iframe>
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
       <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
         CPU
       </span>
     </div>
+
   </div>
 </div>
 
 <p><br></p>
-<p><strong>PyPotteryLayout</strong> is a specialized tool designed for creating publication-ready pottery plates. It automates the layout process, allowing archaeologists to organize drawings, apply consistent scales, and generate high-quality exports with ease.</p>
-<section id="key-features" class="level2">
-<h2 class="anchored" data-anchor-id="key-features">Key Features</h2>
+<p><strong>PyPotteryLayout</strong> arranges your pottery drawings on publication plates. You give it the images (and, if you like, a spreadsheet with the data of each piece); it sorts them, scales them, adds captions, numbers and a scale bar, and produces the plates as PDF, JPG or SVG. It needs no AI model and no GPU. This page gets you from zero to a running app; the full workflow is in the <a href="../pypotterylayout/usage.html">Usage guide</a>.</p>
+<section id="what-you-can-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-can-do">What you can do</h2>
+<ol type="1">
+<li><strong>Import</strong> the drawings, and optionally a spreadsheet (Excel or CSV) with their data.</li>
+<li><strong>Choose the layout</strong>: a regular <strong>Grid</strong>, or a <strong>Puzzle</strong> that packs the drawings to waste as little space as possible.</li>
+<li><strong>Sort and group</strong> the drawings by name, by a field of your spreadsheet, or at random, with a new page or a divider for each group.</li>
+<li><strong>Annotate</strong>: captions built from the spreadsheet, a scale bar, plate numbers (“Tav. 1”, “Pl. 1”, …) and a number for each drawing.</li>
+<li><strong>Export</strong> as PDF, JPG or SVG, with text you can still edit in a vector program.</li>
+</ol>
+</section>
+<section id="install" class="level2">
+<h2 class="anchored" data-anchor-id="install">Install</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Launcher (recommended)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">From source</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The <a href="../suite_installation.html">PyPottery Suite Launcher</a> installs and updates PyPotteryLayout for you, with no Python setup. Download it from the <a href="https://github.com/lrncrd/PyPottery/releases/latest">latest release</a>, open it, and start PyPotteryLayout from its interface.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Requires <strong>Python 3.12</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/lrncrd/PyPotteryLayout.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> PyPotteryLayout</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> app.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then open <strong>http://localhost:5005</strong> in your browser. Installer scripts that also create a virtual environment are included: double-click <code>PyPotteryLayout_WIN.bat</code> on Windows, or run <code>chmod +x PyPotteryLayout_UNIX.sh &amp;&amp; ./PyPotteryLayout_UNIX.sh</code> on Linux/macOS.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The standalone Windows executable
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Until version 0.3.0 the releases on GitHub included a <code>PyPotteryLayout.exe</code>. Later releases do not, so an <code>.exe</code> you find there is an old version: use the Launcher, or run from source.</p>
+</div>
+</div>
+</section>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>PyPotteryLayout runs on any computer that runs Python 3.12 (Windows, macOS, Linux) and needs a modern browser. About 2 GB of RAM is enough; large sets of high-resolution drawings need more, because every image is loaded in memory. There is nothing to download at the first launch. See <a href="../requirements.html">Hardware Requirements</a> for the suite as a whole.</p>
+</section>
+<section id="where-the-files-go" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-files-go">Where the files go</h2>
+<p>Next to the app, in two folders:</p>
 <ul>
-<li><strong>📂 Smart Import</strong>: Seamlessly import images and associated metadata (Excel/CSV) for data-driven layouts.</li>
-<li><strong>📐 Flexible Layouts</strong>: Choose between <strong>Grid</strong> (structured) and <strong>Puzzle</strong> (optimized packing) modes to best fit your needs.</li>
-<li><strong>🏷️ Automated Annotations</strong>: Automatically add captions, scale bars, and table numbers based on your data.</li>
-<li><strong>🔄 Advanced Sorting</strong>: Organize your plates with hierarchical sorting and grouping options.</li>
-<li><strong>📤 Multi-format Export</strong>: Export to <strong>PDF</strong>, <strong>JPG</strong>, or <strong>SVG</strong> (with editable text and vector elements) for final adjustments.</li>
+<li><code>uploads/</code>: the images and the spreadsheet you loaded, one subfolder for each browser session;</li>
+<li><code>outputs/</code>: the previews and the plates you generated, organized in the same way.</li>
 </ul>
+<p>The <strong>Clear All</strong> button of the app empties both for the current session. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</p>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>What to try</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python not found</td>
+<td>Install Python 3.12 from <a href="https://www.python.org/downloads/">python.org</a> (on Windows tick “Add Python to PATH”); on Linux <code>sudo apt install python3 python3-venv</code>; on macOS <code>brew install python3</code></td>
+</tr>
+<tr class="even">
+<td>Dependency installation fails</td>
+<td>Check your connection, upgrade pip (<code>python -m pip install --upgrade pip</code>), or install the packages of <code>requirements.txt</code> one at a time to find the culprit</td>
+</tr>
+<tr class="odd">
+<td>Port 5005 is already in use</td>
+<td>Close the other program, or start the app on another port by setting the <code>PORT</code> environment variable before <code>python app.py</code></td>
+</tr>
+<tr class="even">
+<td>A drawing does not show a caption from the spreadsheet</td>
+<td>The first column of the spreadsheet must hold the name of the image: see <a href="../pypotterylayout/usage.html#import-the-data">Usage</a></td>
+</tr>
+<tr class="odd">
+<td>A TIFF drawing is missing</td>
+<td>Update to version 0.3.4 or later: older versions accepted <code>.tif</code> files but did not load them</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="updating" class="level2">
+<h2 class="anchored" data-anchor-id="updating">Updating</h2>
+<p>With the launcher, updates are handled for you. From source, pull the latest code and run <code>pip install -r requirements.txt --upgrade</code>.</p>
+</section>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next step</h2>
+<p>Head to the <a href="../pypotterylayout/usage.html">Usage guide</a> for a walkthrough of the app.</p>
 </section>
 <section id="contributors" class="level2">
 <h2 class="anchored" data-anchor-id="contributors">Contributors</h2>
@@ -429,14 +550,13 @@ ul.task-list li input[type="checkbox"] {
     <br>
     <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Enzo Cocca</span>
   </div>
-    <div style="text-align: center;">
+  <div style="text-align: center;">
     <a href="https://github.com/pankus" target="_blank">
       <img src="https://github.com/pankus.png" alt="Francesco Di Filippo" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
     </a>
     <br>
     <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Francesco Di Filippo</span>
   </div>
-  <!-- Add more contributors here following the same pattern -->
 </div>
 
 

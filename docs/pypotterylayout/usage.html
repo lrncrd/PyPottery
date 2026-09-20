@@ -303,13 +303,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotterylayout/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -353,26 +347,29 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#interface-overview" id="toc-interface-overview" class="nav-link active" data-scroll-target="#interface-overview">Interface Overview</a></li>
-  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">1. Data Import</a>
   <ul class="collapse">
-  <li><a href="#upload-images" id="toc-upload-images" class="nav-link" data-scroll-target="#upload-images">Upload Images</a></li>
-  <li><a href="#upload-metadata-optional" id="toc-upload-metadata-optional" class="nav-link" data-scroll-target="#upload-metadata-optional">Upload Metadata (Optional)</a></li>
+  <li><a href="#the-screen" id="toc-the-screen" class="nav-link active" data-scroll-target="#the-screen">The screen</a></li>
+  <li><a href="#key-terms" id="toc-key-terms" class="nav-link" data-scroll-target="#key-terms">Key terms</a></li>
+  <li><a href="#import-the-data" id="toc-import-the-data" class="nav-link" data-scroll-target="#import-the-data">Import the data</a>
+  <ul class="collapse">
+  <li><a href="#images" id="toc-images" class="nav-link" data-scroll-target="#images">Images</a></li>
+  <li><a href="#metadata-optional" id="toc-metadata-optional" class="nav-link" data-scroll-target="#metadata-optional">Metadata (optional)</a></li>
   </ul></li>
-  <li><a href="#layout-settings" id="toc-layout-settings" class="nav-link" data-scroll-target="#layout-settings">2. Layout Settings</a></li>
-  <li><a href="#sorting-grouping" id="toc-sorting-grouping" class="nav-link" data-scroll-target="#sorting-grouping">3. Sorting &amp; Grouping</a></li>
-  <li><a href="#annotations" id="toc-annotations" class="nav-link" data-scroll-target="#annotations">4. Annotations</a>
+  <li><a href="#layout" id="toc-layout" class="nav-link" data-scroll-target="#layout">Layout</a></li>
+  <li><a href="#dimensions-and-spacing" id="toc-dimensions-and-spacing" class="nav-link" data-scroll-target="#dimensions-and-spacing">Dimensions and spacing</a></li>
+  <li><a href="#sorting-and-grouping" id="toc-sorting-and-grouping" class="nav-link" data-scroll-target="#sorting-and-grouping">Sorting and grouping</a></li>
+  <li><a href="#captions-and-numbering" id="toc-captions-and-numbering" class="nav-link" data-scroll-target="#captions-and-numbering">Captions and numbering</a>
   <ul class="collapse">
   <li><a href="#captions" id="toc-captions" class="nav-link" data-scroll-target="#captions">Captions</a></li>
-  <li><a href="#scale-bar" id="toc-scale-bar" class="nav-link" data-scroll-target="#scale-bar">Scale Bar</a></li>
-  <li><a href="#table-numbers" id="toc-table-numbers" class="nav-link" data-scroll-target="#table-numbers">Table Numbers</a></li>
-  <li><a href="#object-numbering" id="toc-object-numbering" class="nav-link" data-scroll-target="#object-numbering">Object Numbering</a></li>
+  <li><a href="#object-numbers" id="toc-object-numbers" class="nav-link" data-scroll-target="#object-numbers">Object numbers</a></li>
+  <li><a href="#table-numbers" id="toc-table-numbers" class="nav-link" data-scroll-target="#table-numbers">Table numbers</a></li>
   </ul></li>
-  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">5. Export</a></li>
-  <li><a href="#interactive-demo" id="toc-interactive-demo" class="nav-link" data-scroll-target="#interactive-demo">Interactive Demo</a></li>
+  <li><a href="#scale-bar" id="toc-scale-bar" class="nav-link" data-scroll-target="#scale-bar">Scale bar</a></li>
+  <li><a href="#preview" id="toc-preview" class="nav-link" data-scroll-target="#preview">Preview</a></li>
+  <li><a href="#generate-and-export" id="toc-generate-and-export" class="nav-link" data-scroll-target="#generate-and-export">Generate and export</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylayout/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterylayout/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -397,198 +394,215 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div style="text-align: center;">
-<p><img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> </p>
+<p><img src="../imgs/LogoLayout.png" style="max-width: 25%; height: auto; margin-bottom: 1em;"></p>
 </div>
-<div style="
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 1px solid #e1e4e8;
-    border-left: 5px solid #c2410c;
-    border-radius: 12px;
-    padding: 15px 25px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-">
-    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
-        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
-            Need a hand?
-        </div>
-        <div style="line-height: 1.5;">
-            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
-            Clicking on him brings you straight back to this guide.
-        </div>
-    </div>
-    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
-    </div>
-</div>
-<section id="interface-overview" class="level1">
-<h1>Interface Overview</h1>
-<p>PyPotteryLayout provides a streamlined interface for organizing your archaeological drawings into publication plates. The workflow is divided into logical sections:</p>
-<ol type="1">
-<li><strong>Data Import</strong>: Uploading images and metadata.</li>
-<li><strong>Layout Settings</strong>: Defining the page structure.</li>
-<li><strong>Sorting &amp; Grouping</strong>: Organizing the content.</li>
-<li><strong>Annotations</strong>: Adding captions and scales.</li>
-<li><strong>Export</strong>: Generating the final output.</li>
-</ol>
-</section>
-<section id="data-import" class="level1">
-<h1>1. Data Import</h1>
-<section id="upload-images" class="level3">
-<h3 class="anchored" data-anchor-id="upload-images">Upload Images</h3>
-<p>You can upload your pottery drawings by dragging and dropping them into the upload area or by clicking to select files.</p>
-<ul>
-<li><strong>Supported Formats</strong>: PNG, JPG, JPEG, TIF, TIFF, BMP.</li>
-<li>A loading overlay with a progress bar is shown while images upload and the preview is generated, so the page never looks stuck during large uploads.</li>
-</ul>
-</section>
-<section id="upload-metadata-optional" class="level3">
-<h3 class="anchored" data-anchor-id="upload-metadata-optional">Upload Metadata (Optional)</h3>
-<p>You can upload an Excel (<code>.xlsx</code>) or CSV (<code>.csv</code>) file containing data about your pottery (e.g., Inventory Number, Type, Chronology).</p>
-<ul>
-<li><strong>Linking</strong>: The system automatically links metadata to images by matching the <strong>filename</strong> with the first column of your spreadsheet.</li>
-<li><strong>Usage</strong>: This data can be used for <strong>Sorting</strong>, <strong>Grouping</strong>, and generating <strong>Captions</strong>.</li>
-</ul>
+<p>PyPotteryLayout turns a folder of pottery drawings into publication plates: it sorts the drawings, scales them, places them on pages and adds captions, numbers and a scale bar. This guide follows the app in the order you will normally use it. The <strong>Need help?</strong> button in the header (Pixel) opens this page, and the <strong>Info</strong> button shows the version, a ready-to-copy citation and the hardware the app detected.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Flexible Filename Matching
+The workflow at a glance
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Matching is <strong>extension-insensitive and case-insensitive</strong>: an image named <code>Bowl_01.png</code> will correctly match an ID of <code>bowl_01</code>, <code>Bowl_01</code>, or <code>Bowl_01.png</code> in your metadata file. You no longer need the two to match exactly.</p>
+<p><strong>Import</strong> the images (and a spreadsheet) → choose the <strong>layout</strong> → set <strong>sorting</strong>, <strong>captions</strong> and the <strong>scale bar</strong> → check the live <strong>preview</strong> → <strong>Generate Layout</strong> and download</p>
 </div>
 </div>
-<iframe src="animations/metadata_import.html" scrolling="no" style="width: 100%; height: 380px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
+<section id="the-screen" class="level2">
+<h2 class="anchored" data-anchor-id="the-screen">The screen</h2>
+<p>The window has two columns. On the left, the settings: a <strong>Basic Settings</strong> tab (files, layout mode, page size, export format) and an <strong>Advanced Settings</strong> tab (scale, margins, captions, numbering, sorting, scale bar), with the <strong>Generate Layout</strong> and <strong>Clear All</strong> buttons at the bottom. On the right, <strong>Output &amp; Preview</strong> shows the plate as it will look and, when you generate it, the result. The preview updates by itself while you change the settings.</p>
 </section>
+<section id="key-terms" class="level2">
+<h2 class="anchored" data-anchor-id="key-terms">Key terms</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Plate</strong></td>
+<td>One page of the output.</td>
+</tr>
+<tr class="even">
+<td><strong>Grid</strong></td>
+<td>A layout with rows and columns of drawings.</td>
+</tr>
+<tr class="odd">
+<td><strong>Puzzle</strong></td>
+<td>A layout that packs the drawings to waste as little space as possible.</td>
+</tr>
+<tr class="even">
+<td><strong>Metadata</strong></td>
+<td>A spreadsheet with the data of each piece (type, period, inventory number, …).</td>
+</tr>
+<tr class="odd">
+<td><strong>Primary / secondary sort</strong></td>
+<td>The criteria that decide the order of the drawings: the second one breaks the ties of the first.</td>
+</tr>
+<tr class="even">
+<td><strong>Group</strong></td>
+<td>The drawings that share the same primary sort value (for example the same type).</td>
+</tr>
+<tr class="odd">
+<td><strong>Px / cm</strong></td>
+<td>The resolution of your drawings, used to draw the scale bar at the right length.</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="layout-settings" class="level1">
-<h1>2. Layout Settings</h1>
-<p>This section controls the physical appearance of the plate.</p>
-<iframe src="animations/layout_preview.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<ul>
-<li><p><strong>Mode</strong>:</p>
-<ul>
-<li><strong>Grid</strong>: Places images in a structured grid (Rows × Columns). Best for systematic catalogues.</li>
-<li><strong>Puzzle</strong>: Uses an algorithm to pack images tightly, minimizing wasted space. Best for varied shapes and sizes.</li>
-</ul></li>
-<li><p><strong>Page Size</strong>: Select standard formats (A4, A3, Letter, etc.) or define custom dimensions.</p></li>
-<li><p><strong>Scale Factor</strong>: Adjusts the size of the images on the plate. Switch between two input modes:</p>
-<ul>
-<li><strong>Decimal</strong>: A direct multiplier (e.g., <code>0.4</code> for 40% of original size).</li>
-<li><strong>Ratio (1:N)</strong>: Enter the scale as a ratio (e.g., <code>1:2</code>), which is automatically converted to the equivalent decimal factor.</li>
-</ul></li>
-<li><p><strong>Margins (px)</strong>: Sets the white space around the edges of the page.</p></li>
-<li><p><strong>Spacing (px)</strong>: Sets the gap between individual images.</p></li>
-<li><p><strong>Grid Rows / Columns</strong> (Grid Mode only): Defines the structure of the grid.</p></li>
-</ul>
-</section>
-<section id="sorting-grouping" class="level1">
-<h1>3. Sorting &amp; Grouping</h1>
-<p>Organize how images appear on the plates.</p>
-<ul>
-<li><strong>Primary Sort</strong>: The main criterion for ordering images.
-<ul>
-<li>Options: Alphabetical, Natural (e.g., 1, 2, 10 instead of 1, 10, 2), Image Size, or any <strong>Metadata Field</strong>.</li>
-</ul></li>
-<li><strong>Secondary Sort</strong>: Used to order images that have the same Primary Sort value.</li>
-<li><strong>Page Break on Primary Change</strong>: If enabled, a new group (e.g., a new “Type” or “Context”) will start on a new page or be separated by a divider.
-<ul>
-<li><strong>Break Type</strong>:
-<ul>
-<li><strong>New Page</strong>: Forces a page break.</li>
-<li><strong>Divider</strong>: Draws a horizontal line between groups on the same page.</li>
-</ul></li>
-<li><strong>Divider Thickness/Width</strong>: Customizes the appearance of the separator line.</li>
-</ul></li>
-<li><strong>Show sort value as chapter title</strong>: Prints the current Primary Sort value once at the top of each group, like a book chapter heading. It’s right-aligned in the page’s top margin so it never overlaps the artwork. <strong>Title Font Size</strong> controls its size. For reliable one-per-group results, enable this together with <strong>Page Break on Primary Change</strong> (in Puzzle mode this is required for the title to appear once per group instead of only once for the whole document).</li>
-</ul>
-</section>
-<section id="annotations" class="level1">
-<h1>4. Annotations</h1>
-<p>Add necessary information to your plates.</p>
-<section id="captions" class="level3">
-<h3 class="anchored" data-anchor-id="captions">Captions</h3>
-<ul>
-<li><strong>Add Caption</strong>: Toggles captions on/off.</li>
-<li><strong>Font Size</strong>: Sets the text size.</li>
-<li><strong>Padding</strong>: Controls space between image and text.</li>
-<li><strong>Metadata Fields</strong>: Select which fields from your uploaded metadata to display in the caption.</li>
-<li><strong>Hide Field Names</strong>: If checked, shows only the value (e.g., “Bowl”) instead of “Type: Bowl”.</li>
-<li><strong>Remove Extension</strong>: Hides the file extension (.jpg) from the filename in the caption.</li>
-</ul>
-</section>
-<section id="scale-bar" class="level3">
-<h3 class="anchored" data-anchor-id="scale-bar">Scale Bar</h3>
-<ul>
-<li><strong>Add Scale Bar</strong>: Adds a graphical scale bar to the bottom right of the page.</li>
-<li><strong>Scale Bar (cm)</strong>: The real-world length the bar represents (e.g., 5 cm).</li>
-<li><strong>Pixels per cm</strong>: <strong>Critical Setting</strong>. This defines the resolution of your images. Ensure this matches your scanning/digitization resolution to guarantee accurate scaling.</li>
-</ul>
-</section>
-<section id="table-numbers" class="level3">
-<h3 class="anchored" data-anchor-id="table-numbers">Table Numbers</h3>
-<ul>
-<li><strong>Add Table Number</strong>: Adds a plate number (e.g., “Tav. 1”).</li>
-<li><strong>Start Number</strong>: The number for the first page.</li>
-<li><strong>Prefix</strong>: Text to appear before the number (e.g., “Pl.”, “Tav.”, “Fig.”).</li>
-<li><strong>Position</strong>: Choose where the number appears (Top/Bottom, Left/Center/Right).</li>
-</ul>
+<section id="import-the-data" class="level1">
+<h1>Import the data</h1>
+<section id="images" class="level2">
+<h2 class="anchored" data-anchor-id="images">Images</h2>
+<p>Drag the drawings onto the upload area, or click it to choose them (PNG, JPG, TIF, TIFF or BMP). Large sets are uploaded in batches, and a window with a progress bar follows the upload and the generation of the first preview. Uploading again <strong>replaces</strong> the previous set of images (the spreadsheet stays). Drawings with a transparent background (such as the PNG files exported by PyPotteryTrace) are placed on the white page.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+File names
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When <strong>Show Margin Border</strong> is enabled, the table number label is now automatically inset from the border line instead of overlapping it.</p>
+<p>The app stores the images with a cleaned-up name: spaces and special characters become <code>_</code> and accents are removed (<em>Bowl 01 (a).png</em> becomes <em>Bowl_01_a.png</em>, <em>tazza à.png</em> becomes <em>tazza_a.png</em>). The captions show this cleaned-up name.</p>
 </div>
 </div>
 </section>
-<section id="object-numbering" class="level3">
-<h3 class="anchored" data-anchor-id="object-numbering">Object Numbering</h3>
-<p>Each image can also carry its own individual number, positioned relative to that image rather than the page:</p>
+<section id="metadata-optional" class="level2">
+<h2 class="anchored" data-anchor-id="metadata-optional">Metadata (optional)</h2>
+<p>Choose an Excel (<code>.xlsx</code>) or CSV (<code>.csv</code>) file. The <strong>first row</strong> must contain the column names, and the <strong>first column</strong> must contain the name of the image the row describes; the app then reports how many records it loaded. The other columns become available for <strong>sorting</strong> and for the <strong>captions</strong>. In an Excel file, only the active sheet is read.</p>
+<p>The link between a row and an image is forgiving. It ignores the extension of the image, upper and lower case, and the same cleaning-up of spaces and special characters that is applied to the file names. So the image <code>Bowl_01.png</code> is matched by the id <code>Bowl 01</code>, <code>bowl_01</code> or <code>Bowl_01.png</code> alike, and an id such as <code>US.12</code> is kept whole. Images without a row in the spreadsheet are still placed, with the file name as their only caption, and go last when you sort by a spreadsheet field.</p>
+</section>
+</section>
+<section id="layout" class="level1">
+<h1>Layout</h1>
+<p>These settings are in the <strong>Basic Settings</strong> tab.</p>
 <ul>
-<li><strong>Below (Center)</strong>: Placed below the image, centered.</li>
-<li><strong>Bottom Left</strong>: Overlaid inside the image’s bottom-left corner.</li>
-<li><strong>Bottom Right</strong>: Overlaid inside the image’s bottom-right corner.</li>
+<li><strong>Layout Mode</strong>:
+<ul>
+<li><strong>Grid</strong>: rows and columns. Best for systematic catalogues.</li>
+<li><strong>Puzzle</strong>: a packing algorithm (without rotating the drawings) fills each page as much as it can. Best for drawings of very different sizes. The order of the drawings within a page can differ from the sorting order, because the algorithm chooses the places.</li>
+</ul></li>
+<li><strong>Page Size</strong>: <strong>A4</strong> (2480 × 3508 px), <strong>A3</strong> (3508 × 4961 px), <strong>Letter</strong> (2550 × 3300 px), <strong>HD</strong> (1920 × 1080 px) or <strong>4K</strong> (3840 × 2160 px). The paper sizes are at 300 dpi.</li>
+<li><strong>Export Format</strong>: <strong>PDF</strong>, <strong>SVG</strong> or <strong>JPG</strong>, see <a href="#generate-and-export">Generate and export</a>.</li>
+<li><strong>Rows per page</strong> and <strong>Cols per page</strong> (Grid only, 1 to 10; 4 and 3 by default): these are <strong>maximums</strong>. The drawings keep their scaled size and are never stretched: a row takes fewer drawings than the columns you asked for when they do not fit in the width, and a page takes at most the rows you asked for. A drawing wider than the page is placed alone on its row.</li>
+</ul>
+</section>
+<section id="dimensions-and-spacing" class="level1">
+<h1>Dimensions and spacing</h1>
+<p>These settings are in the <strong>Advanced Settings</strong> tab, in <strong>Dimensions &amp; Spacing</strong>.</p>
+<ul>
+<li><strong>Image Scale</strong>: how big the drawings are on the plate. Use <strong>Decimal</strong> (0.10 to 2.00, in steps of 0.05; 0.40 by default) for a multiplier of the original size, or <strong>Ratio (1:N)</strong> to type it as a ratio (for example <code>1:2</code>, which is 0.5).</li>
+<li><strong>Margin (px)</strong>: the white space around the page (50 by default).</li>
+<li><strong>Top Space (px)</strong>: extra space added to the top margin, between the page border and the first row (40 by default). It leaves room for the plate number when it is at the top.</li>
+<li><strong>Spacing (px)</strong>: the gap between drawings (10 by default).</li>
+<li><strong>Vertical Alignment</strong> (Grid only): <strong>Center</strong> (default) centres the rows vertically on the page; <strong>Top</strong> starts them under the top margin.</li>
+<li><strong>Show Margin Border</strong>: draws a rectangle at the margins, in every output format. The plate number is moved inside it so that it does not touch the line.</li>
+</ul>
+</section>
+<section id="sorting-and-grouping" class="level1">
+<h1>Sorting and grouping</h1>
+<p>These settings are in <strong>Sorting &amp; Grouping</strong>.</p>
+<ul>
+<li><strong>Primary Sort</strong>: <strong>Alphabetical</strong>, <strong>Natural</strong> (1, 2, 10 instead of 1, 10, 2), <strong>Random</strong>, or any <strong>field of your spreadsheet</strong> (numbers are ordered as numbers, text alphabetically). The <strong>Random</strong> order is the same in the preview and in the exported file; choose it again to shuffle anew.</li>
+<li><strong>Secondary Sort</strong>: it orders the drawings that have the same primary value. It is available when a spreadsheet is loaded.</li>
+<li><strong>Enable primary sort grouping</strong>: every time the primary value changes, a new group starts.
+<ul>
+<li><strong>New page</strong>: the group starts on a new page.</li>
+<li><strong>Horizontal divider line</strong> (Grid only): the group starts after a line on the same page, with a <strong>Thickness</strong> (5 px by default) and a <strong>Width</strong> as a percentage of the printable width (80% by default).</li>
+</ul>
+In Puzzle mode every group always starts on a new page.</li>
+<li><strong>Show sort value as chapter title</strong>: prints the primary value once, at the start of each group, right-aligned in the top margin, like a book chapter heading. <strong>Title Font Size</strong> sets its size (16 by default). Use it together with grouping: in Puzzle mode, without it the title appears only once for the whole document.</li>
+</ul>
+</section>
+<section id="captions-and-numbering" class="level1">
+<h1>Captions and numbering</h1>
+<p>These settings are in <strong>Captions &amp; Numbering</strong>.</p>
+<section id="captions" class="level2">
+<h2 class="anchored" data-anchor-id="captions">Captions</h2>
+<p><strong>Enable Captions</strong> (on by default) writes a caption under every drawing, centred. It always starts with the file name, followed by the spreadsheet fields you select in <strong>Metadata Fields</strong> (all of them are selected by default; if you untick them all, only the file name is written).</p>
+<ul>
+<li><strong>Font Size</strong> (12 pt by default) and <strong>Padding</strong> (5 px by default, the space around the text).</li>
+<li><strong>Remove file extension</strong>: writes <code>Bowl_01</code> instead of <code>Bowl_01.png</code>.</li>
+<li><strong>Hide field names</strong>: writes only the values (<em>bowl</em>) instead of <em>Type: bowl</em>.</li>
+</ul>
+</section>
+<section id="object-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="object-numbers">Object numbers</h2>
+<p><strong>Add Object Number</strong> (off by default) gives every drawing its own number, <code>1, 2, 3...</code>, starting again from 1 on each page. <strong>Position</strong>: <strong>Below (Center)</strong> under the drawing, or <strong>Bottom Left</strong> / <strong>Bottom Right</strong> inside its corner. <strong>Font Size</strong>: 18 by default.</p>
+</section>
+<section id="table-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="table-numbers">Table numbers</h2>
+<p><strong>Add Table Numbers</strong> (on by default) writes the plate number on every page, for example <em>Tav. 1</em>, <em>Tav. 2</em>, …</p>
+<ul>
+<li><strong>Prefix</strong>: the text before the number (<em>Tav.</em> by default; use <em>Pl.</em>, <em>Fig.</em>, …).</li>
+<li><strong>Start #</strong>: the number of the first plate (1 by default).</li>
+<li><strong>Font Size</strong> (18 by default) and <strong>Position</strong> (top left by default, or top right, bottom left, bottom right).</li>
 </ul>
 </section>
 </section>
-<section id="export" class="level1">
-<h1>5. Export</h1>
-<p>Generate your final plates.</p>
-<iframe src="animations/layout_export.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
+<section id="scale-bar" class="level1">
+<h1>Scale bar</h1>
+<p><strong>Add Scale Bar</strong> (on by default) draws a bar in the bottom right corner of every page, inside the margin, with alternating black and white centimetres.</p>
 <ul>
-<li><p><strong>Preview</strong>: Generates a quick preview of the first few pages to check your settings.</p></li>
-<li><p><strong>Export Format</strong>:</p>
-<ul>
-<li><strong>PDF</strong>: Standard document format.</li>
-<li><strong>JPG</strong>: High-resolution images (zipped if multiple pages).</li>
-<li><strong>SVG</strong>: Scalable Vector Graphics.
-<ul>
-<li><strong>Editable Text</strong>: In SVG mode, captions and numbers remain as editable text objects, allowing for final fine-tuning in vector software (like Adobe Illustrator or Inkscape).</li>
-</ul></li>
-</ul></li>
+<li><strong>Scale (cm)</strong>: the length the bar represents (5 by default).</li>
+<li><strong>Px / cm</strong>: <strong>the resolution of your drawings</strong>, that is how many pixels of the original image make one real centimetre (118 by default, about 300 dpi). The bar is drawn at this length multiplied by the <strong>Image Scale</strong>, so it stays correct when you change the scale. If this value is wrong, the scale bar is wrong: set it to the resolution you used when you scanned or exported the drawings.</li>
 </ul>
 </section>
-<section id="interactive-demo" class="level1">
-<h1>Interactive Demo</h1>
-<p>Experiment with the layout parameters below to see how they affect the final plate in real-time:</p>
-<iframe src="animations/interactive_demo.html" scrolling="no" style="width: 100%; height: 620px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
+<section id="preview" class="level1">
+<h1>Preview</h1>
+<p>As soon as the images are loaded, the <strong>Live Preview</strong> shows the first page of the plate, and it updates about half a second after every change of the settings (<strong>Update Preview</strong> forces it). Click the preview to see it larger. Below it, a badge tells you how many images and pages the preview covers.</p>
+<p>To stay fast, the preview uses only the <strong>first 25 drawings</strong> in the chosen order; when your set is larger, a notice says so, and the page count refers to those 25. The generated file always contains all the drawings.</p>
+</section>
+<section id="generate-and-export" class="level1">
+<h1>Generate and export</h1>
+<p>Click <strong>Generate Layout</strong>. A progress message follows the work; when it ends, the result shows the file name and the number of pages, and <strong>Download File</strong> saves it.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>PDF</strong></td>
+<td>One multi-page file, at 300 dpi</td>
+</tr>
+<tr class="even">
+<td><strong>JPG</strong></td>
+<td>One image per page, at 300 dpi and high quality. With more than one page, the images come in a ZIP file</td>
+</tr>
+<tr class="odd">
+<td><strong>SVG</strong></td>
+<td>One vector file per page (a ZIP file when there is more than one page). Captions, plate numbers, object numbers and the scale bar remain <strong>editable text and shapes</strong> in Inkscape or Adobe Illustrator</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Clear All</strong> removes the uploaded images, the spreadsheet and the generated files, so you can start a new plate set.</p>
+</section>
+<section id="tips" class="level1">
+<h1>Tips</h1>
+<ul>
+<li><strong>Check the Px / cm value first</strong>: it is the one setting that makes the scale bar true.</li>
+<li><strong>Sort by a spreadsheet field and turn on the chapter title</strong> (with grouping) to get a plate set organized by type or period, with the heading printed for you.</li>
+<li><strong>Use Grid for regular catalogues, Puzzle for mixed sizes.</strong> If the plates look empty, raise the <strong>Image Scale</strong>; if drawings do not fit, lower it or use fewer columns.</li>
+<li><strong>Fine-tune in SVG.</strong> Export as SVG when you want to adjust captions or positions by hand in a vector program.</li>
+</ul>
 
 
 </section>

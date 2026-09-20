@@ -61,7 +61,6 @@ website:
       - section: "PyPotteryLayout"
         contents:
           - pypotterylayout/index.qmd
-          - pypotterylayout/installation.qmd
           - pypotterylayout/usage.qmd
           - pypotterylayout/version_history.qmd
       - suite_version.qmd

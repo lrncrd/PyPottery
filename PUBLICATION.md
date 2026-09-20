@@ -209,7 +209,24 @@ optional overrides with an in-app default, never required.
   Segmentation tab; Info reports Apple Silicon as CPU. Not real: the suspicion that
   `main`'s `app.py` cannot start (it does, checked). Still open: project export
   leaves `<id>_export.zip` in `uploads/` (reused per project, never deleted).
-  Next: Layout with the same schema. Visuals: the user prefers real
+  **Layout done (2026-09-20, on `beta`)**: same schema (0.3.4 = next release,
+  0.3.3 is already out; hero 0.3.4, usage rewritten, `installation.qmd` merged into
+  Getting Started with an alias). Found by reading the code, fixed on Layout `beta`
+  and smoke-tested with the Flask test client (**frontend not tried in a browser**):
+  metadata ids did not match sanitized filenames (`Bowl 01` vs `Bowl_01.png`, and
+  `US.12` was cut at the dot); transparent PNGs got a black background with
+  captions on (matters for Trace's exports); `.tif` accepted but never loaded;
+  uploading images deleted an already uploaded metadata file; unticking all
+  caption fields showed all; random order differed between preview and export;
+  preview wrote 20 JPGs per change and cut the first 25 files *before* sorting;
+  dev server ran `debug=True` on `0.0.0.0` (Werkzeug debugger reachable from the
+  LAN). Not changed: `requirements.txt` lists `reportlab`, `cairosvg`, `pytest`,
+  none used by the code (cairosvg needs the Cairo DLL on Windows); the standalone
+  `.exe` was last published with 0.3.0 (docs now say so); `SECRET_KEY` defaults
+  to a fixed dev string. The 4 old Layout animations show the pre-redesign UI and
+  are no longer referenced. **All 5 apps now have the new docs schema on `beta`;
+  the docs are only live after the user merges and pushes.**
+  Visuals: the user prefers real
   screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
   animations; a shared animation kit was prototyped in `PyPotteryDocs/anim-kit/`
   (uncommitted, decision pending).

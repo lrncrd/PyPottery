@@ -1,5 +1,7 @@
 ---
-title: "Introduction"
+title: "Getting Started"
+aliases:
+  - installation.html
 format: html
 toc: true
 ---
@@ -10,18 +12,19 @@ toc: true
   <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
   <br>
   <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.3.2
+    version 0.3.4
   </span>
 
-    <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 1;"></iframe>
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
       <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
         CPU
       </span>
     </div>
+
   </div>
 </div>
 
@@ -29,15 +32,75 @@ toc: true
 
 <br>
 
-**PyPotteryLayout** is a specialized tool designed for creating publication-ready pottery plates. It automates the layout process, allowing archaeologists to organize drawings, apply consistent scales, and generate high-quality exports with ease.
+**PyPotteryLayout** arranges your pottery drawings on publication plates. You give it the images (and, if you like, a spreadsheet with the data of each piece); it sorts them, scales them, adds captions, numbers and a scale bar, and produces the plates as PDF, JPG or SVG. It needs no AI model and no GPU. This page gets you from zero to a running app; the full workflow is in the [Usage guide](usage.qmd).
 
-## Key Features
+## What you can do
 
-*   **📂 Smart Import**: Seamlessly import images and associated metadata (Excel/CSV) for data-driven layouts.
-*   **📐 Flexible Layouts**: Choose between **Grid** (structured) and **Puzzle** (optimized packing) modes to best fit your needs.
-*   **🏷️ Automated Annotations**: Automatically add captions, scale bars, and table numbers based on your data.
-*   **🔄 Advanced Sorting**: Organize your plates with hierarchical sorting and grouping options.
-*   **📤 Multi-format Export**: Export to **PDF**, **JPG**, or **SVG** (with editable text and vector elements) for final adjustments.
+1.  **Import** the drawings, and optionally a spreadsheet (Excel or CSV) with their data.
+2.  **Choose the layout**: a regular **Grid**, or a **Puzzle** that packs the drawings to waste as little space as possible.
+3.  **Sort and group** the drawings by name, by a field of your spreadsheet, or at random, with a new page or a divider for each group.
+4.  **Annotate**: captions built from the spreadsheet, a scale bar, plate numbers ("Tav. 1", "Pl. 1", ...) and a number for each drawing.
+5.  **Export** as PDF, JPG or SVG, with text you can still edit in a vector program.
+
+## Install
+
+::: {.panel-tabset}
+
+### Launcher (recommended)
+
+The [PyPottery Suite Launcher](../suite_installation.qmd) installs and updates PyPotteryLayout for you, with no Python setup. Download it from the [latest release](https://github.com/lrncrd/PyPottery/releases/latest), open it, and start PyPotteryLayout from its interface.
+
+### From source
+
+Requires **Python 3.12**.
+
+```bash
+git clone https://github.com/lrncrd/PyPotteryLayout.git
+cd PyPotteryLayout
+pip install -r requirements.txt
+python app.py
+```
+
+Then open **http://localhost:5005** in your browser. Installer scripts that also create a virtual environment are included: double-click `PyPotteryLayout_WIN.bat` on Windows, or run `chmod +x PyPotteryLayout_UNIX.sh && ./PyPotteryLayout_UNIX.sh` on Linux/macOS.
+
+:::
+
+::: {.callout-note}
+## The standalone Windows executable
+Until version 0.3.0 the releases on GitHub included a `PyPotteryLayout.exe`. Later releases do not, so an `.exe` you find there is an old version: use the Launcher, or run from source.
+:::
+
+## Requirements
+
+PyPotteryLayout runs on any computer that runs Python 3.12 (Windows, macOS, Linux) and needs a modern browser. About 2 GB of RAM is enough; large sets of high-resolution drawings need more, because every image is loaded in memory. There is nothing to download at the first launch. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+
+## Where the files go
+
+Next to the app, in two folders:
+
+- `uploads/`: the images and the spreadsheet you loaded, one subfolder for each browser session;
+- `outputs/`: the previews and the plates you generated, organized in the same way.
+
+The **Clear All** button of the app empties both for the current session. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| Python not found | Install Python 3.12 from [python.org](https://www.python.org/downloads/) (on Windows tick "Add Python to PATH"); on Linux `sudo apt install python3 python3-venv`; on macOS `brew install python3` |
+| Dependency installation fails | Check your connection, upgrade pip (`python -m pip install --upgrade pip`), or install the packages of `requirements.txt` one at a time to find the culprit |
+| Port 5005 is already in use | Close the other program, or start the app on another port by setting the `PORT` environment variable before `python app.py` |
+| A drawing does not show a caption from the spreadsheet | The first column of the spreadsheet must hold the name of the image: see [Usage](usage.qmd#import-the-data) |
+| A TIFF drawing is missing | Update to version 0.3.4 or later: older versions accepted `.tif` files but did not load them |
+
+## Updating
+
+With the launcher, updates are handled for you. From source, pull the latest code and run `pip install -r requirements.txt --upgrade`.
+
+## Next step
+
+Head to the [Usage guide](usage.qmd) for a walkthrough of the app.
+
 
 ## Contributors
 ```{=html}
@@ -56,13 +119,12 @@ toc: true
     <br>
     <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Enzo Cocca</span>
   </div>
-    <div style="text-align: center;">
+  <div style="text-align: center;">
     <a href="https://github.com/pankus" target="_blank">
       <img src="https://github.com/pankus.png" alt="Francesco Di Filippo" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover; border: 1px solid #e1e4e8;">
     </a>
     <br>
     <span style="font-size: 0.9em; font-weight: 600; color: #24292e;">Francesco Di Filippo</span>
   </div>
-  <!-- Add more contributors here following the same pattern -->
 </div>
 ```

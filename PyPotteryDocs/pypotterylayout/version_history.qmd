@@ -6,6 +6,34 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.4 (September 2026)
+
+**Data and files**
+
+-   Metadata ids now match the cleaned-up names of the uploaded images: the id `Bowl 01` finds the image `Bowl_01.png`, and ids that contain a dot, such as `US.12`, are kept whole (before, they were cut at the dot)
+-   `.tif` files are now loaded (the upload accepted them, but they were silently ignored)
+-   Uploading the images after the spreadsheet no longer deletes the spreadsheet
+-   Drawings with a transparent background (such as the PNG files exported by PyPotteryTrace) keep a white background when captions are on, instead of turning black
+
+**Captions and sorting**
+
+-   Unticking every metadata field now writes only the file name (it wrote all the fields)
+-   The **Random** sort order is the same in the preview and in the exported file, and it changes when you select it again
+
+**Preview**
+
+-   The preview sorts all the drawings first and then shows the first 25, so page 1 matches the beginning of the exported plates
+-   The notice that the preview is limited now appears whenever it is (before, only above 100 drawings)
+-   Only the page you see is rendered, and the previews of the previous settings are removed, instead of piling up in the `outputs/` folder
+
+**Reliability**
+
+-   Fonts and icons are served from the app, so the interface looks the same without an internet connection
+-   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
+-   When started from source, the app listens only on the local computer (`127.0.0.1`) and no longer runs in debug mode
+
+## Version History
+
 ### Version 0.3.3 (September 2026)
 
 - **New features**:
@@ -17,9 +45,6 @@ format: html
 - **Reliability**:
   - The app now shuts itself down a few seconds after the browser tab is closed, freeing memory automatically, with a confirmation prompt to prevent accidental closures
   - Fixed a startup issue that could keep the app from launching correctly when the PyPottery Launcher had to fall back to an alternate port
-
-
-## Version History
 
 ### Version 0.3.2 (July 2026)
 
