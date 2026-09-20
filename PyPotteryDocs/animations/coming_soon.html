@@ -7,8 +7,8 @@
 <!--
   Placeholder shown where a video walkthrough of a sub-app is still to come.
   Self-contained (no external requests) and sized by its iframe: embed it with
-    <iframe src="animations/coming_soon.html#Step name" style="width:100%;height:260px;border:none;" scrolling="no"></iframe>
-  The text after # is optional and is shown as a small label above the message.
+    <iframe src="animations/coming_soon.html" name="Step name" style="width:100%;height:260px;border:none;" scrolling="no"></iframe>
+  The iframe name (or the text after #) is optional and is shown as a small label above the message.
 -->
 <style>
   :root {
@@ -159,7 +159,7 @@
   </div>
   <script>
     (function () {
-      var raw = decodeURIComponent((location.hash || '').slice(1));
+      var raw = window.name || decodeURIComponent((location.hash || '').slice(1));
       if (raw) document.getElementById('label').textContent = raw;
     })();
   </script>
