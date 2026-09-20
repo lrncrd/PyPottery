@@ -44,6 +44,7 @@ subtitle: "Development timeline and changes"
 -   New look shared with the other PyPottery applications, with locally served fonts
 -   The app now shuts down by itself a few seconds after you close its browser tab
 -   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
+-   The model download shows its progress live (it stayed at 0 MB with recent versions of `huggingface_hub`) and no longer fails with "No such file or directory" when the app is installed in a deeply nested folder on Windows
 
 ## Version History
 
