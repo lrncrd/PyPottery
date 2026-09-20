@@ -25,7 +25,7 @@ Purpose: give readers the map before the details.
 **Project Manager** → **1. PDF Document Processing** → **2. Apply Model** → **3. Review Annotations & Masks** → **4. Tabular Information** → **5. Post Processing** → **Export ZIP**
 :::
 
-<iframe src="animations/workflow_overview.html" style="width: 100%; height: 310px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#Workflow%20overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Key terms
 
@@ -42,7 +42,7 @@ Purpose: give readers the map before the details.
 
 Every dataset lives in its own project: a self-contained folder with your PDF, images, masks, tables and exports. Create one project per monograph, site or assemblage; you can keep as many as you like and switch between them freely.
 
-<iframe src="animations/project_create.html" style="width: 100%; height: 620px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#Project%20Manager:%20create%20a%20project" title="Animation coming soon: Project Manager: create a project" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: KEEP + LIGHT RETOUCH (priority: low)
@@ -71,7 +71,7 @@ Deleting a project removes **everything** inside it: the source PDF, extracted i
 
 Upload the PDF of the monograph or report. PyPotteryLens renders every page as a high-resolution image (300 DPI), one JPG per page, ready for the model.
 
-<iframe src="animations/pdf_process.html" style="width: 100%; height: 720px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#1.%20PDF%20Document%20Processing" title="Animation coming soon: 1. PDF Document Processing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: RETOUCH (priority: medium)
@@ -111,7 +111,7 @@ Very large PDFs (hundreds of pages) take a while, because every page is rendered
 
 The detection model looks at every plate and outlines each pottery drawing. For each detected vessel it saves a **polygon**, which you will review in the next tab.
 
-<iframe src="animations/apply_model.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#2.%20Apply%20Model" title="Animation coming soon: 2. Apply Model" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: RETOUCH (priority: high, this is the "wow" step)
@@ -164,7 +164,7 @@ A good routine: run a **Diagnostic Test**, open a few plates in the next tab, ad
 
 The model is good, not perfect. Here you check every plate, correct the outlines, and finally cut out the individual drawings.
 
-<iframe src="animations/model_review.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#3.%20Review%20Annotations%20&%20Masks" title="Animation coming soon: 3. Review Annotations & Masks" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: REDO (priority: high)
@@ -265,7 +265,7 @@ Extract the cards **after** you are happy with all the outlines. Extracting agai
 
 Attach archaeological data to each extracted vessel.
 
-<iframe src="animations/tabular_info.html" style="width: 100%; height: 640px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#4.%20Tabular%20Information" title="Animation coming soon: 4. Tabular Information" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: REDO (priority: high)
@@ -331,7 +331,7 @@ Include a 1-second frame of the hardware guardrail message for underpowered mach
 
 The last step standardizes the extracted cards so that all the profiles look the same: same orientation, and a label saying whether each one is complete or a fragment.
 
-<iframe src="animations/post_process.html" style="width: 100%; height: 600px; border: none; overflow: hidden;" scrolling="no"></iframe>
+<iframe src="animations/coming_soon.html#5.%20Post%20Processing" title="Animation coming soon: 5. Post Processing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 <!--
 ANIMATION verdict: REDO (priority: high)

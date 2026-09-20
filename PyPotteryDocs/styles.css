@@ -593,6 +593,16 @@ div.sourceCode {
   margin: 1.25rem 0 !important;
 }
 
+/* Quarto renders <div class="sourceCode"><pre class="sourceCode">: the box belongs to the div only,
+   the inner pre must not draw a second one. */
+div.sourceCode pre.sourceCode {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
 pre.sourceCode code,
 div.sourceCode code {
   color: #f5ede3 !important;
@@ -601,12 +611,61 @@ div.sourceCode code {
   padding: 0 !important;
 }
 
+/* Syntax colours for the dark code box. Quarto ships the light-theme palette (dark blue on white)
+   as hard-coded rules, which is unreadable on #1c1309, so every token class is set again here. */
+div.sourceCode code span { color: #f5ede3 !important; font-style: normal !important; }
+div.sourceCode code span.fu,
+div.sourceCode code span.ex,
+div.sourceCode code span.bu { color: #fdba74 !important; }                       /* commands, functions */
+div.sourceCode code span.st,
+div.sourceCode code span.ss,
+div.sourceCode code span.vs,
+div.sourceCode code span.ch,
+div.sourceCode code span.sc,
+div.sourceCode code span.im { color: #5eead4 !important; }                       /* strings, imports */
+div.sourceCode code span.kw,
+div.sourceCode code span.cf,
+div.sourceCode code span.ot,
+div.sourceCode code span.at,
+div.sourceCode code span.cn { color: #fcd34d !important; }                       /* keywords, attributes */
+div.sourceCode code span.op,
+div.sourceCode code span.va { color: #e7d9c6 !important; }                       /* operators, variables */
+div.sourceCode code span.dv,
+div.sourceCode code span.bn,
+div.sourceCode code span.fl,
+div.sourceCode code span.dt,
+div.sourceCode code span.pp,
+div.sourceCode code span.er,
+div.sourceCode code span.al { color: #fda4af !important; }                       /* numbers, types, errors */
+div.sourceCode code span.co,
+div.sourceCode code span.an,
+div.sourceCode code span.cv,
+div.sourceCode code span.do,
+div.sourceCode code span.in,
+div.sourceCode code span.wa { color: #b3a28c !important; }                       /* comments */
+
 .code-copy-button {
   background: rgba(194, 65, 12, 0.18) !important;
   border: 1px solid rgba(194, 65, 12, 0.3) !important;
   color: #ea580c !important;
   border-radius: var(--radius-sm) !important;
+  padding: 3px 6px !important;
   transition: all 0.15s ease !important;
+}
+
+/* Quarto only draws the copy icon while the block is hovered (in grey), which leaves an empty pill
+   otherwise. Draw it always, in a light colour for the dark box. */
+pre.sourceCode > .code-copy-button > .bi::before {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  vertical-align: -0.125em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23e7d9c6' viewBox='0 0 16 16'%3E%3Cpath d='M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z'/%3E%3Cpath d='M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z'/%3E%3C/svg%3E") !important;
+}
+
+pre.sourceCode > .code-copy-button.code-copy-button-checked > .bi::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%235eead4' viewBox='0 0 16 16'%3E%3Cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E") !important;
 }
 
 .code-copy-button:hover {

@@ -8,6 +8,7 @@ project:
   resources:
     - anim-kit/*.css
     - anim-kit/*.js
+    - animations/coming_soon.html
 
 website:
   title: "PyPottery"
