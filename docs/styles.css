@@ -356,8 +356,10 @@ body {
   color: var(--primary) !important;
 }
 
-/* Sub-pages Inside Collapsed/Expanded Section Tree */
-.sidebar-item-section > ul.collapse {
+/* Sub-pages Inside Collapsed/Expanded Section Tree.
+   Selected as `> ul`, not `ul.collapse`: while Bootstrap animates the height it swaps `collapse` for `collapsing`,
+   and rules tied to `.collapse` would drop out mid-animation (indent, border, link padding) and snap back at the end. */
+.sidebar-item-section > ul {
   border-left: 1px solid var(--border-light) !important;
   margin-left: 1.25rem !important;
   padding-left: 0.35rem !important;
@@ -366,7 +368,7 @@ body {
   list-style: none !important;
 }
 
-.sidebar-item-section > ul.collapse .sidebar-link {
+.sidebar-item-section > ul .sidebar-link {
   font-size: 0.81rem !important;
   font-weight: 400 !important;
   color: var(--text-dim) !important;
@@ -377,12 +379,12 @@ body {
   border-left: none !important;
 }
 
-.sidebar-item-section > ul.collapse .sidebar-link:hover {
+.sidebar-item-section > ul .sidebar-link:hover {
   color: var(--primary) !important;
   background: rgba(194, 65, 12, 0.05) !important;
 }
 
-.sidebar-item-section > ul.collapse .sidebar-link.active {
+.sidebar-item-section > ul .sidebar-link.active {
   color: var(--primary) !important;
   font-weight: 600 !important;
   background: #ffffff !important;
