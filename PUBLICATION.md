@@ -180,9 +180,9 @@ optional overrides with an in-app default, never required.
   files are still in the repo. Version history now has `### Version 0.1.2`
   (the next auto-release number) written from the beta-vs-main diff and parsed
   correctly by the launcher. Open points found while reading the code:
-  (1) `exports/` project folder is `exports/` project folder is
-  created but never written (export is a browser download); (3) MPS is claimed
-  nowhere in the code, README and hero badge no longer claim it.
+  (1) the `exports/` project folder is created but never written (export is a
+  browser download); (2) MPS is claimed nowhere in the Scan code, README and
+  hero badge no longer claim it.
   **Ink done (2026-09-20, on `beta`)**: same schema (Getting Started with an
   alias for `installation.html`, usage rewritten against the code, version
   history 2.1.2 from beta vs main, hero versions bumped on advanced/model_zoo/api).
