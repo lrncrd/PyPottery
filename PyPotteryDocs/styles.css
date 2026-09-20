@@ -1707,15 +1707,22 @@ footer.footer {
   z-index: 1;
 }
 
-/* The millimetric grid of the hero comes back above the footer, fading in towards it (more depth between the
-   page and the dark footer). Drawn on the footer's own top edge, so it needs no extra element. */
-.site-footer::before {
+/* The millimetric grid of the hero comes back at the bottom of the page, fading in towards the footer (more depth
+   between the page and the dark footer). It is the background of the content area: behind the text and the cards
+   (z-index -1 inside an isolated stacking context) and behind the sidebars, which have their own background. */
+#quarto-content {
+  position: relative;
+  isolation: isolate;
+}
+
+#quarto-content::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 100%;
+  bottom: 0;
   height: 300px;
+  z-index: -1;
   pointer-events: none;
   background-image:
     linear-gradient(to right, rgba(194, 65, 12, 0.11) 1px, transparent 1px),
