@@ -409,26 +409,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div style="text-align: center;">
-  <img src="..\imgs\LogoLayout.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
-  <br>
-  <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.3.4
-  </span>
-
-  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-
-    <!-- CPU -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
-      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
-        CPU
-      </span>
-    </div>
-
+<div class="app-card">
+  <img src="../imgs/LogoLayout.png" alt="PyPotteryLayout" class="app-card-logo">
+  <span class="app-card-version">Version 0.3.4</span>
+  <div class="app-card-platforms">
+    <span class="app-card-chip"><i class="bi bi-cpu"></i> CPU</span>
   </div>
 </div>
-
 <p><br></p>
 <p><strong>PyPotteryLayout</strong> arranges your pottery drawings on publication plates. You give it the images (and, if you like, a spreadsheet with the data of each piece); it sorts them, scales them, adds captions, numbers and a scale bar, and produces the plates as PDF, JPG or SVG. It needs no AI model and no GPU. This page gets you from zero to a running app; the full workflow is in the <a href="../pypotterylayout/usage.html">Usage guide</a>.</p>
 <section id="what-you-can-do" class="level2">

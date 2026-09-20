@@ -408,34 +408,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div style="text-align: center;">
-  <img src="..\imgs\LogoScan.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
-  <br>
-  <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.1.2
-  </span>
-
-  <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-
-    <!-- CPU -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
-      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        CPU (GLM-OCR)
-      </span>
-    </div>
-
-    <!-- CUDA -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
-      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
-        CUDA (GLM-OCR or OlmOCR)
-      </span>
-    </div>
-
+<div class="app-card">
+  <img src="../imgs/LogoScan.png" alt="PyPotteryScan" class="app-card-logo">
+  <span class="app-card-version">Version 0.1.2</span>
+  <div class="app-card-platforms">
+    <span class="app-card-chip"><i class="bi bi-cpu"></i> CPU (GLM-OCR)</span>
+    <span class="app-card-chip"><i class="bi bi-gpu-card"></i> CUDA (GLM-OCR or OlmOCR)</span>
   </div>
 </div>
-
 <p><br></p>
 <p><strong>PyPotteryScan</strong> digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the <a href="../pypotteryscan/usage.html">Usage guide</a>.</p>
 <section id="what-you-can-do" class="level2">

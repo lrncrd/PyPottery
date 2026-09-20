@@ -205,7 +205,7 @@
     "href": "pypotteryscan/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 0.1.2\n  \n\n  \n\n    \n    \n      \n      \n        CPU (GLM-OCR)\n      \n    \n\n    \n    \n      \n      \n        CUDA (GLM-OCR or OlmOCR)\nPyPotteryScan digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
+    "text": "Version 0.1.2\n  \n     CPU (GLM-OCR)\n     CUDA (GLM-OCR or OlmOCR)\nPyPotteryScan digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
@@ -529,7 +529,7 @@
     "href": "pypotterylayout/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 0.3.4\n  \n\n  \n\n    \n    \n      \n      \n        CPU\nPyPotteryLayout arranges your pottery drawings on publication plates. You give it the images (and, if you like, a spreadsheet with the data of each piece); it sorts them, scales them, adds captions, numbers and a scale bar, and produces the plates as PDF, JPG or SVG. It needs no AI model and no GPU. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
+    "text": "Version 0.3.4\n  \n     CPU\nPyPotteryLayout arranges your pottery drawings on publication plates. You give it the images (and, if you like, a spreadsheet with the data of each piece); it sorts them, scales them, adds captions, numbers and a scale bar, and produces the plates as PDF, JPG or SVG. It needs no AI model and no GPU. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
     "crumbs": [
       "Project Home",
       "PyPotteryLayout",
@@ -721,7 +721,7 @@
     "href": "pypotteryink/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 2.1.2\n  \n\n  \n\n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryInk turns scans and photographs of pencil pottery drawings into clean, publication-ready ink illustrations. A generative model redraws the drawing patch by patch, so even high-resolution plates can be processed. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
+    "text": "Version 2.1.2\n  \n     CPU\n     CUDA\n     MPS\nPyPotteryInk turns scans and photographs of pencil pottery drawings into clean, publication-ready ink illustrations. A generative model redraws the drawing patch by patch, so even high-resolution plates can be processed. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
     "crumbs": [
       "Project Home",
       "PyPotteryInk",
@@ -1667,7 +1667,7 @@
     "href": "pypotterylens/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 0.3.1\n  \n  \n  \n    \n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\n      \n    \n\n    \n    \n      \n      \n        MPS\nPyPotteryLens extracts pottery drawings from published monograph PDFs, lets you review and label them, and exports a clean, standardized dataset. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
+    "text": "Version 0.3.1\n  \n     CPU\n     CUDA\n     MPS\nPyPotteryLens extracts pottery drawings from published monograph PDFs, lets you review and label them, and exports a clean, standardized dataset. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
     "crumbs": [
       "Project Home",
       "PyPotteryLens",
@@ -2015,7 +2015,7 @@
     "href": "pypotterytrace/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 0.1.2\n  \n\n  \n\n    \n    \n      \n      \n        CPU\n      \n    \n\n    \n    \n      \n      \n        CUDA\nPyPotteryTrace turns scanned archaeological pottery drawings into editable vector graphics (SVG). You mark the vessel on the drawing with a few clicks, the Segment Anything Model 2 (SAM 2) finds its outline, and the app traces it, mirrors the profile around the vessel’s axis and gives you clean, layered SVG files that you can refine in the built-in editor and export for publication. This page gets you from zero to a running app; the full workflow is in the Usage guide, and the geometry behind it is in the Technical Reference.",
+    "text": "Version 0.1.2\n  \n     CPU\n     CUDA\nPyPotteryTrace turns scanned archaeological pottery drawings into editable vector graphics (SVG). You mark the vessel on the drawing with a few clicks, the Segment Anything Model 2 (SAM 2) finds its outline, and the app traces it, mirrors the profile around the vessel’s axis and gives you clean, layered SVG files that you can refine in the built-in editor and export for publication. This page gets you from zero to a running app; the full workflow is in the Usage guide, and the geometry behind it is in the Technical Reference.",
     "crumbs": [
       "Project Home",
       "PyPotteryTrace",
