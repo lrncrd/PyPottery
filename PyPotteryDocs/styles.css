@@ -2165,19 +2165,6 @@ footer.footer {
   background-color: var(--teal-dark);
 }
 
-.simulator-tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  padding: 0.15rem 0.55rem;
-  border-radius: var(--radius-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 .simulator-iframe {
   width: 100%;
   height: 680px;

@@ -138,7 +138,6 @@ the executable and choose **Send to → Desktop (create shortcut)** if you want 
       <span class="simulator-indicator-dot"></span>
       <span>Windows 11 installation walkthrough</span>
     </div>
-    <span class="simulator-tag">Interactive</span>
   </div>
   <iframe src="animations/installer_windows.html" class="simulator-iframe" title="PyPottery Windows Installation Simulation"></iframe>
 </div>
@@ -241,7 +240,6 @@ the `.dmg`.
       <span class="simulator-indicator-dot"></span>
       <span>macOS installation walkthrough</span>
     </div>
-    <span class="simulator-tag">Interactive</span>
   </div>
   <iframe src="animations/installer_mac.html" class="simulator-iframe" title="PyPottery macOS Installation Simulation"></iframe>
 </div>
@@ -330,7 +328,6 @@ chmod +x PyPottery.sh install_desktop.sh
       <span class="simulator-indicator-dot"></span>
       <span>Linux AppImage walkthrough</span>
     </div>
-    <span class="simulator-tag">Interactive</span>
   </div>
   <iframe src="animations/installer_linux.html" class="simulator-iframe" title="PyPottery Linux Installation Simulation"></iframe>
 </div>
@@ -362,7 +359,6 @@ The launcher is a local process supervisor reachable in the browser at `http://1
       <span class="simulator-indicator-dot"></span>
       <span>Launcher control panel walkthrough</span>
     </div>
-    <span class="simulator-tag">Interactive</span>
   </div>
   <iframe src="animations/launcher_demo.html" class="launcher-simulator-iframe" title="PyPottery Launcher Interactive Demonstration"></iframe>
 </div>
