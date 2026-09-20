@@ -5,6 +5,9 @@ project:
     - "!article.qmd"
     - "*.qmd"
     - "*/*.qmd"
+  resources:
+    - anim-kit/*.css
+    - anim-kit/*.js
 
 website:
   title: "PyPottery"
@@ -63,7 +66,8 @@ website:
           - pypotterylayout/index.qmd
           - pypotterylayout/usage.qmd
           - pypotterylayout/version_history.qmd
-      - suite_version.qmd
+      - text: "Suite Version History"
+        href: suite_version.qmd
       - contact.qmd
       - acknowledgment.qmd
   page-footer:

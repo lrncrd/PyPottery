@@ -8,120 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../anim-kit/kit.css">
     <style>
         :root {
-            --primary: #c2410c;
-            --primary-hover: #9a3412;
-            --primary-soft: rgba(194, 65, 12, 0.08);
-            --primary-border: rgba(194, 65, 12, 0.25);
-            --teal: #0d9488;
-            --teal-soft: rgba(13, 148, 136, 0.08);
-            --teal-border: rgba(13, 148, 136, 0.25);
-            --bg-page: #fbf9f5;
-            --bg-surface: #f5efe6;
-            --border: #e8e3d8;
-            --border-dark: #cbd5e1;
-            --text-main: #1c1917;
-            --text-dim: #57534e;
-            --text-muted: #78716c;
-            --radius-xs: 6px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-full: 9999px;
-            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 10px;
-            font-family: var(--font-sans);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* App Window Frame */
-        .window {
-            background: #ffffff;
-            box-shadow: 0 16px 40px -8px rgba(120, 53, 15, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
-            border-radius: 14px;
-            overflow: hidden;
-            width: 880px;
-            max-width: 100%;
-            height: 590px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border);
-            background-color: #ffffff;
-        }
-
-        /* Top Header Chrome */
-        .app-header {
-            height: 48px;
-            min-height: 48px;
-            background: #ffffff;
-            border-bottom: 1px solid rgba(194, 65, 12, 0.18);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            gap: 12px;
-            flex-shrink: 0;
-            user-select: none;
-        }
-
-        .traffic-lights {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-right: 6px;
-        }
-
-        .dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-        }
-
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27c93f; }
-
-        .brand-title {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--text-main);
-        }
-
-        .brand-accent {
-            color: var(--primary);
-        }
-
-        .version-badge {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            background: var(--primary-soft);
-            color: var(--primary);
-            border: 1px solid var(--primary-border);
-            border-radius: var(--radius-full);
-            margin-left: 2px;
+            --win-h: 590px;
         }
 
         /* Header Active Project Pill */
@@ -138,6 +28,7 @@
             font-weight: 500;
             margin-left: auto;
             transition: all 0.3s ease;
+            box-shadow: none;
         }
 
         .header-project-badge.has-project {
@@ -172,58 +63,7 @@
             color: var(--primary);
         }
 
-        /* Pixel Assistant Mascot */
-        .pixel-assistant {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 6px;
-            border-radius: 6px;
-            background: #fbf9f5;
-            border: 1px solid var(--border);
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--text-dim);
-        }
-
         /* Dossier Tabs Bar */
-        .tabs-bar {
-            display: flex;
-            gap: 4px;
-            padding: 6px 16px 0 16px;
-            background: var(--bg-surface);
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 11px;
-            border: 1px solid var(--border);
-            border-bottom: none;
-            border-radius: 7px 7px 0 0;
-            background: var(--bg-surface);
-            color: var(--text-dim);
-            font-size: 0.78rem;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            background: #ffffff;
-            color: var(--primary);
-            border-color: var(--border);
-            border-top: 3px solid var(--primary);
-            padding-top: 5px;
-            font-weight: 700;
-            margin-bottom: -1px;
-            box-shadow: 0 -2px 6px rgba(120, 53, 15, 0.05);
-        }
-
         .tab-btn.tab-locked {
             opacity: 0.55;
             color: var(--text-muted);
@@ -231,23 +71,6 @@
         }
 
         /* Main Workspace Container */
-        .workspace-body {
-            flex: 1;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            overflow: hidden;
-            background: #ffffff;
-            position: relative;
-        }
-
-        .tab-heading {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
         .tab-heading h2 {
             font-size: 1.15rem;
             font-weight: 800;
@@ -295,54 +118,6 @@
 
         .panel-section-title svg {
             color: var(--primary);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .required-mark {
-            color: var(--primary);
-        }
-
-        .optional-label {
-            font-size: 0.70rem;
-            color: var(--text-muted);
-            font-weight: normal;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xs);
-            font-size: 0.82rem;
-            font-family: inherit;
-            background: #ffffff;
-            color: var(--text-main);
-            transition: all 0.2s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px var(--primary-soft);
-        }
-
-        textarea.form-control {
-            resize: none;
-            height: 48px;
         }
 
         /* Icon Selector (Stamps) */
@@ -461,39 +236,6 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-        }
-
-        /* Empty State */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            background: #fbf9f5;
-            border: 1px dashed var(--border);
-            border-radius: var(--radius-md);
-            color: var(--text-muted);
-            text-align: center;
-            gap: 6px;
-            transition: opacity 0.3s ease;
-        }
-
-        .empty-state svg {
-            width: 38px;
-            height: 38px;
-            fill: #a8a29e;
-        }
-
-        .empty-state .empty-title {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--text-dim);
-        }
-
-        .empty-state .empty-sub {
-            font-size: 0.75rem;
-            color: var(--text-muted);
         }
 
         /* Active Project Card (Generated on creation) */
@@ -671,11 +413,7 @@
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 100;
-        }
-
-        .status-toast.visible {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            white-space: normal;
         }
 
         /* Animated Pointer Cursor */
@@ -698,96 +436,7 @@
 
 <body>
 
-    <div class="window" id="appWindow">
-        <!-- Header Bar -->
-        <header class="app-header">
-            <div class="traffic-lights">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-            </div>
-
-            <div class="brand-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                    <path d="M11 8a3 3 0 0 0-3 3"></path>
-                </svg>
-                PyPottery<span class="brand-accent">Lens</span>
-                <span class="version-badge">v0.3.1</span>
-            </div>
-
-            <!-- Active Project Badge Pill -->
-            <div class="header-project-badge" id="headerProjectBadge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
-                </svg>
-                <span class="header-project-label">Project:</span>
-                <strong class="header-project-name" id="headerProjectName">No project selected</strong>
-            </div>
-
-            <!-- Pixel Assistant CRT Mascot -->
-            <div class="pixel-assistant">
-                <svg width="16" height="14" viewBox="0 0 24 20" fill="none">
-                    <rect x="2" y="2" width="20" height="14" rx="3" fill="#d6cbbe" stroke="#78716c" stroke-width="1.5" />
-                    <rect x="5" y="4" width="14" height="10" rx="1.5" fill="#1c1917" />
-                    <circle cx="9" cy="8.5" r="1.2" fill="#22c55e" />
-                    <circle cx="15" cy="8.5" r="1.2" fill="#22c55e" />
-                    <path d="M10 11.5 Q12 13 14 11.5" stroke="#22c55e" stroke-width="1.2" fill="none" stroke-linecap="round" />
-                    <rect x="9" y="16" width="6" height="3" fill="#a8a29e" />
-                </svg>
-                <span>Need help?</span>
-            </div>
-        </header>
-
-        <!-- Dossier Tabs -->
-        <nav class="tabs-bar">
-            <div class="tab-btn active">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
-                </svg>
-                Project Manager
-            </div>
-            <div class="tab-btn tab-locked" id="tab1">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-                1. PDF Document Processing
-            </div>
-            <div class="tab-btn tab-locked" id="tab2">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                    <rect x="9" y="9" width="6" height="6"></rect>
-                </svg>
-                2. Apply Model
-            </div>
-            <div class="tab-btn tab-locked" id="tab3">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-                3. Review Annotations &amp; Masks
-            </div>
-            <div class="tab-btn tab-locked" id="tab4">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                    <path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path>
-                </svg>
-                4. Tabular Information
-            </div>
-            <div class="tab-btn tab-locked" id="tab5">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                </svg>
-                5. Post Processing
-            </div>
-        </nav>
-
-        <!-- Main Workspace -->
+    <div class="window" id="appWindow" data-chrome="lens" data-tab="0" data-locked="1,2,3,4,5"><!-- Main Workspace -->
         <main class="workspace-body">
             <div class="tab-heading">
                 <h2>
@@ -968,9 +617,11 @@
         </div>
     </div>
 
+    <script src="../../anim-kit/kit.js"></script>
+    <script src="../../anim-kit/lens.js"></script>
     <script>
-        const appWindow = document.getElementById('appWindow');
-        const cursor = document.getElementById('cursor');
+        Kit.chrome(document.getElementById('appWindow'));
+
         const projectName = document.getElementById('projectName');
         const projectDesc = document.getElementById('projectDesc');
         const stamp1 = document.getElementById('stamp1');
@@ -990,29 +641,6 @@
             document.getElementById('tab5')
         ];
 
-        function moveCursorTo(element, duration = 800, delay = 0) {
-            const rect = element.getBoundingClientRect();
-            const containerRect = appWindow.getBoundingClientRect();
-            const x = rect.left - containerRect.left + (rect.width * 0.45);
-            const y = rect.top - containerRect.top + (rect.height * 0.45);
-
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
-                    cursor.style.transform = `translate(${x}px, ${y}px)`;
-                    setTimeout(resolve, duration);
-                }, delay);
-            });
-        }
-
-        async function typeText(element, text, speed = 65) {
-            element.value = '';
-            for (let i = 0; i < text.length; i++) {
-                element.value += text[i];
-                await new Promise(r => setTimeout(r, speed));
-            }
-        }
-
         function reset() {
             projectName.value = '';
             projectDesc.value = '';
@@ -1025,48 +653,39 @@
             headerName.textContent = 'No project selected';
             btnText.textContent = 'Create Project';
             lockedTabs.forEach(t => t.classList.add('tab-locked'));
-            cursor.style.transition = 'none';
-            cursor.style.transform = 'translate(900px, 600px)';
         }
 
-        async function runAnimation() {
-            reset();
-            await new Promise(r => setTimeout(r, 100));
-
+        async function run(k) {
             // 1. Pause briefly then glide to Project Name
-            await moveCursorTo(projectName, 850, 400);
+            await k.move(projectName, 850, 400);
 
             // 2. Type Project Name
-            await new Promise(r => setTimeout(r, 180));
-            await typeText(projectName, 'Scavi_Capena_2024', 60);
+            await k.wait(180);
+            await k.type(projectName, 'Scavi_Capena_2024', 60);
 
             // 3. Move to Description
-            await moveCursorTo(projectDesc, 700, 250);
+            await k.move(projectDesc, 700, 250);
 
             // 4. Type Description
-            await new Promise(r => setTimeout(r, 180));
-            await typeText(projectDesc, 'Excavation 2024', 60);
+            await k.wait(180);
+            await k.type(projectDesc, 'Excavation 2024', 60);
 
             // 5. Move to Stamp 2 (Bowl stamp)
-            await moveCursorTo(stamp2, 650, 250);
+            await k.move(stamp2, 650, 250);
 
             // 6. Click Stamp 2
-            await new Promise(r => setTimeout(r, 150));
+            await k.wait(150);
             stamp1.classList.remove('selected');
             stamp2.classList.add('selected');
 
             // 7. Move to Create Project Button
-            await moveCursorTo(createBtn, 700, 300);
+            await k.move(createBtn, 700, 300);
 
             // 8. Press Create Button
-            await new Promise(r => setTimeout(r, 180));
-            createBtn.style.transform = 'scale(0.96)';
-            btnText.textContent = 'Creating...';
-            await new Promise(r => setTimeout(r, 220));
-            createBtn.style.transform = 'scale(1)';
+            await k.click(createBtn, { lead: 180, hold: 220, down: () => { btnText.textContent = 'Creating...'; } });
 
             // 9. Instant Creation Effect
-            await new Promise(r => setTimeout(r, 250));
+            await k.wait(250);
             btnText.textContent = 'Create Project';
             projectName.value = '';
             projectDesc.value = '';
@@ -1088,19 +707,13 @@
             statusToast.classList.add('visible');
 
             // 10. Hover over newly created project card in the repository
-            await moveCursorTo(projectCard, 850, 450);
+            await k.move(projectCard, 850, 450);
 
             // 11. Hold state for review
-            await new Promise(r => setTimeout(r, 2200));
-
-            // 12. Move cursor away
-            cursor.style.transition = 'transform 800ms cubic-bezier(0.25, 1, 0.5, 1)';
-            cursor.style.transform = 'translate(900px, 600px)';
+            await k.wait(2200);
         }
 
-        // Loop animation every 13.5 seconds
-        setInterval(runAnimation, 13500);
-        setTimeout(runAnimation, 300);
+        Kit.scene({ reset, run, anchor: 0.45 });
     </script>
 </body>
 

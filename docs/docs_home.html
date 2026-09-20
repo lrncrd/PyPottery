@@ -303,13 +303,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pypotterylayout/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pypotterylayout/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -329,7 +323,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./suite_version.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Version History</span></a>
+ <span class="menu-text">Suite Version History</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -384,17 +378,26 @@ ul.task-list li input[type="checkbox"] {
     <div style="flex: 3 1 340px; min-width: 280px;">
       <h1 class="drafting-hero-title">PyPottery</h1>
 
-      <p class="drafting-hero-lead">
+      <p class="drafting-hero-lead hero-lead-primary">
         Manually inking vessel drawings, building catalogue entries by hand from old publications, retyping the
         notes off a stack of inventory cards, working out reduction scales by hand: this is where most of the
         time in ceramic documentation actually goes, and it's a large part of why so much excavated material sits
-        in a drawer for years before it ever gets published. PyPottery is a suite of five open-source tools that
+        in a drawer for years before it ever gets published.
+      </p>
+
+      <p class="drafting-hero-lead">
+        PyPottery is a suite of five open-source tools that
         takes on each of these tasks computationally: extracting figures from monograph PDFs, digitizing field
         drawings, turning pencil sketches into publication-ready ink, tracing vessel profiles into clean vector
         curves, and assembling typological plates in seconds.
       </p>
 
-      <p class="drafting-hero-lead" style="margin-bottom: 0 !important;">
+      <div class="hero-actions">
+        <a href="suite_installation.html" class="btn-editorial-primary">Install the suite <i class="bi bi-arrow-right"></i></a>
+        <a href="#suite-modules" class="btn-editorial-secondary">Explore the five modules</a>
+      </div>
+
+      <p class="hero-note">
         Everything runs on your own machine (You can use remote models to simplify certain tasks). The full source code is public, so anyone can check exactly how it works - and improve it.
       </p>
     </div>
@@ -403,22 +406,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 <hr class="hero-pipeline-hr">
-<section id="tested-with-archaeologists" class="level2">
-<h2 class="anchored" data-anchor-id="tested-with-archaeologists">Made by archaeologists for archaeologists</h2>
-<p>The idea for PyPottery grew out of a set of needs the author first ran into during university: let’s be honest, documenting pottery isn’t boring work, but it is work that takes a great deal of time. That “lost” time takes away from the other stages of research like typological analysis, comparison with other contexts, writing up results. PyPottery exists to drastically cut the time spent on repetitive, mechanical tasks, leaving more room for interpretation and research.</p>
-<p>Using PyPottery has been shown to cut documentation time by roughly <strong>60 times</strong> compared to the traditional routine of tracing paper, technical pens, and manually re-tracing everything in vector software.</p>
-<p>That doesn’t mean it gets everything right on the first pass: a transcribed word sometimes needs a correction, a traced profile sometimes needs a nudge. PyPottery is built around that expectation: <strong>every stage gives you the chance to check and correct before moving on</strong>, so what comes out the other end is something you stand behind, not something you’re asked to trust blindly.</p>
-</section>
-<section id="getting-started" class="level2">
-<h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
-<p>PyPottery is designed as an entirely <strong>modular suite</strong> rather than an all-or-nothing pipeline: you choose exactly how to use it according to your workflow, research needs, and personal documentation preferences:</p>
-<ul>
-<li><strong>Don’t need profile vectorization?</strong> You don’t have to use <a href="pypotterytrace/index.html">PyPotteryTrace</a>: keep your high-contrast inked drawings as your final raster publication figures.</li>
-<li><strong>Prefer assembling catalog plates by hand?</strong> If physical layout and manual composition aid your typological reasoning and ceramic classification, you don’t have to use <a href="pypotterylayout/index.html">PyPotteryLayout</a>: simply take the drawings from Ink, Scan, or Lens straight into your vector graphic editor or drafting desk.</li>
-<li><strong>Only need specific extraction tasks?</strong> Use <a href="pypotteryscan/index.html">PyPotteryScan</a> solely for transcribing handwritten cards into Excel, or <a href="pypotterylens/index.html">PyPotteryLens</a> just to mine monograph plates, without touching the downstream drawing tools.</li>
-</ul>
-<p>For hardware requirements and environment setup on Windows, macOS, and Linux, see <a href="requirements.html">System Requirements</a> and the <a href="suite_installation.html">Suite Installation Guide</a>.</p>
-</section>
 <section id="suite-modules" class="level2">
 <h2 class="anchored" data-anchor-id="suite-modules">Suite Modules: The Archaeological Pipeline</h2>
 <p>Five integrated modules orchestrated into three operational phases, transforming raw archaeological field data and historical monographs into publication-grade plates and structured data.</p>
@@ -756,93 +743,151 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </section>
-<section id="the-archaeological-documentation-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="the-archaeological-documentation-workflow">From the Old Workflow to the New One</h2>
-<p>None of this replaces the archaeologist’s eye — the interpretive drawing itself, deciding what a fragment tells you, still starts on paper. What changes is everything that happens <em>after</em> that: the hours of clerical, repetitive work standing between a first pencil sketch and a page ready to send to a publisher.</p>
-<section id="getting-the-material-in" class="level3">
-<h3 class="anchored" data-anchor-id="getting-the-material-in">Getting the material in</h3>
-<p>If you’re starting from a stack of hand-written excavation cards, the routine is usually: scan each card, open Photoshop or a similar program and crop out every drawing by hand, then read the context, stratigraphic unit, and inventory number off the card — often in decades-old handwriting — and type them into a spreadsheet, one row at a time. If you’re starting from a published monograph instead, it typically means taking screenshots of PDF pages one by one and re-cataloguing the plates yourself.</p>
-<p><a href="pypotteryscan/index.html">PyPotteryScan</a> and <a href="pypotterylens/index.html">PyPotteryLens</a> take over this stage. Scan reads the drawings sheets and fills in the spreadsheet for you, so you’re checking and correcting rather than transcribing from scratch. Lens goes straight through a PDF and pulls out every figure automatically, no screenshotting involved.</p>
-</section>
-<section id="turning-pencil-into-a-finished-drawing" class="level3">
-<h3 class="anchored" data-anchor-id="turning-pencil-into-a-finished-drawing">Turning pencil into a finished drawing</h3>
-<p>This is traditionally where most of the hours disappear. A pencil drawing gets taped over with tracing film and gone over by hand with a technical pen to produce clean, publishable ink lines — and if you also need an editable digital version, it gets traced a second time, point by point, in Illustrator or similar software.</p>
-<p><a href="pypotteryink/index.html">PyPotteryInk</a> takes the pencil scan and produces the finished ink version directly. <a href="pypotterytrace/index.html">PyPotteryTrace</a> then turns that into an editable vector drawing, with the rim, profile, section, and decoration kept as separate elements you can still adjust — not one flat outline.</p>
-</section>
-<section id="getting-it-ready-for-publication" class="level3">
-<h3 class="anchored" data-anchor-id="getting-it-ready-for-publication">Getting it ready for publication</h3>
-<p>Finally, individual drawings have to become a plate: arranging images on the page, working out the correct reduction scale for each one by hand, drawing scale bars, and typing captions and catalogue numbers.</p>
-<p><a href="pypotterylayout/index.html">PyPotteryLayout</a> arranges the plate automatically — consistent scale, positioning, and captions across the whole page — and still hands you back a file you can open and fine-tune in your usual software afterward.</p>
-</section>
-</section>
-<section id="methodological-principles" class="level2">
-<h2 class="anchored" data-anchor-id="methodological-principles">Methodological Principles</h2>
-<div class="archaeo-pillars-grid">
-
-  <div class="archaeo-pillar-card">
-    <div class="pillar-header">
-      <span class="pillar-num">01</span>
-      <span class="pillar-index">You stay in charge</span>
-    </div>
-    <h3 class="pillar-title anchored">Automation stops where judgment starts</h3>
-    <p class="pillar-text">
-      PyPottery automates the mechanical parts — cropping, transcribing, inking, laying out — never the
-      archaeological judgment. Every output is something to check and confirm, not something asked to be
-      trusted blindly.
-    </p>
-  </div>
-
-  <div class="archaeo-pillar-card">
-    <div class="pillar-header">
-      <span class="pillar-num">02</span>
-      <span class="pillar-index">Modular by design</span>
-    </div>
-    <h3 class="pillar-title anchored">A toolkit, not a rigid pipeline</h3>
-    <p class="pillar-text">
-      PyPottery adapts to your workflow, not the other way around. Don't need profile vectorization?
-      Skip Trace. Prefer manual plate layout to aid typological classification? Skip Layout.
-      Automate only what you need and retain full research control.
-    </p>
-  </div>
-
-  <div class="archaeo-pillar-card">
-    <div class="pillar-header">
-      <span class="pillar-num">03</span>
-      <span class="pillar-index">Local by default</span>
-    </div>
-    <h3 class="pillar-title anchored">Your data stays on your machine</h3>
-    <p class="pillar-text">
-      Unpublished excavation data, stratigraphic coordinates, drawings, notes: all of it stays on your computer,
-      with no account and no telemetry. The one exception is metadata extraction in PyPotteryLens, which
-      currently calls a cloud LLM — the best option available today for that specific task.
-    </p>
-  </div>
-
-  <div class="archaeo-pillar-card">
-    <div class="pillar-header">
-      <span class="pillar-num">04</span>
-      <span class="pillar-index">Free &amp; inspectable</span>
-    </div>
-    <h3 class="pillar-title anchored">Open source, not a black box</h3>
-    <p class="pillar-text">
-      No license fees, no proprietary format locking your work in. The full source code is public, so anyone can
-      check exactly how it works — and improve it.
-    </p>
-  </div>
-
-  <div class="archaeo-pillar-card">
-    <div class="pillar-header">
-      <span class="pillar-num">05</span>
-      <span class="pillar-index">Runs on laptops</span>
-    </div>
-    <h3 class="pillar-title anchored">Built for consumer hardware</h3>
-    <p class="pillar-text">
-      No research-grade GPU required. PyPottery is developed and tested on ordinary laptops and desktops, with a
-      CPU-only fallback for every module.
-    </p>
-  </div>
-
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
+<div class="prose">
+<p>PyPottery is designed as an entirely <strong>modular suite</strong> rather than an all-or-nothing pipeline: you choose exactly how to use it according to your workflow, research needs, and personal documentation preferences:</p>
+<ul>
+<li><strong>Don’t need profile vectorization?</strong> You don’t have to use <a href="pypotterytrace/index.html">PyPotteryTrace</a>: keep your high-contrast inked drawings as your final raster publication figures.</li>
+<li><strong>Prefer assembling catalog plates by hand?</strong> If physical layout and manual composition aid your typological reasoning and ceramic classification, you don’t have to use <a href="pypotterylayout/index.html">PyPotteryLayout</a>: simply take the drawings from Ink, Scan, or Lens straight into your vector graphic editor or drafting desk.</li>
+<li><strong>Only need specific extraction tasks?</strong> Use <a href="pypotteryscan/index.html">PyPotteryScan</a> solely for transcribing handwritten cards into Excel, or <a href="pypotterylens/index.html">PyPotteryLens</a> just to mine monograph plates, without touching the downstream drawing tools.</li>
+</ul>
+<p>For hardware requirements and environment setup on Windows, macOS, and Linux, see <a href="requirements.html">System Requirements</a> and the <a href="suite_installation.html">Suite Installation Guide</a>.</p>
 </div>
+</section>
+<section id="why-pypottery" class="level2">
+<h2 class="anchored" data-anchor-id="why-pypottery">Why PyPottery</h2>
+<section id="tested-with-archaeologists" class="level3">
+<h3 class="anchored" data-anchor-id="tested-with-archaeologists">Made by archaeologists for archaeologists</h3>
+<div class="prose">
+<p>The idea for PyPottery grew out of a set of needs the author first ran into during university: let’s be honest, documenting pottery isn’t boring work, but it is work that takes a great deal of time. That “lost” time takes away from the other stages of research like typological analysis, comparison with other contexts, writing up results. PyPottery exists to drastically cut the time spent on repetitive, mechanical tasks, leaving more room for interpretation and research.</p>
+<p>Using PyPottery has been shown to cut documentation time by roughly <strong>60 times</strong> compared to the traditional routine of tracing paper, technical pens, and manually re-tracing everything in vector software.</p>
+<div class="key-point">
+<p>That doesn’t mean it gets everything right on the first pass: a transcribed word sometimes needs a correction, a traced profile sometimes needs a nudge. PyPottery is built around a concept called <em>Human-in-the-Loop</em>: <strong>every stage gives you the chance to check and correct before moving on</strong>, so what comes out the other end is something you stand behind, not something you’re asked to trust blindly.</p>
+</div>
+</div>
+</section>
+<section id="the-archaeological-documentation-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="the-archaeological-documentation-workflow">From the Old Workflow to the New One</h3>
+<div class="prose">
+<p>None of this replaces the archaeologist’s eye — the interpretive drawing itself, deciding what a fragment tells you, still starts on paper. What changes is everything that happens <em>after</em> that: the hours of repetitive work standing between a first pencil sketch and a page ready to send to a publisher.</p>
+</div>
+<section id="getting-the-material-in" class="level4 workflow-stage">
+<h4 class="anchored" data-anchor-id="getting-the-material-in">Getting the material in</h4>
+<div class="workflow-stage-body">
+<div class="stage-before">
+<div class="stage-label">
+<p>The routine</p>
+</div>
+<p>If you’re starting from a stack of hand-written excavation cards, the routine is usually: scan each card, open Photoshop or a similar program and crop out every drawing by hand, then read the context, stratigraphic unit, and inventory number off the card — often in decades-old handwriting — and type them into a spreadsheet, one row at a time. If you’re starting from a published monograph instead, it typically means taking screenshots of PDF pages one by one and re-cataloguing the plates yourself.</p>
+</div>
+<div class="stage-after">
+<div class="stage-label">
+<p>With PyPottery</p>
+</div>
+<p><a href="pypotteryscan/index.html">PyPotteryScan</a> and <a href="pypotterylens/index.html">PyPotteryLens</a> take over this stage. Scan reads the drawings sheets and fills in the spreadsheet for you, so you’re checking and correcting rather than transcribing from scratch. Lens goes straight through a PDF and pulls out every figure automatically, no screenshotting involved.</p>
+</div>
+</div>
+</section>
+<section id="turning-pencil-into-a-finished-drawing" class="level4 workflow-stage">
+<h4 class="anchored" data-anchor-id="turning-pencil-into-a-finished-drawing">Turning pencil into a finished drawing</h4>
+<div class="workflow-stage-body">
+<div class="stage-before">
+<div class="stage-label">
+<p>The routine</p>
+</div>
+<p>This is traditionally where most of the hours disappear. A pencil drawing gets taped over with tracing film and gone over by hand with a technical pen to produce clean, publishable ink lines — and if you also need an editable digital version, it gets traced a second time, point by point, in Illustrator, Inkscape or similar software.</p>
+</div>
+<div class="stage-after">
+<div class="stage-label">
+<p>With PyPottery</p>
+</div>
+<p><a href="pypotteryink/index.html">PyPotteryInk</a> takes the pencil scan and produces the finished ink version directly. <a href="pypotterytrace/index.html">PyPotteryTrace</a> then turns that into an editable vector drawing, with the section, building-lines, decoration kept as separate elements you can still adjust — not one flat outline.</p>
+</div>
+</div>
+</section>
+<section id="getting-it-ready-for-publication" class="level4 workflow-stage">
+<h4 class="anchored" data-anchor-id="getting-it-ready-for-publication">Getting it ready for publication</h4>
+<div class="workflow-stage-body">
+<div class="stage-before">
+<div class="stage-label">
+<p>The routine</p>
+</div>
+<p>Finally, individual drawings have to become a plate: arranging images on the page, working out the correct reduction scale for each one by hand, drawing scale bars, and typing captions and catalogue numbers.</p>
+</div>
+<div class="stage-after">
+<div class="stage-label">
+<p>With PyPottery</p>
+</div>
+<p><a href="pypotterylayout/index.html">PyPotteryLayout</a> arranges the plate automatically — consistent scale, positioning, and captions across the whole page — and still hands you back a file you can open and fine-tune in your usual software afterward.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="methodological-principles" class="level3">
+<h3 class="anchored" data-anchor-id="methodological-principles">Methodological Principles</h3>
+<dl class="principles-list">
+
+  <div class="principle">
+    <dt>You stay in charge</dt>
+    <dd>
+      <p class="principle-title">Automation stops where judgment starts</p>
+      <p class="principle-text">
+        PyPottery automates the mechanical parts — cropping, transcribing, inking, laying out — never the
+        archaeological judgment. Every output is something to check and confirm, not something asked to be
+        trusted blindly.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Modular by design</dt>
+    <dd>
+      <p class="principle-title">A toolkit, not a rigid pipeline</p>
+      <p class="principle-text">
+        PyPottery adapts to your workflow, not the other way around. Don't need profile vectorization?
+        Skip Trace. Prefer manual plate layout to aid typological classification? Skip Layout.
+        Automate only what you need and retain full research control.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Local by default</dt>
+    <dd>
+      <p class="principle-title">Your data stays on your machine</p>
+      <p class="principle-text">
+        Unpublished excavation data, stratigraphic coordinates, drawings, notes: all of it stays on your computer,
+        with no account and no telemetry. The one exception is metadata extraction in PyPotteryLens, which
+        currently calls a cloud LLM — the best option available today for that specific task.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Free &amp; inspectable</dt>
+    <dd>
+      <p class="principle-title">Open source, not a black box</p>
+      <p class="principle-text">
+        No license fees, no proprietary format locking your work in. The full source code is public, so anyone can
+        check exactly how it works — and improve it.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Runs on laptops</dt>
+    <dd>
+      <p class="principle-title">Built for consumer hardware</p>
+      <p class="principle-text">
+        No research-grade GPU required. PyPottery is developed and tested on ordinary laptops and desktops, with a
+        CPU-only fallback for every module. Just a gaming laptop or a MacBook is enough to run the whole suite.
+      </p>
+    </dd>
+  </div>
+
+</dl>
+</section>
 </section>
 <section id="academic-citations" class="level2">
 <h2 class="anchored" data-anchor-id="academic-citations">Academic Citations</h2>

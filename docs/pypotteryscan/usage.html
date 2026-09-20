@@ -323,7 +323,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../suite_version.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Version History</span></a>
+ <span class="menu-text">Suite Version History</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -752,8 +752,8 @@ Note
 <ol type="1">
 <li>Click <strong>Choose File</strong> and select the <code>.xlsx</code> catalogue. The app reads the first sheet and needs an <code>ocr_corrected</code> column; rows with no text are skipped, and the <code>filename</code> column, if present, is carried along.</li>
 <li>The <strong>Available fields</strong> on the left are Inventory, Site, Year, US, Area, Cut, Sector and Notes. <strong>Add Field</strong> creates your own.</li>
-<li>Use <strong>Previous</strong> / <strong>Next</strong> to move between lines (<code>1 / N</code>). The current line is shown as text: <strong>select</strong> the part that corresponds to a field and pick the field from the small menu that appears. The <strong>Current Parsed Data</strong> table (Field / Value) shows what you have assigned.</li>
-<li>Click <strong>Add Example</strong> to store the line as an example. <strong>Added Examples</strong> counts them; <strong>Clear All Examples</strong> empties the list after a confirmation. Examples are saved in the project, so you can reuse them later.</li>
+<li>Use <strong>Previous</strong> / <strong>Next</strong> to move between lines (<code>1 / N</code>). The current line is shown as text: <strong>select</strong> the part that corresponds to a field and pick the field from the small menu that appears. The <strong>Current Parsed Data</strong> table (Field / Value) shows what you have assigned: the <strong>x</strong> at the end of a row removes that assignment if you made a mistake (the highlight disappears too), and assigning the same field again replaces the previous one.</li>
+<li>Click <strong>Add Example</strong> to store the line as an example. <strong>Added Examples</strong> counts them: click its title to open or close the list (closed at the start); <strong>Clear All Examples</strong> empties the list after a confirmation. If you assigned fields on a line and click <strong>Previous</strong>, <strong>Next</strong> or <strong>Reset</strong> before adding it as an example, the app asks you to confirm, because those assignments would be lost. Examples are saved in the project, so you can reuse them later.</li>
 <li>Click <strong>Run Parsing</strong>. The model is loaded the first time (it may take a moment), then every line is parsed, with a live log. The result is downloaded as <code>parsed_output_&lt;date&gt;.xlsx</code>, sheet <code>Parsed Data</code>: one row per line, one column per field found, plus <code>_ocr_original</code> (the source text) and <code>_filename</code>. A field the model cannot find is left empty.</li>
 </ol>
 <p>You need at least one example to run the parser. Start with a handful of varied lines; if a field comes out wrong, add an example that shows it. Always check the result: a language model can misassign a field, especially with abbreviations it has never seen.</p>

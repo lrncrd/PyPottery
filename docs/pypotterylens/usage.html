@@ -323,7 +323,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../suite_version.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Version History</span></a>
+ <span class="menu-text">Suite Version History</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -688,26 +688,31 @@ Suggest splitting into 3 short clips instead of one long one (see below).
 </thead>
 <tbody>
 <tr class="odd">
+<td><strong>Select</strong></td>
+<td>Click a vessel to select it and drag it to move it. Drag one of its vertices to move it, click an edge to add a vertex, <code>Alt</code> or <code>Shift</code> + click a vertex to delete it. It never paints</td>
+<td><code>V</code></td>
+</tr>
+<tr class="even">
 <td><strong>Brush</strong></td>
 <td>Paint with a round cursor. When you release, the stroke becomes a clean vector polygon</td>
 <td><code>B</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>Polygon</strong></td>
 <td>Click to place vertices; click the first point (or double-click, or press <code>Enter</code>) to close. <code>Backspace</code> removes the last vertex, <code>Esc</code> cancels</td>
 <td><code>P</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>Eraser</strong></td>
 <td>Sweep the round cursor over polygon vertices to erase them</td>
 <td><code>E</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>Colorize</strong></td>
 <td>Paint each polygon in a different color (on by default)</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>Clear</strong></td>
 <td>Remove all polygons on the current image</td>
 <td></td>
@@ -715,7 +720,7 @@ Suggest splitting into 3 short clips instead of one long one (see below).
 </tbody>
 </table>
 <p>The <strong>Size</strong> slider sets the diameter of the brush and eraser (5-100 px). The <strong>Expansion</strong> slider (0-100 px, default 8 px) adds padding around every vessel when the cards are cut, so the drawing is not cropped too tightly: raise it if lines at the edge of a vessel are being cut off, lower it if neighbouring drawings creep into the card.</p>
-<p>Select a polygon in the list and press <code>Delete</code> to remove it.</p>
+<p>Select a polygon in the list (or with the <strong>Select</strong> tool) and press <code>Delete</code> to remove it. <code>Ctrl+Z</code> undoes the last change to the polygons of the plate, whatever the tool that made it (up to 50 steps).</p>
 <!--
 ANIMATION (NEW, priority: high) - "Fix a mask"
 Storyboard: 1) a plate with a mask that spills over a nearby label; 2) Eraser (E) sweeps
@@ -755,7 +760,7 @@ redraws them as two polygons; 3) the two now show different hues.
 <p>The measure appears in <strong>Scale calibrations</strong>, and it is used to fill a <code>px_per_cm</code> column when you extract the cards. Each card takes the scale that applies to its position:</p>
 <ul>
 <li>A plate with <strong>one scale</strong> applies it to every vessel on the plate.</li>
-<li>A plate with <strong>several scales</strong> (for example, different drawings at different reductions): click <strong>Zone</strong> on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate’s general (non-zone) scale.</li>
+<li>A plate with <strong>several scales</strong> (for example, different drawings at different reductions): click <strong>Zone</strong> on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate’s general (non-zone) scale. Each scale is named <strong>Z1</strong>, <strong>Z2</strong>, … and every vessel shows the one it will get, on the canvas and in the <strong>Vessels &amp; Polygons</strong> list, in the color of its zone (a red <strong>!</strong> means that more than one zone contains it, a grey <strong>?</strong> that no scale applies); the <strong>Scale calibrations</strong> list shows how many vessels each zone has.</li>
 </ul>
 <p>Once you have measured scales on several plates, <strong>Calibrate Scales</strong> opens a histogram of all the px/cm ratios in the project. Measurements taken with a few pixels of click imprecision show up as scattered values around the true one. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then <strong>Apply Calibration</strong> to snap outlier measurements to the value you chose. Ratios are rounded to one decimal.</p>
 <!--

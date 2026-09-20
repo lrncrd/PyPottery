@@ -4,352 +4,832 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Processing Animation</title>
+    <title>PyPotteryLens — PDF Processing Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../anim-kit/kit.css">
     <style>
-        /* Base Styles from Reference */
-        body {
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
+        :root {
+            --win-h: 690px;
+            --ws-pad: 18px 24px;
+            --ws-gap: 14px;
         }
 
-        .window {
-            background: white;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            overflow: hidden;
-            width: 800px;
-            height: 800px;
-            position: relative;
+        /* PDF Main Console Layout */
+        .pdf-console {
             display: flex;
             flex-direction: column;
-            border: 1px solid #e5e7eb;
+            gap: 12px;
+            flex: 1;
         }
 
-        /* Header */
-        .header {
-            height: 40px;
-            min-height: 40px;
-            max-height: 40px;
-            background: #f1f3f4;
+        /* Drag and Drop Zone */
+        .pdf-dropzone {
+            background: #fbf9f5;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 22px 18px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 180px;
+        }
+
+        .pdf-dropzone.drop-highlight {
+            border-color: var(--primary);
+            background: #fff7ed;
+            transform: scale(1.01);
+        }
+
+        .pdf-dropzone.dropzone-locked {
+            background: #fdfbf7;
+            border: 1.5px solid var(--border);
+            border-style: solid;
+        }
+
+        .dropzone-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary-soft);
+            color: var(--primary);
             display: flex;
             align-items: center;
-            padding: 0 16px;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .dropzone-locked .dropzone-icon {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+
+        .dropzone-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .dropzone-sub {
+            font-size: 0.76rem;
+            color: var(--text-dim);
+            max-width: 480px;
+            line-height: 1.4;
+        }
+
+        .btn-primary.btn-disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .dropzone-specs {
+            font-size: 0.70rem;
+            color: var(--text-muted);
+        }
+
+        /* Floating File Badge during upload simulation */
+        .uploaded-file-badge {
+            display: none;
+            align-items: center;
             gap: 8px;
-            border-bottom: 1px solid #e5e7eb;
-            flex-shrink: 0;
+            background: #ffffff;
+            border: 1px solid var(--primary-border);
+            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            box-shadow: 0 4px 14px rgba(194, 65, 12, 0.12);
+            animation: badgeDrop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #dadce0;
+        @keyframes badgeDrop {
+            from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .dot.red {
-            background: #ff5f56;
+        .file-badge-icon {
+            color: #e11d48;
         }
 
-        .dot.yellow {
-            background: #ffbd2e;
-        }
-
-        .dot.green {
-            background: #27c93f;
-        }
-
-        /* Tabs */
-        .tabs {
+        .file-badge-text {
             display: flex;
-            padding: 10px 20px;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            gap: 10px;
+            flex-direction: column;
+            text-align: left;
         }
 
-        .tab {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            color: #6b7280;
-            cursor: default;
+        .file-badge-name {
+            font-size: 0.80rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .file-badge-size {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+
+        /* Extraction Progress Bar in Dropzone */
+        .extraction-progress-wrap {
+            width: 100%;
+            max-width: 440px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .extraction-progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        /* Options Strip: Toggle Scanned Spreads */
+        .pdf-settings-strip {
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            position: relative;
+        }
+
+        .pdf-toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* iOS-style switch */
+        .toggle-row-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toggle-row-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spread-info-pill {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            border-radius: var(--radius-full);
+            padding: 1px 7px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toggle-row-description {
+            font-size: 0.74rem;
+            color: var(--text-dim);
+        }
+
+        /* Visual Comparison Popover Guide */
+        .spread-compare-popover {
+            position: absolute;
+            top: -168px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 580px;
+            background: #ffffff;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 16px 36px -6px rgba(120, 53, 15, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 999;
+        }
+
+        .spread-compare-popover.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .compare-popover-header {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 6px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .tab.active {
-            background: white;
-            color: #c2410c;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            font-weight: 500;
+        .compare-popover-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        /* Content */
-        .content {
-            flex: 1;
-            padding: 30px;
-            background: white;
+        .compare-card {
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
             align-items: center;
-            justify-content: center;
-            height: 800px;
-        }
-
-        .upload-area {
-            width: 100%;
-            max-width: 500px;
-            background: #f9fafb;
-            border: 2px dashed #d1d5db;
-            border-radius: 8px;
-            padding: 40px;
+            gap: 6px;
             text-align: center;
-            transition: all 0.3s;
         }
 
-        .btn-primary {
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            transition: transform 0.1s;
+        .compare-card.highlight {
+            border-color: var(--primary);
+            background: #fff7ed;
         }
 
-        .file-info {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+        .sheet-preview {
+            width: 140px;
+            height: 60px;
+            background: #ffffff;
+            border: 1px solid var(--border-dark);
+            border-radius: 4px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .file-info.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            max-width: 500px;
-            margin-top: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .progress-container.visible {
-            opacity: 1;
-        }
-
-        .progress-bar-bg {
-            background: #e5e7eb;
-            height: 8px;
-            border-radius: 4px;
+            justify-content: center;
+            position: relative;
             overflow: hidden;
         }
 
-        .progress-bar-fill {
-            background: #10b981;
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
+        /* Scanned Spread Sheet with bisecting animation */
+        .spread-sheet-demo {
+            width: 140px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        /* Success Message */
-        .success-msg {
-            background: #ecfdf5;
-            color: #065f46;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #10b981;
-            text-align: center;
+        .spread-half {
+            width: 66px;
+            height: 56px;
+            background: #ffffff;
+            border: 1px solid var(--border-dark);
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .spread-half.left-half {
+            margin-right: 1px;
+        }
+
+        .spread-half.right-half {
+            margin-left: 1px;
+        }
+
+        .spread-split-axis {
+            position: absolute;
+            top: 2px;
+            bottom: 2px;
+            left: 50%;
+            width: 2px;
+            transform: translateX(-50%);
+            border-left: 1.5px dashed var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
-            width: 100%;
-            max-width: 500px;
+            transition: opacity 0.3s ease;
         }
 
-        .success-msg.visible {
+        .scissors-icon {
+            background: #ffffff;
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: var(--primary);
+        }
+
+        /* When split is active in comparison demo */
+        .spread-sheet-demo.split-active .spread-split-axis {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        /* Cursor */
+        .spread-sheet-demo.split-active .spread-half.left-half {
+            transform: translateX(-4px);
+            border-color: var(--primary);
+        }
+
+        .spread-sheet-demo.split-active .spread-half.right-half {
+            transform: translateX(4px);
+            border-color: var(--primary);
+        }
+
+        .compare-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .tag-standard {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .tag-split {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .compare-desc {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            line-height: 1.3;
+        }
+
+        /* Ingestion Status & Active Target Dossier */
+        .pdf-file-dossier {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dossier-label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dossier-pill-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dossier-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: var(--radius-xs);
+            font-size: 0.76rem;
+            font-weight: 500;
+        }
+
+        .dossier-pill.target-project {
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .dossier-pill.target-file {
+            background: #fbf9f5;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .dossier-pill.target-file.success {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+            font-weight: 700;
+        }
+
+        .btn-delete-pdf {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            border-radius: var(--radius-xs);
+            padding: 4px 9px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+            transition: all 0.2s;
+        }
+
+        .btn-delete-pdf:hover {
+            background: #fecaca;
+        }
+
+        /* Animated Pointer Cursor */
         .cursor {
-            width: 20px;
-            height: 29px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2.9-3.2-7.4-4.4 4.6z" stroke="white" stroke-width="1"/></svg>') no-repeat;
-            background-size: contain;
-            background-repeat: no-repeat;
+            width: 22px;
+            height: 28px;
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 9999;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-            transform: translate(-50px, -50px);
+            z-index: 99999;
             pointer-events: none;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35));
+            transform: translate(900px, 700px);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="window" id="appWindow">
-        <div class="header">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-            <div style="margin-left: auto; font-size: 12px; color: #6b7280; font-weight: 500;">PyPotteryLens v0.2.1
-            </div>
-        </div>
-        <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab">🗂️ Project Manager</div>
-            <div class="tab active">PDF Processing</div>
-            <div class="tab">Apply Model</div>
-            <div class="tab">Review</div>
-            <div class="tab">Tabular Info</div>
-            <div class="tab">Post-Processing</div>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            <h2 style="color: #1f2937; margin-bottom: 0;">Select a PDF file</h2>
-            <p style="color: #6b7280; margin-top: 5px;">Upload your report to extract pottery images</p>
-
-            <div class="upload-area" id="uploadArea">
-                <button class="btn-primary" id="uploadBtn">
-                    📄 Upload PDF
-                </button>
-                <p style="color: #9ca3af; margin-top: 1rem; font-size: 0.9em;">or drag and drop here</p>
+    <div class="window" id="appWindow" data-chrome="lens" data-tab="1" data-project="Scavi_Capena_2024"><!-- Main Workspace -->
+        <main class="workspace-body">
+            <div class="tab-heading">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    PDF Document Processing
+                </h2>
+                <span class="subtitle">Extract high-resolution plate illustrations and sherd drawings directly from published monograph PDFs</span>
             </div>
 
-            <div class="file-info" id="fileInfo">
-                <div style="font-size: 24px;">📄</div>
-                <div>
-                    <div style="font-weight: 600; color: #374151;">Scavi_Capena_Report.pdf</div>
-                    <div style="font-size: 0.8rem; color: #6b7280;">2.4 MB</div>
+            <div class="pdf-console">
+                <!-- Dropzone Area -->
+                <div class="pdf-dropzone" id="pdfDropzone">
+                    <div class="dropzone-icon" id="dropzoneIcon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                            <polyline points="12 13 12 8 9 11"/>
+                            <polyline points="12 8 15 11"/>
+                        </svg>
+                    </div>
+
+                    <h3 class="dropzone-title" id="dropzoneTitle">Upload Ceramic Publication PDF</h3>
+                    <p class="dropzone-sub" id="dropzoneSub">Drag and drop your report or monograph PDF here, or click to browse files</p>
+
+                    <!-- Floating Dropped File Badge -->
+                    <div class="uploaded-file-badge" id="fileBadge">
+                        <div class="file-badge-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                        </div>
+                        <div class="file-badge-text">
+                            <span class="file-badge-name">Cardarelli_2022.pdf</span>
+                            <span class="file-badge-size">18.4 MB · Scanned Monograph</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-primary" id="pdfUploadBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <polyline points="9 15 12 12 15 15"></polyline>
+                        </svg>
+                        <span id="uploadBtnText">Select PDF File</span>
+                    </button>
+
+                    <!-- Extraction Progress -->
+                    <div class="extraction-progress-wrap" id="progressWrap">
+                        <div class="extraction-progress-header">
+                            <span id="progressStatusText">Rendering plates...</span>
+                            <span id="progressPercentText" style="font-family: var(--font-mono); color: var(--primary);">0%</span>
+                        </div>
+                        <div class="extraction-bar-track">
+                            <div class="extraction-bar-fill" id="progressBar"></div>
+                        </div>
+                    </div>
+
+                    <span class="dropzone-specs" id="dropzoneSpecs">Accepts standard .pdf documents · Extracts plates at native high resolution</span>
+                </div>
+
+                <!-- Settings Strip: Split Scanned Spreads -->
+                <div class="pdf-settings-strip" id="settingsStrip">
+                    <label class="pdf-toggle-row" id="toggleRow">
+                        <div class="toggle-switch" id="toggleSwitch"></div>
+                        <div class="toggle-row-content">
+                            <span class="toggle-row-title">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <line x1="12" y1="3" x2="12" y2="21"></line>
+                                </svg>
+                                Split Scanned Spreads
+                                <span class="spread-info-pill" id="hoverHint">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12" stroke="#fff" stroke-width="2"></line>
+                                        <circle cx="12" cy="8" r="1" fill="#fff"></circle>
+                                    </svg>
+                                    Hover for visual comparison
+                                </span>
+                            </span>
+                            <span class="toggle-row-description">
+                                Automatically bisect two-page book spreads into separate left and right plates down the exact middle
+                            </span>
+                        </div>
+                    </label>
+
+                    <!-- Visual Comparison Popover -->
+                    <div class="spread-compare-popover" id="comparePopover">
+                        <div class="compare-popover-header">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            PDF Page Structure Guide
+                        </div>
+                        <div class="compare-popover-grid">
+                            <!-- Option 1: Single Page -->
+                            <div class="compare-card">
+                                <div class="sheet-preview">
+                                    <svg width="100" height="50" viewBox="0 0 100 50">
+                                        <rect x="15" y="5" width="70" height="40" rx="2" fill="#f8fafc" stroke="#cbd5e1"/>
+                                        <path d="M30 18 Q50 14 70 18 Q64 30 50 32 Q36 30 30 18 Z" fill="none" stroke="#64748b" stroke-width="1.2"/>
+                                    </svg>
+                                </div>
+                                <span class="compare-tag tag-standard">Single Page</span>
+                                <p class="compare-desc"><strong>1 sheet = 1 page</strong>. Normal digital monograph PDF. <em>Leave toggle OFF.</em></p>
+                            </div>
+
+                            <!-- Option 2: Scanned Spread -->
+                            <div class="compare-card highlight" id="spreadDemoCard">
+                                <div class="spread-sheet-demo" id="spreadSheetDemo">
+                                    <div class="spread-half left-half">
+                                        <svg width="40" height="36" viewBox="0 0 40 36">
+                                            <path d="M8 12 Q20 8 32 12 Q28 22 20 24 Q12 22 8 12 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                                            <text x="20" y="32" font-size="6" fill="#a8a29e" text-anchor="middle">page_0a</text>
+                                        </svg>
+                                    </div>
+                                    <div class="spread-split-axis">
+                                        <span class="scissors-icon">✂</span>
+                                    </div>
+                                    <div class="spread-half right-half">
+                                        <svg width="40" height="36" viewBox="0 0 40 36">
+                                            <path d="M8 12 Q20 8 32 12 Q28 22 20 24 Q12 22 8 12 Z" fill="none" stroke="#57534e" stroke-width="1.2"/>
+                                            <text x="20" y="32" font-size="6" fill="#a8a29e" text-anchor="middle">page_0b</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <span class="compare-tag tag-split">Scanned Spread</span>
+                                <p class="compare-desc"><strong>1 sheet = 2 facing pages</strong>. Cuts spine into 2 individual plates. <em>Turn toggle ON.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ingestion Status & Active Target Dossier -->
+                <div class="pdf-file-dossier">
+                    <div class="dossier-label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Ingestion Status &amp; Active Target
+                    </div>
+                    <div class="dossier-pill-row">
+                        <span class="dossier-pill target-project">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+                            </svg>
+                            <strong>Target:</strong> Scavi_Capena_2024
+                        </span>
+                        <span class="dossier-pill target-file" id="dossierFilePill">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            <span id="dossierStatusText">Awaiting document</span>
+                        </span>
+                        <button type="button" class="btn-delete-pdf" id="deletePdfBtn">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            Remove PDF
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="progress-container" id="progressContainer">
-                <div
-                    style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: #4b5563;">
-                    <span>Processing pages...</span>
-                    <span id="progressText">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
+            <!-- Toast Success Message -->
+            <div class="status-toast" id="statusToast">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>PDF "Cardarelli_2022.pdf" processed successfully: 14 plates generated (with split).</span>
             </div>
+        </main>
 
-            <div class="success-msg" id="successMsg">
-                ✅ PDF processed successfully! 12 images extracted.
-            </div>
+        <!-- Animated Mouse Pointer -->
+        <div class="cursor" id="cursor">
+            <svg viewBox="0 0 24 24" width="22" height="28">
+                <path d="M3 2l16 11.5-6.8.6 3.8 8.4-2.8 1.2-3.8-8.5-4.4 4.8V2z" fill="#1c1917" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
         </div>
-
-        <div class="cursor" id="cursor"></div>
     </div>
 
+    <script src="../../anim-kit/kit.js"></script>
+    <script src="../../anim-kit/lens.js"></script>
     <script>
-        const cursor = document.getElementById('cursor');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const fileInfo = document.getElementById('fileInfo');
-        const progressContainer = document.getElementById('progressContainer');
+        Kit.chrome(document.getElementById('appWindow'));
+
+        const pdfDropzone = document.getElementById('pdfDropzone');
+        const dropzoneIcon = document.getElementById('dropzoneIcon');
+        const dropzoneTitle = document.getElementById('dropzoneTitle');
+        const dropzoneSub = document.getElementById('dropzoneSub');
+        const dropzoneSpecs = document.getElementById('dropzoneSpecs');
+        const pdfUploadBtn = document.getElementById('pdfUploadBtn');
+        const uploadBtnText = document.getElementById('uploadBtnText');
+        const fileBadge = document.getElementById('fileBadge');
+        const progressWrap = document.getElementById('progressWrap');
         const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const successMsg = document.getElementById('successMsg');
-        const appWindow = document.getElementById('appWindow');
-
-        function moveCursorTo(element, duration = 1000, delay = 0) {
-            const rect = element.getBoundingClientRect();
-            const containerRect = appWindow.getBoundingClientRect();
-            const x = rect.left - containerRect.left + rect.width / 2;
-            const y = rect.top - containerRect.top + rect.height / 2;
-
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    cursor.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.5, 1)`;
-                    cursor.style.transform = `translate(${x}px, ${y}px)`;
-                    setTimeout(resolve, duration);
-                }, delay);
-            });
-        }
+        const progressStatusText = document.getElementById('progressStatusText');
+        const progressPercentText = document.getElementById('progressPercentText');
+        const toggleRow = document.getElementById('toggleRow');
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const hoverHint = document.getElementById('hoverHint');
+        const comparePopover = document.getElementById('comparePopover');
+        const spreadSheetDemo = document.getElementById('spreadSheetDemo');
+        const dossierFilePill = document.getElementById('dossierFilePill');
+        const dossierStatusText = document.getElementById('dossierStatusText');
+        const deletePdfBtn = document.getElementById('deletePdfBtn');
+        const statusToast = document.getElementById('statusToast');
 
         function reset() {
-            fileInfo.classList.remove('visible');
-            progressContainer.classList.remove('visible');
-            successMsg.classList.remove('visible');
+            // Reset Toggle & Popover
+            toggleSwitch.classList.remove('switched-on');
+            comparePopover.classList.remove('visible');
+            spreadSheetDemo.classList.remove('split-active');
+
+            // Reset Dropzone
+            pdfDropzone.classList.remove('dropzone-locked', 'drop-highlight');
+            dropzoneTitle.textContent = 'Upload Ceramic Publication PDF';
+            dropzoneSub.textContent = 'Drag and drop your report or monograph PDF here, or click to browse files';
+            dropzoneSpecs.style.display = 'block';
+            dropzoneIcon.innerHTML = `
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    <polyline points="12 13 12 8 9 11"/>
+                    <polyline points="12 8 15 11"/>
+                </svg>
+            `;
+
+            // Reset Upload Button
+            pdfUploadBtn.style.display = 'inline-flex';
+            pdfUploadBtn.classList.remove('btn-disabled');
+            pdfUploadBtn.disabled = false;
+            uploadBtnText.textContent = 'Select PDF File';
+
+            // Reset Progress & Badge
+            fileBadge.style.display = 'none';
+            progressWrap.style.display = 'none';
             progressBar.style.width = '0%';
-            progressText.innerText = '0%';
-            uploadBtn.style.transform = 'scale(1)';
-            cursor.style.transform = 'translate(850px, 600px)';
+            progressPercentText.textContent = '0%';
+            progressStatusText.textContent = 'Rendering plates...';
+
+            // Reset Dossier
+            dossierFilePill.className = 'dossier-pill target-file';
+            dossierFilePill.innerHTML = `
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>Awaiting document</span>
+            `;
+            deletePdfBtn.style.display = 'none';
+            statusToast.classList.remove('visible');
         }
 
-        async function runAnimation() {
-            reset();
+        async function run(k) {
+            // 1. Move cursor to "Hover for visual comparison" pill
+            await k.move(hoverHint, 800, 300);
 
-            // 1. Move to Upload Button
-            await moveCursorTo(uploadBtn, 1000, 500);
+            // 2. Open Page Structure Popover Guide
+            comparePopover.classList.add('visible');
+            await k.wait(800);
 
-            // 2. Click
-            uploadBtn.style.transform = 'scale(0.95)';
-            await new Promise(r => setTimeout(r, 200));
-            uploadBtn.style.transform = 'scale(1)';
+            // 3. Move cursor to toggle switch
+            await k.move(toggleSwitch, 600, 200);
 
-            // 3. Show File
-            fileInfo.classList.add('visible');
+            // 4. Click Toggle Switch -> ON
+            await k.wait(150);
+            toggleSwitch.classList.add('switched-on');
 
-            // 4. Move Cursor Away
-            cursor.style.transform = 'translate(850px, 600px)';
+            // 5. In popover: animate spine cut line & separate plates
+            spreadSheetDemo.classList.add('split-active');
+            await k.wait(1200);
 
-            // 5. Start Progress
-            await new Promise(r => setTimeout(r, 500));
-            progressContainer.classList.add('visible');
+            // 6. Popover closes as we move to upload button
+            comparePopover.classList.remove('visible');
+            await k.move(pdfUploadBtn, 700, 250);
 
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 2;
-                if (progress > 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    // Show success
-                    setTimeout(() => {
-                        successMsg.classList.add('visible');
-                    }, 500);
-                }
-                progressBar.style.width = progress + '%';
-                progressText.innerText = progress + '%';
-            }, 30);
+            // 7. Click Upload Button
+            await k.click(pdfUploadBtn, { lead: 150, hold: 150 });
+
+            // 8. File badge drops in
+            pdfUploadBtn.style.display = 'none';
+            dropzoneSpecs.style.display = 'none';
+            fileBadge.style.display = 'inline-flex';
+            pdfDropzone.classList.add('drop-highlight');
+            await k.wait(450);
+            pdfDropzone.classList.remove('drop-highlight');
+
+            // 9. Show Progress Bar and animate 0 -> 100%
+            progressWrap.style.display = 'flex';
+            const progressSteps = [
+                { percent: 15, text: 'Reading PDF structure (scanned spread mode)...' },
+                { percent: 35, text: 'Bisecting spine & rendering plates 1–4...' },
+                { percent: 65, text: 'Rendering high-resolution plates 5–10...' },
+                { percent: 88, text: 'Rendering plates 11–14 (300 DPI)...' },
+                { percent: 100, text: 'Extraction complete: 14 plate images generated' }
+            ];
+
+            for (const step of progressSteps) {
+                progressBar.style.width = `${step.percent}%`;
+                progressPercentText.textContent = `${step.percent}%`;
+                progressStatusText.textContent = step.text;
+                await k.wait(380);
+            }
+
+            await k.wait(300);
+
+            // 10. Complete & Lock Dropzone State
+            progressWrap.style.display = 'none';
+            fileBadge.style.display = 'none';
+            dropzoneSpecs.style.display = 'block';
+
+            pdfDropzone.classList.add('dropzone-locked');
+            dropzoneTitle.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.2" style="vertical-align: -2px; margin-right: 4px;">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                PDF Already Ingested
+            `;
+            dropzoneSub.textContent = 'Active: "Cardarelli_2022.pdf". A project can only contain 1 PDF. Click "Remove PDF" above if you wish to upload another document.';
+            dropzoneIcon.innerHTML = `
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            `;
+
+            pdfUploadBtn.style.display = 'inline-flex';
+            pdfUploadBtn.classList.add('btn-disabled');
+            pdfUploadBtn.disabled = true;
+            uploadBtnText.textContent = 'PDF Already Uploaded';
+
+            // 11. Update Dossier Ingestion Status Pill
+            dossierFilePill.className = 'dossier-pill target-file success';
+            dossierFilePill.innerHTML = `
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <strong>PDF Active:</strong> Cardarelli_2022.pdf (14 plates)
+            `;
+            deletePdfBtn.style.display = 'inline-flex';
+
+            // 12. Show Success Toast Alert
+            statusToast.classList.add('visible');
+
+            // 13. Move cursor to Dossier active file pill & Remove PDF button
+            await k.move(dossierFilePill, 750, 300);
+            await k.wait(2200);
         }
 
-        setInterval(runAnimation, 8000);
-        setTimeout(runAnimation, 100);
+        Kit.scene({ reset, run });
     </script>
 </body>
 

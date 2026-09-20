@@ -20,143 +20,59 @@ toc-depth: 3
   <p class="drafting-hero-lead">
     The PyPottery Suite ships as a self-contained application hub. The launcher provisions an isolated Python
     environment, detects available hardware acceleration (NVIDIA CUDA, Apple Silicon MPS, AMD ROCm, or CPU), and
-    runs each of the five suite modules as an independent process without touching your system's Python install.
+    runs each of the five suite modules as an independent process.
   </p>
 </div>
-
-<hr class="hero-pipeline-hr">
 ```
 
-## Deployment Paradigms
-
-Two ways to run PyPottery, depending on your workflow:
-
-::: {.grid}
-
-::: {.g-col-12 .g-col-md-6}
 ```{=html}
-<div class="methodology-card">
-  <div>
-    <span class="methodology-tag" style="color: var(--teal-dark); background: var(--teal-soft); border-color: var(--teal-border);">RECOMMENDED FOR RESEARCHERS</span>
-    <h3 class="methodology-title">Method A: Launcher Hub</h3>
-    <p class="methodology-desc">
+<div class="route-picker">
+  <div class="route-option route-option-recommended">
+    <div class="route-name-line">
+      <p class="route-name"><a href="#method-a-launcher-hub">Method A: Launcher Hub</a></p>
+    </div>
+    <p class="route-desc">
       A packaged release with no Python installation, Git, or terminal use required. The launcher bootstraps
       dependencies, configures a hardware-matched PyTorch backend, and opens a browser-based control panel.
     </p>
+    <span class="route-tag">Recommended for researchers</span>
   </div>
-  <a href="#method-a-launcher-hub" class="btn-editorial-primary" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Launcher guide</a>
-</div>
-```
-:::
 
-::: {.g-col-12 .g-col-md-6}
-```{=html}
-<div class="methodology-card">
-  <div>
-    <span class="methodology-tag" style="color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border);">DEVELOPERS</span>
-    <h3 class="methodology-title">Method B: Source & CLI</h3>
-    <p class="methodology-desc">
+  <div class="route-option">
+    <div class="route-name-line">
+      <p class="route-name"><a href="#method-b-source-cli">Method B: Source &amp; CLI</a></p>
+    </div>
+    <p class="route-desc">
       Install directly from GitHub. For developers, computational archaeologists building custom pipelines, and
       contributors extending the machine learning modules via the launcher's Developer Mode.
     </p>
-  </div>
-  <a href="#method-b-source-cli" class="btn-editorial-github" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Source instructions</a>
-</div>
-```
-:::
-
-:::
-
----
-
-## Method A: Launcher Hub
-
-### Release Packages
-
-Download the package for your operating system from the GitHub releases page:
-
-::: {.callout-important}
-#### Offline use in the field
-PyPottery runs **offline by default** once set up. The **first run** is the main exception: initial environment
-setup and AI model downloads (YOLOv8 detectors, TrOCR, SAM 2, and the matching PyTorch backend) require an
-internet connection. If you're deploying to a dig house or field site without connectivity, run the initial
-configuration while connected — at your institution or a hotel — before departing.
-
-One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for
-metadata extraction, so that specific feature needs a live connection every time it's used, not just once.
-Everything else in the suite runs locally.
-:::
-
-```{=html}
-<div class="os-download-grid">
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">Windows</span>
-      <h4 class="os-card-title">Windows 10 / 11</h4>
-      <div class="os-card-meta">64-bit (x86_64) • ~28 MB installer</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable,
-        no-installer versions are also available on the releases page.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download Windows Installer
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">macOS Apple Silicon</span>
-      <h4 class="os-card-title">macOS arm64</h4>
-      <div class="os-card-meta">M1 / M2 / M3 / M4 • .dmg</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download macOS arm64
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">macOS Intel</span>
-      <h4 class="os-card-title">macOS x86_64</h4>
-      <div class="os-card-meta">Intel Mac • .dmg</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Build for Intel-based Mac workstations and laptops, distributed as a .dmg.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download macOS Intel
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">Linux</span>
-      <h4 class="os-card-title">Linux x86_64</h4>
-      <div class="os-card-meta">AppImage</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download Linux AppImage
-    </a>
+    <span class="route-tag route-tag-dev">Developers</span>
   </div>
 </div>
 ```
 
----
+## Method A: Launcher Hub {#method-a-launcher-hub}
 
-### Installation by Operating System
+### Install for your operating system
 
-Select your operating system for step-by-step instructions:
+Select your operating system to download the launcher and follow the step-by-step instructions:
 
 ::: {.panel-tabset}
 
-### Windows 10 / 11
+### Windows {#windows}
+
+```{=html}
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">Windows 10 / 11</div>
+      <div class="download-row-meta">64-bit (x86_64) • ~28 MB installer</div>
+      <p class="download-row-desc">Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable, no-installer versions are also available on the releases page.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download Windows Installer</a>
+  </div>
+</div>
+```
 
 ```{=html}
 <div class="install-steps-list">
@@ -228,7 +144,28 @@ the executable and choose **Send to → Desktop (create shortcut)** if you want 
 </div>
 ```
 
-### macOS (Apple Silicon & Intel)
+### macOS {#macos}
+
+```{=html}
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">macOS Apple Silicon</div>
+      <div class="download-row-meta">M1 / M2 / M3 / M4 • .dmg</div>
+      <p class="download-row-desc">Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download macOS arm64</a>
+  </div>
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">macOS Intel</div>
+      <div class="download-row-meta">Intel Mac • .dmg</div>
+      <p class="download-row-desc">Build for Intel-based Mac workstations and laptops, distributed as a .dmg.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download macOS Intel</a>
+  </div>
+</div>
+```
 
 ```{=html}
 <div class="install-steps-list">
@@ -310,7 +247,20 @@ the `.dmg`.
 </div>
 ```
 
-### Linux (x86_64 AppImage)
+### Linux {#linux}
+
+```{=html}
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">Linux x86_64</div>
+      <div class="download-row-meta">AppImage</div>
+      <p class="download-row-desc">Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download Linux AppImage</a>
+  </div>
+</div>
+```
 
 ```{=html}
 <div class="install-steps-list">
@@ -388,9 +338,20 @@ chmod +x PyPottery.sh install_desktop.sh
 
 :::
 
----
+### First run and offline use
 
-## The Suite Launcher
+::: {.callout-important}
+#### Offline use in the field
+PyPottery runs **offline by default** once set up. The **first run** is the main exception: initial environment
+setup and AI model downloads require an
+internet connection.
+
+One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for
+metadata extraction, so that specific feature needs a live connection every time it's used, not just once.
+Everything else in the suite runs locally.
+:::
+
+### The Suite Launcher
 
 The launcher is a local process supervisor reachable in the browser at `http://127.0.0.1:5000`.
 
@@ -407,38 +368,15 @@ The launcher is a local process supervisor reachable in the browser at `http://1
 </div>
 ```
 
-### What it handles
+#### What it handles
 
 1. **Environment lifecycle**: creates and validates an isolated virtual environment (`pypottery_env`), keeping tool dependencies separate from your system's global libraries.
 2. **Hardware detection**: identifies available compute (CUDA 11.8–12.6, Apple Silicon MPS, AMD ROCm 6.2, or CPU) and installs the matching PyTorch build automatically.
-3. **Single-instance lock**: an advisory lock (`instance_lock.py`) prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.
-4. **Offline model caching**: model weights (YOLOv8, TrOCR, the diffusion model, SAM 2) are downloaded once into `models/` and cached for fully offline use afterward.
+3. **Single-instance lock**: an advisory lock  prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.
+4. **Offline model caching**: model weights are downloaded once into `models/` and cached for fully offline use afterward.
 5. **Process isolation**: each application runs as an independent subprocess on its own loopback port. Closing the launcher stops all child processes.
 
----
-
-## Module Architecture & Port Allocation
-
-Each tool runs as its own microservice:
-
-| Module | Function | Port | Min RAM | Recommended | Architecture |
-|:---|:---|:---:|:---:|:---:|:---|
-| **PyPotteryLens** | PDF & monograph figure extraction | `5001` | 8 GB | 16 GB | YOLOv8 + PyMuPDF |
-| **PyPotteryScan** | Pottery card digitization & OCR | `5002` | 16 GB | 32 GB | TrOCR + Vision-LLM |
-| **PyPotteryInk** | Pencil drawing → ink restoration | `5003` | 8 GB | 16 GB | 1-Step Latent Diffusion |
-| **PyPotteryTrace** | Profile vectorization | `5004` | 8 GB | 16 GB | SAM 2 + Spline Engine |
-| **PyPotteryLayout** | Plate synthesis | `5005` | 4 GB | 8 GB | Metric Grid Engine + Vector SVG/PDF |
-
-::: {.callout-note}
-#### Process independence
-Because each module binds to its own port (`127.0.0.1:5001`–`5005`), a heavy job in one — dense OCR in
-PyPotteryScan, for instance — doesn't block or slow down another, such as an active session in PyPotteryTrace.
-:::
-
----
-
-## Method B: Source & CLI
-
+## Method B: Source & CLI {#method-b-source-cli}
 For running from a Git checkout or developing custom ML backends:
 
 ### 1. Clone the repository
@@ -498,8 +436,6 @@ To run a single tool outside the launcher, see its dedicated installation guide:
 - [PyPotteryTrace](pypotterytrace/index.qmd)
 - [PyPotteryLayout](pypotterylayout/index.qmd)
 
----
-
 ## Troubleshooting
 
 ```{=html}
@@ -557,8 +493,6 @@ To run a single tool outside the launcher, see its dedicated installation guide:
 </table>
 </div>
 ```
-
----
 
 ```{=html}
 <div class="archaeo-cta-box" style="margin-top: 3rem;">

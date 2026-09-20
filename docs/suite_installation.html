@@ -357,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./suite_version.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Version History</span></a>
+ <span class="menu-text">Suite Version History</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -382,17 +382,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#deployment-paradigms" id="toc-deployment-paradigms" class="nav-link active" data-scroll-target="#deployment-paradigms">Deployment Paradigms</a></li>
-  <li><a href="#method-a-launcher-hub" id="toc-method-a-launcher-hub" class="nav-link" data-scroll-target="#method-a-launcher-hub">Method A: Launcher Hub</a>
+  <li><a href="#method-a-launcher-hub" id="toc-method-a-launcher-hub" class="nav-link active" data-scroll-target="#method-a-launcher-hub">Method A: Launcher Hub</a>
   <ul class="collapse">
-  <li><a href="#release-packages" id="toc-release-packages" class="nav-link" data-scroll-target="#release-packages">Release Packages</a></li>
-  <li><a href="#installation-by-operating-system" id="toc-installation-by-operating-system" class="nav-link" data-scroll-target="#installation-by-operating-system">Installation by Operating System</a></li>
+  <li><a href="#install-for-your-operating-system" id="toc-install-for-your-operating-system" class="nav-link" data-scroll-target="#install-for-your-operating-system">Install for your operating system</a></li>
+  <li><a href="#first-run-and-offline-use" id="toc-first-run-and-offline-use" class="nav-link" data-scroll-target="#first-run-and-offline-use">First run and offline use</a></li>
+  <li><a href="#the-suite-launcher" id="toc-the-suite-launcher" class="nav-link" data-scroll-target="#the-suite-launcher">The Suite Launcher</a></li>
   </ul></li>
-  <li><a href="#the-suite-launcher" id="toc-the-suite-launcher" class="nav-link" data-scroll-target="#the-suite-launcher">The Suite Launcher</a>
-  <ul class="collapse">
-  <li><a href="#what-it-handles" id="toc-what-it-handles" class="nav-link" data-scroll-target="#what-it-handles">What it handles</a></li>
-  </ul></li>
-  <li><a href="#module-architecture-port-allocation" id="toc-module-architecture-port-allocation" class="nav-link" data-scroll-target="#module-architecture-port-allocation">Module Architecture &amp; Port Allocation</a></li>
   <li><a href="#method-b-source-cli" id="toc-method-b-source-cli" class="nav-link" data-scroll-target="#method-b-source-cli">Method B: Source &amp; CLI</a>
   <ul class="collapse">
   <li><a href="#clone-the-repository" id="toc-clone-the-repository" class="nav-link" data-scroll-target="#clone-the-repository">1. Clone the repository</a></li>
@@ -441,130 +436,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <p class="drafting-hero-lead">
     The PyPottery Suite ships as a self-contained application hub. The launcher provisions an isolated Python
     environment, detects available hardware acceleration (NVIDIA CUDA, Apple Silicon MPS, AMD ROCm, or CPU), and
-    runs each of the five suite modules as an independent process without touching your system's Python install.
+    runs each of the five suite modules as an independent process.
   </p>
 </div>
-
-<hr class="hero-pipeline-hr">
-<section id="deployment-paradigms" class="level2">
-<h2 class="anchored" data-anchor-id="deployment-paradigms">Deployment Paradigms</h2>
-<p>Two ways to run PyPottery, depending on your workflow:</p>
-<div class="grid">
-<div class="g-col-12 g-col-md-6">
-<div class="methodology-card">
-  <div>
-    <span class="methodology-tag" style="color: var(--teal-dark); background: var(--teal-soft); border-color: var(--teal-border);">RECOMMENDED FOR RESEARCHERS</span>
-    <h3 class="methodology-title anchored">Method A: Launcher Hub</h3>
-    <p class="methodology-desc">
+<div class="route-picker">
+  <div class="route-option route-option-recommended">
+    <div class="route-name-line">
+      <p class="route-name"><a href="#method-a-launcher-hub">Method A: Launcher Hub</a></p>
+    </div>
+    <p class="route-desc">
       A packaged release with no Python installation, Git, or terminal use required. The launcher bootstraps
       dependencies, configures a hardware-matched PyTorch backend, and opens a browser-based control panel.
     </p>
+    <span class="route-tag">Recommended for researchers</span>
   </div>
-  <a href="#method-a-launcher-hub" class="btn-editorial-primary" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Launcher guide</a>
-</div>
-</div>
-<div class="g-col-12 g-col-md-6">
-<div class="methodology-card">
-  <div>
-    <span class="methodology-tag" style="color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border);">DEVELOPERS</span>
-    <h3 class="methodology-title anchored">Method B: Source &amp; CLI</h3>
-    <p class="methodology-desc">
+
+  <div class="route-option">
+    <div class="route-name-line">
+      <p class="route-name"><a href="#method-b-source-cli">Method B: Source &amp; CLI</a></p>
+    </div>
+    <p class="route-desc">
       Install directly from GitHub. For developers, computational archaeologists building custom pipelines, and
       contributors extending the machine learning modules via the launcher's Developer Mode.
     </p>
+    <span class="route-tag route-tag-dev">Developers</span>
   </div>
-  <a href="#method-b-source-cli" class="btn-editorial-github" style="display: inline-block; padding: 0.5rem 1.1rem; font-size: 0.88rem; margin-top: 0.75rem; width: fit-content;">Source instructions</a>
 </div>
-</div>
-</div>
-<hr>
-</section>
 <section id="method-a-launcher-hub" class="level2">
 <h2 class="anchored" data-anchor-id="method-a-launcher-hub">Method A: Launcher Hub</h2>
-<section id="release-packages" class="level3">
-<h3 class="anchored" data-anchor-id="release-packages">Release Packages</h3>
-<p>Download the package for your operating system from the GitHub releases page:</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Offline use in the field
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>PyPottery runs <strong>offline by default</strong> once set up. The <strong>first run</strong> is the main exception: initial environment setup and AI model downloads (YOLOv8 detectors, TrOCR, SAM 2, and the matching PyTorch backend) require an internet connection. If you’re deploying to a dig house or field site without connectivity, run the initial configuration while connected — at your institution or a hotel — before departing.</p>
-<p>One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for metadata extraction, so that specific feature needs a live connection every time it’s used, not just once. Everything else in the suite runs locally.</p>
-</div>
-</div>
-<div class="os-download-grid">
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">Windows</span>
-      <h4 class="os-card-title anchored">Windows 10 / 11</h4>
-      <div class="os-card-meta">64-bit (x86_64) • ~28 MB installer</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable,
-        no-installer versions are also available on the releases page.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download Windows Installer
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">macOS Apple Silicon</span>
-      <h4 class="os-card-title anchored">macOS arm64</h4>
-      <div class="os-card-meta">M1 / M2 / M3 / M4 • .dmg</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download macOS arm64
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">macOS Intel</span>
-      <h4 class="os-card-title anchored">macOS x86_64</h4>
-      <div class="os-card-meta">Intel Mac • .dmg</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Build for Intel-based Mac workstations and laptops, distributed as a .dmg.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download macOS Intel
-    </a>
-  </div>
-
-  <div class="os-download-card">
-    <div>
-      <span class="os-card-badge">Linux</span>
-      <h4 class="os-card-title anchored">Linux x86_64</h4>
-      <div class="os-card-meta">AppImage</div>
-      <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.25rem;">
-        Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.
-      </p>
-    </div>
-    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="os-card-btn" target="_blank" rel="noopener">
-      Download Linux AppImage
-    </a>
-  </div>
-</div>
-<hr>
-</section>
-<section id="installation-by-operating-system" class="level3">
-<h3 class="anchored" data-anchor-id="installation-by-operating-system">Installation by Operating System</h3>
-<p>Select your operating system for step-by-step instructions:</p>
+<section id="install-for-your-operating-system" class="level3">
+<h3 class="anchored" data-anchor-id="install-for-your-operating-system">Install for your operating system</h3>
+<p>Select your operating system to download the launcher and follow the step-by-step instructions:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Windows 10 / 11</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">macOS (Apple Silicon &amp; Intel)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Linux (x86_64 AppImage)</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">macOS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Linux</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">Windows 10 / 11</div>
+      <div class="download-row-meta">64-bit (x86_64) • ~28 MB installer</div>
+      <p class="download-row-desc">Installer with a setup wizard — Start Menu and Desktop shortcuts are created for you. Portable, no-installer versions are also available on the releases page.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download Windows Installer</a>
+  </div>
+</div>
 <div class="install-steps-list">
   <div class="install-step-card">
     <div class="install-step-num">01</div>
@@ -643,6 +559,24 @@ Prefer a portable version?
 </section>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">macOS Apple Silicon</div>
+      <div class="download-row-meta">M1 / M2 / M3 / M4 • .dmg</div>
+      <p class="download-row-desc">Native Apple Silicon build, distributed as a .dmg — the standard drag-to-Applications install.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download macOS arm64</a>
+  </div>
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">macOS Intel</div>
+      <div class="download-row-meta">Intel Mac • .dmg</div>
+      <p class="download-row-desc">Build for Intel-based Mac workstations and laptops, distributed as a .dmg.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download macOS Intel</a>
+  </div>
+</div>
 <div class="install-steps-list">
   <div class="install-step-card">
     <div class="install-step-num">01</div>
@@ -738,6 +672,16 @@ Portable version
 </section>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="download-panel">
+  <div class="download-row">
+    <div class="download-row-info">
+      <div class="download-row-title">Linux x86_64</div>
+      <div class="download-row-meta">AppImage</div>
+      <p class="download-row-desc">Self-registering AppImage — adds its own menu entry and icon on first run, no separate install step.</p>
+    </div>
+    <a href="https://github.com/lrncrd/PyPottery/releases/latest" class="btn-editorial-primary" target="_blank" rel="noopener"><i class="bi bi-download"></i> Download Linux AppImage</a>
+  </div>
+</div>
 <div class="install-steps-list">
   <div class="install-step-card">
     <div class="install-step-num">01</div>
@@ -820,11 +764,26 @@ Prefer a plain directory to an AppImage?
 </div>
 </div>
 </div>
-<hr>
 </section>
+<section id="first-run-and-offline-use" class="level3">
+<h3 class="anchored" data-anchor-id="first-run-and-offline-use">First run and offline use</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Offline use in the field
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PyPottery runs <strong>offline by default</strong> once set up. The <strong>first run</strong> is the main exception: initial environment setup and AI model downloads require an internet connection.</p>
+<p>One module-level exception applies beyond first run: PyPotteryLens currently uses a cloud LLM (OpenRouter) for metadata extraction, so that specific feature needs a live connection every time it’s used, not just once. Everything else in the suite runs locally.</p>
+</div>
+</div>
 </section>
-<section id="the-suite-launcher" class="level2">
-<h2 class="anchored" data-anchor-id="the-suite-launcher">The Suite Launcher</h2>
+<section id="the-suite-launcher" class="level3">
+<h3 class="anchored" data-anchor-id="the-suite-launcher">The Suite Launcher</h3>
 <p>The launcher is a local process supervisor reachable in the browser at <code>http://127.0.0.1:5000</code>.</p>
 <div class="simulator-wrapper">
   <div class="simulator-header-bar">
@@ -836,97 +795,17 @@ Prefer a plain directory to an AppImage?
   </div>
   <iframe src="animations/launcher_demo.html" class="launcher-simulator-iframe" title="PyPottery Launcher Interactive Demonstration"></iframe>
 </div>
-<section id="what-it-handles" class="level3">
-<h3 class="anchored" data-anchor-id="what-it-handles">What it handles</h3>
+<section id="what-it-handles" class="level4">
+<h4 class="anchored" data-anchor-id="what-it-handles">What it handles</h4>
 <ol type="1">
 <li><strong>Environment lifecycle</strong>: creates and validates an isolated virtual environment (<code>pypottery_env</code>), keeping tool dependencies separate from your system’s global libraries.</li>
 <li><strong>Hardware detection</strong>: identifies available compute (CUDA 11.8–12.6, Apple Silicon MPS, AMD ROCm 6.2, or CPU) and installs the matching PyTorch build automatically.</li>
-<li><strong>Single-instance lock</strong>: an advisory lock (<code>instance_lock.py</code>) prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.</li>
-<li><strong>Offline model caching</strong>: model weights (YOLOv8, TrOCR, the diffusion model, SAM 2) are downloaded once into <code>models/</code> and cached for fully offline use afterward.</li>
+<li><strong>Single-instance lock</strong>: an advisory lock prevents duplicate processes or port conflicts; relaunching focuses the existing session instead.</li>
+<li><strong>Offline model caching</strong>: model weights are downloaded once into <code>models/</code> and cached for fully offline use afterward.</li>
 <li><strong>Process isolation</strong>: each application runs as an independent subprocess on its own loopback port. Closing the launcher stops all child processes.</li>
 </ol>
-<hr>
 </section>
 </section>
-<section id="module-architecture-port-allocation" class="level2">
-<h2 class="anchored" data-anchor-id="module-architecture-port-allocation">Module Architecture &amp; Port Allocation</h2>
-<p>Each tool runs as its own microservice:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Module</th>
-<th style="text-align: left;">Function</th>
-<th style="text-align: center;">Port</th>
-<th style="text-align: center;">Min RAM</th>
-<th style="text-align: center;">Recommended</th>
-<th style="text-align: left;">Architecture</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>PyPotteryLens</strong></td>
-<td style="text-align: left;">PDF &amp; monograph figure extraction</td>
-<td style="text-align: center;"><code>5001</code></td>
-<td style="text-align: center;">8 GB</td>
-<td style="text-align: center;">16 GB</td>
-<td style="text-align: left;">YOLOv8 + PyMuPDF</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>PyPotteryScan</strong></td>
-<td style="text-align: left;">Pottery card digitization &amp; OCR</td>
-<td style="text-align: center;"><code>5002</code></td>
-<td style="text-align: center;">16 GB</td>
-<td style="text-align: center;">32 GB</td>
-<td style="text-align: left;">TrOCR + Vision-LLM</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>PyPotteryInk</strong></td>
-<td style="text-align: left;">Pencil drawing → ink restoration</td>
-<td style="text-align: center;"><code>5003</code></td>
-<td style="text-align: center;">8 GB</td>
-<td style="text-align: center;">16 GB</td>
-<td style="text-align: left;">1-Step Latent Diffusion</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>PyPotteryTrace</strong></td>
-<td style="text-align: left;">Profile vectorization</td>
-<td style="text-align: center;"><code>5004</code></td>
-<td style="text-align: center;">8 GB</td>
-<td style="text-align: center;">16 GB</td>
-<td style="text-align: left;">SAM 2 + Spline Engine</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>PyPotteryLayout</strong></td>
-<td style="text-align: left;">Plate synthesis</td>
-<td style="text-align: center;"><code>5005</code></td>
-<td style="text-align: center;">4 GB</td>
-<td style="text-align: center;">8 GB</td>
-<td style="text-align: left;">Metric Grid Engine + Vector SVG/PDF</td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Process independence
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Because each module binds to its own port (<code>127.0.0.1:5001</code>–<code>5005</code>), a heavy job in one — dense OCR in PyPotteryScan, for instance — doesn’t block or slow down another, such as an active session in PyPotteryTrace.</p>
-</div>
-</div>
-<hr>
 </section>
 <section id="method-b-source-cli" class="level2">
 <h2 class="anchored" data-anchor-id="method-b-source-cli">Method B: Source &amp; CLI</h2>
@@ -977,7 +856,6 @@ Process independence
 <li><a href="./pypotterytrace/index.html">PyPotteryTrace</a></li>
 <li><a href="./pypotterylayout/index.html">PyPotteryLayout</a></li>
 </ul>
-<hr>
 </section>
 </section>
 <section id="troubleshooting" class="level2">
@@ -1037,7 +915,6 @@ Process independence
 </table>
 
 </div>
-<hr>
 <div class="archaeo-cta-box" style="margin-top: 3rem;">
   <h3 class="archaeo-cta-title anchored">Ready to install</h3>
   <p class="archaeo-cta-desc">

@@ -242,15 +242,18 @@ body {
   padding: 0.25rem 0.85rem 0.45rem 0.85rem !important;
 }
 
-/* Section divider & Category header: CORE MODULES */
-.sidebar-item-section:first-of-type {
+/* Group labels. Quarto has no top-level groups, so the sidebar is one flat list and the three groups are
+   marked by position: items 1-3 are the suite pages (label above), 4-8 one section per app, 9+ the reference
+   pages. Keep this in step with the order of `sidebar.contents` in _quarto.yml. */
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4),
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9) {
   margin-top: 1.15rem !important;
   padding-top: 0.85rem !important;
   border-top: 1px solid var(--border-light) !important;
 }
 
-.sidebar-item-section:first-of-type::before {
-  content: "CORE MODULES";
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4)::before,
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9)::before {
   display: block;
   font-family: var(--font-mono) !important;
   font-size: 0.68rem !important;
@@ -261,24 +264,8 @@ body {
   padding: 0 0.85rem 0.45rem 0.85rem !important;
 }
 
-/* Section divider & Category header: REFERENCE & ABOUT */
-.sidebar-item-section:last-of-type {
-  margin-bottom: 0.75rem !important;
-  padding-bottom: 0.75rem !important;
-  border-bottom: 1px solid var(--border-light) !important;
-}
-
-.sidebar-item-section:last-of-type + .sidebar-item::before {
-  content: "REFERENCE & ABOUT";
-  display: block;
-  font-family: var(--font-mono) !important;
-  font-size: 0.68rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
-  color: var(--text-muted) !important;
-  text-transform: uppercase !important;
-  padding: 0.25rem 0.85rem 0.45rem 0.85rem !important;
-}
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4)::before { content: "CORE MODULES"; }
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9)::before { content: "REFERENCE & ABOUT"; }
 
 /* General Sidebar Items */
 .sidebar-item {
@@ -500,6 +487,10 @@ main h1, main h2, main h3, main h4, main h5 {
   letter-spacing: -0.02em !important;
 }
 
+main h1, main h2, main h3, main h4 {
+  text-wrap: balance;
+}
+
 main h2 {
   font-size: 1.55rem !important;
   margin-top: 2.5rem !important;
@@ -513,6 +504,41 @@ main h3 {
   font-weight: 700 !important;
   margin-top: 1.85rem !important;
   margin-bottom: 0.6rem !important;
+}
+
+/* Hub pages (page-layout: full) get a monotonic scale: h2 > h3 > h4. Without it h4 falls back to the
+   Bootstrap size, which is larger than h3, and every level looks alike. */
+.page-layout-full main h2 {
+  font-size: 1.75rem !important;
+  margin-top: 3.5rem !important;
+}
+
+.page-layout-full main h3 {
+  font-size: 1.3rem !important;
+  margin-top: 2.5rem !important;
+}
+
+.page-layout-full main h4 {
+  font-size: 1.02rem !important;
+  font-weight: 700 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* headings that belong to a component keep the component's own scale */
+.page-layout-full main .pipeline-stage-title {
+  font-size: 1.5rem !important;
+  margin: 0 0 0.3rem 0 !important;
+}
+
+.page-layout-full main .pipeline-tool-name {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+.page-layout-full main .pub-editorial-title {
+  font-size: 1.1rem !important;
+  margin-top: 0 !important;
 }
 
 main p {
@@ -733,6 +759,34 @@ tbody tr:hover {
   margin: 0 0 2rem 0 !important;
 }
 
+/* Hero reading order: the problem (lead) > what the suite is > actions > the reassurance */
+.archaeo-drafting-hero .drafting-hero-lead {
+  margin-bottom: 1.1rem !important;
+}
+
+.drafting-hero-lead.hero-lead-primary {
+  font-size: 1.3rem !important;
+  line-height: 1.6 !important;
+  font-weight: 500;
+  color: var(--text-main) !important;
+  text-wrap: pretty;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.75rem 0 1.5rem 0;
+}
+
+.hero-note {
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+  color: var(--text-muted) !important;
+  max-width: 62ch;
+  margin: 0 !important;
+}
+
 /* Cartiglio Tecnico (Technical Drafting Specifications Block) */
 .drafting-spec-grid {
   display: grid;
@@ -936,31 +990,23 @@ tbody tr:hover {
   position: relative;
 }
 
+/* A phase is an open section: its colour rule and heading lead, the tool cards inside are the only boxes
+   (a card around a diagram around more cards read as one flat pile). */
 .pipeline-stage-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 1.85rem;
-  box-shadow: var(--shadow-card);
+  padding: 1.35rem 0 0 0;
   position: relative;
-  transition: all 0.25s ease;
-}
-
-.pipeline-stage-card:hover {
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-hover);
 }
 
 .pipeline-stage-card.phase-ingestion {
-  border-top: 4px solid var(--teal);
+  border-top: 3px solid var(--teal);
 }
 
 .pipeline-stage-card.phase-inking {
-  border-top: 4px solid var(--primary);
+  border-top: 3px solid var(--primary);
 }
 
 .pipeline-stage-card.phase-synthesis {
-  border-top: 4px solid #334155;
+  border-top: 3px solid #334155;
 }
 
 /* Stage Header */
@@ -979,7 +1025,7 @@ tbody tr:hover {
 }
 
 .pipeline-stage-title {
-  font-size: 1.35rem;
+  font-size: 1.5rem !important;
   font-weight: 800;
   color: var(--text-main);
   margin: 0 0 0.3rem 0 !important;
@@ -1144,14 +1190,14 @@ tbody tr:hover {
 }
 
 .pipeline-tool-desc {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: var(--text-dim);
   line-height: 1.45;
   margin: 0 0 0.5rem 0 !important;
 }
 
 .pipeline-tool-caps {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   color: var(--text-dim);
   line-height: 1.5;
   margin: 0;
@@ -1217,99 +1263,120 @@ tbody tr:hover {
 }
 
 /* --------------------------------------------------------------------------
-   13. Archaeological Methodology Pillars (Anti-Slop Value Grid)
+   13. Reading structure (docs_home): measure, key point, before/after stages, principles
    -------------------------------------------------------------------------- */
-.archaeo-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: auto auto 1fr;
-  gap: 0.85rem;
-  margin: 1.75rem 0 3rem 0;
-  align-items: stretch;
+.prose > p,
+.prose > ul,
+.prose > ol {
+  max-width: 68ch;
 }
 
-.archaeo-pillar-card {
+.key-point {
+  max-width: 72ch;
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.35rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+}
+
+.key-point > p {
+  margin: 0;
+}
+
+.workflow-stage {
+  margin: 2.25rem 0;
+}
+
+.workflow-stage h4 {
+  margin: 0 0 0.85rem 0 !important;
+}
+
+.workflow-stage-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.stage-before,
+.stage-after {
+  padding: 1.1rem 1.35rem;
+  border-radius: var(--radius-md);
+}
+
+.stage-before {
+  background: var(--bg-subtle);
+}
+
+.stage-after {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem 1rem;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
 }
 
-.archaeo-pillar-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--primary-border);
+.stage-before > p:last-child,
+.stage-after > p:last-child {
+  margin-bottom: 0;
 }
 
-.pillar-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-bottom: 0.5rem;
-  min-height: 48px;
-}
-
-.pillar-num {
-  font-family: var(--font-sans);
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--primary);
-  line-height: 1;
-  margin-bottom: 0.35rem;
-  display: block;
-}
-
-.pillar-index {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+.stage-label {
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--primary);
-  display: block;
-  line-height: 1.3;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
 }
 
-.pillar-title {
+.stage-after .stage-label {
+  color: var(--primary);
+}
+
+.principles-list {
+  margin: 1.25rem 0 0 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.principle {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: 0.5rem 2.5rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.principle dt {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-main);
-  margin: 0 0 0.5rem 0;
-  line-height: 1.32;
-  min-height: 3.8rem;
-  align-self: start;
+  color: var(--primary);
+  line-height: 1.4;
 }
 
-.pillar-text {
-  font-size: 0.82rem;
-  color: var(--text-dim);
-  line-height: 1.55;
+.principle dd {
   margin: 0;
-  align-self: start;
+  max-width: 68ch;
 }
 
-@media (max-width: 900px) {
-  .archaeo-pillars-grid {
+.principle-title {
+  font-size: 1.05rem !important;
+  font-weight: 700;
+  color: var(--text-main) !important;
+  line-height: 1.35 !important;
+  margin: 0 0 0.3rem 0 !important;
+}
+
+.principle-text {
+  font-size: 0.95rem !important;
+  line-height: 1.65 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .workflow-stage-body {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 0.85rem;
   }
-  .archaeo-pillar-card {
-    display: flex;
-    flex-direction: column;
-    grid-row: auto;
-  }
-  .pillar-header {
-    min-height: unset;
-  }
-  .pillar-title {
-    min-height: unset;
+  .principle {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
   }
 }
 
@@ -1701,78 +1768,100 @@ tbody tr:hover {
   box-shadow: 0 4px 16px -3px rgba(120, 53, 15, 0.04) !important;
 }
 
-/* Methodology / Deployment Paradigm Cards */
-.methodology-card {
+/* Method chooser (suite_installation): two ways in, one line each, no headings repeated below */
+.route-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.route-option {
+  position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 1.6rem;
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.35rem 1.2rem 1.35rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.methodology-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+.route-option:hover {
   border-color: var(--border-hover);
+  box-shadow: var(--shadow-card);
 }
 
-.methodology-tag {
-  font-family: var(--font-mono);
+.route-option:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.route-name-line {
+  margin-bottom: 0.4rem;
+}
+
+.route-name {
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
+}
+
+/* the whole card is the link target */
+.route-name a {
+  color: var(--text-main) !important;
+  font-weight: 800 !important;
+}
+
+.route-name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.route-tag {
+  display: inline-block;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 3px 8px;
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+  border: 1px solid var(--teal-border);
   border-radius: 4px;
-  border: 1px solid;
-  width: fit-content;
-  display: inline-block;
-  margin-bottom: 0.6rem;
+  padding: 2px 8px;
 }
 
-.methodology-title {
-  font-family: var(--font-sans);
-  font-size: 1.22rem;
-  font-weight: 800;
-  color: var(--text-main);
-  margin: 0.4rem 0 0.6rem 0;
-  line-height: 1.3;
+.route-tag-dev {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: var(--primary-border);
 }
 
-.methodology-desc {
-  font-size: 0.92rem;
-  color: var(--text-dim);
-  line-height: 1.65;
-  margin: 0 0 1rem 0;
-  flex: 1;
+.route-desc {
+  font-size: 0.92rem !important;
+  line-height: 1.6 !important;
+  margin: 0 0 0.9rem 0 !important;
 }
 
 /* Installation Step Cards */
 .install-steps-list {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 
+/* Steps sit inside the tab panel, which already is a box: separate them with hairlines */
 .install-step-card {
   display: flex;
   gap: 1.25rem;
   align-items: flex-start;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  border-radius: 10px;
-  padding: 1.25rem 1.5rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--border-light);
 }
 
-.install-step-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 12px -2px rgba(120, 53, 15, 0.05);
+.install-steps-list .install-step-card:first-child {
+  border-top: none;
+  padding-top: 0.25rem;
 }
 
 .install-step-num {
@@ -1847,7 +1936,7 @@ tbody tr:hover {
 
 .simulator-tag {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--text-muted);
   background: var(--bg-subtle);
@@ -1872,79 +1961,51 @@ tbody tr:hover {
   display: block;
 }
 
-/* Architectural Download Cards */
-.os-download-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-  margin: 1.75rem 0;
+/* Download panel: the one primary action of each OS tab */
+.download-panel {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  margin: 0 0 1.75rem 0;
 }
 
-.os-download-card {
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 1.5rem;
+.download-row {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 4px 14px -3px rgba(120, 53, 15, 0.04);
-  transition: all 0.2s ease;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  padding: 1.15rem 1.35rem;
 }
 
-.os-download-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--primary);
-  box-shadow: 0 8px 24px -4px rgba(194, 65, 12, 0.12);
+.download-row + .download-row {
+  border-top: 1px solid var(--border-light);
 }
 
-.os-card-badge {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--teal-dark);
-  background: var(--teal-soft);
-  border: 1px solid var(--teal-border);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  width: fit-content;
-  margin-bottom: 0.75rem;
+.download-row-info {
+  flex: 1 1 320px;
+  min-width: 0;
 }
 
-.os-card-title {
-  font-family: var(--font-sans);
-  font-size: 1.15rem;
+.download-row-title {
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 0.35rem;
 }
 
-.os-card-meta {
+.download-row-meta {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: 1.25rem;
+  margin-top: 0.1rem;
 }
 
-.os-card-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: var(--primary);
-  color: #ffffff !important;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.65rem 1rem;
-  border-radius: 8px;
-  text-decoration: none !important;
-  transition: background 0.15s ease;
+.download-row-desc {
+  font-size: 0.9rem !important;
+  line-height: 1.55 !important;
+  margin: 0.45rem 0 0 0 !important;
 }
 
-.os-card-btn:hover {
-  background: var(--primary-dark) !important;
+.download-row .btn-editorial-primary {
+  white-space: nowrap;
 }
 
 /* Diagnostic Matrix Table styling */
