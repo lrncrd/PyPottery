@@ -494,7 +494,7 @@ To run a single tool outside the launcher, see its dedicated installation guide:
 
 - [PyPotteryLens](pypotterylens/index.qmd)
 - [PyPotteryScan](pypotteryscan/index.qmd)
-- [PyPotteryInk](pypotteryink/installation.qmd)
+- [PyPotteryInk](pypotteryink/index.qmd)
 - [PyPotteryTrace](pypotterytrace/installation.qmd)
 - [PyPotteryLayout](pypotterylayout/installation.qmd)
 

@@ -1,5 +1,7 @@
 ---
-title: "Introduction"
+title: "Getting Started"
+aliases:
+  - installation.html
 format: html
 toc: true
 ---
@@ -10,11 +12,11 @@ toc: true
   <img src="..\imgs\LogoInk.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
   <br>
   <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 2.1.1
+    version 2.1.2
   </span>
 
   <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
       <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
@@ -46,14 +48,87 @@ toc: true
 
 <br>
 
-**PyPotteryInk** is a specialized tool designed for processing and enhancing pottery drawings. It streamlines the workflow of diagnostic, preprocessing, and batch processing of archaeological illustrations.
+**PyPotteryInk** turns scans and photographs of pencil pottery drawings into clean, publication-ready ink illustrations. A generative model redraws the drawing patch by patch, so even high-resolution plates can be processed. This page gets you from zero to a running app; the full workflow is in the [Usage guide](usage.qmd).
 
-## Key Features
+## What you can do
 
-*   **⚙️ Hardware Check**: Analyze your system capabilities to ensure optimal performance.
-*   **🔍 Model Diagnostic**: Test models on single images to fine-tune parameters before batch processing.
-*   **📊 Preprocessing**: Calculate and apply statistical adjustments to standardize your images.
-*   **🎨 Batch Processing**: Process large sets of images with advanced AI models for enhancement and restoration.
+1.  **Check your hardware** to see whether your computer is suited to the job.
+2.  **Preprocess** your images so that their brightness and contrast resemble the drawings the model was trained on.
+3.  **Run a diagnostic** on a few images to choose the model, the patch size and the contrast.
+4.  **Process a whole batch** of drawings and get the inked versions, side-by-side comparisons and a log.
+
+The [Model Zoo](model_zoo.qmd) describes the available models, and the [Advanced guide](advanced.qmd) and the [API](api.qmd) cover the same tools from Python.
+
+## Install
+
+::: {.panel-tabset}
+
+### Launcher (recommended)
+
+The [PyPottery Suite Launcher](../suite_installation.qmd) installs and updates PyPotteryInk for you, with no Python setup. Download it from the [latest release](https://github.com/lrncrd/PyPottery/releases/latest), open it, and start PyPotteryInk from its interface.
+
+### From source
+
+Requires **Python 3.12**.
+
+```bash
+git clone https://github.com/lrncrd/PyPotteryInk.git
+cd PyPotteryInk
+pip install -r requirements.txt   # includes PyTorch
+python app.py
+```
+
+Then open **http://127.0.0.1:5003** in your browser. Installer scripts that also create a virtual environment are included: double-click `PyPotteryInk_WIN.bat` on Windows, or run `chmod +x PyPotteryInk_UNIX.sh && ./PyPotteryInk_UNIX.sh` on Linux/macOS.
+
+:::
+
+## Hardware
+
+The app runs on an NVIDIA GPU (CUDA), on Apple Silicon (MPS) or on the CPU alone, and picks the fastest one it finds. The **Hardware Check** tab recommends:
+
+| Component | Recommended | Minimum |
+|---|---|---|
+| **GPU** | NVIDIA with at least 8 GB of VRAM, or Apple Silicon | NVIDIA with 4 GB of VRAM |
+| **CPU** | 4 or more modern cores | |
+| **RAM** | 16 GB | 8 GB |
+| **Storage** | Fast SSD (NVMe recommended) | |
+
+Processing on the CPU alone works but is much slower. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+
+## First launch
+
+Nothing has to be downloaded by hand: the app fetches what it needs the first time you use it.
+
+- **A style model** (about 38 MB each) is downloaded the first time you run a diagnostic or a batch with it, and stored in the `models/` folder.
+- **The diffusion backbone** (`stabilityai/sd-turbo`, about **5 GB**) is downloaded once, the first time any model is loaded. A progress overlay shows the download so the app does not look stuck. With the launcher, the download is stored in a cache shared by all PyPottery apps; standalone, it goes to `models/.cache/huggingface`.
+
+After that, everything runs on your computer, without an internet connection. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
+
+::: {.callout-important}
+## AI disclosure and citation
+PyPotteryInk uses generative AI to redraw archaeological drawings. If you use it in a publication, presentation or report, please state which model you used, how many drawings you processed and the version of the software, for example: *"This research utilized PyPotteryInk (version 2.1.2) for the AI-assisted translation of [number] pottery drawings. PyPotteryInk is a generative AI tool developed by Lorenzo Cardarelli (https://github.com/lrncrd/PyPotteryInk)."* The **Info** button in the app has a ready-to-copy version of this sentence with the right version number.
+:::
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| Python not found | Install Python 3.12 from [python.org](https://www.python.org/downloads/) (on Windows tick "Add Python to PATH"); on Linux `sudo apt install python3 python3-venv`; on macOS `brew install python3` |
+| Dependency installation fails | Check your connection, upgrade pip (`python -m pip install --upgrade pip`), or install the packages of `requirements.txt` one at a time to find the culprit |
+| Port 5003 is already in use | Close the other program, or start the app on another port by setting the `PORT` environment variable before `python app.py` |
+| "Model not downloaded and download failed" | Check your connection and free disk space, then run the step again: the download restarts |
+| The 5 GB download seems stuck | The progress overlay shows real bytes; on a slow connection it can take a long time. Do not close the app while it runs |
+| Processing is very slow | Check in the **Info** window whether the app sees your GPU (it says *CPU Only* otherwise); lower the **Overlap** or use a smaller **Scale Factor**; close other heavy applications |
+| Your GPU is not used | Reinstall PyTorch with the CUDA build that matches your drivers (see [pytorch.org](https://pytorch.org/get-started/locally/)) |
+
+## Updating
+
+With the launcher, updates are handled for you. From source, pull the latest code and run `pip install -r requirements.txt --upgrade`.
+
+## Next step
+
+Head to the [Usage guide](usage.qmd) for a walkthrough of the four tabs.
+
 
 ## Contributors
 ```{=html}

@@ -2,122 +2,143 @@
 title: "Using PyPotteryInk"
 format: html
 toc: true
+toc-depth: 2
 ---
 
 <div style="text-align: center;">
-  <img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
-  <br>
-  </span>
+  <img src="../imgs/LogoInk.png" style="max-width: 25%; height: auto; margin-bottom: 1em;">
 </div>
 
-```{=html}
-<div style="
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 1px solid #e1e4e8;
-    border-left: 5px solid #c2410c;
-    border-radius: 12px;
-    padding: 15px 25px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-">
-    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
-        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
-            Need a hand?
-        </div>
-        <div style="line-height: 1.5;">
-            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
-            Clicking on him brings you straight back to this guide.
-        </div>
-    </div>
-    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
-    </div>
-</div>
-```
+PyPotteryInk takes a scan or a photograph of a pencil pottery drawing and redraws it as clean ink line art, ready for publication. It does this with a generative model that works on the image in small squares (**patches**), so plates of any size can be processed. This guide follows the four tabs of the app in the order you will normally use them. The **Need help?** button in the header of the app (Pixel) opens this page.
 
-# Interface Overview
+::: {.callout-note}
+## The workflow at a glance
+**Hardware Check** (once) → **Preprocessing** (optional) → **Model Diagnostics** (a few test images) → **Batch Processing** (the whole collection)
+:::
 
-The PyPotteryInk interface is divided into four main tabs:
+## Key terms
 
-- **Hardware Check**
-- **Model Diagnostic**
-- **Preprocessing**
-- **Batch Processing**
+| Term | Meaning |
+|---|---|
+| **Model** | The trained "style" the app applies: one is best for Bronze Age drawings, another for painted pottery, and so on. See the [Model Zoo](model_zoo.qmd). |
+| **Patch size** | The side, in pixels, of the squares the image is cut into (512 by default). Larger patches give the model more context but are slower. |
+| **Overlap** | How many pixels neighbouring patches share (64 by default), so that no seams are visible between them. |
+| **Contrast** | A factor applied to each patch before the model sees it: above 1 makes the pencil stronger, below 1 fainter. |
+| **Scale factor** | Temporarily enlarges (above 1) or shrinks (below 1) the image before processing. The result is always saved at the original size. |
+| **Statistics file** (`.npy`) | A small file that describes the brightness and contrast of a set of drawings. Preprocessing uses it to make your images resemble them. |
 
 # Hardware Check
 
-This tab allows you to analyze your PC's hardware to verify compatibility with PyPotteryInk.
+This tab tells you whether your computer is suited to the job. It lists the recommended specifications (an NVIDIA GPU with at least 8 GB of VRAM, minimum 4 GB, or Apple Silicon; 4 or more modern CPU cores; 16 GB of RAM, minimum 8 GB; a fast SSD).
 
-<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 900px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+Click **Check Hardware** and the app shows:
 
-The page displays **Recommended Specifications**, indicating the minimum requirements to use the program.
+- an overall verdict, with a one-sentence conclusion: **Highly Recommended**, **Recommended**, **Limited Use** or **Not Recommended**. A GPU below the minimum gives *Not Recommended*; any other component below the minimum gives *Limited Use*;
+- one card each for the **GPU**, **RAM**, **CPU** and **disk**, with the value found and its status (excellent, adequate or limited);
+- a few **tips**: use patch size 512 for a good balance of speed and quality, enable FP16 if you have a CUDA GPU, and close other applications to free memory.
 
-Clicking on **🔍 Check Hardware** will display your machine's specifications along with a performance score.
+The **Info** button in the header opens a window with the version, the citation to copy, links to the documentation and to GitHub, and the hardware the app detected (the number of CPU cores, and the GPU or *CPU Only*).
 
 # Preprocessing
 
-This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.
+Drawings differ a lot in brightness and contrast, and the models work best on images that look like the ones they were trained on. This optional tab adjusts your images towards a reference described by a statistics file.
 
-<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 980px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+1. **Upload Images to Preprocess**: click the area or drag and drop your images (PNG, JPG, JPEG or TIFF).
+2. **Upload Statistics File (.npy)**: choose the reference. The app ships with two, in its own folder:
+    - `Montale_stats.npy`, measured on the dataset used to train the 6h-MCG model;
+    - `Cimino_stats.npy`, measured on the dataset used to train the 6h-MC model.
+3. **Output Directory**: where the adjusted images are saved (`./preprocessed_images` by default, created if it does not exist). **Browse...** opens a folder dialog on the computer that runs the app.
+4. Click **Apply Preprocessing**. A progress bar follows the work.
 
-You can use an existing `.npy` file to apply the statistics to the images.
-
-PyPotteryInk provides two default `.npy` files:
-
-- `Montale_stats.npy` (Metric measures of the dataset used to train the 6h-MCG model)
-- `Cimino_stats.npy` (Metric measures of the dataset used to train the 6h-MC model)
-
-In short, these metrics can be used to make your images resemble those used to train the model.
-
-The **Output Directory** text box allows you to indicate where the modified images will be saved.
-Click **✨ Apply Preprocessing** to start. A progress bar will indicate the status.
-
+Each image is compared with the statistics: only the images that need it are adjusted, the others are saved unchanged. All of them are written to the output directory with their original file name. When it ends, the app reports the total processed, how many images were adjusted and how many needed no adjustment.
 
 ::: {.callout-note}
-In the "Advanced" section, you can calculate statistics from a set of images. Uploading is done in the same way as the previous tab.
-The **Save Statistics As** text box allows you to decide the path and name of the `.npy` file.
-Click **📊 Calculate Statistics** to perform the calculation.
+## Make your own reference
+Open **Advanced: Calculate Custom Statistics** to build a statistics file from your own drawings. Upload a representative set of images (for example the drawings you want your results to resemble), choose where to **Save Statistics As** (`./custom_stats.npy` by default) and click **Calculate Statistics**. The app shows how many images it analyzed, where the file is, and a table with the mean, standard deviation, minimum, maximum and median of every metric. You can then use the new file in the steps above.
 :::
 
+# Model Diagnostics
 
-# Model Diagnostic
+Before processing a whole collection, test the model on a few images. This tab runs the model on up to five of your drawings and shows you how the parameters change the result, so you can choose the best ones for the batch.
 
-This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.
+## Set up the test
 
-<iframe src="animations/model_diagnostic.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+1. **Select Model**: the list shows every available model with its size and description, and *Custom Model (Local File)...* to use your own `.pkl` file (it must be trained with the same architecture). A model is downloaded automatically the first time it is used.
+2. **Upload Sample Images (Max 5)**: choose up to five drawings. With more than five the app asks you to select fewer.
+3. **Patch Size** (512 by default, from 256 to 1024 in steps of 64) and **Overlap** (64 by default, from 0 to 256 in steps of 16).
+4. **Contrast Test Values**: the contrast factors to try, separated by commas (`0.75, 1.0, 1.5, 2.0` by default). Add or remove values as you like.
+5. Click **Run Diagnostics**. A progress bar counts the tests: one per image and contrast value.
 
-The available elements are:
+## Read the results
 
-- **Select Model**: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.
-- **Patch Size**: Determines the size of the "chunks" the image is divided into for processing. Refer to the dedicated documentation section.
-- **Upload Images**: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.
-- **Overlap**: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.
-- **Contrast Test Values**: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.
+When the test ends, a gallery shows, for every image:
 
-Clicking on **🚀 Run Diagnostic** will start the process, and a progress bar will indicate advancement.
-At the end of the process, a gallery will allow you to view the results. Click any comparison image to open it fullscreen for a closer look.
+- a **patch map** (`patches_N.png`): how the image is divided into patches with your patch size and overlap;
+- a **contrast analysis** (`contrast_analysis_N.png`): one row for every contrast value, with the input at that contrast on the left and the model output on the right.
+
+Click any picture to open it in full screen (`Esc` or a click outside closes it). **Open Diagnostics Folder** opens the folder with the files, which also contains a short `summary_N.txt` per image (file name, size, number of patches, estimated memory).
+
+Look for the row where the lines are complete and clean. As a rule of thumb, pencil lines that disappear call for a higher contrast, and a background that turns into noise for a lower one. That value is the **Contrast Scale** to use in the batch.
 
 ::: {.callout-note}
-The first time you run a diagnostic or batch process, PyPotteryInk needs to download the required models (the small style model and, once, the ~5GB diffusion backbone). A progress overlay shows live download status so the app doesn't appear stuck.
+The first time you run a diagnostic or a batch, the app needs its models: the small style model, and once the ~5 GB diffusion backbone (`sd-turbo`). A progress overlay shows the live download status so the app never looks stuck.
+:::
+
+::: {.callout-warning}
+The diagnostic files are stored in the app's `temp_diagnostics` folder and are deleted the next time you run a diagnostic. Copy the ones you want to keep.
 :::
 
 # Batch Processing
 
-This tab represents the core of the program where you can process a series of images.
+This is the tab where the whole collection is inked.
 
-<iframe src="animations/batch_processing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;"></iframe>
+## Set up the batch
 
-Parameters like **Select Model**, **Upload Images**, **Patch Size**, and **Overlap** are the same as in the Preprocessing tab.
+**1. AI Model & Source Drawings**
 
-New parameters include:
+- **Select Model**: as in the diagnostic, with the same option to use a custom `.pkl` model. Below the list a note says the model will be downloaded if it is not present.
+- **Upload Pottery Drawings**: click or drag and drop all your images (PNG, JPG, JPEG or TIFF). The number of files selected is shown.
 
-- **Output Directory**: Allows you to indicate where to save the results.
-- **Contrast Scale**: Allows you to indicate the contrast value to apply to the batch.
-- **Scale Factor**: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.
-- **Use FP16**: Allows you to apply the model using half-precision (requires CUDA).
+**2. Reconstruction Parameters**
 
-Clicking on **🚀 Start Processing** will start the operation. A double progress bar will indicate the processing of patches and drawings.
-The results will be shown in a gallery. Click any comparison image to open it fullscreen for a closer look.
+| Parameter | Default | Range | What it does |
+|---|---|---|---|
+| **Patch Size** | 512 | 256 to 1024 | Size of the squares the image is cut into |
+| **Overlap** | 64 | 0 to 256 | Pixels shared by neighbouring patches |
+| **Contrast Scale** | 1.0 | 0.5 to 3.0 | Contrast applied before the model: above 1 strengthens faint lines |
+| **Scale Factor** | 1 | 0.25 to 4 | Above 1 enlarges the image before processing (better quality, slower), below 1 shrinks it (faster). The output keeps the original size |
+| **Use FP16** | off | | Half precision, faster and lighter on memory; works only on NVIDIA GPUs and is ignored elsewhere |
+
+**3. Output Destination & Execution**
+
+- **Output Directory**: the folder where the results are saved (`./enhanced_pottery` by default, relative to the app folder; an absolute path works too). **Browse...** opens a folder dialog.
+- Click **Start Processing**.
+
+## While it runs
+
+The app uploads the images, checks the model and the diffusion backbone (downloading them if needed), and starts. Two progress bars follow the work: **Overall Progress** for the images, and **Current Image Patches** for the patches of the image being processed. If one image fails, the others continue.
+
+## The results
+
+At the end the app shows a summary: how many images were **Successful** and **Failed**, the **Average time** per image, the **Output directory** and the **Log file**. Below it, a gallery shows the first 20 comparison images; click one to see it full screen.
+
+The output directory contains:
+
+```
+<output directory>/
+├── <name>.<ext>                   # one image per input, same file name as the input
+├── comparisons/
+│   └── comparison_<name>.<ext>    # original and result side by side
+└── logs/
+    └── processing_log_<date>.txt  # settings, sizes, times and failed files
+```
+
+Every result is a grayscale image at the original size of the drawing. If an image is smaller than the patch size, it is padded with white up to the patch size first. Existing files with the same name in the output folder are overwritten, so use a new folder for each run.
+
+# Tips
+
+- **Do a diagnostic first.** Five images and a handful of contrast values tell you more than a full batch run.
+- **Keep the settings consistent.** Process a collection with the same model, patch size, overlap and contrast, so the drawings look alike in the publication.
+- **Preprocessing needs a statistics file.** If the button says to select a `.npy` file, choose one of the two provided or build your own.
+- **Slow?** Lower the overlap, use a smaller scale factor, or use FP16 on an NVIDIA GPU. On the CPU alone, run a small batch first to estimate the time.
+- **Say you used it.** Results come from a generative model: state the model, the number of drawings and the version in your methods, as described in [Getting Started](index.qmd#first-launch).

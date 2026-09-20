@@ -221,13 +221,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryink/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotteryink/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -365,14 +359,24 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#interface-overview" id="toc-interface-overview" class="nav-link active" data-scroll-target="#interface-overview">Interface Overview</a></li>
+  <ul class="collapse">
+  <li><a href="#key-terms" id="toc-key-terms" class="nav-link active" data-scroll-target="#key-terms">Key terms</a></li>
   <li><a href="#hardware-check" id="toc-hardware-check" class="nav-link" data-scroll-target="#hardware-check">Hardware Check</a></li>
   <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a></li>
-  <li><a href="#model-diagnostic" id="toc-model-diagnostic" class="nav-link" data-scroll-target="#model-diagnostic">Model Diagnostic</a></li>
-  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing">Batch Processing</a></li>
+  <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics">Model Diagnostics</a>
+  <ul class="collapse">
+  <li><a href="#set-up-the-test" id="toc-set-up-the-test" class="nav-link" data-scroll-target="#set-up-the-test">Set up the test</a></li>
+  <li><a href="#read-the-results" id="toc-read-the-results" class="nav-link" data-scroll-target="#read-the-results">Read the results</a></li>
+  </ul></li>
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing">Batch Processing</a>
+  <ul class="collapse">
+  <li><a href="#set-up-the-batch" id="toc-set-up-the-batch" class="nav-link" data-scroll-target="#set-up-the-batch">Set up the batch</a></li>
+  <li><a href="#while-it-runs" id="toc-while-it-runs" class="nav-link" data-scroll-target="#while-it-runs">While it runs</a></li>
+  <li><a href="#the-results" id="toc-the-results" class="nav-link" data-scroll-target="#the-results">The results</a></li>
+  </ul></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -397,92 +401,120 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div style="text-align: center;">
-<p><img src="../imgs/LogoInk.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;"> <br> </p>
+<p><img src="../imgs/LogoInk.png" style="max-width: 25%; height: auto; margin-bottom: 1em;"></p>
 </div>
-<div style="
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 1px solid #e1e4e8;
-    border-left: 5px solid #c2410c;
-    border-radius: 12px;
-    padding: 15px 25px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-">
-    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
-        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
-            Need a hand?
-        </div>
-        <div style="line-height: 1.5;">
-            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
-            Clicking on him brings you straight back to this guide.
-        </div>
-    </div>
-    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
-    </div>
+<p>PyPotteryInk takes a scan or a photograph of a pencil pottery drawing and redraws it as clean ink line art, ready for publication. It does this with a generative model that works on the image in small squares (<strong>patches</strong>), so plates of any size can be processed. This guide follows the four tabs of the app in the order you will normally use them. The <strong>Need help?</strong> button in the header of the app (Pixel) opens this page.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<section id="interface-overview" class="level1">
-<h1>Interface Overview</h1>
-<p>The PyPotteryInk interface is divided into four main tabs:</p>
-<ul>
-<li><strong>Hardware Check</strong></li>
-<li><strong>Model Diagnostic</strong></li>
-<li><strong>Preprocessing</strong></li>
-<li><strong>Batch Processing</strong></li>
-</ul>
+<div class="callout-title-container flex-fill">
+The workflow at a glance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Hardware Check</strong> (once) → <strong>Preprocessing</strong> (optional) → <strong>Model Diagnostics</strong> (a few test images) → <strong>Batch Processing</strong> (the whole collection)</p>
+</div>
+</div>
+<section id="key-terms" class="level2">
+<h2 class="anchored" data-anchor-id="key-terms">Key terms</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Model</strong></td>
+<td>The trained “style” the app applies: one is best for Bronze Age drawings, another for painted pottery, and so on. See the <a href="../pypotteryink/model_zoo.html">Model Zoo</a>.</td>
+</tr>
+<tr class="even">
+<td><strong>Patch size</strong></td>
+<td>The side, in pixels, of the squares the image is cut into (512 by default). Larger patches give the model more context but are slower.</td>
+</tr>
+<tr class="odd">
+<td><strong>Overlap</strong></td>
+<td>How many pixels neighbouring patches share (64 by default), so that no seams are visible between them.</td>
+</tr>
+<tr class="even">
+<td><strong>Contrast</strong></td>
+<td>A factor applied to each patch before the model sees it: above 1 makes the pencil stronger, below 1 fainter.</td>
+</tr>
+<tr class="odd">
+<td><strong>Scale factor</strong></td>
+<td>Temporarily enlarges (above 1) or shrinks (below 1) the image before processing. The result is always saved at the original size.</td>
+</tr>
+<tr class="even">
+<td><strong>Statistics file</strong> (<code>.npy</code>)</td>
+<td>A small file that describes the brightness and contrast of a set of drawings. Preprocessing uses it to make your images resemble them.</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="hardware-check" class="level1">
 <h1>Hardware Check</h1>
-<p>This tab allows you to analyze your PC’s hardware to verify compatibility with PyPotteryInk.</p>
-<iframe src="animations/hardware_check.html" scrolling="no" style="width: 100%; height: 900px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<p>The page displays <strong>Recommended Specifications</strong>, indicating the minimum requirements to use the program.</p>
-<p>Clicking on <strong>🔍 Check Hardware</strong> will display your machine’s specifications along with a performance score.</p>
+<p>This tab tells you whether your computer is suited to the job. It lists the recommended specifications (an NVIDIA GPU with at least 8 GB of VRAM, minimum 4 GB, or Apple Silicon; 4 or more modern CPU cores; 16 GB of RAM, minimum 8 GB; a fast SSD).</p>
+<p>Click <strong>Check Hardware</strong> and the app shows:</p>
+<ul>
+<li>an overall verdict, with a one-sentence conclusion: <strong>Highly Recommended</strong>, <strong>Recommended</strong>, <strong>Limited Use</strong> or <strong>Not Recommended</strong>. A GPU below the minimum gives <em>Not Recommended</em>; any other component below the minimum gives <em>Limited Use</em>;</li>
+<li>one card each for the <strong>GPU</strong>, <strong>RAM</strong>, <strong>CPU</strong> and <strong>disk</strong>, with the value found and its status (excellent, adequate or limited);</li>
+<li>a few <strong>tips</strong>: use patch size 512 for a good balance of speed and quality, enable FP16 if you have a CUDA GPU, and close other applications to free memory.</li>
+</ul>
+<p>The <strong>Info</strong> button in the header opens a window with the version, the citation to copy, links to the documentation and to GitHub, and the hardware the app detected (the number of CPU cores, and the GPU or <em>CPU Only</em>).</p>
 </section>
 <section id="preprocessing" class="level1">
 <h1>Preprocessing</h1>
-<p>This tab allows you to process images by adjusting statistics (contrast, etc.) to fit within a range known by the model.</p>
-<iframe src="animations/preprocessing.html" scrolling="no" style="width: 100%; height: 980px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<p>You can use an existing <code>.npy</code> file to apply the statistics to the images.</p>
-<p>PyPotteryInk provides two default <code>.npy</code> files:</p>
+<p>Drawings differ a lot in brightness and contrast, and the models work best on images that look like the ones they were trained on. This optional tab adjusts your images towards a reference described by a statistics file.</p>
+<ol type="1">
+<li><strong>Upload Images to Preprocess</strong>: click the area or drag and drop your images (PNG, JPG, JPEG or TIFF).</li>
+<li><strong>Upload Statistics File (.npy)</strong>: choose the reference. The app ships with two, in its own folder:
 <ul>
-<li><code>Montale_stats.npy</code> (Metric measures of the dataset used to train the 6h-MCG model)</li>
-<li><code>Cimino_stats.npy</code> (Metric measures of the dataset used to train the 6h-MC model)</li>
-</ul>
-<p>In short, these metrics can be used to make your images resemble those used to train the model.</p>
-<p>The <strong>Output Directory</strong> text box allows you to indicate where the modified images will be saved. Click <strong>✨ Apply Preprocessing</strong> to start. A progress bar will indicate the status.</p>
+<li><code>Montale_stats.npy</code>, measured on the dataset used to train the 6h-MCG model;</li>
+<li><code>Cimino_stats.npy</code>, measured on the dataset used to train the 6h-MC model.</li>
+</ul></li>
+<li><strong>Output Directory</strong>: where the adjusted images are saved (<code>./preprocessed_images</code> by default, created if it does not exist). <strong>Browse…</strong> opens a folder dialog on the computer that runs the app.</li>
+<li>Click <strong>Apply Preprocessing</strong>. A progress bar follows the work.</li>
+</ol>
+<p>Each image is compared with the statistics: only the images that need it are adjusted, the others are saved unchanged. All of them are written to the output directory with their original file name. When it ends, the app reports the total processed, how many images were adjusted and how many needed no adjustment.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Make your own reference
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In the “Advanced” section, you can calculate statistics from a set of images. Uploading is done in the same way as the previous tab. The <strong>Save Statistics As</strong> text box allows you to decide the path and name of the <code>.npy</code> file. Click <strong>📊 Calculate Statistics</strong> to perform the calculation.</p>
+<p>Open <strong>Advanced: Calculate Custom Statistics</strong> to build a statistics file from your own drawings. Upload a representative set of images (for example the drawings you want your results to resemble), choose where to <strong>Save Statistics As</strong> (<code>./custom_stats.npy</code> by default) and click <strong>Calculate Statistics</strong>. The app shows how many images it analyzed, where the file is, and a table with the mean, standard deviation, minimum, maximum and median of every metric. You can then use the new file in the steps above.</p>
 </div>
 </div>
 </section>
-<section id="model-diagnostic" class="level1">
-<h1>Model Diagnostic</h1>
-<p>This tab allows you to test the model on a single image to verify its operation and determine the best parameters for batch processing.</p>
-<iframe src="animations/model_diagnostic.html" scrolling="no" style="width: 100%; height: 660px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<p>The available elements are:</p>
+<section id="model-diagnostics" class="level1">
+<h1>Model Diagnostics</h1>
+<p>Before processing a whole collection, test the model on a few images. This tab runs the model on up to five of your drawings and shows you how the parameters change the result, so you can choose the best ones for the batch.</p>
+<section id="set-up-the-test" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-the-test">Set up the test</h2>
+<ol type="1">
+<li><strong>Select Model</strong>: the list shows every available model with its size and description, and <em>Custom Model (Local File)…</em> to use your own <code>.pkl</code> file (it must be trained with the same architecture). A model is downloaded automatically the first time it is used.</li>
+<li><strong>Upload Sample Images (Max 5)</strong>: choose up to five drawings. With more than five the app asks you to select fewer.</li>
+<li><strong>Patch Size</strong> (512 by default, from 256 to 1024 in steps of 64) and <strong>Overlap</strong> (64 by default, from 0 to 256 in steps of 16).</li>
+<li><strong>Contrast Test Values</strong>: the contrast factors to try, separated by commas (<code>0.75, 1.0, 1.5, 2.0</code> by default). Add or remove values as you like.</li>
+<li>Click <strong>Run Diagnostics</strong>. A progress bar counts the tests: one per image and contrast value.</li>
+</ol>
+</section>
+<section id="read-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-results">Read the results</h2>
+<p>When the test ends, a gallery shows, for every image:</p>
 <ul>
-<li><strong>Select Model</strong>: Allows you to select the model to use (see the Model Zoo section for details). The model will be automatically downloaded during processing.</li>
-<li><strong>Patch Size</strong>: Determines the size of the “chunks” the image is divided into for processing. Refer to the dedicated documentation section.</li>
-<li><strong>Upload Images</strong>: This window allows you to upload images. You can use drag-and-drop or a dialog window. Once uploaded, images are displayed as thumbnails.</li>
-<li><strong>Overlap</strong>: Determines the number of pixels where patches overlap. Refer to the dedicated documentation section.</li>
-<li><strong>Contrast Test Values</strong>: The model will generate an enhancement using the indicated values. To add a contrast value for evaluation, separate it with a comma.</li>
+<li>a <strong>patch map</strong> (<code>patches_N.png</code>): how the image is divided into patches with your patch size and overlap;</li>
+<li>a <strong>contrast analysis</strong> (<code>contrast_analysis_N.png</code>): one row for every contrast value, with the input at that contrast on the left and the model output on the right.</li>
 </ul>
-<p>Clicking on <strong>🚀 Run Diagnostic</strong> will start the process, and a progress bar will indicate advancement. At the end of the process, a gallery will allow you to view the results. Click any comparison image to open it fullscreen for a closer look.</p>
+<p>Click any picture to open it in full screen (<code>Esc</code> or a click outside closes it). <strong>Open Diagnostics Folder</strong> opens the folder with the files, which also contains a short <code>summary_N.txt</code> per image (file name, size, number of patches, estimated memory).</p>
+<p>Look for the row where the lines are complete and clean. As a rule of thumb, pencil lines that disappear call for a higher contrast, and a background that turns into noise for a lower one. That value is the <strong>Contrast Scale</strong> to use in the batch.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -493,24 +525,115 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The first time you run a diagnostic or batch process, PyPotteryInk needs to download the required models (the small style model and, once, the ~5GB diffusion backbone). A progress overlay shows live download status so the app doesn’t appear stuck.</p>
+<p>The first time you run a diagnostic or a batch, the app needs its models: the small style model, and once the ~5 GB diffusion backbone (<code>sd-turbo</code>). A progress overlay shows the live download status so the app never looks stuck.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The diagnostic files are stored in the app’s <code>temp_diagnostics</code> folder and are deleted the next time you run a diagnostic. Copy the ones you want to keep.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="batch-processing" class="level1">
 <h1>Batch Processing</h1>
-<p>This tab represents the core of the program where you can process a series of images.</p>
-<iframe src="animations/batch_processing.html" scrolling="no" style="width: 100%; height: 880px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
-</iframe>
-<p>Parameters like <strong>Select Model</strong>, <strong>Upload Images</strong>, <strong>Patch Size</strong>, and <strong>Overlap</strong> are the same as in the Preprocessing tab.</p>
-<p>New parameters include:</p>
+<p>This is the tab where the whole collection is inked.</p>
+<section id="set-up-the-batch" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-the-batch">Set up the batch</h2>
+<p><strong>1. AI Model &amp; Source Drawings</strong></p>
 <ul>
-<li><strong>Output Directory</strong>: Allows you to indicate where to save the results.</li>
-<li><strong>Contrast Scale</strong>: Allows you to indicate the contrast value to apply to the batch.</li>
-<li><strong>Scale Factor</strong>: Allows you to temporarily apply upsampling or downsampling to the images. After processing, images will be saved in their original dimensions, so there is no need to rescale them manually.</li>
-<li><strong>Use FP16</strong>: Allows you to apply the model using half-precision (requires CUDA).</li>
+<li><strong>Select Model</strong>: as in the diagnostic, with the same option to use a custom <code>.pkl</code> model. Below the list a note says the model will be downloaded if it is not present.</li>
+<li><strong>Upload Pottery Drawings</strong>: click or drag and drop all your images (PNG, JPG, JPEG or TIFF). The number of files selected is shown.</li>
 </ul>
-<p>Clicking on <strong>🚀 Start Processing</strong> will start the operation. A double progress bar will indicate the processing of patches and drawings. The results will be shown in a gallery. Click any comparison image to open it fullscreen for a closer look.</p>
+<p><strong>2. Reconstruction Parameters</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default</th>
+<th>Range</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Patch Size</strong></td>
+<td>512</td>
+<td>256 to 1024</td>
+<td>Size of the squares the image is cut into</td>
+</tr>
+<tr class="even">
+<td><strong>Overlap</strong></td>
+<td>64</td>
+<td>0 to 256</td>
+<td>Pixels shared by neighbouring patches</td>
+</tr>
+<tr class="odd">
+<td><strong>Contrast Scale</strong></td>
+<td>1.0</td>
+<td>0.5 to 3.0</td>
+<td>Contrast applied before the model: above 1 strengthens faint lines</td>
+</tr>
+<tr class="even">
+<td><strong>Scale Factor</strong></td>
+<td>1</td>
+<td>0.25 to 4</td>
+<td>Above 1 enlarges the image before processing (better quality, slower), below 1 shrinks it (faster). The output keeps the original size</td>
+</tr>
+<tr class="odd">
+<td><strong>Use FP16</strong></td>
+<td>off</td>
+<td></td>
+<td>Half precision, faster and lighter on memory; works only on NVIDIA GPUs and is ignored elsewhere</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. Output Destination &amp; Execution</strong></p>
+<ul>
+<li><strong>Output Directory</strong>: the folder where the results are saved (<code>./enhanced_pottery</code> by default, relative to the app folder; an absolute path works too). <strong>Browse…</strong> opens a folder dialog.</li>
+<li>Click <strong>Start Processing</strong>.</li>
+</ul>
+</section>
+<section id="while-it-runs" class="level2">
+<h2 class="anchored" data-anchor-id="while-it-runs">While it runs</h2>
+<p>The app uploads the images, checks the model and the diffusion backbone (downloading them if needed), and starts. Two progress bars follow the work: <strong>Overall Progress</strong> for the images, and <strong>Current Image Patches</strong> for the patches of the image being processed. If one image fails, the others continue.</p>
+</section>
+<section id="the-results" class="level2">
+<h2 class="anchored" data-anchor-id="the-results">The results</h2>
+<p>At the end the app shows a summary: how many images were <strong>Successful</strong> and <strong>Failed</strong>, the <strong>Average time</strong> per image, the <strong>Output directory</strong> and the <strong>Log file</strong>. Below it, a gallery shows the first 20 comparison images; click one to see it full screen.</p>
+<p>The output directory contains:</p>
+<pre><code>&lt;output directory&gt;/
+├── &lt;name&gt;.&lt;ext&gt;                   # one image per input, same file name as the input
+├── comparisons/
+│   └── comparison_&lt;name&gt;.&lt;ext&gt;    # original and result side by side
+└── logs/
+    └── processing_log_&lt;date&gt;.txt  # settings, sizes, times and failed files</code></pre>
+<p>Every result is a grayscale image at the original size of the drawing. If an image is smaller than the patch size, it is padded with white up to the patch size first. Existing files with the same name in the output folder are overwritten, so use a new folder for each run.</p>
+</section>
+</section>
+<section id="tips" class="level1">
+<h1>Tips</h1>
+<ul>
+<li><strong>Do a diagnostic first.</strong> Five images and a handful of contrast values tell you more than a full batch run.</li>
+<li><strong>Keep the settings consistent.</strong> Process a collection with the same model, patch size, overlap and contrast, so the drawings look alike in the publication.</li>
+<li><strong>Preprocessing needs a statistics file.</strong> If the button says to select a <code>.npy</code> file, choose one of the two provided or build your own.</li>
+<li><strong>Slow?</strong> Lower the overlap, use a smaller scale factor, or use FP16 on an NVIDIA GPU. On the CPU alone, run a small batch first to estimate the time.</li>
+<li><strong>Say you used it.</strong> Results come from a generative model: state the model, the number of drawings and the version in your methods, as described in <a href="../pypotteryink/index.html#first-launch">Getting Started</a>.</li>
+</ul>
 
 
 </section>

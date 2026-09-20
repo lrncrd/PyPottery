@@ -221,13 +221,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryink/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotteryink/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -368,10 +362,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
   <ul class="collapse">
-  <li><a href="#version-2.1.1" id="toc-version-2.1.1" class="nav-link" data-scroll-target="#version-2.1.1">Version 2.1.1</a></li>
+  <li><a href="#version-2.1.2-september-2026" id="toc-version-2.1.2-september-2026" class="nav-link" data-scroll-target="#version-2.1.2-september-2026">Version 2.1.2 (September 2026)</a></li>
   </ul></li>
   <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
   <ul class="collapse">
+  <li><a href="#version-2.1.1" id="toc-version-2.1.1" class="nav-link" data-scroll-target="#version-2.1.1">Version 2.1.1</a></li>
   <li><a href="#version-2.1.0" id="toc-version-2.1.0" class="nav-link" data-scroll-target="#version-2.1.0">Version 2.1.0</a></li>
   <li><a href="#version-2.0.1-12122025" id="toc-version-2.0.1-12122025" class="nav-link" data-scroll-target="#version-2.0.1-12122025">Version 2.0.1 (12/12/2025)</a></li>
   <li><a href="#version-2.0.0-december-2025" id="toc-version-2.0.0-december-2025" class="nav-link" data-scroll-target="#version-2.0.0-december-2025">Version 2.0.0 (December 2025)</a></li>
@@ -408,6 +403,26 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-2.1.2-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-2.1.2-september-2026">Version 2.1.2 (September 2026)</h3>
+<p><strong>Interface</strong></p>
+<ul>
+<li>New look shared with the other PyPottery applications, with locally served fonts and icons in place of the emoji in messages and buttons</li>
+<li>The <strong>Info</strong> window now shows the hardware the app detected (CPU cores, and the GPU or <em>CPU Only</em>) and has a <strong>Copy</strong> button for the citation; <code>Esc</code> closes it</li>
+<li><strong>Hardware Check</strong> redesigned with clearer verdicts and messages, a card per component, and updated tips. Processors with 8 or more cores are now rated excellent</li>
+</ul>
+<p><strong>Fixes and stability</strong></p>
+<ul>
+<li><strong>Apply Preprocessing</strong> did nothing when clicked, because the page still looked for a checkbox that had been removed. It works again, and it always needs a statistics file (<code>.npy</code>)</li>
+<li>The browser now opens on the port the app is really running on, also when you change it with the <code>PORT</code> variable</li>
+<li>The app shuts down by itself a few seconds after you close its browser tab</li>
+<li>Console messages are written as UTF-8 on Windows, so log lines with special characters no longer risk an encoding error</li>
+<li>Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-2.1.1" class="level3">
 <h3 class="anchored" data-anchor-id="version-2.1.1">Version 2.1.1</h3>
 <ul>
@@ -417,9 +432,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Updated <code>diffusers</code>/<code>peft</code>/<code>transformers</code> to their latest compatible versions</li>
 </ul>
 </section>
-</section>
-<section id="version-history" class="level2">
-<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-2.1.0" class="level3">
 <h3 class="anchored" data-anchor-id="version-2.1.0">Version 2.1.0</h3>
 <ul>

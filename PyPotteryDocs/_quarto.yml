@@ -47,7 +47,6 @@ website:
       - section: "PyPotteryInk"
         contents:
           - pypotteryink/index.qmd
-          - pypotteryink/installation.qmd
           - pypotteryink/usage.qmd
           - pypotteryink/advanced.qmd
           - pypotteryink/model_zoo.qmd

@@ -6,6 +6,24 @@ format: html
 
 ## Latest Release
 
+### Version 2.1.2 (September 2026)
+
+**Interface**
+
+-   New look shared with the other PyPottery applications, with locally served fonts and icons in place of the emoji in messages and buttons
+-   The **Info** window now shows the hardware the app detected (CPU cores, and the GPU or *CPU Only*) and has a **Copy** button for the citation; `Esc` closes it
+-   **Hardware Check** redesigned with clearer verdicts and messages, a card per component, and updated tips. Processors with 8 or more cores are now rated excellent
+
+**Fixes and stability**
+
+-   **Apply Preprocessing** did nothing when clicked, because the page still looked for a checkbox that had been removed. It works again, and it always needs a statistics file (`.npy`)
+-   The browser now opens on the port the app is really running on, also when you change it with the `PORT` variable
+-   The app shuts down by itself a few seconds after you close its browser tab
+-   Console messages are written as UTF-8 on Windows, so log lines with special characters no longer risk an encoding error
+-   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
+
+## Version History
+
 ### Version 2.1.1
 
 - Real download progress bars for both the small style models and the large `sd-turbo` diffusion backbone (~5GB), so first-time setup no longer looks stuck
@@ -13,8 +31,6 @@ format: html
 - Removed Dark Mode
 - Updated `diffusers`/`peft`/`transformers` to their latest compatible versions
 
-
-## Version History
 
 ### Version 2.1.0
 

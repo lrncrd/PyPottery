@@ -177,13 +177,21 @@ optional overrides with an in-app default, never required.
   shortcuts, ZIP + Excel export with columns, Parser Studio). The old
   screenshots (`pypotteryscan/imgs/*.png`, old blue UI, v0.2.0, "Save to
   Folder") and the 6 old animations are no longer referenced by the page; the
-  files are still in the repo. Open points found while reading the code:
-  (1) version drift: `VERSION`/tags say 0.1.1 but `version_history.qmd` says
-  "v0.2.0 (Initial Release)" and has no `### Version X.Y.Z` heading, so the
-  launcher changelog panel cannot use it; (2) `exports/` project folder is
+  files are still in the repo. Version history now has `### Version 0.1.2`
+  (the next auto-release number) written from the beta-vs-main diff and parsed
+  correctly by the launcher. Open points found while reading the code:
+  (1) `exports/` project folder is `exports/` project folder is
   created but never written (export is a browser download); (3) MPS is claimed
   nowhere in the code, README and hero badge no longer claim it.
-  Next: Ink, Trace, Layout with the same schema. Visuals: the user prefers real
+  **Ink done (2026-09-20, on `beta`)**: same schema (Getting Started with an
+  alias for `installation.html`, usage rewritten against the code, version
+  history 2.1.2 from beta vs main, hero versions bumped on advanced/model_zoo/api).
+  Found while reading the code: the "Apply Preprocessing" button did nothing
+  (handler read a removed checkbox; fixed and committed on Ink `beta`, **not
+  tested in a browser**); `utils.py` hard-codes `version = "2.1.0"` in the
+  console AI-disclosure reminder (drifts from `VERSION` after every release);
+  `advanced.qmd`/`api.qmd` are Python-library tutorials and were not re-verified.
+  Next: Trace, Layout with the same schema. Visuals: the user prefers real
   screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
   animations; a shared animation kit was prototyped in `PyPotteryDocs/anim-kit/`
   (uncommitted, decision pending).
