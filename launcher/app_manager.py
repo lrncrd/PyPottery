@@ -86,6 +86,33 @@ class DownloadProgress:
     percent: float  # 0-100
 
 
+BETA_CHANNEL = "beta"
+
+
+def get_update_channel(base_path: Path) -> str:
+    """
+    Which build of the sub-apps the launcher installs: "release" (default: the
+    latest GitHub release, or main) or "beta" (the `beta` branch of each app).
+
+    The beta channel exists to test unreleased work through the real launcher
+    and installer before it is merged to main (a push to main auto-releases).
+    Turn it on with the environment variable PYPOTTERY_CHANNEL=beta, or - for the
+    packaged executable, where setting variables is awkward - with a text file
+    named `channel.txt` containing `beta` in the launcher's data folder (the
+    "Base path" written at the top of the launcher log). Delete the file/variable
+    to go back to releases.
+    """
+    value = os.environ.get("PYPOTTERY_CHANNEL", "").strip().lower()
+    if not value:
+        try:
+            marker = Path(base_path) / "channel.txt"
+            if marker.is_file():
+                value = marker.read_text(encoding="utf-8", errors="ignore").strip().lower()
+        except OSError:
+            value = ""
+    return BETA_CHANNEL if value == BETA_CHANNEL else "release"
+
+
 class AppManager:
     """
     Manages PyPottery applications: download, install, launch, and monitor.
@@ -100,6 +127,9 @@ class AppManager:
         # root (sibling of apps/) instead of a downloaded copy under apps/, so
         # local edits can be tested without pushing/re-downloading a release.
         self.developer_mode = developer_mode
+        self.channel = get_update_channel(self.base_path)
+        if self.channel == BETA_CHANNEL:
+            logger.warning("Beta channel: sub-apps are installed from their `beta` branch, not from releases")
 
         # Offline Web Assets Manager
         from .vendor_assets_manager import VendorAssetsManager
@@ -292,7 +322,11 @@ class AppManager:
         app_path = self.apps_path / app_id
         
         # Determine download URL
-        if version:
+        beta = self.channel == BETA_CHANNEL
+        if beta:
+            # Unreleased work: the `beta` branch of the app, whatever tag was asked for
+            zip_url = f"https://github.com/{app.repo_owner}/{app.repo_name}/archive/refs/heads/beta.zip"
+        elif version:
             # Specific version/tag - normalize version format
             # GitHub tags can be with or without 'v' prefix
             zip_url = f"https://github.com/{app.repo_owner}/{app.repo_name}/archive/refs/tags/{version}.zip"
@@ -317,7 +351,7 @@ class AppManager:
             try:
                 response = urlopen(request, timeout=120)
             except URLError as e:
-                if hasattr(e, 'code') and e.code == 404 and version:
+                if hasattr(e, 'code') and e.code == 404 and version and not beta:
                     # Try alternate version format
                     if version.startswith('v'):
                         alt_version = version[1:]  # Remove 'v'
@@ -429,7 +463,12 @@ class AppManager:
 
             # If we found a real version in the files, prefer it over "main"
             final_version = version
-            if (not version or version in ["main", "master"]) and detected_version:
+            if beta:
+                # "0.3.2-beta": the UI shows which build is installed, and no release
+                # "update" is offered on top of it (see UpdateChecker.check_for_update)
+                base = (detected_version or "").lstrip("vV")
+                final_version = f"{base}-beta" if base else "beta"
+            elif (not version or version in ["main", "master"]) and detected_version:
                 final_version = detected_version
             elif not final_version:
                 final_version = "main"

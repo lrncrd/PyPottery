@@ -378,7 +378,9 @@ class UpdateChecker:
         
         # Compare versions
         update_available = False
-        if current_version:
+        if current_version and current_version.endswith("-beta"):
+            update_available = False  # installed from the beta channel: no release replaces it
+        elif current_version:
             update_available = self.compare_versions(current_version, release.tag_name) < 0
         else:
             update_available = True  # Not installed = update available

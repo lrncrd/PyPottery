@@ -147,6 +147,18 @@ optional overrides with an in-app default, never required.
     Lens's `version_history.qmd` is **not** updated (its next release number is
     not decided yet; latest tag is 0.3.1).
 
+- **Beta channel in the launcher** (2026-09-20). The launcher installs the
+  sub-apps from GitHub releases (or `main`), so an executable built while the
+  work sits on `beta` could not be used to test that work. With
+  `PYPOTTERY_CHANNEL=beta` (or a `channel.txt` containing `beta` in the
+  launcher's data folder, the "Base path" at the top of its log) `download_app`
+  fetches `refs/heads/beta.zip` instead. The installed version is recorded as
+  e.g. `0.3.2-beta` and no release "update" is offered on top of it. Pushing a
+  `beta` branch is safe: the release workflows only run on `main`. Tested with a
+  fake GitHub (URL, recorded version, update check); not tried against the real
+  GitHub or from a packaged executable. Remove the variable/file to go back to
+  releases.
+
 ## P0 - blocks a multi-platform release
 
 - [ ] **macOS/Linux verification was never actually completed.**
