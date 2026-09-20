@@ -8,7 +8,9 @@ project:
   resources:
     - anim-kit/*.css
     - anim-kit/*.js
-    - animations/coming_soon.html
+    - animations/*.html
+    - animations/*.png
+    - animations/*.ico
 
 website:
   title: "PyPottery"
@@ -69,17 +71,11 @@ website:
         href: suite_version.qmd
       - contact.qmd
       - acknowledgment.qmd
-  page-footer:
-    left: "© 2025 Lorenzo Cardarelli"
-    center: "PyPotteryDocs v0.0.1"
-    right:
-      - icon: github
-        href: https://github.com/lrncrd/PyPottery
-    background: light
 
 format:
   html:
     theme:
       light: flatly
     css: styles.css
+    include-after-body: _footer.html
     toc: true

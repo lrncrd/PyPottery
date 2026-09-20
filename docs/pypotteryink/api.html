@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0e409008032177e994eff0779726d4b5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-639fec91e128486cdca00caa3a81f8b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -1205,6 +1205,73 @@ Save plot to file
 </section>
 
 </main> <!-- /main -->
+<!-- Site footer shared by every documentation page (included after the body by _quarto.yml).
+     Same design as the footer of index.html. Links are written relative to the site root and are
+     prefixed at load time with the page's own offset (<meta name="quarto:offset">), so they work from any depth. -->
+<footer class="site-footer" id="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand-col">
+      <img data-src="icon_app.png" alt="PyPottery Suite Icon" class="footer-logo" width="42" height="42">
+      <p class="footer-desc">
+        PyPottery Suite — Dedicated open-source computer vision tools for archaeological ceramic documentation.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Suite Tools</h4>
+      <ul class="footer-nav">
+        <li><a data-href="pypotterylens/index.html">PyPotteryLens</a></li>
+        <li><a data-href="pypotteryscan/index.html">PyPotteryScan</a></li>
+        <li><a data-href="pypotteryink/index.html">PyPotteryInk</a></li>
+        <li><a data-href="pypotterytrace/index.html">PyPotteryTrace</a></li>
+        <li><a data-href="pypotterylayout/index.html">PyPotteryLayout</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul class="footer-nav">
+        <li><a data-href="docs_home.html">Documentation Home</a></li>
+        <li><a data-href="suite_installation.html">Installation Guide</a></li>
+        <li><a data-href="pypotteryink/model_zoo.html">Diffusion Model Zoo</a></li>
+        <li><a data-href="suite_version.html">Version History</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Community</h4>
+      <ul class="footer-nav">
+        <li><a href="https://github.com/lrncrd/PyPottery/releases/latest" target="_blank" rel="noopener noreferrer">Download Releases</a></li>
+        <li><a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer">GitHub Project</a></li>
+        <li><a href="https://github.com/lrncrd/PyPottery/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
+        <li><a href="https://ko-fi.com/lrncrd" target="_blank" rel="noopener noreferrer">Ko-fi Support</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2024–2026 Lorenzo Cardarelli. Distributed under the Apache 2.0 Open Source License.</p>
+    <p>Built so no advisor can make you hand-trace pottery for ten months • <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer">github.com/lrncrd</a></p>
+  </div>
+</footer>
+<script>
+  (function () {
+    // Quarto puts include-after-body inside the content grid (next to the sidebar): move the footer out,
+    // right after the grid, so it spans the whole width like the footer of index.html.
+    var footer = document.getElementById('site-footer');
+    var content = document.getElementById('quarto-content');
+    if (footer && content && content.parentNode) content.parentNode.insertBefore(footer, content.nextSibling);
+
+    var meta = document.querySelector('meta[name="quarto:offset"]');
+    var offset = meta ? meta.getAttribute('content') : './';
+    document.querySelectorAll('#site-footer [data-href]').forEach(function (a) {
+      a.setAttribute('href', offset + a.getAttribute('data-href'));
+    });
+    document.querySelectorAll('#site-footer [data-src]').forEach(function (img) {
+      img.setAttribute('src', offset + img.getAttribute('data-src'));
+    });
+  })();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1623,28 +1690,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-<p>© 2025 Lorenzo Cardarelli</p>
-</div>   
-    <div class="nav-footer-center">
-<p>PyPotteryDocs v0.0.1</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/api.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
-    <div class="nav-footer-right">
-      <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/lrncrd/PyPottery">
-      <i class="bi bi-github" role="img">
-</i> 
-    </a>
-  </li>  
-</ul>
-    </div>
-  </div>
-</footer>
 
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/api.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
