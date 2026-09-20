@@ -199,18 +199,16 @@ optional overrides with an in-app default, never required.
   were wrong (Tiny 40 MB is really 156, Base+ 230 is 323), README (right-click
   does not remove points; Python 3.12), `app.py` bound to `0.0.0.0` (now
   `127.0.0.1` like the other apps) and named a non-existent requirements file.
-  Found and **not** fixed: (1) `sam2_handler = SAM2Handler('small')` runs at
-  import, so the first start downloads Small *before* the server listens, with no
-  progress, while `app.py` opens the browser after 2 s; (2) in Post-Processing,
-  unchecking "Download ZIP Archive" processes the files but delivers nothing
-  (the backend deletes the temp dir); (3) the in-app Guide lists SVG Editor
-  shortcuts V/S/A/D that do not exist; (4) `showImportProjectDialog` exists but no
-  button calls it; (5) SVG and PNG of the same drawing can land in different
-  category subfolders (SVG uses the backend priority, PNG the client's first
-  category); (6) `main`'s `app.py` does `from app import app` (imports itself),
-  so the published 0.1.1 probably cannot start with `python app.py` (not run,
-  read from the code); (7) SAM2 has no MPS path (`cuda` else `cpu`), while the
-  Info window says "Apple Silicon (MPS)".
+  Then fixed on Trace `beta` (after the docs pass; backend smoke-tested with the
+  Flask test client, **frontend not tried in a browser**): first start no longer
+  blocks on a silent download (default model loaded only if on disk, else the page
+  offers the download; `/api/current_model`; 503 when no model); Post-Processing
+  without ZIP saves to the project `exports/` folder; SVG/PNG/JPG share the same
+  category subfolder; Import/Export buttons for whole projects; V/S/A/D in the SVG
+  Editor; working Undo in Segmentation (it was a dead button); P/B/M/R only on the
+  Segmentation tab; Info reports Apple Silicon as CPU. Not real: the suspicion that
+  `main`'s `app.py` cannot start (it does, checked). Still open: project export
+  leaves `<id>_export.zip` in `uploads/` (reused per project, never deleted).
   Next: Layout with the same schema. Visuals: the user prefers real
   screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
   animations; a shared animation kit was prototyped in `PyPotteryDocs/anim-kit/`

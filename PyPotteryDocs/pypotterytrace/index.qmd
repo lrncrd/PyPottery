@@ -89,7 +89,7 @@ The SAM 2 weights are downloaded from Meta's servers and stored in the `models/`
 | **Base+** | ~323 MB | Medium | Excellent |
 | **Large** | ~898 MB | Slower | Highest |
 
-**Small** is loaded when the app starts, so the very first start downloads it: this happens before the page is ready, and the terminal only says that a download is in progress, without a progress bar. Give it a minute before opening the browser (or reload the page if it says the connection was refused). Any other model is downloaded when you select it in the **Setup** tab: the app asks for confirmation and shows a progress bar.
+**Small** is the model loaded by default. On the very first start, the page opens and asks whether to download it; confirm and follow the progress bar. Any other model is downloaded the same way when you select it in the **Setup** tab, and models you already have are used at once.
 
 After that, everything runs on your computer, without an internet connection. Your projects are stored in the `projects/` folder next to the app. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
 
@@ -101,7 +101,7 @@ After that, everything runs on your computer, without an internet connection. Yo
 | Dependency installation fails | Check your connection, upgrade pip (`python -m pip install --upgrade pip`), or install the packages of `requirements.txt` one at a time to find the culprit |
 | "SAM2 not installed" | Install it from the source with `pip install git+https://github.com/facebookresearch/segment-anything-2.git`, then start the app again |
 | Port 5004 is already in use | Close the other program, or start the app on another port by setting the `PORT` environment variable before `python app.py` |
-| The page does not open on the first start | The Small model is still downloading (see above): wait for the terminal to say the server is running, then reload |
+| "No SAM 2 model is loaded" when you open an image | You cancelled the first download: select a model in the **Setup** tab and confirm the download |
 | A model download fails | Check your connection and free disk space, then select the model again: the download restarts |
 | Segmentation is slow | Choose a smaller model in **Setup**; check in the **Info** window whether the app sees your GPU (it says *CPU Only* otherwise) |
 | Your GPU is not used | Reinstall PyTorch with the CUDA build that matches your drivers (see [pytorch.org](https://pytorch.org/get-started/locally/)) |

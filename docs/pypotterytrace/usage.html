@@ -485,7 +485,7 @@ The workflow at a glance
 </section>
 <section id="open-refresh-and-delete" class="level2">
 <h2 class="anchored" data-anchor-id="open-refresh-and-delete">Open, refresh and delete</h2>
-<p>Each card shows the name, the description, how many images were <strong>Uploaded</strong> and how many are <strong>Vectorized</strong>, and the creation and modification dates. Click a card to open the project: the app takes you to the <strong>Setup</strong> tab, and the project name appears in the header (click it to come back to this tab). <strong>Refresh</strong> reloads the list if you changed something outside the app. <strong>Delete</strong> removes the project and everything in it (images, masks, vectors and exports) after a confirmation, and cannot be undone. If you reload the page, the project you had open is reopened.</p>
+<p>Each card shows the name, the description, how many images were <strong>Uploaded</strong> and how many are <strong>Vectorized</strong>, and the creation and modification dates. Click a card to open the project: the app takes you to the <strong>Setup</strong> tab, and the project name appears in the header (click it to come back to this tab). <strong>Refresh</strong> reloads the list if you changed something outside the app. <strong>Export</strong> downloads the whole project as a ZIP file, and <strong>Import</strong>, at the top of the tab, adds a project from such a ZIP (as a new project): this is how you move a project to another computer or share it. <strong>Delete</strong> removes the project and everything in it (images, masks, vectors and exports) after a confirmation, and cannot be undone. If you reload the page, the project you had open is reopened.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -536,7 +536,7 @@ Tip
 <section id="segmentation" class="level1">
 <h1>Segmentation</h1>
 <p>This is where you tell the app what is in each drawing. The tab has three columns: the tools on the left, the image in the middle, and the list of segments and the export button on the right. Below the image, a strip with the project images lets you move from one drawing to the next. The work is <strong>saved automatically</strong> a moment after every change (a small <em>Saved</em> message appears), so switching image or closing the app loses nothing.</p>
-<p><strong>Moving around the image</strong>: scroll the mouse wheel (or press <code>+</code> and <code>-</code>) to zoom, drag with the middle mouse button or with <code>Ctrl</code> + left button to pan, and use the toolbar under the image to zoom in and out, to <strong>reset the view</strong> and to undo.</p>
+<p><strong>Moving around the image</strong>: scroll the mouse wheel (or press <code>+</code> and <code>-</code>) to zoom, drag with the middle mouse button or with <code>Ctrl</code> + left button to pan, and use the toolbar under the image to zoom in and out, to <strong>reset the view</strong> and to <strong>undo</strong> (<code>Ctrl</code> + <code>Z</code>): undo removes the last point, or the last polygon vertex, of the mask you are building.</p>
 <section id="segmentation-modes" class="level2">
 <h2 class="anchored" data-anchor-id="segmentation-modes">Segmentation modes</h2>
 <p>Choose the mode in <strong>Segmentation Mode</strong> (or with the keyboard):</p>
@@ -773,7 +773,7 @@ Important
 </tbody>
 </table>
 <p>Points are coloured: <strong>blue</strong> for path points, <strong>purple</strong> for the control points of curves, <strong>orange</strong> under the cursor and <strong>red</strong> when selected. The <strong>Settings</strong> panel changes the <strong>Point Size</strong> and lets you hide the points and their labels.</p>
-<p><strong>Keyboard</strong>: <code>Delete</code> or <code>Backspace</code> remove the selected points, <code>Ctrl</code> + <code>Z</code> undoes, <code>Ctrl</code> + <code>A</code> selects all the points, the arrow keys nudge the selection by 1 pixel (10 with <code>Shift</code>), <code>Space</code> + drag or the middle mouse button pans, and <code>Esc</code> cancels a pending action. <strong>Right-click</strong> opens a menu with <em>Delete Point(s)</em>, <em>Deselect All</em>, <em>Select All Points</em>, <em>Reset View</em> and <em>Undo</em>.</p>
+<p><strong>Keyboard</strong>: <code>V</code>, <code>S</code>, <code>A</code> and <code>D</code> switch to View, Select, Add Point and Delete Mode; <code>Delete</code> or <code>Backspace</code> remove the selected points, <code>Ctrl</code> + <code>Z</code> undoes, <code>Ctrl</code> + <code>A</code> selects all the points, the arrow keys nudge the selection by 1 pixel (10 with <code>Shift</code>), <code>Space</code> + drag or the middle mouse button pans, and <code>Esc</code> cancels a pending action. <strong>Right-click</strong> opens a menu with <em>Delete Point(s)</em>, <em>Deselect All</em>, <em>Select All Points</em>, <em>Reset View</em> and <em>Undo</em>.</p>
 </section>
 <section id="continuation-line" class="level2">
 <h2 class="anchored" data-anchor-id="continuation-line">Continuation Line</h2>
@@ -836,10 +836,10 @@ Important
 <ul>
 <li><strong>Resolution</strong>: 72 (web), 150 (draft), 300 (print, the default) or 600 DPI (archival).</li>
 <li><strong>Transparent PNG</strong>: on by default; turn it off to choose a background colour. For JPG, choose the quality (60 to 100%, 90 by default).</li>
-<li><strong>Download ZIP Archive</strong>: bundles everything into one file. Keep it checked: it is how the files reach you.</li>
-<li><strong>Category Subfolders</strong>: puts each drawing in a folder named after its main category.</li>
+<li><strong>Download ZIP Archive</strong>: bundles everything into one file that your browser downloads. If you uncheck it, the files are saved instead in the project, in <code>exports/export_&lt;date&gt;_&lt;time&gt;/</code>.</li>
+<li><strong>Category Subfolders</strong>: puts each drawing in a folder named after its main category; the SVG, PNG and JPG of a drawing always go in the same folder.</li>
 </ul></li>
-<li>Click <strong>Export All Vectorized Files</strong>. A progress bar follows the work, and the ZIP is downloaded by your browser. A window then reports how many files were created.</li>
+<li>Click <strong>Export All Vectorized Files</strong>. A progress bar follows the work, and a window reports how many files were created and where they went.</li>
 </ol>
 <p>The files keep the name of the original image (the <code>_vectorized</code> ending is removed), with the extension of each format.</p>
 </section>

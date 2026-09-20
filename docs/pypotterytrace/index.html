@@ -531,7 +531,7 @@ Hardware
 </tr>
 </tbody>
 </table>
-<p><strong>Small</strong> is loaded when the app starts, so the very first start downloads it: this happens before the page is ready, and the terminal only says that a download is in progress, without a progress bar. Give it a minute before opening the browser (or reload the page if it says the connection was refused). Any other model is downloaded when you select it in the <strong>Setup</strong> tab: the app asks for confirmation and shows a progress bar.</p>
+<p><strong>Small</strong> is the model loaded by default. On the very first start, the page opens and asks whether to download it; confirm and follow the progress bar. Any other model is downloaded the same way when you select it in the <strong>Setup</strong> tab, and models you already have are used at once.</p>
 <p>After that, everything runs on your computer, without an internet connection. Your projects are stored in the <code>projects/</code> folder next to the app. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</p>
 </section>
 <section id="troubleshooting" class="level2">
@@ -561,8 +561,8 @@ Hardware
 <td>Close the other program, or start the app on another port by setting the <code>PORT</code> environment variable before <code>python app.py</code></td>
 </tr>
 <tr class="odd">
-<td>The page does not open on the first start</td>
-<td>The Small model is still downloading (see above): wait for the terminal to say the server is running, then reload</td>
+<td>“No SAM 2 model is loaded” when you open an image</td>
+<td>You cancelled the first download: select a model in the <strong>Setup</strong> tab and confirm the download</td>
 </tr>
 <tr class="even">
 <td>A model download fails</td>

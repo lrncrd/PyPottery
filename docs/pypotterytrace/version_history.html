@@ -396,6 +396,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>New look shared with the other PyPottery applications, with locally served fonts and icons</li>
 <li>The <strong>Info</strong> window shows the version, a ready-to-copy citation and the hardware the app detected (CPU cores, and the GPU or <em>CPU Only</em>); a <strong>Guide</strong> button opens a short manual inside the app, and in-app confirmation dialogs replace the browser pop-ups</li>
+<li><strong>Import</strong> and <strong>Export</strong> of whole projects as ZIP files, from the Projects tab</li>
 <li>The header shows the open project (click it to go back to the Projects tab), and reloading the page reopens the project you were working on</li>
 <li>The project cards always show the real number of images in the project</li>
 <li>Images can be added from the <strong>Setup</strong> tab by drag and drop, and a SAM 2 model that is not on the computer is only downloaded after you confirm, with a progress bar</li>
@@ -403,6 +404,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Segmentation</strong></p>
 <ul>
 <li>The <strong>rotation center</strong> is previewed as a dashed crosshair with its coordinates while you move the cursor</li>
+<li>The <strong>Undo</strong> button and <code>Ctrl</code> + <code>Z</code> work: they remove the last point or polygon vertex</li>
 <li>Every segment has an <strong>SVG / PNG</strong> format that you can change from the list, together with its category; masks drawn by hand carry a <em>Manual</em> badge</li>
 <li>New <strong>Line Threshold (Black Level)</strong> setting to keep only dark lines or to capture faint strokes</li>
 <li>Changing tool or image while a mask is being edited is blocked, with a message, so the edit is not lost</li>
@@ -411,16 +413,19 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><strong>Continuation Line</strong> tool: draws the missing part of a fractured profile along a circle fitted through the break point, first on the outer face (mirrored to the other side) and then on the inner, fracture-section face. The length is adjustable and the lines go in their own <em>Reconstruction</em> layer</li>
 <li><strong>Internal Details</strong> tool: straight lines, such as a marked rim, optionally constrained to horizontal or vertical</li>
-<li>Selection with a drag box, arrow-key nudging (10 px with <code>Shift</code>), movement constrained with <code>Shift</code>, panning with <code>Space</code>, and a right-click menu</li>
+<li>Selection with a drag box, arrow-key nudging (10 px with <code>Shift</code>), movement constrained with <code>Shift</code>, panning with <code>Space</code>, a right-click menu, and <code>V</code> / <code>S</code> / <code>A</code> / <code>D</code> to switch tool</li>
 </ul>
 <p><strong>Post-Processing</strong></p>
 <ul>
 <li><strong>Live Preview Studio</strong>: a preview of the drawing that updates while you change the settings, with a random-drawing button, a comparison with the original, zoom, two backgrounds, and the number of vertices before and after the simplification</li>
 <li>Stroke widths for every category, including the Reconstruction lines, with a <strong>Defaults</strong> button, and a reorganized export panel (formats, resolution, background, ZIP archive with optional subfolders per category)</li>
+<li>Exporting without the ZIP option now saves the files in the project’s <code>exports/</code> folder (before, nothing was delivered), and the SVG, PNG and JPG of a drawing always go in the same category subfolder</li>
 </ul>
 <p><strong>Fixes and stability</strong></p>
 <ul>
-<li>The app now starts correctly with <code>python app.py</code> (the previous launcher script could not import the server), and it opens the browser on the port it is really running on</li>
+<li>The browser opens on the port the app is really running on, also when you change it with the <code>PORT</code> variable</li>
+<li>The first start no longer blocks on a silent 184 MB download before the page can open: the page loads at once and offers the download with a progress bar</li>
+<li>The Info window reports Apple Silicon as running on the CPU, which is what SAM 2 does there</li>
 <li>The model sizes shown in the interface and in the download prompt are now the real ones (Tiny ~156 MB, Small ~184 MB, Base+ ~323 MB, Large ~898 MB)</li>
 <li>The app listens only on the local computer (<code>127.0.0.1</code>), as the other PyPottery applications do</li>
 <li>The app shuts down by itself a few seconds after you close its browser tab</li>

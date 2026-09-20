@@ -12,6 +12,7 @@ format: html
 
 -   New look shared with the other PyPottery applications, with locally served fonts and icons
 -   The **Info** window shows the version, a ready-to-copy citation and the hardware the app detected (CPU cores, and the GPU or *CPU Only*); a **Guide** button opens a short manual inside the app, and in-app confirmation dialogs replace the browser pop-ups
+-   **Import** and **Export** of whole projects as ZIP files, from the Projects tab
 -   The header shows the open project (click it to go back to the Projects tab), and reloading the page reopens the project you were working on
 -   The project cards always show the real number of images in the project
 -   Images can be added from the **Setup** tab by drag and drop, and a SAM 2 model that is not on the computer is only downloaded after you confirm, with a progress bar
@@ -19,6 +20,7 @@ format: html
 **Segmentation**
 
 -   The **rotation center** is previewed as a dashed crosshair with its coordinates while you move the cursor
+-   The **Undo** button and `Ctrl` + `Z` work: they remove the last point or polygon vertex
 -   Every segment has an **SVG / PNG** format that you can change from the list, together with its category; masks drawn by hand carry a *Manual* badge
 -   New **Line Threshold (Black Level)** setting to keep only dark lines or to capture faint strokes
 -   Changing tool or image while a mask is being edited is blocked, with a message, so the edit is not lost
@@ -27,16 +29,19 @@ format: html
 
 -   **Continuation Line** tool: draws the missing part of a fractured profile along a circle fitted through the break point, first on the outer face (mirrored to the other side) and then on the inner, fracture-section face. The length is adjustable and the lines go in their own *Reconstruction* layer
 -   **Internal Details** tool: straight lines, such as a marked rim, optionally constrained to horizontal or vertical
--   Selection with a drag box, arrow-key nudging (10 px with `Shift`), movement constrained with `Shift`, panning with `Space`, and a right-click menu
+-   Selection with a drag box, arrow-key nudging (10 px with `Shift`), movement constrained with `Shift`, panning with `Space`, a right-click menu, and `V` / `S` / `A` / `D` to switch tool
 
 **Post-Processing**
 
 -   **Live Preview Studio**: a preview of the drawing that updates while you change the settings, with a random-drawing button, a comparison with the original, zoom, two backgrounds, and the number of vertices before and after the simplification
 -   Stroke widths for every category, including the Reconstruction lines, with a **Defaults** button, and a reorganized export panel (formats, resolution, background, ZIP archive with optional subfolders per category)
+-   Exporting without the ZIP option now saves the files in the project's `exports/` folder (before, nothing was delivered), and the SVG, PNG and JPG of a drawing always go in the same category subfolder
 
 **Fixes and stability**
 
--   The app now starts correctly with `python app.py` (the previous launcher script could not import the server), and it opens the browser on the port it is really running on
+-   The browser opens on the port the app is really running on, also when you change it with the `PORT` variable
+-   The first start no longer blocks on a silent 184 MB download before the page can open: the page loads at once and offers the download with a progress bar
+-   The Info window reports Apple Silicon as running on the CPU, which is what SAM 2 does there
 -   The model sizes shown in the interface and in the download prompt are now the real ones (Tiny ~156 MB, Small ~184 MB, Base+ ~323 MB, Large ~898 MB)
 -   The app listens only on the local computer (`127.0.0.1`), as the other PyPottery applications do
 -   The app shuts down by itself a few seconds after you close its browser tab

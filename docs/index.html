@@ -2146,6 +2146,36 @@
       }
     }
 
+    /* Keep the header within the viewport on phones (it is nowrap, so it would
+       otherwise widen the page and leave the rest of the layout cut off) */
+    @media (max-width: 560px) {
+      .header-inner {
+        padding: 0 1rem;
+        gap: 0.5rem;
+      }
+      .brand-group {
+        gap: 0.6rem;
+        min-width: 0;
+        flex-shrink: 1;
+      }
+      .brand-name {
+        font-size: 1.05rem;
+        white-space: nowrap;
+      }
+      .header-actions {
+        gap: 0.45rem;
+      }
+      .header-actions .btn-outline {
+        display: none;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .version-pill {
+        display: none;
+      }
+    }
+
     @media (max-width: 768px) {
       .hero-title {
         font-size: 2.35rem;
@@ -2562,7 +2592,7 @@
       <div class="section-header-centered">
         <h2 class="section-h2">The PyPottery Suite Desktop Launcher</h2>
         <p class="section-p">
-          Launch, configure, and manage all five tools with zero command-line friction. Designed specifically for field archaeologists and research teams.
+          Launch, configure, and manage all five tools with zero command-line friction. Designed specifically for archaeologists and research teams.
         </p>
       </div>
 
@@ -2572,7 +2602,7 @@
             One Control Center for Every Tool
           </h3>
           <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">
-            The PyPottery Launcher coordinates all documentation modules from a single offline desktop interface. It monitors hardware, downloads required neural network weights, and manages an isolated Python execution environment.
+            The PyPottery Launcher coordinates all documentation modules from a single offline desktop interface. It monitors hardware, downloads, neural network weights, and manages an isolated Python execution environment.
           </p>
 
           <div class="pillar-grid">
@@ -2597,7 +2627,7 @@
                 <i class="bi bi-database-check"></i>
                 <span class="pillar-title">Shared Model Zoo</span>
               </div>
-              <p class="pillar-desc">Large AI model checkpoints are stored in a centralized cache, preventing duplicated downloads.</p>
+              <p class="pillar-desc">Large AI model checkpoints are stored in a centralized cache.</p>
             </div>
 
             <div class="pillar-item">
@@ -2633,7 +2663,7 @@
          ========================================================================== -->
     <section class="section-wrap" id="research">
       <div class="section-header-centered">
-        <h2 class="section-h2">Peer-Reviewed Publications</h2>
+        <h2 class="section-h2">Publications</h2>
         <p class="section-p">
           Would you like to find out more about the technical details, including the experiments that have been carried out?
         </p>
@@ -2713,7 +2743,7 @@
 
       <div class="tech-glossary">
         <div class="tech-glossary-row">
-          <div class="tech-term"><i class="bi bi-bounding-box-circles"></i> Computer Vision <span class="tech-term-sub">YOLOv8</span></div>
+          <div class="tech-term"><i class="bi bi-bounding-box-circles"></i> Computer Vision</div>
           <p class="tech-desc">Detects and segments individual vessel drawings straight off monograph plates and scans. No more manual cropping.</p>
         </div>
         <div class="tech-glossary-row">
@@ -2743,7 +2773,7 @@
         <div class="docs-banner-card">
           <h2 class="docs-banner-title">Comprehensive Documentation</h2>
           <p style="color: var(--text-dim); line-height: 1.6;">
-            Good software deserves good documentation. Here you'll find step-by-step tutorials and practical tricks for getting the most out of every tool.
+            I a dedicated Wiki you'll find step-by-step tutorials and practical tricks for getting the most out of every tool.
           </p>
           <ul class="docs-features-list">
             <li><i class="bi bi-check-circle-fill"></i> Complete Installation Manuals</li>
@@ -2830,7 +2860,7 @@
       <div class="footer-brand-col">
         <img src="icon_app.png" alt="PyPottery Suite Icon" class="footer-logo">
         <p class="footer-desc">
-          PyPottery Suite — Dedicated open-source computer vision tools for archaeological ceramic documentation and digital heritage preservation.
+          PyPottery Suite — Dedicated open-source computer vision tools for archaeological ceramic documentation.
         </p>
       </div>
 
