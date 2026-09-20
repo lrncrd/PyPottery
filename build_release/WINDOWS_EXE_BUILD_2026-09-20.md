@@ -105,6 +105,12 @@ version `X.Y.Z-beta`, no release "update" offered on top of it).
    (`Set-Content channel.txt beta -Encoding ascii`), or set `PYPOTTERY_CHANNEL=beta` before starting.
    The launcher log (`logs\launcher.log`, first lines) shows the "Base path" and, when active, the
    "Beta channel" warning.
+   **Quit the launcher completely before creating the file** (Task Manager: end every `PyPottery.exe`).
+   Starting the exe a second time does not start a new launcher: it only reopens the running one
+   ("Another instance is already running" in the log), which has already read the channel. In the builds
+   of 2026-09-20 the channel is read once at startup, so an app installed by a launcher that was
+   already open before `channel.txt` existed comes from the release, not from `beta`; uninstall it and
+   install again after a full restart. From the next build on, the channel is re-read at every install.
 3. Start it, **Setup Environment** (first run), then **Install** each app. Installed apps show a version
    such as `0.3.2-beta`; if one shows a plain version, the channel was not active when it was installed.
 4. Launch each app and go through the fixes of 2026-09-20 (see `PUBLICATION.md`, "Fixes from the manual

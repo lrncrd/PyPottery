@@ -321,8 +321,13 @@ class AppManager:
         self.apps_path.mkdir(parents=True, exist_ok=True)
         app_path = self.apps_path / app_id
         
-        # Determine download URL
+        # Determine download URL. The channel is read again on every download, so a
+        # channel.txt created while the launcher is already open takes effect without
+        # a restart (a second launch of the exe only reopens the running instance).
+        self.channel = get_update_channel(self.base_path)
         beta = self.channel == BETA_CHANNEL
+        if beta:
+            logger.warning("Installing %s from its beta branch (beta channel)", app_id)
         if beta:
             # Unreleased work: the `beta` branch of the app, whatever tag was asked for
             zip_url = f"https://github.com/{app.repo_owner}/{app.repo_name}/archive/refs/heads/beta.zip"
@@ -881,7 +886,9 @@ class AppManager:
         try:
             self._terminate_tree(process)
 
-            del self._processes[app_id]
+            # pop, not del: the monitor thread may already have dropped the entry of an app that
+            # exited by itself (e.g. after its browser tab closed) - that is not an error
+            self._processes.pop(app_id, None)
             self._close_app_log(app_id)
             app.is_running = False
             app.is_starting = False
