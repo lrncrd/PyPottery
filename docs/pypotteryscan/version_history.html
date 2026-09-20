@@ -366,8 +366,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a></li>
-  <li><a href="#v0.2.0-initial-release---december-2025" id="toc-v0.2.0-initial-release---december-2025" class="nav-link" data-scroll-target="#v0.2.0-initial-release---december-2025">v0.2.0 (Initial Release) - (December 2025)</a></li>
+  <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
+  <ul class="collapse">
+  <li><a href="#version-0.1.2-september-2026" id="toc-version-0.1.2-september-2026" class="nav-link" data-scroll-target="#version-0.1.2-september-2026">Version 0.1.2 (September 2026)</a></li>
+  </ul></li>
+  <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
+  <ul class="collapse">
+  <li><a href="#version-0.2.0-initial-release-december-2025" id="toc-version-0.2.0-initial-release-december-2025" class="nav-link" data-scroll-target="#version-0.2.0-initial-release-december-2025">Version 0.2.0 (Initial Release, December 2025)</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryscan/version_history.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -396,18 +402,65 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-0.1.2-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.1.2-september-2026">Version 0.1.2 (September 2026)</h3>
+<p><strong>OCR and models</strong></p>
 <ul>
-<li><strong>Added GLM-OCR</strong> as a lightweight local OCR engine (0.9B params, works on CPU or GPU, no NVIDIA GPU required), alongside the existing OlmOCR-FP4 option.</li>
+<li><strong>GLM-OCR</strong>: a lightweight local OCR model (0.9B parameters) that runs on CPU or GPU, so an NVIDIA GPU is no longer required. It is the recommended choice on first launch; OlmOCR-FP4 remains available for NVIDIA GPUs, and you can still start without any OCR model</li>
+<li>New setup screen with a progress bar per model and recovery actions when a download fails: <em>Retry Download</em>, <em>Choose a Different Model</em>, <em>Continue Without OCR</em></li>
+<li>The few-shot parsing model is now Qwen3.5-2B (it was Qwen3-1.7B). If its download fails the app still starts, and only the Parser Studio is unavailable</li>
+<li>Process OCR tab redesigned: live status while the boxes are read, the recognized labels listed as they arrive, a log drawer, <strong>Copy Extracted Texts</strong> and <strong>Re-run OCR Processing</strong></li>
+</ul>
+<p><strong>Annotate and Load</strong></p>
+<ul>
+<li>Every change is saved automatically, with a <em>Saved</em> badge; a mode badge shows which tool is active</li>
+<li>Move a selected box with the arrow keys (2 px, or 10 px with <code>Shift</code>), and delete it with the <strong>Delete Box</strong> button or <code>Delete</code></li>
+<li>Drag and drop of files and folders in the Load tab, a <strong>Plate Catalog</strong> of thumbnails, and <strong>Add Files</strong> / <strong>Add Folder</strong> to extend a project at any time</li>
+<li>In-app confirmation dialogs replace the browser pop-ups</li>
+</ul>
+<p><strong>Clean Drawings</strong></p>
+<ul>
+<li><strong>Straighten tool</strong>: precision slider (−45° to +45°), micro-adjustment buttons, quarter-turn rotations, an alignment grid and <strong>Auto-Fit</strong> to trim the blank margins</li>
+<li>Eraser presets (6, 16, 32 and 64 px), a brush preview circle, mouse-wheel size and zoom, and new shortcuts (<code>G</code>, <code>R</code>, <code>[</code>, <code>]</code>, <code>+</code>, <code>-</code>)</li>
+</ul>
+<p><strong>Export</strong></p>
+<ul>
+<li>One-click <strong>ZIP package</strong> with the JPEG drawings, the catalogue as Excel and CSV, the box coordinates for machine learning (Excel and CSV) and a short README, plus a separate <strong>Download Excel</strong> button</li>
+<li>The archive prefix is sanitized to letters, digits, <code>_</code> and <code>-</code></li>
+<li>Export files are downloaded by the browser instead of being saved to a chosen folder</li>
+</ul>
+<p><strong>Interface and stability</strong></p>
+<ul>
+<li>New look shared with the other PyPottery applications, with locally served fonts</li>
+<li>The app now shuts down by itself a few seconds after you close its browser tab</li>
+<li>Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
 </ul>
 </section>
-<section id="v0.2.0-initial-release---december-2025" class="level2">
-<h2 class="anchored" data-anchor-id="v0.2.0-initial-release---december-2025">v0.2.0 (Initial Release) - (December 2025)</h2>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
+<section id="version-0.2.0-initial-release-december-2025" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.2.0-initial-release-december-2025">Version 0.2.0 (Initial Release, December 2025)</h3>
 <p>🚀 A PyPotteryScan major release 🚀</p>
 <ul>
 <li><strong>Initial release of PyPotteryScan</strong>.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The number above is the label the app showed at the time. The automatic releases that came later count from <code>v0.1.0</code>, which is why the published versions are <code>0.1.x</code>.</p>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

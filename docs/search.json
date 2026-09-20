@@ -296,7 +296,7 @@
     "href": "pypotteryscan/version_history.html",
     "title": "Version History",
     "section": "",
-    "text": "Added GLM-OCR as a lightweight local OCR engine (0.9B params, works on CPU or GPU, no NVIDIA GPU required), alongside the existing OlmOCR-FP4 option.",
+    "text": "OCR and models\n\nGLM-OCR: a lightweight local OCR model (0.9B parameters) that runs on CPU or GPU, so an NVIDIA GPU is no longer required. It is the recommended choice on first launch; OlmOCR-FP4 remains available for NVIDIA GPUs, and you can still start without any OCR model\nNew setup screen with a progress bar per model and recovery actions when a download fails: Retry Download, Choose a Different Model, Continue Without OCR\nThe few-shot parsing model is now Qwen3.5-2B (it was Qwen3-1.7B). If its download fails the app still starts, and only the Parser Studio is unavailable\nProcess OCR tab redesigned: live status while the boxes are read, the recognized labels listed as they arrive, a log drawer, Copy Extracted Texts and Re-run OCR Processing\n\nAnnotate and Load\n\nEvery change is saved automatically, with a Saved badge; a mode badge shows which tool is active\nMove a selected box with the arrow keys (2 px, or 10 px with Shift), and delete it with the Delete Box button or Delete\nDrag and drop of files and folders in the Load tab, a Plate Catalog of thumbnails, and Add Files / Add Folder to extend a project at any time\nIn-app confirmation dialogs replace the browser pop-ups\n\nClean Drawings\n\nStraighten tool: precision slider (−45° to +45°), micro-adjustment buttons, quarter-turn rotations, an alignment grid and Auto-Fit to trim the blank margins\nEraser presets (6, 16, 32 and 64 px), a brush preview circle, mouse-wheel size and zoom, and new shortcuts (G, R, [, ], +, -)\n\nExport\n\nOne-click ZIP package with the JPEG drawings, the catalogue as Excel and CSV, the box coordinates for machine learning (Excel and CSV) and a short README, plus a separate Download Excel button\nThe archive prefix is sanitized to letters, digits, _ and -\nExport files are downloaded by the browser instead of being saved to a chosen folder\n\nInterface and stability\n\nNew look shared with the other PyPottery applications, with locally served fonts\nThe app now shuts down by itself a few seconds after you close its browser tab\nCrashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
@@ -308,7 +308,7 @@
     "href": "pypotteryscan/version_history.html#latest-release",
     "title": "Version History",
     "section": "",
-    "text": "Added GLM-OCR as a lightweight local OCR engine (0.9B params, works on CPU or GPU, no NVIDIA GPU required), alongside the existing OlmOCR-FP4 option.",
+    "text": "OCR and models\n\nGLM-OCR: a lightweight local OCR model (0.9B parameters) that runs on CPU or GPU, so an NVIDIA GPU is no longer required. It is the recommended choice on first launch; OlmOCR-FP4 remains available for NVIDIA GPUs, and you can still start without any OCR model\nNew setup screen with a progress bar per model and recovery actions when a download fails: Retry Download, Choose a Different Model, Continue Without OCR\nThe few-shot parsing model is now Qwen3.5-2B (it was Qwen3-1.7B). If its download fails the app still starts, and only the Parser Studio is unavailable\nProcess OCR tab redesigned: live status while the boxes are read, the recognized labels listed as they arrive, a log drawer, Copy Extracted Texts and Re-run OCR Processing\n\nAnnotate and Load\n\nEvery change is saved automatically, with a Saved badge; a mode badge shows which tool is active\nMove a selected box with the arrow keys (2 px, or 10 px with Shift), and delete it with the Delete Box button or Delete\nDrag and drop of files and folders in the Load tab, a Plate Catalog of thumbnails, and Add Files / Add Folder to extend a project at any time\nIn-app confirmation dialogs replace the browser pop-ups\n\nClean Drawings\n\nStraighten tool: precision slider (−45° to +45°), micro-adjustment buttons, quarter-turn rotations, an alignment grid and Auto-Fit to trim the blank margins\nEraser presets (6, 16, 32 and 64 px), a brush preview circle, mouse-wheel size and zoom, and new shortcuts (G, R, [, ], +, -)\n\nExport\n\nOne-click ZIP package with the JPEG drawings, the catalogue as Excel and CSV, the box coordinates for machine learning (Excel and CSV) and a short README, plus a separate Download Excel button\nThe archive prefix is sanitized to letters, digits, _ and -\nExport files are downloaded by the browser instead of being saved to a chosen folder\n\nInterface and stability\n\nNew look shared with the other PyPottery applications, with locally served fonts\nThe app now shuts down by itself a few seconds after you close its browser tab\nCrashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
@@ -316,11 +316,11 @@
     ]
   },
   {
-    "objectID": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
-    "href": "pypotteryscan/version_history.html#v0.2.0-initial-release---december-2025",
+    "objectID": "pypotteryscan/version_history.html#version-history",
+    "href": "pypotteryscan/version_history.html#version-history",
     "title": "Version History",
-    "section": "v0.2.0 (Initial Release) - (December 2025)",
-    "text": "v0.2.0 (Initial Release) - (December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.",
+    "section": "Version History",
+    "text": "Version History\n\nVersion 0.2.0 (Initial Release, December 2025)\n🚀 A PyPotteryScan major release 🚀\n\nInitial release of PyPotteryScan.\n\n\n\n\n\n\n\nNote\n\n\n\nThe number above is the label the app showed at the time. The automatic releases that came later count from v0.1.0, which is why the published versions are 0.1.x.",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
@@ -332,7 +332,7 @@
     "href": "pypotteryscan/index.html",
     "title": "Getting Started",
     "section": "",
-    "text": "version 0.1.1\n  \n\n  \n\n    \n    \n      \n      \n        CPU (GLM-OCR)\n      \n    \n\n    \n    \n      \n      \n        CUDA (GLM-OCR or OlmOCR)\nPyPotteryScan digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
+    "text": "version 0.1.2\n  \n\n  \n\n    \n    \n      \n      \n        CPU (GLM-OCR)\n      \n    \n\n    \n    \n      \n      \n        CUDA (GLM-OCR or OlmOCR)\nPyPotteryScan digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the Usage guide.",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
@@ -368,7 +368,7 @@
     "href": "pypotteryscan/index.html#first-launch",
     "title": "Getting Started",
     "section": "First launch",
-    "text": "First launch\nOn first launch the app opens a setup screen and downloads what it needs from HuggingFace into the models/ folder:\n\n\n\n\n\n\n\n\n\nChoice\nSize\nRuns on\nNotes\n\n\n\n\nGLM-OCR (recommended)\n~2 GB\nCPU or GPU\nFast, lightweight vision-language OCR model\n\n\nOlmOCR-FP4\n~5 GB\nNVIDIA GPU (CUDA) only\nHigher quality; the card is greyed out when no CUDA GPU is found\n\n\nNo OCR model\n0 GB\nany\nSkip automated recognition and type the label text yourself in the Review tab\n\n\n\nYou can choose only one of the three. In addition, a small text model (Qwen3.5-2B) is downloaded for the Parser Studio. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.\nIf a download fails, the setup screen offers Retry Download, Choose a Different Model and Continue Without OCR, so you are never stuck on the splash screen.\nYour projects are stored in the projects/ folder next to the app. To stop the app, press Ctrl+C in the terminal, or close it from the launcher.",
+    "text": "First launch\nOn first launch the app opens a setup screen and downloads what it needs from HuggingFace into the models/ folder:\n\n\n\n\n\n\n\n\n\nChoice\nSize\nRuns on\nNotes\n\n\n\n\nGLM-OCR (recommended)\n~2 GB\nCPU or GPU\nFast, lightweight vision-language OCR model\n\n\nOlmOCR-FP4\n~5 GB\nNVIDIA GPU (CUDA) only\nHigher quality; the card is greyed out when no CUDA GPU is found\n\n\nNo OCR model\n0 GB\nany\nSkip automated recognition and type the label text yourself in the Review tab\n\n\n\nYou can choose only one of the three. In addition, a small text model (Qwen3.5-2B) is downloaded for the Parser Studio. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.\nIf a download fails, the setup screen offers Retry Download, Choose a Different Model and Continue Without OCR, so you are never stuck on the splash screen.\nYour projects are stored in the projects/ folder next to the app. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press Ctrl+C in the terminal, or close it from the launcher.",
     "crumbs": [
       "Project Home",
       "PyPotteryScan",
