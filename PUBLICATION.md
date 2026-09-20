@@ -170,9 +170,23 @@ optional overrides with an in-app default, never required.
   removed, `usage.qmd` rewritten against the real UI as one linear guide.
   Storyboards for the animations live as `<!-- ANIMATION ... -->` comments in
   `pypotterylens/usage.qmd` (the 6 existing mock-ups still show the v0.2.1
-  UI: 1 keep+retouch, 2 retouch, 3 redo; ~6 new ones proposed). Next: same
-  schema for Scan, Ink, Trace, Layout, then build the animations once the UIs
-  settle. Note: Lens docs now cite the local AI model as "Gemma 4 E2B (~10 GB)".
+  UI: 1 keep+retouch, 2 retouch, 3 redo; ~6 new ones proposed). Note: Lens
+  docs now cite the local AI model as "Gemma 4 E2B (~10 GB)".
+  **Scan done (2026-09-20, on `beta`)**: same schema; usage rewritten against
+  the code (Load with file/folder import, OCR run/skip, Clean ranges and
+  shortcuts, ZIP + Excel export with columns, Parser Studio). The old
+  screenshots (`pypotteryscan/imgs/*.png`, old blue UI, v0.2.0, "Save to
+  Folder") and the 6 old animations are no longer referenced by the page; the
+  files are still in the repo. Open points found while reading the code:
+  (1) version drift: `VERSION`/tags say 0.1.1 but `version_history.qmd` says
+  "v0.2.0 (Initial Release)" and has no `### Version X.Y.Z` heading, so the
+  launcher changelog panel cannot use it; (2) `exports/` project folder is
+  created but never written (export is a browser download); (3) MPS is claimed
+  nowhere in the code, README and hero badge no longer claim it.
+  Next: Ink, Trace, Layout with the same schema. Visuals: the user prefers real
+  screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
+  animations; a shared animation kit was prototyped in `PyPotteryDocs/anim-kit/`
+  (uncommitted, decision pending).
 - [ ] **Residual drift across the 5 sub-apps** (mostly resolved - see
   "Resolved"). Left: the "Pixel Assistant" widget is a per-app copy (correct
   under the standalone principle, just keep the copies in sync), and Bootstrap
