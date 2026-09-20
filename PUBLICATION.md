@@ -188,8 +188,8 @@ optional overrides with an in-app default, never required.
   history 2.1.2 from beta vs main, hero versions bumped on advanced/model_zoo/api).
   Found while reading the code: the "Apply Preprocessing" button did nothing
   (handler read a removed checkbox; fixed and committed on Ink `beta`, **not
-  tested in a browser**); `utils.py` hard-codes `version = "2.1.0"` in the
-  console AI-disclosure reminder (drifts from `VERSION` after every release);
+  tested in a browser**); the console AI-disclosure reminder in `utils.py` had
+  the version hard-coded ("2.1.0"), now read from `VERSION` (fixed on Ink `beta`);
   `advanced.qmd`/`api.qmd` are Python-library tutorials and were not re-verified.
   Next: Trace, Layout with the same schema. Visuals: the user prefers real
   screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
