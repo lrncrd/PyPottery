@@ -72,7 +72,7 @@ Until version 0.3.0 the releases on GitHub included a `PyPotteryLayout.exe`. Lat
 
 ## Requirements
 
-PyPotteryLayout runs on any computer that runs Python 3.12 (Windows, macOS, Linux) and needs a modern browser. About 2 GB of RAM is enough; large sets of high-resolution drawings need more, because every image is loaded in memory. There is nothing to download at the first launch. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+PyPotteryLayout runs on any computer that runs Python 3.12 (Windows, macOS, Linux) and needs a modern browser. About 2 GB of RAM is enough; large sets of high-resolution drawings need more, because every image is loaded in memory. There is nothing to download at the first launch.
 
 ## Where the files go
 

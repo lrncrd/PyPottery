@@ -75,7 +75,7 @@ Then open **http://localhost:5004** in your browser. Installer scripts that also
 
 ::: {.callout-note}
 ## Hardware
-SAM 2 runs on an **NVIDIA GPU (CUDA)** when one is found, and on the **CPU** otherwise. The CPU works, but each click takes noticeably longer, and the larger models are best kept for a GPU. On Apple Silicon the app runs on the CPU. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+SAM 2 runs on an **NVIDIA GPU (CUDA)** when one is found, and on the **CPU** otherwise. The CPU works, but each click takes noticeably longer, and the larger models are best kept for a GPU. On Apple Silicon the app runs on the CPU.
 :::
 
 ## First launch

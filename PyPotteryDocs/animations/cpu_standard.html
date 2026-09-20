@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPU Standard Animation</title>
+    <title>CPU Standard Animation - PyPottery Style</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,23 +19,23 @@
             min-height: 100vh;
             background: transparent;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         .icon-container {
-            width: 88px;
-            height: 88px;
+            width: 86px;
+            height: 86px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 6px 14px rgba(15, 23, 42, 0.16));
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+            filter: drop-shadow(0 4px 12px rgba(120, 53, 15, 0.12));
         }
 
         .icon-container:hover {
-            transform: scale(1.12);
-            filter: drop-shadow(0 10px 22px rgba(14, 165, 233, 0.3));
+            transform: scale(1.08);
+            filter: drop-shadow(0 8px 20px rgba(194, 65, 12, 0.28));
         }
 
         svg {
@@ -45,14 +45,15 @@
             overflow: visible;
         }
 
-        /* Core Breathing Glow */
+        /* Core Breathing Animation */
         .cpu-core-glow {
-            animation: coreBreath 2.4s ease-in-out infinite;
+            animation: coreBreath 2.6s ease-in-out infinite;
+            transform-origin: 100px 100px;
         }
 
         @keyframes coreBreath {
             0%, 100% {
-                opacity: 0.65;
+                opacity: 0.92;
                 transform: scale(0.98);
             }
             50% {
@@ -63,147 +64,181 @@
 
         /* Circuit Pulse */
         .circuit-flow {
-            stroke-dasharray: 12 8;
-            animation: circuitFlow 1.6s linear infinite;
+            stroke-dasharray: 10 7;
+            animation: circuitFlow 1.8s linear infinite;
         }
 
         @keyframes circuitFlow {
             to {
-                stroke-dashoffset: -40;
+                stroke-dashoffset: -34;
             }
         }
 
-        /* Pin Glow Animation */
-        .pin-glow {
-            animation: pinPulse 2s ease-in-out infinite;
+        /* Golden Pins Pulse */
+        .pin-glow line {
+            animation: pinPulse 2.4s ease-in-out infinite;
         }
 
         @keyframes pinPulse {
             0%, 100% {
-                stroke: #94a3b8;
+                stroke: #d97706;
+                opacity: 0.85;
             }
             50% {
-                stroke: #38bdf8;
-                filter: drop-shadow(0 0 2px #38bdf8);
-            }
-        }
-
-        /* Activity LED */
-        .activity-led {
-            animation: ledBlink 1.2s ease-in-out infinite alternate;
-        }
-
-        @keyframes ledBlink {
-            0% {
-                opacity: 0.3;
-                transform: scale(0.85);
-            }
-            100% {
+                stroke: #ea580c;
                 opacity: 1;
-                transform: scale(1.2);
-                filter: drop-shadow(0 0 4px #10b981);
+                filter: drop-shadow(0 0 2px rgba(234, 88, 12, 0.6));
             }
+        }
+
+        /* Activity Micro-LEDs */
+        .activity-led-terra {
+            animation: ledBlinkTerra 1.4s ease-in-out infinite alternate;
+        }
+        @keyframes ledBlinkTerra {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 3px #ea580c); }
+        }
+
+        .activity-led-teal {
+            animation: ledBlinkTeal 1.6s ease-in-out infinite alternate 0.4s;
+        }
+        @keyframes ledBlinkTeal {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 3px #0d9488); }
+        }
+
+        .activity-led-amber {
+            animation: ledBlinkAmber 1.2s ease-in-out infinite alternate 0.8s;
+        }
+        @keyframes ledBlinkAmber {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 3px #f59e0b); }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="icon-container" id="cpu-container">
+    <div class="icon-container" id="cpu-container" title="PyPottery CPU Standard Engine">
         <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <!-- Substrate Gradient -->
+                <!-- Warm Ceramic Substrate Gradient -->
                 <linearGradient id="substrate-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#1e293b"/>
-                    <stop offset="100%" stop-color="#0f172a"/>
+                    <stop offset="0%" stop-color="#fffaf5"/>
+                    <stop offset="60%" stop-color="#f5eee3"/>
+                    <stop offset="100%" stop-color="#ebe0d1"/>
                 </linearGradient>
 
-                <!-- IHS Metallic Heatspreader -->
+                <!-- Integrated Heat Spreader (Champagne Nickel & Warm Bronze) -->
                 <linearGradient id="ihs-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f8fafc"/>
-                    <stop offset="30%" stop-color="#e2e8f0"/>
-                    <stop offset="70%" stop-color="#cbd5e1"/>
-                    <stop offset="100%" stop-color="#94a3b8"/>
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="35%" stop-color="#fbf7f2"/>
+                    <stop offset="70%" stop-color="#edd5c2"/>
+                    <stop offset="100%" stop-color="#dec4ad"/>
                 </linearGradient>
 
-                <!-- Silicon Die Core -->
-                <linearGradient id="silicon-die" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0284c7"/>
-                    <stop offset="50%" stop-color="#0369a1"/>
-                    <stop offset="100%" stop-color="#0f172a"/>
+                <!-- Silicon Die Terracotta Core -->
+                <linearGradient id="die-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ea580c"/>
+                    <stop offset="50%" stop-color="#c2410c"/>
+                    <stop offset="100%" stop-color="#9a3412"/>
                 </linearGradient>
 
-                <!-- Circuit Glow Gradient -->
-                <linearGradient id="glow-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#38bdf8"/>
-                    <stop offset="100%" stop-color="#0284c7"/>
+                <!-- Core Grid Multi-Cell Shading -->
+                <linearGradient id="core-cell-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f97316"/>
+                    <stop offset="100%" stop-color="#c2410c"/>
+                </linearGradient>
+
+                <!-- Terracotta / Amber Circuit Bus -->
+                <linearGradient id="bus-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f59e0b"/>
+                    <stop offset="50%" stop-color="#ea580c"/>
+                    <stop offset="100%" stop-color="#c2410c"/>
+                </linearGradient>
+
+                <!-- Warm Gold Pin Gradient -->
+                <linearGradient id="pin-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#d97706"/>
                 </linearGradient>
             </defs>
 
-            <!-- External Gold / Metallic Connector Pins -->
-            <!-- Top Pins -->
+            <!-- External Gold / Bronze Connector Pins -->
             <g class="pin-glow">
-                <line x1="60" y1="8" x2="60" y2="30" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="85" y1="8" x2="85" y2="30" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="115" y1="8" x2="115" y2="30" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="140" y1="8" x2="140" y2="30" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                <!-- Top Pins -->
+                <line x1="58" y1="8" x2="58" y2="30" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="84" y1="8" x2="84" y2="30" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="116" y1="8" x2="116" y2="30" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="142" y1="8" x2="142" y2="30" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
 
                 <!-- Bottom Pins -->
-                <line x1="60" y1="170" x2="60" y2="192" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="85" y1="170" x2="85" y2="192" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="115" y1="170" x2="115" y2="192" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="140" y1="170" x2="140" y2="192" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                <line x1="58" y1="170" x2="58" y2="192" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="84" y1="170" x2="84" y2="192" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="116" y1="170" x2="116" y2="192" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="142" y1="170" x2="142" y2="192" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
 
                 <!-- Left Pins -->
-                <line x1="8" y1="60" x2="30" y2="60" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="8" y1="85" x2="30" y2="85" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="8" y1="115" x2="30" y2="115" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="8" y1="140" x2="30" y2="140" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                <line x1="8" y1="58" x2="30" y2="58" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="8" y1="84" x2="30" y2="84" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="8" y1="116" x2="30" y2="116" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="8" y1="142" x2="30" y2="142" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
 
                 <!-- Right Pins -->
-                <line x1="170" y1="60" x2="192" y2="60" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="170" y1="85" x2="192" y2="85" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="170" y1="115" x2="192" y2="115" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="170" y1="140" x2="192" y2="140" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                <line x1="170" y1="58" x2="192" y2="58" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="170" y1="84" x2="192" y2="84" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="170" y1="116" x2="192" y2="116" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
+                <line x1="170" y1="142" x2="192" y2="142" stroke="#d97706" stroke-width="6.5" stroke-linecap="round"/>
             </g>
 
-            <!-- PCB Green/Slate Substrate -->
-            <rect x="25" y="25" width="150" height="150" rx="16" fill="url(#substrate-grad)" stroke="#334155" stroke-width="3"/>
+            <!-- Ceramic Archaeological Substrate -->
+            <rect x="25" y="25" width="150" height="150" rx="16" fill="url(#substrate-grad)" stroke="#d4a373" stroke-width="2.5"/>
+            <rect x="29" y="29" width="142" height="142" rx="12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.9"/>
 
-            <!-- Gold Pin 1 Corner Alignment Triangle -->
-            <polygon points="32,32 44,32 32,44" fill="#f59e0b"/>
+            <!-- Pin 1 Corner Ceramic Alignment Notch (Terracotta Mark) -->
+            <polygon points="32,32 46,32 32,46" fill="#c2410c"/>
+            <circle cx="37" cy="37" r="1.5" fill="#ffffff"/>
 
-            <!-- High-Precision Nickel Heat Spreader (IHS) -->
-            <rect x="42" y="42" width="116" height="116" rx="12" fill="url(#ihs-grad)" stroke="#475569" stroke-width="2.5"/>
-            <rect x="46" y="46" width="108" height="108" rx="8" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.5"/>
+            <!-- High-Precision Integrated Heat Spreader (IHS) -->
+            <rect x="44" y="44" width="112" height="112" rx="12" fill="url(#ihs-grad)" stroke="#c2410c" stroke-opacity="0.3" stroke-width="2"/>
+            <rect x="48" y="48" width="104" height="104" rx="8" fill="none" stroke="#ffffff" stroke-opacity="0.8" stroke-width="1.5"/>
 
-            <!-- Circuit Bus Traces -->
-            <g class="circuit-flow" stroke="url(#glow-cyan)" stroke-width="2.5" stroke-linecap="round" opacity="0.85">
-                <path d="M 52,65 L 75,65 L 75,80"/>
-                <path d="M 148,65 L 125,65 L 125,80"/>
-                <path d="M 52,135 L 75,135 L 75,120"/>
-                <path d="M 148,135 L 125,135 L 125,120"/>
+            <!-- Fine Architectural Gridlines / Archaeological Drafting Traces -->
+            <g stroke="#b45309" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="2 3">
+                <line x1="50" y1="100" x2="150" y2="100"/>
+                <line x1="100" y1="50" x2="100" y2="150"/>
             </g>
 
-            <!-- Central Processing Core / Silicon Die -->
-            <g class="cpu-core-glow" style="transform-origin: 100px 100px;">
-                <rect x="70" y="70" width="60" height="60" rx="8" fill="url(#silicon-die)" stroke="#38bdf8" stroke-width="2"/>
-                <rect x="74" y="74" width="52" height="52" rx="6" fill="none" stroke="#7dd3fc" stroke-opacity="0.3" stroke-width="1"/>
-
-                <!-- Micro-Core Grid Matrix -->
-                <rect x="80" y="80" width="16" height="16" rx="2" fill="#0284c7" opacity="0.75"/>
-                <rect x="104" y="80" width="16" height="16" rx="2" fill="#0284c7" opacity="0.75"/>
-                <rect x="80" y="104" width="16" height="16" rx="2" fill="#0284c7" opacity="0.75"/>
-                <rect x="104" y="104" width="16" height="16" rx="2" fill="#0284c7" opacity="0.75"/>
-
-                <!-- Central Laser Engraving Symbol -->
-                <circle cx="100" cy="100" r="4" fill="#38bdf8"/>
+            <!-- Terracotta Circuit Bus Flow -->
+            <g class="circuit-flow" stroke="url(#bus-glow)" stroke-width="2.5" stroke-linecap="round" opacity="0.9">
+                <path d="M 52,66 L 74,66 L 74,80"/>
+                <path d="M 148,66 L 126,66 L 126,80"/>
+                <path d="M 52,134 L 74,134 L 74,120"/>
+                <path d="M 148,134 L 126,134 L 126,120"/>
             </g>
 
-            <!-- Micro LED Indicators -->
-            <circle cx="56" cy="56" r="3" fill="#10b981" class="activity-led"/>
-            <circle cx="144" cy="56" r="3" fill="#38bdf8" class="activity-led" style="animation-delay: 0.6s;"/>
-            <circle cx="144" cy="144" r="3" fill="#f59e0b" class="activity-led" style="animation-delay: 0.3s;"/>
+            <!-- Central Silicon Die / Terracotta Micro-Core -->
+            <g class="cpu-core-glow">
+                <!-- Die Frame -->
+                <rect x="71" y="71" width="58" height="58" rx="9" fill="url(#die-grad)" stroke="#ea580c" stroke-width="1.8"/>
+                <rect x="74" y="74" width="52" height="52" rx="7" fill="none" stroke="#ffedd5" stroke-opacity="0.5" stroke-width="1"/>
+
+                <!-- Micro-Core Grid Quadrants -->
+                <rect x="78" y="78" width="18" height="18" rx="3" fill="url(#core-cell-grad)" stroke="#9a3412" stroke-width="1" opacity="0.9"/>
+                <rect x="104" y="78" width="18" height="18" rx="3" fill="url(#core-cell-grad)" stroke="#9a3412" stroke-width="1" opacity="0.9"/>
+                <rect x="78" y="104" width="18" height="18" rx="3" fill="url(#core-cell-grad)" stroke="#9a3412" stroke-width="1" opacity="0.9"/>
+                <rect x="104" y="104" width="18" height="18" rx="3" fill="url(#core-cell-grad)" stroke="#9a3412" stroke-width="1" opacity="0.9"/>
+
+                <!-- Laser Engraved Typographic Symbol: CPU -->
+                <circle cx="100" cy="100" r="10" fill="#9a3412" stroke="#ffedd5" stroke-width="1.2"/>
+                <text x="100" y="103" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6.5" font-weight="800" fill="#fff7ed" letter-spacing="0.5">CPU</text>
+            </g>
+
+            <!-- Micro-LED Activity Indicators -->
+            <circle cx="56" cy="56" r="3.2" fill="#c2410c" class="activity-led-terra"/>
+            <circle cx="144" cy="56" r="3.2" fill="#0d9488" class="activity-led-teal"/>
+            <circle cx="144" cy="144" r="3.2" fill="#f59e0b" class="activity-led-amber"/>
         </svg>
     </div>
 
@@ -218,10 +253,12 @@
 
             if (turbo) {
                 core.style.animationDuration = '0.7s';
-                circuits.forEach(c => c.style.animationDuration = '0.5s');
+                circuits.forEach(c => c.style.animationDuration = '0.6s');
+                container.style.filter = 'drop-shadow(0 10px 24px rgba(234, 88, 12, 0.45))';
             } else {
-                core.style.animationDuration = '2.4s';
-                circuits.forEach(c => c.style.animationDuration = '1.6s');
+                core.style.animationDuration = '2.6s';
+                circuits.forEach(c => c.style.animationDuration = '1.8s');
+                container.style.filter = 'drop-shadow(0 4px 12px rgba(120, 53, 15, 0.12))';
             }
         });
     </script>

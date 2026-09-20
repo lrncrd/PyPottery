@@ -77,7 +77,7 @@ Then open **http://127.0.0.1:5002** in your browser. Installer scripts that also
 
 ::: {.callout-note}
 ## Hardware
-The lightweight **GLM-OCR** model runs on a CPU or on an NVIDIA GPU. The heavier **OlmOCR-FP4** model needs an NVIDIA GPU with CUDA and is disabled on other machines. Apple Silicon (MPS) is not explicitly supported. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+The lightweight **GLM-OCR** model runs on a CPU or on an NVIDIA GPU. The heavier **OlmOCR-FP4** model needs an NVIDIA GPU with CUDA and is disabled on other machines. Apple Silicon (MPS) is not explicitly supported.
 :::
 
 ## First launch

@@ -91,7 +91,7 @@ Then open **http://127.0.0.1:5001** in your browser. Installer scripts that also
 ## First launch
 
 - The app opens in your browser and shows the initialization progress. The detection and classification models (`BasicModelv8_v01.pt`, `model_classifier.pth`) are downloaded from [HuggingFace](https://huggingface.co/lrncrd/PyPotteryLens) if missing. To download them manually, place them in `models_vision/` and `models_classifier/`.
-- **AI-assisted extraction** (Tabular Information tab) is optional and uses either a local model (a ~10 GB download, only offered if your hardware qualifies - see [Hardware Requirements](../requirements.qmd)) or an OpenRouter API key.
+- **AI-assisted extraction** (Tabular Information tab) is optional and uses either a local model (a ~10 GB download, only offered if your hardware qualifies) or an OpenRouter API key.
 - To stop the app, press `Ctrl+C` in the terminal, or close it from the launcher.
 
 ## Troubleshooting

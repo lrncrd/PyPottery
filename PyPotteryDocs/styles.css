@@ -245,15 +245,15 @@ body {
 /* Group labels. Quarto has no top-level groups, so the sidebar is one flat list and the three groups are
    marked by position: items 1-3 are the suite pages (label above), 4-8 one section per app, 9+ the reference
    pages. Keep this in step with the order of `sidebar.contents` in _quarto.yml. */
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4),
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9) {
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(3),
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(8) {
   margin-top: 1.15rem !important;
   padding-top: 0.85rem !important;
   border-top: 1px solid var(--border-light) !important;
 }
 
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4)::before,
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9)::before {
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(3)::before,
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(8)::before {
   display: block;
   font-family: var(--font-mono) !important;
   font-size: 0.68rem !important;
@@ -264,8 +264,8 @@ body {
   padding: 0 0.85rem 0.45rem 0.85rem !important;
 }
 
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(4)::before { content: "CORE MODULES"; }
-#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(9)::before { content: "REFERENCE & ABOUT"; }
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(3)::before { content: "CORE MODULES"; }
+#quarto-sidebar .sidebar-menu-container > ul > li:nth-child(8)::before { content: "REFERENCE & ABOUT"; }
 
 /* General Sidebar Items */
 .sidebar-item {

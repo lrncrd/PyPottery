@@ -93,7 +93,7 @@ The app runs on an NVIDIA GPU (CUDA), on Apple Silicon (MPS) or on the CPU alone
 | **RAM** | 16 GB | 8 GB |
 | **Storage** | Fast SSD (NVMe recommended) | |
 
-Processing on the CPU alone works but is much slower. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+Processing on the CPU alone works but is much slower.
 
 ## First launch
 

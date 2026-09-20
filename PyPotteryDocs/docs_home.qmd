@@ -398,7 +398,7 @@ PyPottery is designed as an entirely **modular suite** rather than an all-or-not
 - **Prefer assembling catalog plates by hand?** If physical layout and manual composition aid your typological reasoning and ceramic classification, you don't have to use [PyPotteryLayout](pypotterylayout/index.html): simply take the drawings from Ink, Scan, or Lens straight into your vector graphic editor or drafting desk.
 - **Only need specific extraction tasks?** Use [PyPotteryScan](pypotteryscan/index.html) solely for transcribing handwritten cards into Excel, or [PyPotteryLens](pypotterylens/index.html) just to mine monograph plates, without touching the downstream drawing tools.
 
-For hardware requirements and environment setup on Windows, macOS, and Linux, see [System Requirements](requirements.html) and the [Suite Installation Guide](suite_installation.html).
+For environment setup on Windows, macOS, and Linux, see the [Suite Installation Guide](suite_installation.html).
 
 :::
 

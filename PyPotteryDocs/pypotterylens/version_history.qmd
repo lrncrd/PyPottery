@@ -10,7 +10,7 @@ format: html
 
 **Key Features:**
 
--   Hardware Eligibility Guardrail: the local AI extraction model now checks your GPU/CPU/RAM before downloading, and blocks the download with a clear explanation on underpowered hardware (see [Requirements](../requirements.qmd))
+-   Hardware Eligibility Guardrail: the local AI extraction model now checks your GPU/CPU/RAM before downloading, and blocks the download with a clear explanation on underpowered hardware
 -   Fixed local model loading on recent `transformers` versions
 
 ## Version History

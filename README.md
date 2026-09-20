@@ -158,7 +158,6 @@ For advanced users who want more control, each tool can be installed separately.
 Full documentation is available at **[lrncrd.github.io/PyPottery](https://lrncrd.github.io/PyPottery/)**
 
 - [Getting Started](https://lrncrd.github.io/PyPottery/suite_installation.html)
-- [Requirements](https://lrncrd.github.io/PyPottery/requirements.html)
 - [PyPotteryInk Guide](https://lrncrd.github.io/PyPottery/pypotteryink/)
 - [PyPotteryLayout Guide](https://lrncrd.github.io/PyPottery/pypotterylayout/)
 - [PyPotteryLens Guide](https://lrncrd.github.io/PyPottery/pypotterylens/)

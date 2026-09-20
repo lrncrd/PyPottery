@@ -36,8 +36,6 @@ website:
         href: docs_home.qmd
       - text: "Suite Installation"
         href: suite_installation.qmd
-      - text: "System Requirements"
-        href: requirements.qmd
       - section: "PyPotteryLens"
         contents:
           - pypotterylens/index.qmd
