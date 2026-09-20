@@ -120,7 +120,7 @@ The app uploads the images, checks the model and the diffusion backbone (downloa
 
 ## The results
 
-At the end the app shows a summary: how many images were **Successful** and **Failed**, the **Average time** per image, the **Output directory** and the **Log file**. Below it, a gallery shows the first 20 comparison images; click one to see it full screen.
+At the end the app shows a summary: how many images were **Successful** and **Failed**, the **Average time** per image, the **Output directory** and the **Log file**; the **Open Output Folder** button opens that folder in your file manager. Below it, a gallery shows the first 20 comparison images; click one to see it full screen.
 
 The output directory contains:
 

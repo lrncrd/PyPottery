@@ -180,6 +180,7 @@ Open a plate by clicking it in the **Images List** (the sidebar can be collapsed
 
 | Tool | What it does | Key |
 |---|---|---|
+| **Select** | Click a vessel to select it and drag it to move it. Drag one of its vertices to move it, click an edge to add a vertex, `Alt` or `Shift` + click a vertex to delete it. It never paints | `V` |
 | **Brush** | Paint with a round cursor. When you release, the stroke becomes a clean vector polygon | `B` |
 | **Polygon** | Click to place vertices; click the first point (or double-click, or press `Enter`) to close. `Backspace` removes the last vertex, `Esc` cancels | `P` |
 | **Eraser** | Sweep the round cursor over polygon vertices to erase them | `E` |
@@ -188,7 +189,7 @@ Open a plate by clicking it in the **Images List** (the sidebar can be collapsed
 
 The **Size** slider sets the diameter of the brush and eraser (5-100 px). The **Expansion** slider (0-100 px, default 8 px) adds padding around every vessel when the cards are cut, so the drawing is not cropped too tightly: raise it if lines at the edge of a vessel are being cut off, lower it if neighbouring drawings creep into the card.
 
-Select a polygon in the list and press `Delete` to remove it.
+Select a polygon in the list (or with the **Select** tool) and press `Delete` to remove it. `Ctrl+Z` undoes the last change to the polygons of the plate, whatever the tool that made it (up to 50 steps).
 
 <!--
 ANIMATION (NEW, priority: high) - "Fix a mask"
@@ -233,7 +234,7 @@ If you want real-world sizes in your data, tell PyPotteryLens what the printed s
 The measure appears in **Scale calibrations**, and it is used to fill a `px_per_cm` column when you extract the cards. Each card takes the scale that applies to its position:
 
 - A plate with **one scale** applies it to every vessel on the plate.
-- A plate with **several scales** (for example, different drawings at different reductions): click **Zone** on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate's general (non-zone) scale.
+- A plate with **several scales** (for example, different drawings at different reductions): click **Zone** on a scale and draw a rectangle around the part of the page it applies to. A vessel takes the scale of the zone that contains its center, and if zones overlap, the smallest zone wins. Vessels outside every zone fall back to the plate's general (non-zone) scale. Each scale is named **Z1**, **Z2**, ... and every vessel shows the one it will get, on the canvas and in the **Vessels & Polygons** list, in the color of its zone (a red **!** means that more than one zone contains it, a grey **?** that no scale applies); the **Scale calibrations** list shows how many vessels each zone has.
 
 Once you have measured scales on several plates, **Calibrate Scales** opens a histogram of all the px/cm ratios in the project. Measurements taken with a few pixels of click imprecision show up as scattered values around the true one. Click an empty spot to add a center line, drag lines to move them, double-click to remove them, then **Apply Calibration** to snap outlier measurements to the value you chose. Ratios are rounded to one decimal.
 

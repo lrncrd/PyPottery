@@ -32,6 +32,13 @@ subtitle: "Development timeline and changes"
 -   The archive prefix is sanitized to letters, digits, `_` and `-`
 -   Export files are downloaded by the browser instead of being saved to a chosen folder
 
+**Parser Studio**
+
+-   The **x** at the end of a row of **Current Parsed Data** removes a field you assigned by mistake, together with its highlight
+-   **Added Examples** is collapsed at the start; its title opens and closes the list, and the count stays visible
+-   **Previous**, **Next** and **Reset** ask for confirmation when you assigned fields on the line and did not add it as an example yet
+-   The pill that shows the step being processed and the box with the recognized text labels are now spaced apart in the **Process OCR** tab
+
 **Interface and stability**
 
 -   New look shared with the other PyPottery applications, with locally served fonts

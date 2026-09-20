@@ -124,6 +124,28 @@ optional overrides with an in-app default, never required.
 - **Lens export numbering fixed** (2026-09-19, on `beta`): exported IDs
   (`OSA_2024_<n>`) now follow natural plate order, not alphabetical order
   (`export_project_results` in `PyPotteryLens/app.py`).
+- **Fixes from the manual test round** (2026-09-20, on `beta` of each repo,
+  nothing pushed). Checked with `py_compile`/`node --check` and small
+  simulations; **none of the frontend changes was opened in a browser**, so
+  the look and the mouse interaction still need a hand check:
+  - Lens: YOLO and the classifier now live in `PYPOTTERY_MODEL_CACHE`
+    (`yolo/`, `classifier/`) so the launcher lists them (weights in the old
+    `models_vision/` are moved once; standalone unchanged); zone assignment
+    shown again as Z1, Z2... on canvas and lists (it was computed from the raster
+    mask, dead since the polygon editor of `6801f72`; now from the polygons,
+    same rule as the extraction); Select tool (`V`) and Ctrl+Z for polygons.
+  - Ink: Open Output Folder in Batch; lighter upload previews (240 px bitmaps,
+    max 60 tiles), lazy result galleries. Not done: chunked upload (500 MB
+    request limit) and lower-dpi comparison PNGs (`ink.py`).
+  - Scan: gap between the OCR boxes (`my-4`/`my-6` utilities did not exist);
+    Parser Studio: remove one assigned field, examples list collapsed, warning
+    on Previous/Next/Reset with unsaved assignments.
+  - Trace: gap between Export and Delete on the project cards, styled status
+    text under the Generate SVG bar, symmetry and diameter lines black
+    (preview and exports).
+  - Docs: usage/version-history notes for Ink, Scan, Trace and Lens usage.
+    Lens's `version_history.qmd` is **not** updated (its next release number is
+    not decided yet; latest tag is 0.3.1).
 
 ## P0 - blocks a multi-platform release
 

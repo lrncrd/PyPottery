@@ -34,6 +34,7 @@ format: html
 **Post-Processing**
 
 -   **Live Preview Studio**: a preview of the drawing that updates while you change the settings, with a random-drawing button, a comparison with the original, zoom, two backgrounds, and the number of vertices before and after the simplification
+-   The symmetry and diameter lines are black, like the rest of the drawing, in the preview and in every export (they were gray)
 -   Stroke widths for every category, including the Reconstruction lines, with a **Defaults** button, and a reorganized export panel (formats, resolution, background, ZIP archive with optional subfolders per category)
 -   Exporting without the ZIP option now saves the files in the project's `exports/` folder (before, nothing was delivered), and the SVG, PNG and JPG of a drawing always go in the same category subfolder
 

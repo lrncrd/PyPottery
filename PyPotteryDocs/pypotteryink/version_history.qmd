@@ -12,6 +12,7 @@ format: html
 
 -   New look shared with the other PyPottery applications, with locally served fonts and icons in place of the emoji in messages and buttons
 -   The **Info** window now shows the hardware the app detected (CPU cores, and the GPU or *CPU Only*) and has a **Copy** button for the citation; `Esc` closes it
+-   **Batch Processing** has an **Open Output Folder** button, like the diagnostics, and the previews of a large selection of images stay smooth: small thumbnails decoded a few at a time, at most 60 tiles (the rest is counted as "+N more") and removal of a single image without reloading the others
 -   **Hardware Check** redesigned with clearer verdicts and messages, a card per component, and updated tips. Processors with 8 or more cores are now rated excellent
 
 **Fixes and stability**
