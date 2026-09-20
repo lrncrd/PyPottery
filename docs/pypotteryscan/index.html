@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction – PyPottery</title>
+<title>Getting Started – PyPottery</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -121,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">Introduction</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">Getting Started</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -192,13 +226,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotteryscan/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotteryscan/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -372,7 +400,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-features" id="toc-key-features" class="nav-link active" data-scroll-target="#key-features">Key Features</a></li>
+  <li><a href="#what-you-can-do" id="toc-what-you-can-do" class="nav-link active" data-scroll-target="#what-you-can-do">What you can do</a></li>
+  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
+  <li><a href="#first-launch" id="toc-first-launch" class="nav-link" data-scroll-target="#first-launch">First launch</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#updating" id="toc-updating" class="nav-link" data-scroll-target="#updating">Updating</a></li>
+  <li><a href="#next-step" id="toc-next-step" class="nav-link" data-scroll-target="#next-step">Next step</a></li>
   <li><a href="#contributors" id="toc-contributors" class="nav-link" data-scroll-target="#contributors">Contributors</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryscan/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -380,9 +413,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">Introduction</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">PyPotteryScan</a></li><li class="breadcrumb-item"><a href="../pypotteryscan/index.html">Getting Started</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title">Getting Started</h1>
 </div>
 
 
@@ -407,28 +440,20 @@ ul.task-list li input[type="checkbox"] {
   </span>
 
   <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
-      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        CPU (Not Supported)
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        CPU (GLM-OCR)
       </span>
     </div>
 
-    <!-- CUDA (Active) -->
+    <!-- CUDA -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
       <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
       <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
-        CUDA (Supported)
-      </span>
-    </div>
-
-    <!-- MPS -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
-      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        MPS (Coming Soon)
+        CUDA (GLM-OCR or OlmOCR)
       </span>
     </div>
 
@@ -436,29 +461,142 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 <p><br></p>
-<p><strong>PyPotteryScan</strong> is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data.</p>
-<div class="callout callout-style-simple callout-warning callout-titled">
+<p><strong>PyPotteryScan</strong> digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the <a href="../pypotteryscan/usage.html">Usage guide</a>.</p>
+<section id="what-you-can-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-can-do">What you can do</h2>
+<ol type="1">
+<li><strong>Create a project</strong> and load the scans of your plates.</li>
+<li><strong>Annotate</strong> each plate: draw a box around every vessel, and a box around every label that belongs to it.</li>
+<li><strong>Process OCR</strong> on all the label boxes (or skip it and type the text yourself).</li>
+<li><strong>Clean</strong> each drawing: erase stray text and numbers, straighten tilted profiles.</li>
+<li><strong>Review</strong> the recognized text and correct it.</li>
+<li><strong>Export</strong> a ZIP with the drawings, an Excel/CSV catalogue and the box coordinates.</li>
+<li>Optionally, turn the free text into structured fields with the <strong>Parser Studio</strong> (few-shot parsing with a small local language model).</li>
+</ol>
+</section>
+<section id="install" class="level2">
+<h2 class="anchored" data-anchor-id="install">Install</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Launcher (recommended)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">From source</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The <a href="../suite_installation.html">PyPottery Suite Launcher</a> installs and updates PyPotteryScan for you, with no Python setup. Download it from the <a href="https://github.com/lrncrd/PyPottery/releases/latest">latest release</a>, open it, and start PyPotteryScan from its interface.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Requires <strong>Python 3.12</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/lrncrd/PyPotteryScan.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> PyPotteryScan</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt   <span class="co"># includes PyTorch</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> app.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then open <strong>http://127.0.0.1:5002</strong> in your browser. Installer scripts that also create a virtual environment are included: double-click <code>PyPotteryScan_WIN.bat</code> on Windows, or run <code>chmod +x PyPotteryScan_UNIX.sh &amp;&amp; ./PyPotteryScan_UNIX.sh</code> on Linux/macOS.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-System Requirements
+Hardware
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This application requires an <strong>NVIDIA GPU with CUDA support</strong> to run the OCR and AI models efficiently.</p>
+<p>The lightweight <strong>GLM-OCR</strong> model runs on a CPU or on an NVIDIA GPU. The heavier <strong>OlmOCR-FP4</strong> model needs an NVIDIA GPU with CUDA and is disabled on other machines. Apple Silicon (MPS) is not explicitly supported. See <a href="../requirements.html">Hardware Requirements</a> for the suite as a whole.</p>
 </div>
 </div>
-<section id="key-features" class="level2">
-<h2 class="anchored" data-anchor-id="key-features">Key Features</h2>
-<ul>
-<li><strong>📂 Project Management</strong>: Organize your work in portable, self-contained project folders.</li>
-<li><strong>✏️ Annotation &amp; OCR</strong>: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.</li>
-<li><strong>🧹 Image Cleaning</strong>: Integrated tools to clean and refine extracted drawing images.</li>
-<li><strong>📝 Data Review &amp; Parsing</strong>: Verify OCR results and use the <strong>Few-Shot Parser</strong> (LLM) to structure free text into data fields.</li>
-<li><strong>📦 Structured Export</strong>: Export everything into organized folders with Excel reports for easy analysis.</li>
-</ul>
+</section>
+<section id="first-launch" class="level2">
+<h2 class="anchored" data-anchor-id="first-launch">First launch</h2>
+<p>On first launch the app opens a setup screen and downloads what it needs from HuggingFace into the <code>models/</code> folder:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Choice</th>
+<th>Size</th>
+<th>Runs on</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>GLM-OCR</strong> (recommended)</td>
+<td>~2 GB</td>
+<td>CPU or GPU</td>
+<td>Fast, lightweight vision-language OCR model</td>
+</tr>
+<tr class="even">
+<td><strong>OlmOCR-FP4</strong></td>
+<td>~5 GB</td>
+<td>NVIDIA GPU (CUDA) only</td>
+<td>Higher quality; the card is greyed out when no CUDA GPU is found</td>
+</tr>
+<tr class="odd">
+<td><strong>No OCR model</strong></td>
+<td>0 GB</td>
+<td>any</td>
+<td>Skip automated recognition and type the label text yourself in the Review tab</td>
+</tr>
+</tbody>
+</table>
+<p>You can choose only one of the three. In addition, a small text model (<strong>Qwen3.5-2B</strong>) is downloaded for the Parser Studio. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.</p>
+<p>If a download fails, the setup screen offers <strong>Retry Download</strong>, <strong>Choose a Different Model</strong> and <strong>Continue Without OCR</strong>, so you are never stuck on the splash screen.</p>
+<p>Your projects are stored in the <code>projects/</code> folder next to the app. To stop the app, press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</p>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>What to try</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python not found</td>
+<td>Install Python 3.12 from <a href="https://www.python.org/downloads/">python.org</a> (on Windows tick “Add Python to PATH”); on Linux <code>sudo apt install python3 python3-venv</code>; on macOS <code>brew install python3</code></td>
+</tr>
+<tr class="even">
+<td>Dependency installation fails</td>
+<td>Check your connection, upgrade pip (<code>python -m pip install --upgrade pip</code>), or install the packages of <code>requirements.txt</code> one at a time to find the culprit</td>
+</tr>
+<tr class="odd">
+<td>Port 5002 is already in use</td>
+<td>Close the other program, or start the app on another port by setting the <code>PORT</code> environment variable before <code>python app.py</code></td>
+</tr>
+<tr class="even">
+<td>A model download fails</td>
+<td>Use <strong>Retry Download</strong> on the setup screen; check your connection and free disk space (OlmOCR-FP4 alone is ~5 GB); or <strong>Continue Without OCR</strong> and download later</td>
+</tr>
+<tr class="odd">
+<td>OlmOCR-FP4 is greyed out</td>
+<td>No NVIDIA CUDA GPU was found: use GLM-OCR, or reinstall PyTorch with the CUDA build that matches your drivers</td>
+</tr>
+<tr class="even">
+<td>“No OCR model is installed” when starting OCR</td>
+<td>You continued without OCR: use <strong>Skip OCR</strong> in step 3 and type the text by hand, or restart the app and pick a model</td>
+</tr>
+<tr class="odd">
+<td>Parser Studio says the parsing model is unavailable</td>
+<td>The Qwen3.5-2B download failed: check your connection and restart the app to retry</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="updating" class="level2">
+<h2 class="anchored" data-anchor-id="updating">Updating</h2>
+<p>With the launcher, updates are handled for you. From source, pull the latest code and run <code>pip install -r requirements.txt --upgrade</code>.</p>
+</section>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next step</h2>
+<p>Head to the <a href="../pypotteryscan/usage.html">Usage guide</a> for a walkthrough of the whole workflow.</p>
 </section>
 <section id="contributors" class="level2">
 <h2 class="anchored" data-anchor-id="contributors">Contributors</h2>

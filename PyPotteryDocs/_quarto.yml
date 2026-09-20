@@ -42,7 +42,6 @@ website:
       - section: "PyPotteryScan"
         contents:
           - pypotteryscan/index.qmd
-          - pypotteryscan/installation.qmd
           - pypotteryscan/usage.qmd
           - pypotteryscan/version_history.qmd
       - section: "PyPotteryInk"

@@ -1,5 +1,7 @@
 ---
-title: "Introduction"
+title: "Getting Started"
+aliases:
+  - installation.html
 format: html
 toc: true
 ---
@@ -14,28 +16,20 @@ toc: true
   </span>
 
   <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
-      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        CPU (Not Supported)
+      <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
+      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
+        CPU (GLM-OCR)
       </span>
     </div>
 
-    <!-- CUDA (Active) -->
+    <!-- CUDA -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
       <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
       <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
-        CUDA (Supported)
-      </span>
-    </div>
-
-    <!-- MPS -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden; opacity: 0.6; filter: grayscale(100%);"></iframe>
-      <span style="background: #e5e7eb; color: #9ca3af; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        MPS (Coming Soon)
+        CUDA (GLM-OCR or OlmOCR)
       </span>
     </div>
 
@@ -46,20 +40,82 @@ toc: true
 
 <br>
 
-**PyPotteryScan** is a specialized tool designed for digitizing and processing scanned pottery plates. It streamlines the workflow of extracting drawings, recognizing text (OCR), and structuring data.
+**PyPotteryScan** digitizes scanned pottery plates: you mark the drawings and their labels on each plate, the app reads the labels with a local OCR model, and you export the cleaned drawings together with a catalogue of the text. This page gets you from zero to a running app; the full workflow is in the [Usage guide](usage.qmd).
 
-::: {.callout-warning appearance="simple"}
-## System Requirements
-This application requires an **NVIDIA GPU with CUDA support** to run the OCR and AI models efficiently.
+## What you can do
+
+1.  **Create a project** and load the scans of your plates.
+2.  **Annotate** each plate: draw a box around every vessel, and a box around every label that belongs to it.
+3.  **Process OCR** on all the label boxes (or skip it and type the text yourself).
+4.  **Clean** each drawing: erase stray text and numbers, straighten tilted profiles.
+5.  **Review** the recognized text and correct it.
+6.  **Export** a ZIP with the drawings, an Excel/CSV catalogue and the box coordinates.
+7.  Optionally, turn the free text into structured fields with the **Parser Studio** (few-shot parsing with a small local language model).
+
+## Install
+
+::: {.panel-tabset}
+
+### Launcher (recommended)
+
+The [PyPottery Suite Launcher](../suite_installation.qmd) installs and updates PyPotteryScan for you, with no Python setup. Download it from the [latest release](https://github.com/lrncrd/PyPottery/releases/latest), open it, and start PyPotteryScan from its interface.
+
+### From source
+
+Requires **Python 3.12**.
+
+```bash
+git clone https://github.com/lrncrd/PyPotteryScan.git
+cd PyPotteryScan
+pip install -r requirements.txt   # includes PyTorch
+python app.py
+```
+
+Then open **http://127.0.0.1:5002** in your browser. Installer scripts that also create a virtual environment are included: double-click `PyPotteryScan_WIN.bat` on Windows, or run `chmod +x PyPotteryScan_UNIX.sh && ./PyPotteryScan_UNIX.sh` on Linux/macOS.
+
 :::
 
-## Key Features
+::: {.callout-note}
+## Hardware
+The lightweight **GLM-OCR** model runs on a CPU or on an NVIDIA GPU. The heavier **OlmOCR-FP4** model needs an NVIDIA GPU with CUDA and is disabled on other machines. Apple Silicon (MPS) is not explicitly supported. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+:::
 
-*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
-*   **✏️ Annotation & OCR**: Easily select drawings and text on plates, using automated OCR to digitize handwritten notes.
-*   **🧹 Image Cleaning**: Integrated tools to clean and refine extracted drawing images.
-*   **📝 Data Review & Parsing**: Verify OCR results and use the **Few-Shot Parser** (LLM) to structure free text into data fields.
-*   **📦 Structured Export**: Export everything into organized folders with Excel reports for easy analysis.
+## First launch
+
+On first launch the app opens a setup screen and downloads what it needs from HuggingFace into the `models/` folder:
+
+| Choice | Size | Runs on | Notes |
+|---|---|---|---|
+| **GLM-OCR** (recommended) | ~2 GB | CPU or GPU | Fast, lightweight vision-language OCR model |
+| **OlmOCR-FP4** | ~5 GB | NVIDIA GPU (CUDA) only | Higher quality; the card is greyed out when no CUDA GPU is found |
+| **No OCR model** | 0 GB | any | Skip automated recognition and type the label text yourself in the Review tab |
+
+You can choose only one of the three. In addition, a small text model (**Qwen3.5-2B**) is downloaded for the Parser Studio. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.
+
+If a download fails, the setup screen offers **Retry Download**, **Choose a Different Model** and **Continue Without OCR**, so you are never stuck on the splash screen.
+
+Your projects are stored in the `projects/` folder next to the app. To stop the app, press `Ctrl+C` in the terminal, or close it from the launcher.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| Python not found | Install Python 3.12 from [python.org](https://www.python.org/downloads/) (on Windows tick "Add Python to PATH"); on Linux `sudo apt install python3 python3-venv`; on macOS `brew install python3` |
+| Dependency installation fails | Check your connection, upgrade pip (`python -m pip install --upgrade pip`), or install the packages of `requirements.txt` one at a time to find the culprit |
+| Port 5002 is already in use | Close the other program, or start the app on another port by setting the `PORT` environment variable before `python app.py` |
+| A model download fails | Use **Retry Download** on the setup screen; check your connection and free disk space (OlmOCR-FP4 alone is ~5 GB); or **Continue Without OCR** and download later |
+| OlmOCR-FP4 is greyed out | No NVIDIA CUDA GPU was found: use GLM-OCR, or reinstall PyTorch with the CUDA build that matches your drivers |
+| "No OCR model is installed" when starting OCR | You continued without OCR: use **Skip OCR** in step 3 and type the text by hand, or restart the app and pick a model |
+| Parser Studio says the parsing model is unavailable | The Qwen3.5-2B download failed: check your connection and restart the app to retry |
+
+## Updating
+
+With the launcher, updates are handled for you. From source, pull the latest code and run `pip install -r requirements.txt --upgrade`.
+
+## Next step
+
+Head to the [Usage guide](usage.qmd) for a walkthrough of the whole workflow.
+
 
 ## Contributors
 ```{=html}
