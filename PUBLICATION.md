@@ -191,7 +191,27 @@ optional overrides with an in-app default, never required.
   tested in a browser**); the console AI-disclosure reminder in `utils.py` had
   the version hard-coded ("2.1.0"), now read from `VERSION` (fixed on Ink `beta`);
   `advanced.qmd`/`api.qmd` are Python-library tutorials and were not re-verified.
-  Next: Trace, Layout with the same schema. Visuals: the user prefers real
+  **Trace done (2026-09-20, on `beta`)**: same schema (Getting Started with an
+  alias for `installation.html`, usage rewritten against the code, technical
+  reference corrected, version history 0.1.2 from beta vs main). The old
+  Trace screenshots (`imgs/1-22.png`) and 7 animations show the pre-redesign UI
+  and are no longer referenced. Fixed on Trace `beta`: SAM2 sizes shown in the UI
+  were wrong (Tiny 40 MB is really 156, Base+ 230 is 323), README (right-click
+  does not remove points; Python 3.12), `app.py` bound to `0.0.0.0` (now
+  `127.0.0.1` like the other apps) and named a non-existent requirements file.
+  Found and **not** fixed: (1) `sam2_handler = SAM2Handler('small')` runs at
+  import, so the first start downloads Small *before* the server listens, with no
+  progress, while `app.py` opens the browser after 2 s; (2) in Post-Processing,
+  unchecking "Download ZIP Archive" processes the files but delivers nothing
+  (the backend deletes the temp dir); (3) the in-app Guide lists SVG Editor
+  shortcuts V/S/A/D that do not exist; (4) `showImportProjectDialog` exists but no
+  button calls it; (5) SVG and PNG of the same drawing can land in different
+  category subfolders (SVG uses the backend priority, PNG the client's first
+  category); (6) `main`'s `app.py` does `from app import app` (imports itself),
+  so the published 0.1.1 probably cannot start with `python app.py` (not run,
+  read from the code); (7) SAM2 has no MPS path (`cuda` else `cpu`), while the
+  Info window says "Apple Silicon (MPS)".
+  Next: Layout with the same schema. Visuals: the user prefers real
   screen recordings (WebM/MP4, GIF for GitHub READMEs) over hand-built HTML
   animations; a shared animation kit was prototyped in `PyPotteryDocs/anim-kit/`
   (uncommitted, decision pending).

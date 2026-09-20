@@ -1,5 +1,7 @@
 ---
-title: "Introduction"
+title: "Getting Started"
+aliases:
+  - installation.html
 format: html
 toc: true
 ---
@@ -10,11 +12,11 @@ toc: true
   <img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 75%; height: auto; margin-bottom: 1em;">
   <br>
   <span style="background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em;">
-    version 0.1.1
+    version 0.1.2
   </span>
-  
+
   <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: flex-start; margin-top: 20px;">
-    
+
     <!-- CPU -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
       <iframe src="../animations/cpu_standard.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
@@ -23,7 +25,7 @@ toc: true
       </span>
     </div>
 
-    <!-- CUDA (Active)-->
+    <!-- CUDA -->
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
       <iframe src="../animations/gpu_cuda.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
       <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.9em; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);">
@@ -31,32 +33,89 @@ toc: true
       </span>
     </div>
 
-    <!-- MPS -->
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-      <iframe src="../animations/gpu_mps.html" style="width: 100px; height: 100px; border: none; overflow: hidden;"></iframe>
-      <span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-family: sans-serif; font-size: 0.8em;">
-        MPS
-      </span>
-    </div>
   </div>
 </div>
+
 ```
 
 <br>
 
-**PyPotteryTrace** is an advanced tool designed to digitize archaeological drawings by converting raster images into editable vector graphics (SVG). It uses the **Segment Anything Model 2 (SAM2)** to identify and extract pottery profiles, handles, and decorations with high precision.
+**PyPotteryTrace** turns scanned archaeological pottery drawings into editable vector graphics (SVG). You mark the vessel on the drawing with a few clicks, the **Segment Anything Model 2 (SAM 2)** finds its outline, and the app traces it, mirrors the profile around the vessel's axis and gives you clean, layered SVG files that you can refine in the built-in editor and export for publication. This page gets you from zero to a running app; the full workflow is in the [Usage guide](usage.qmd), and the geometry behind it is in the [Technical Reference](technical_reference.qmd).
 
+## What you can do
 
-## Key Features
+1.  **Create a project** and load the drawings you want to vectorize.
+2.  **Choose a SAM 2 model**, from the fastest to the most precise.
+3.  **Segment** every element of a drawing (profile, handle, decoration, ...) with clicks, a box or a hand-drawn polygon, and set the vessel's **rotation center**.
+4.  **Edit the SVG**: move points, add or delete them, and draw the missing part of a fractured profile with a continuation line.
+5.  **Post-process and export** all the drawings of the project in one go, as SVG, PNG or JPG, with the line weights of your publication.
 
-*   **📂 Project Management**: Organize your work in portable, self-contained project folders.
-*   **🤖 AI Segmentation**: Uses SAM2 to automatically identify vessel shapes from user prompts.
-*   **✂️ Interactive Tools**: Refine masks using Point, Box, and Manual modes.
-*   **✏️ Vector Editor**: Integrated SVG editor to fine-tune curves and control points.
-*   **🎨 Batch Export**: Export publication-ready SVGs, PNGs, and JPGs with customizable styles.
+## Install
+
+::: {.panel-tabset}
+
+### Launcher (recommended)
+
+The [PyPottery Suite Launcher](../suite_installation.qmd) installs and updates PyPotteryTrace for you, with no Python setup. Download it from the [latest release](https://github.com/lrncrd/PyPottery/releases/latest), open it, and start PyPotteryTrace from its interface.
+
+### From source
+
+Requires **Python 3.12**.
+
+```bash
+git clone https://github.com/lrncrd/PyPotteryTrace.git
+cd PyPotteryTrace
+pip install -r requirements.txt   # includes PyTorch and SAM 2
+python app.py
+```
+
+Then open **http://localhost:5004** in your browser. Installer scripts that also create a virtual environment are included: double-click `PyPotteryTrace_WIN.bat` on Windows, or run `chmod +x PyPotteryTrace_UNIX.sh && ./PyPotteryTrace_UNIX.sh` on Linux/macOS.
+
+:::
+
+::: {.callout-note}
+## Hardware
+SAM 2 runs on an **NVIDIA GPU (CUDA)** when one is found, and on the **CPU** otherwise. The CPU works, but each click takes noticeably longer, and the larger models are best kept for a GPU. On Apple Silicon the app runs on the CPU. See [Hardware Requirements](../requirements.qmd) for the suite as a whole.
+:::
+
+## First launch
+
+The SAM 2 weights are downloaded from Meta's servers and stored in the `models/` folder of the app (with the launcher, in a cache shared by the PyPottery apps). Four sizes are available:
+
+| Model | Size | Speed | Accuracy |
+|---|---|---|---|
+| **Tiny** | ~156 MB | Very fast | Good |
+| **Small** (default) | ~184 MB | Fast | High |
+| **Base+** | ~323 MB | Medium | Excellent |
+| **Large** | ~898 MB | Slower | Highest |
+
+**Small** is loaded when the app starts, so the very first start downloads it: this happens before the page is ready, and the terminal only says that a download is in progress, without a progress bar. Give it a minute before opening the browser (or reload the page if it says the connection was refused). Any other model is downloaded when you select it in the **Setup** tab: the app asks for confirmation and shows a progress bar.
+
+After that, everything runs on your computer, without an internet connection. Your projects are stored in the `projects/` folder next to the app. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| Python not found | Install Python 3.12 from [python.org](https://www.python.org/downloads/) (on Windows tick "Add Python to PATH"); on Linux `sudo apt install python3 python3-venv`; on macOS `brew install python3` |
+| Dependency installation fails | Check your connection, upgrade pip (`python -m pip install --upgrade pip`), or install the packages of `requirements.txt` one at a time to find the culprit |
+| "SAM2 not installed" | Install it from the source with `pip install git+https://github.com/facebookresearch/segment-anything-2.git`, then start the app again |
+| Port 5004 is already in use | Close the other program, or start the app on another port by setting the `PORT` environment variable before `python app.py` |
+| The page does not open on the first start | The Small model is still downloading (see above): wait for the terminal to say the server is running, then reload |
+| A model download fails | Check your connection and free disk space, then select the model again: the download restarts |
+| Segmentation is slow | Choose a smaller model in **Setup**; check in the **Info** window whether the app sees your GPU (it says *CPU Only* otherwise) |
+| Your GPU is not used | Reinstall PyTorch with the CUDA build that matches your drivers (see [pytorch.org](https://pytorch.org/get-started/locally/)) |
+
+## Updating
+
+With the launcher, updates are handled for you. From source, pull the latest code and run `pip install -r requirements.txt --upgrade`.
+
+## Next step
+
+Head to the [Usage guide](usage.qmd) for a walkthrough of the five tabs.
+
 
 ## Contributors
-
 ```{=html}
 <div style="display: flex; gap: 20px; justify-content: left; flex-wrap: wrap; margin-top: 20px;">
   <div style="text-align: center;">

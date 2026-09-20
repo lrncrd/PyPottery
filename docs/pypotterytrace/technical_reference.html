@@ -268,13 +268,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotterytrace/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -364,6 +358,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#mirroring-and-connection-logic" id="toc-mirroring-and-connection-logic" class="nav-link" data-scroll-target="#mirroring-and-connection-logic">Mirroring and Connection Logic</a></li>
   <li><a href="#vectorization-pipeline" id="toc-vectorization-pipeline" class="nav-link" data-scroll-target="#vectorization-pipeline">Vectorization Pipeline</a></li>
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#continuation-lines" id="toc-continuation-lines" class="nav-link" data-scroll-target="#continuation-lines">Continuation lines</a></li>
   <li><a href="#sam2-models" id="toc-sam2-models" class="nav-link" data-scroll-target="#sam2-models">SAM2 Models</a></li>
   <li><a href="#exports" id="toc-exports" class="nav-link" data-scroll-target="#exports">Exports</a></li>
   </ul>
@@ -442,7 +437,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><strong>Application</strong></td>
-<td>Applied elements (handles, spouts)</td>
+<td>Applied elements (spouts, lugs, applied bands)</td>
 <td>1.2 pt</td>
 </tr>
 <tr class="even">
@@ -465,9 +460,15 @@ ul.task-list li input[type="checkbox"] {
 <td>Detail or annotation</td>
 <td>0.8 pt</td>
 </tr>
+<tr class="even">
+<td><strong>Reconstruction</strong></td>
+<td>Continuation lines drawn in the SVG Editor</td>
+<td>1.0 px (Post-Processing)</td>
+</tr>
 </tbody>
 </table>
-<p>Only <strong>Profile</strong> and <strong>Running_Element</strong> are mirrored around the rotation center; all other categories use standard vectorization. Stroke widths can be adjusted in the interface before export.</p>
+<p>The widths above are the ones the vectorizer writes into the SVG. Only <strong>Profile</strong> and <strong>Running_Element</strong> are mirrored around the rotation center, and only when one is set; all other categories use standard vectorization. In the Post-Processing tab the stroke widths are set again for the export, with their own defaults (see <a href="../pypotterytrace/usage.html#post-processing">Using PyPotteryTrace</a>).</p>
+<p>Every segment is either traced into paths (<strong>SVG</strong>) or kept as a transparent image (<strong>PNG</strong>). The default is SVG for Profile, Application and Running_Element, and PNG for the other categories; it can be changed for each segment.</p>
 </section>
 <section id="mirroring-and-connection-logic" class="level2">
 <h2 class="anchored" data-anchor-id="mirroring-and-connection-logic">Mirroring and Connection Logic</h2>
@@ -535,16 +536,28 @@ ul.task-list li input[type="checkbox"] {
 <td>0.3</td>
 </tr>
 <tr class="odd">
+<td><code>lines_threshold</code></td>
+<td>Binarization threshold (10 to 240) used to detect the lines: higher values keep only the darkest lines, lower values also capture faint strokes</td>
+<td>100</td>
+</tr>
+<tr class="even">
 <td><code>proximity_threshold</code></td>
 <td>Distance (px) used when merging the mirrored profile with the mirrored running element</td>
 <td>50.0</td>
 </tr>
 </tbody>
 </table>
+<p><code>epsilon</code>, <code>smoothing_factor</code> and <code>lines_threshold</code> are set in the <strong>Settings</strong> panel of the Segmentation tab. The Post-Processing tab has its own simplification and smoothing, applied to the paths of the saved SVG at export time (both start at 0, which keeps the geometry as saved).</p>
+</section>
+<section id="continuation-lines" class="level2">
+<h2 class="anchored" data-anchor-id="continuation-lines">Continuation lines</h2>
+<p>In the SVG Editor, the <strong>Continuation Line</strong> tool completes a fractured profile. Given the break point <em>C</em> and a reference point <em>B</em> clicked further back on the same fragment, it takes a third point <em>A</em> just behind <em>B</em> and fits a circle through <em>A</em>, <em>B</em> and <em>C</em>. The continuation is a cubic Bézier that follows that circle from <em>C</em> for the length set in the editor (20 to 400 px, 100 by default), never turning by more than a quarter of a circle. If the three points are aligned, the line continues straight. The line starts a short gap after the break point, and it is stored in the <code>layer_Reconstruction</code> layer.</p>
+<p>For a closed profile, the tool works in two phases: first the <strong>outer face</strong>, the one the vectorizer mirrors, which is also mirrored across the axis; then the <strong>inner (fracture-section) face</strong>, which is not mirrored.</p>
+<p>The <strong>Internal Details</strong> tool draws straight lines (optionally constrained to 90°) in the <code>layer_Detail</code> layer.</p>
 </section>
 <section id="sam2-models" class="level2">
 <h2 class="anchored" data-anchor-id="sam2-models">SAM2 Models</h2>
-<p>Three SAM2 checkpoints are supported and downloaded on demand from the interface:</p>
+<p>Four SAM2 checkpoints are supported and downloaded on demand (the <strong>Small</strong> model is loaded when the app starts):</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -556,29 +569,36 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><code>tiny</code></td>
-<td>~108MB</td>
+<td>~156MB</td>
 <td>Fastest, good for quick tests</td>
 </tr>
 <tr class="even">
 <td><code>small</code></td>
-<td>~180MB</td>
+<td>~184MB</td>
 <td>Default</td>
 </tr>
 <tr class="odd">
-<td><code>base_plus</code></td>
-<td>~319MB</td>
-<td>Slowest, best quality</td>
+<td><code>base</code> (Base+)</td>
+<td>~323MB</td>
+<td>Slower, excellent quality</td>
+</tr>
+<tr class="even">
+<td><code>large</code></td>
+<td>~898MB</td>
+<td>Slowest, highest precision</td>
 </tr>
 </tbody>
 </table>
+<p>The model runs on an NVIDIA GPU (CUDA) when available, and on the CPU otherwise.</p>
 </section>
 <section id="exports" class="level2">
 <h2 class="anchored" data-anchor-id="exports">Exports</h2>
 <ul>
 <li><strong>Organized SVG</strong>: category-grouped layers with proper z-ordering, easy to edit in Inkscape or Illustrator</li>
-<li><strong>COCO annotations</strong>: bounding boxes and polygons, ready for machine-learning use</li>
-<li><strong>Individual masks</strong>: one PNG per segmented element</li>
-<li><strong>Project workspace</strong>: originals, masks and annotations saved per project for iterative work</li>
+<li><strong>COCO annotations</strong>: bounding boxes and polygons, ready for machine-learning use; the annotations of each image are saved automatically in the project’s <code>annotations/</code> folder</li>
+<li><strong>Post-Processing export</strong>: SVG, PNG and JPG at 72 to 600 DPI, in a ZIP archive, with the stroke widths and the categories you choose</li>
+<li><strong>Individual masks</strong>: one PNG per segmented element (the <em>DEBUG: Export Masks as PNG</em> button)</li>
+<li><strong>Project workspace</strong>: originals, annotations and saved SVG files kept per project for iterative work</li>
 </ul>
 
 

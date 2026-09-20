@@ -268,13 +268,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pypotterytrace/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pypotterytrace/installation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting Started</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -355,8 +349,21 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
+  <ul class="collapse">
+  <li><a href="#version-0.1.2-september-2026" id="toc-version-0.1.2-september-2026" class="nav-link" data-scroll-target="#version-0.1.2-september-2026">Version 0.1.2 (September 2026)</a></li>
+  </ul></li>
+  <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
+  <ul class="collapse">
+  <li><a href="#earlier-versions-0.1.0-and-0.1.1" id="toc-earlier-versions-0.1.0-and-0.1.1" class="nav-link" data-scroll-target="#earlier-versions-0.1.0-and-0.1.1">Earlier versions (0.1.0 and 0.1.1)</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/version_history.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -364,6 +371,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pypotterytrace/index.html">PyPotteryTrace</a></li><li class="breadcrumb-item"><a href="../pypotterytrace/version_history.html">Version History</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Version History</h1>
+<p class="subtitle lead">Development timeline and changes</p>
 </div>
 
 
@@ -380,10 +388,55 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;">
-</iframe>
+<section id="latest-release" class="level2">
+<h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-0.1.2-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.1.2-september-2026">Version 0.1.2 (September 2026)</h3>
+<p><strong>Interface</strong></p>
+<ul>
+<li>New look shared with the other PyPottery applications, with locally served fonts and icons</li>
+<li>The <strong>Info</strong> window shows the version, a ready-to-copy citation and the hardware the app detected (CPU cores, and the GPU or <em>CPU Only</em>); a <strong>Guide</strong> button opens a short manual inside the app, and in-app confirmation dialogs replace the browser pop-ups</li>
+<li>The header shows the open project (click it to go back to the Projects tab), and reloading the page reopens the project you were working on</li>
+<li>The project cards always show the real number of images in the project</li>
+<li>Images can be added from the <strong>Setup</strong> tab by drag and drop, and a SAM 2 model that is not on the computer is only downloaded after you confirm, with a progress bar</li>
+</ul>
+<p><strong>Segmentation</strong></p>
+<ul>
+<li>The <strong>rotation center</strong> is previewed as a dashed crosshair with its coordinates while you move the cursor</li>
+<li>Every segment has an <strong>SVG / PNG</strong> format that you can change from the list, together with its category; masks drawn by hand carry a <em>Manual</em> badge</li>
+<li>New <strong>Line Threshold (Black Level)</strong> setting to keep only dark lines or to capture faint strokes</li>
+<li>Changing tool or image while a mask is being edited is blocked, with a message, so the edit is not lost</li>
+</ul>
+<p><strong>SVG Editor</strong></p>
+<ul>
+<li><strong>Continuation Line</strong> tool: draws the missing part of a fractured profile along a circle fitted through the break point, first on the outer face (mirrored to the other side) and then on the inner, fracture-section face. The length is adjustable and the lines go in their own <em>Reconstruction</em> layer</li>
+<li><strong>Internal Details</strong> tool: straight lines, such as a marked rim, optionally constrained to horizontal or vertical</li>
+<li>Selection with a drag box, arrow-key nudging (10 px with <code>Shift</code>), movement constrained with <code>Shift</code>, panning with <code>Space</code>, and a right-click menu</li>
+</ul>
+<p><strong>Post-Processing</strong></p>
+<ul>
+<li><strong>Live Preview Studio</strong>: a preview of the drawing that updates while you change the settings, with a random-drawing button, a comparison with the original, zoom, two backgrounds, and the number of vertices before and after the simplification</li>
+<li>Stroke widths for every category, including the Reconstruction lines, with a <strong>Defaults</strong> button, and a reorganized export panel (formats, resolution, background, ZIP archive with optional subfolders per category)</li>
+</ul>
+<p><strong>Fixes and stability</strong></p>
+<ul>
+<li>The app now starts correctly with <code>python app.py</code> (the previous launcher script could not import the server), and it opens the browser on the port it is really running on</li>
+<li>The model sizes shown in the interface and in the download prompt are now the real ones (Tiny ~156 MB, Small ~184 MB, Base+ ~323 MB, Large ~898 MB)</li>
+<li>The app listens only on the local computer (<code>127.0.0.1</code>), as the other PyPottery applications do</li>
+<li>The app shuts down by itself a few seconds after you close its browser tab</li>
+<li>Console messages are written as UTF-8 on Windows, and crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
+<section id="earlier-versions-0.1.0-and-0.1.1" class="level3">
+<h3 class="anchored" data-anchor-id="earlier-versions-0.1.0-and-0.1.1">Earlier versions (0.1.0 and 0.1.1)</h3>
+<p>The first versions published through the automatic releases (July 2026), with the SAM 2 segmentation, the vectorization pipeline with profile mirroring, the SVG editor and the batch export. They were released without written notes, so the list above compares the current version with them.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -811,7 +864,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p>PyPotteryDocs v0.0.1</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/version_history.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotterytrace/version_history.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

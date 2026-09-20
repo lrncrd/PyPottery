@@ -55,7 +55,6 @@ website:
       - section: "PyPotteryTrace"
         contents:
           - pypotterytrace/index.qmd
-          - pypotterytrace/installation.qmd
           - pypotterytrace/usage.qmd
           - pypotterytrace/technical_reference.qmd
           - pypotterytrace/version_history.qmd

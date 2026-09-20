@@ -2,363 +2,246 @@
 title: "Using PyPotteryTrace"
 format: html
 toc: true
+toc-depth: 2
 ---
 
 <div style="text-align: center;">
-  <img src="..\imgs\LogoTrace.png" id="fig-loading_screen" style="max-width: 25%; height: auto; margin-bottom: 1em;">
-  <br>
-  </span>
+  <img src="../imgs/LogoTrace.png" style="max-width: 25%; height: auto; margin-bottom: 1em;">
 </div>
 
-```{=html}
-<div style="
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    border: 1px solid #e1e4e8;
-    border-left: 5px solid #c2410c;
-    border-radius: 12px;
-    padding: 15px 25px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-">
-    <div style="font-family: 'Segoe UI', sans-serif; color: #4a5568; max-width: 70%;">
-        <div style="font-size: 1.25em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">
-            Need a hand?
-        </div>
-        <div style="line-height: 1.5;">
-            Look for <strong style="color: #c2410c;">Pixel</strong> in the app! <br>
-            Clicking on him brings you straight back to this guide.
-        </div>
-    </div>
-    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-         <iframe src="../animations/pixel_assistant.html" style="width: 220px; height: 120px; border: none; overflow: hidden;" scrolling="no"></iframe>
-    </div>
-</div>
-```
-
-# Interface Overview
-
-The PyPotteryTrace interface is designed to guide you through the process of segmenting and vectorizing pottery drawings. It is divided into five main sections, accessible via tabs at the top of the application:
-
-- **📂 Projects**
-- **⚙️ Setup**
-- **✂️ Segmentation**
-- **✏️ SVG Editor**
-- **🎨 Post-Processing**
-
-Clicking on each tab takes you to a specific section of the application. Each tab is designed for a specific task in the workflow. While you can navigate freely, the intended workflow progresses from left to right.
-
-# 📂 Project Management
-
-Like other `PyPottery` modules, `PyPotteryTrace` uses a project-based workflow. A project is a self-contained environment that stores your images, segmentations, and exported files.
-
-The **Projects** tab allows you to manage your work.
-
-## Creating a New Project
-
-1. Click the **➕ New Project** button.
-2. In the dialog that appears, enter a **Project Name** (required).
-3. (Optional) Add a description and choose an icon for your project.
-4. Click **Create Project**.
-5. You will then be prompted to select the images you wish to import into the project.
-
-<iframe src="animations/create_project.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-## Loading a Project
-
-Existing projects are displayed as cards in the main view. Each card shows the project name, description, and icon.
-
-- Click on a **Project Card** to open it.
-- Click **🔄 Refresh** to update the list if you've made changes externally.
-
-# ⚙️ Setup
-
-After creating or loading a project, the **Setup** tab allows you to review your images and configure the AI model.
-
-<iframe src="animations/setup.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-## Project Images
-The left panel displays a gallery of all images imported into the current project. You can verify that all your scans have been loaded correctly.
-
-## Select SAM2 Model
-The core of PyPotteryTrace is the Segment Anything Model 2 (SAM2). You can choose between different versions of the model depending on your hardware and accuracy needs:
-
-- **⚡ Tiny** (~40MB): Very fast, good for older computers or quick checks.
-- **⭐ Small** (~180MB): **Recommended.** The best balance between speed and accuracy for most users.
-- **🎯 Base+** (~230MB): Higher accuracy but slower.
-- **🚀 Large** (~900MB): Best possible accuracy, but requires significant memory and processing time.
-
-Once a model is selected, the application will download (if necessary) and load it into memory.
-
-# ✂️ Segmentation
-
-The **Segmentation** tab is where the magic happens. Here you define the shapes of your pottery using AI assistance.
-
-<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-## GUI Overview
-
-The interface consists of a central canvas flanked by two sidebars.
-
-### 👈 Left Sidebar: Tools & Controls
-
-**Target Selection & Information**
-- Displays the current filename and image count.
-
-**🎯 Segmentation Mode**
-Choose how you want to interact with the image:
-
-- **👆 Point Mode (Default)**: Click on the object you want to segment.
-    - **➕ Positive**: Click to ADD to the mask (Green points).
-    - **➖ Negative**: Click to REMOVE from the mask (Red points).
-
-<iframe src="animations/segmentation.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-- **▭ Box Mode**: Click and drag to draw a box around the object.
-
-<iframe src="animations/segmentation_box.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-- **⬡ Manual Polygon**: Manually click points to define the exact shape if AI fails.
-
-<iframe src="animations/segmentation_manual.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>.
-
-**🏷️ Category**
-Assign a semantic label to your segmentation. This determines how lines are drawn in the final export.
-
-- **🏺 Profile**: The main vessel profile.
-- **🎯 Application**: Applied decorations over the profile.
-- **🪢 Handle**: Handles or lugs.
-- **👁️ Prospectus**: Frontal view.
-- **🎨 Decoration**: Surface painting or incision.
-- **🏃 Running element**: Continuous patterns over the profile (see example).
-- **📌 Detail**: Specific areas of interest.
-
-**Vectorization Settings**
-
-- **Enable vectorization (SVG)**: Check this to convert the AI mask into editable vector paths. Uncheck to export as a simple transparent PNG images.
-- **✏️ Edit Mask**: Convert an AI-generated mask into a manual polygon for fine-tuning.
-
-### 🖼️ Central Canvas
-
-- **Interactive Area**: Click or drag on the image to perform segmentation.
-- **Toolbar**:
-
-    - **🔍+ / 🔍-**: Zoom in and out.
-    - **⟲ Reset View**: Fit image to screen.
-    - **↶ Undo**: Undo the last action.
-
-### 👉 Right Sidebar: Segments & Export
-
-- **📋 Segments**: Lists all created masks for the current image. You can remove unwanted segments here.
-- **📤 Export**:
-
-    - **🎨 Generate SVG**: Converts your segmentations into a vector file and moves you to the SVG Editor.
-    - **🔧 DEBUG Export**: Quick export for testing purposes.
-
-
-
-
-## Basic Example
-
-Let's start with a basic example.
-
-The vessel for this example is straightforward: it has no decorations, handles, or applied elements.
-
-![A simple pottery vessel with no decorations.](imgs\1.png)
-
-First, we segment the **profile**. A single click with the mouse on a point along the profile is sufficient to create the mask.
-
-::: {.callout-tip}
-## Refine with Multiple Clicks
-If the initial mask isn't perfect, you don't have to start over! You can click multiple times on different parts of the profile to tell the AI to include those areas.
-
-Also, you can use the **➕ Positive** and **➖ Negative** buttons to refine the mask. In other words, the positive button will add the selected area to the mask, while the negative button will remove it.
-
-:::
-
-![Defining the vessel profile with a single click.](imgs\2.png)
-
-We can scroll down the left sidebar to the **🏷️ Category** tab. Here we confirm the label as **🏺 Profile**.
-
-![Selecting the Profile category.](imgs\3.png)
-
-The profile will turn **red**, and the segmented layer will appear in the **📋 Segments** list on the right sidebar.
+PyPotteryTrace converts a scanned pottery drawing into a clean, layered vector drawing. You show the model where the vessel is, it draws the outline, and the app turns that outline into SVG paths, mirrors the profile around the vessel's axis and lets you refine the result before exporting it. This guide follows the five tabs of the app in the order you will normally use them. The **Need help?** button in the header (Pixel) opens this page, and the **Guide** button opens a short summary inside the app.
 
 ::: {.callout-note}
-## Mistake?
-If the generated mask is completely wrong, you can delete it by clicking the **Trash Icon 🗑️** next to the segment in the list.
+## The workflow at a glance
+**Projects** (create one, load the drawings) → **Setup** (choose the SAM 2 model) → **Segmentation** (mark each element, set the rotation center, *Generate SVG*) → **SVG Editor** (refine, *Save Modified SVG*) → **Post-Processing** (export the whole project)
 :::
 
-![The profile is highlighted in red.](imgs\4.png)
+## Key terms
 
-Now, let's segment the **prospectus** (frontal view). First, switch the category to **👁️ Prospectus** in the **🏷️ Category** tab.
+| Term | Meaning |
+|---|---|
+| **SAM 2** | *Segment Anything Model 2*, the model that finds the outline of an object from a few clicks. It comes in four sizes, see [Getting Started](index.qmd#first-launch). |
+| **Prompt** | What you give the model to find an object: a **point** (positive or negative) or a **box**. |
+| **Mask** | The area of the image that the model (or your polygon) has selected. |
+| **Segment** | A mask you have confirmed with **Add Segment**, with a name and a **category**. |
+| **Category** | What the element is (Profile, Handle, Decoration, ...). It decides how the segment is vectorized and drawn. |
+| **Rotation center** | A point on the vertical axis of the vessel. The profile is mirrored around it to complete the other half. |
+| **Layer** | A group of paths in the SVG, one per category (for example `layer_Profile`). |
 
-![Switching to the Prospectus category.](imgs\5.png)
+# Projects
 
-For this shape, we can use the **▭ Box Mode** to segment the prospectus efficiently.
+Like the other PyPottery apps, PyPotteryTrace works with **projects**: a project is a folder that keeps your images, segmentations and SVG files together, so you can close the app and pick up the work later. The **Projects** tab lists them as cards.
 
-![Using Box Mode to select the main body.](imgs\6.png)
+## Create a project
 
-The prospectus mask will be highlighted in **green**.
+1. Click **New Project**.
+2. Enter a **Project Name** (required), an optional description and one of the six icons.
+3. Click **Create Project**.
+4. A file dialog opens: select the images of the project (you can choose many at once). You can add more later, in the **Setup** tab.
 
-![The prospectus area is highlighted.](imgs\7.png)
+## Open, refresh and delete
 
-Clicking on **➕ Add Segment** confirms the selection. The prospectus will turn **blue** and appear in the right sidebar list.
+Each card shows the name, the description, how many images were **Uploaded** and how many are **Vectorized**, and the creation and modification dates. Click a card to open the project: the app takes you to the **Setup** tab, and the project name appears in the header (click it to come back to this tab). **Refresh** reloads the list if you changed something outside the app. **Delete** removes the project and everything in it (images, masks, vectors and exports) after a confirmation, and cannot be undone. If you reload the page, the project you had open is reopened.
 
-![The prospectus segment is added to the list.](imgs\8.png)
-
-Next, click on **⨁ Rotational Center** to define the vessel's axis of rotation.
-
-![Setting the rotational center.](imgs\9.png)
-
-Finally, click on **🎨 Generate SVG** to create the vector file and proceed to the editor.
-
-## Manual Segmentation
-
-Let's try with this vessel that has a handle:
-
-![The original image of a vessel with a handle.](imgs\10.png)
-
-We attempt to segment the profile by placing 3 positive points along the profile and 2 negative points to exclude the handle area.
-
-![Attempting to segment the profile using Point Mode.](imgs\11.png)
-
-We also insert the rotational center using **⨁ Rotational Center**.
-
-![Defining the rotational center.](imgs\12.png)
-
-Let's try to generate the SVG by clicking **🎨 Generate SVG**!
-
-![The result of the automatic segmentation is incorrect.](imgs\13.png)
-
-This is certainly not the result we expected, something is wrong!
-
-At this point, we can go back to the **✂️ Segmentation** tab and try to segment the profile more accurately. Sometimes this works, but other times it is necessary to manually edit the profile.
-
-After deleting the incorrect segment, we recreate the mask for the profile, but in this case, we must click on **✏️ Edit Mask** to modify the mask manually.
-
-:::{.callout-tip}
-## Create a Manual Mask
-
-You can also create a manual mask from scratch by clicking on **⬡ Manual Polygon**.
-You need to place at least 3 points. When you finish, click on **Close Polygon** to create the mask.
+::: {.callout-note}
+## Where the files are
+Projects live in the `projects/` folder next to the app. Inside each one, `uploads/` holds your original images, `annotations/` the segmentation of each image, and `vectorized/` the SVG files you saved from the editor.
 :::
 
-![Activating Edit Mask mode to manually refine the shape.](imgs\14.png)
+# Setup
 
-Control points have appeared that were not present in the original mask. I can manually modify these points to create an accurate version of the profile.
+Once a project is open, the **Setup** tab shows its images and lets you choose the model.
 
-:::{.callout-tip}
-## How to Edit Points
-- **Move Point**: Click and drag a point to move it.
-- **Add Point**: Click on an empty space on the line to create a new keypoint.
-- **Delete Point**: Right-click on a point to remove it.
+## Project images
+
+The left panel shows a thumbnail of every image in the project, so you can check that they were all loaded. To add more, drag and drop images onto the drop area, or click it to browse (PNG, JPG, JPEG, BMP and TIFF are supported). Clicking a thumbnail opens that image in the **Segmentation** tab.
+
+## Select the SAM 2 model
+
+The right panel lists the four models:
+
+- **Tiny** (~156 MB): very fast, good accuracy. For old computers and quick tests.
+- **Small** (~184 MB): fast, high accuracy. **The default, and enough for most drawings.**
+- **Base+** (~323 MB): medium speed, excellent accuracy.
+- **Large** (~898 MB): slower, the highest precision. Best kept for a GPU.
+
+When you pick a model that is not on your computer yet, the app asks whether to download it and shows a progress bar; if you cancel, the previous model stays selected. A model that is already downloaded is used immediately.
+
+::: {.callout-tip}
+Start with **Small**. Switch to a larger model only if the outline of a difficult drawing is not accurate even after adding more points.
 :::
 
-![Adjusting the control points to fit the profile.](imgs\15.png)
+# Segmentation
 
-As you may have noticed, the manual mask is a simplification of the AI mask. It is possible to modify this simplification by adjusting the **Simplification** parameter and clicking **Apply Simplification**.
+This is where you tell the app what is in each drawing. The tab has three columns: the tools on the left, the image in the middle, and the list of segments and the export button on the right. Below the image, a strip with the project images lets you move from one drawing to the next. The work is **saved automatically** a moment after every change (a small *Saved* message appears), so switching image or closing the app loses nothing.
 
-![Applying simplification to the polyline.](imgs\16.png)
+**Moving around the image**: scroll the mouse wheel (or press `+` and `-`) to zoom, drag with the middle mouse button or with `Ctrl` + left button to pan, and use the toolbar under the image to zoom in and out, to **reset the view** and to undo.
 
-Once satisfied with my manual modification, I can click on **✅ Done Editing** and then on **➕ Add Segment** to add the mask manually. In fact, on the right sidebar, a badge indicates that our mask has been manually modified.
+## Segmentation modes
 
-![Completing the manual edit.](imgs\17.png)
+Choose the mode in **Segmentation Mode** (or with the keyboard):
 
-Now let's create the handle mask using **⬡ Manual Polygon**:
+| Mode | Key | What you do |
+|---|---|---|
+| **Point Mode** | `P` | Click on the object. Every click updates the mask. |
+| **Box Mode** | `B` | Click and drag a rectangle around the object. |
+| **Manual Polygon** | `M` | Click the corners of the shape yourself, without the model. |
+| **Rotation Center** | `R` | Click on the vessel's axis of symmetry. |
 
-![Segmenting the handle separately.](imgs\18.png)
+### Point Mode
 
-After clicking on **➕ Add Segment**, the handle mask will appear in the segment list, and we are ready to generate the SVG.
+Choose **Positive** and click inside the object: the model draws its outline. If the mask is too small, click again on the missing part. If it spills over something you do not want (a handle, a decoration, a neighbouring vessel), choose **Negative** and click on that area to remove it. Positive points are drawn in green and negative points in red. **Clear Preview** discards the current mask and starts again.
 
+### Box Mode
 
-# ✏️ SVG Editor
+Drag a box around the object. It is quicker than points for large, compact shapes, such as a frontal view (*prospectus*).
 
-The **SVG Editor** allows you to refine the vector paths created in the previous step.
+### Manual Polygon
 
-<iframe src="animations/svg_editor.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
+Use it when the model cannot find the shape. Click to place the vertices; to close the polygon, click on the first vertex, double-click, or press `Enter` (at least three vertices are needed). **Undo Point** (or `Backspace`, or `Esc`) removes the last vertex and **Clear All** removes all of them. The result is a **manual** mask, marked with a badge in the segment list.
+
+### Edit Mask
+
+To fix a mask that is almost right, click **Edit Mask**. The outline becomes a polygon with draggable vertices:
+
+- **drag** a vertex to move it;
+- **click** on an edge to add a vertex there;
+- **right-click** a vertex to delete it;
+- move the **Simplification** slider (1 to 30, 15 by default) to reduce the number of vertices: the higher the value, the fewer the vertices, with a minimum of three.
+
+Click **Done Editing** (or press `Enter`) to keep the changes, or **Cancel** (`Esc`) to go back to the original mask. While you edit, you cannot change tool or image.
+
+### Rotation Center
+
+A profile is drawn on one side of the vessel only: the app mirrors it around the vessel's vertical axis to complete the other half. Switch to this mode and click on the axis: a dashed crosshair follows the cursor, with its coordinates, until you click. The point appears at the top of the **Segments** list, with a **Clear** button to remove it.
+
+::: {.callout-important}
+Without a rotation center, **Profile** and **Running element** segments are not mirrored, and no axis or diameter line is drawn. Set it on every drawing that needs a mirrored profile.
+:::
+
+## Categories and segments
+
+Once you have a mask you are happy with, describe it in the **Category** panel and click **Add Segment**:
+
+- **Category**: what the element is (see the table below);
+- **Element Name**: optional; if you leave it empty, the app numbers the elements for you (*Profile 1*, *Handle 2*, ...);
+- **Export Format**: **Vector (SVG)** traces the mask into paths; **Raster (PNG)** keeps it as a transparent image. The app proposes the usual choice for each category, and you can change it.
+
+| Category | What it is | Default format |
+|---|---|---|
+| **Profile** | The main outline of the vessel | SVG |
+| **Application** | Applied elements (spouts, lugs, applied bands) | SVG |
+| **Running element** | Continuous patterns along the profile: ridges, grooves, bands | SVG |
+| **Handle** | Handles and attachments | PNG |
+| **Prospectus** | The frontal or rear view of the vessel | PNG |
+| **Decoration** | Painted or incised decoration on the surface | PNG |
+| **Detail** | A specific area of interest | PNG |
+
+Every segment appears in the **Segments** list with its name, a coloured icon and, on the canvas, a coloured area for its category. In the list you can still **change the category** or the **SVG/PNG format** of a segment, or **delete** it with the trash icon (after a confirmation). Deleting a segment that turned out badly is often quicker than fixing it.
+
+The **Settings** panel controls how the masks are turned into paths:
+
+| Setting | Range | Default | Effect |
+|---|---|---|---|
+| **Simplification** | 0.5 to 5 | 1.5 | Higher values give simpler paths with fewer points |
+| **Smoothing** | 0 to 1 | 0.3 | Higher values give smoother curves |
+| **Line Threshold (Black Level)** | 10 to 240 | 100 | Higher values keep only the darkest lines, lower values also capture faint strokes |
+
+You can also fine-tune the geometry later, in [Post-Processing](#post-processing).
+
+## Generate the SVG
+
+When all the elements of a drawing are in the list, click **Generate SVG**. The app traces every SVG segment, mirrors the profile and its running elements, and opens the result in the **SVG Editor**. (**DEBUG: Export Masks as PNG** saves the masks as PNG files, which is useful only to diagnose a problem.)
+
+## Worked example: a simple vessel
+
+For a vessel with no handles or decoration, one click is enough. Choose **Point Mode**, click a point on the profile, check that the mask covers the whole outline and, if not, add more positive points. Choose the category **Profile** and click **Add Segment**. If you also want the frontal view in the drawing, choose the category **Prospectus**, use **Box Mode** to draw a box around it and click **Add Segment**. Finally, choose **Rotation Center**, click on the vessel's axis and press **Generate SVG**.
+
+## Worked example: a vessel with a handle
+
+With a handle next to the profile, the model tends to include it. Add three positive points along the profile and two negative points on the handle, set the rotation center and try **Generate SVG**. If the outline is wrong, go back to the **Segmentation** tab, delete the segment and redo it: use **Edit Mask** to move the vertices that are in the wrong place, or draw the profile with **Manual Polygon**. Then create the handle as a second segment, with the category **Handle**, drawn with **Manual Polygon**, and generate the SVG again.
+
+# SVG Editor
+
+The **SVG Editor** shows the vector drawing you just generated, with all its paths and points, and lets you correct them by hand. The tab is enabled the first time you generate an SVG.
 
 ## Tools
-- **👁️ View Mode**: Pan and zoom around the SVG. Drag images to reposition them.
-- **👆 Select Mode**: Click points to select them. Shift+Click for multiple. Ctrl+Drag to move them.
-- **➕ Add Point**: Click anywhere on a path to insert a new control point.
-- **🗑️ Delete Mode**: Click points to remove them.
 
-## Layers & Export
-- **📋 Layers**: Manage the different parts of your drawing. You can add the original image as a background layer for reference using **📷 Add Current Image**.
-- **💾 Save Modified SVG**: Save your changes.
+| Tool | What it does |
+|---|---|
+| **View Mode** | Pan (drag) and zoom (wheel). Dragging an image layer moves it. |
+| **Select Mode** | Click a point to select it, `Shift` + click to select several, or drag on an empty area to select the points inside a box. Drag a selected point to move it (with `Shift` the movement is constrained to horizontal or vertical). |
+| **Add Point** | Click on a path to insert a new point there. |
+| **Delete Mode** | Click a point to remove it. |
+| **Continuation Line** | Draws the missing part of a fractured profile (see below). |
+| **Internal Details** | Draws straight lines, for example a marked rim or a ridge (see below). |
 
+Points are coloured: **blue** for path points, **purple** for the control points of curves, **orange** under the cursor and **red** when selected. The **Settings** panel changes the **Point Size** and lets you hide the points and their labels.
 
-## A Basic Example
+**Keyboard**: `Delete` or `Backspace` remove the selected points, `Ctrl` + `Z` undoes, `Ctrl` + `A` selects all the points, the arrow keys nudge the selection by 1 pixel (10 with `Shift`), `Space` + drag or the middle mouse button pans, and `Esc` cancels a pending action. **Right-click** opens a menu with *Delete Point(s)*, *Deselect All*, *Select All Points*, *Reset View* and *Undo*.
 
-Continuing with our simple vessel example, let's see how to use the **✏️ SVG Editor** to modify the drawing.
+## Continuation Line
 
-![Editing the SVG.](imgs\19.png)
+A fractured profile stops at the break: this tool proposes how it would have continued.
 
-In **👁️ View Mode**, we can pan and zoom around the SVG using the middle mouse button or the scroll wheel.
+1. **Outer face.** Click the break point, then a second point further back on the same fragment, beyond the damaged stretch. The app fits a circle through the two points and the break point, and draws the continuation along it, for the length set in **Continuation Length** (20 to 400 px, 100 by default; the arc never turns by more than a quarter of a circle). The line is mirrored to the other side of the axis automatically.
+2. **Inner face.** If the profile has a fracture section, the tool then asks for the break point on the inner face, with the same two clicks. This line is *not* mirrored.
 
-If we have defined raster masks (like the prospectus we made earlier), we can move them with the left mouse button. In this case, I moved the prospectus outside the drawing area.
+The lines go in their own **Reconstruction** layer, with points you can adjust in Select Mode. `Esc` or a right-click cancels the pending break point.
 
-![Moving the raster mask.](imgs\20.png)
+## Internal Details
 
-:::{.callout-tip}
-## Managing Layers
-To manage the various raster masks, you can use the **📋 Layers** panel. Uncheck a raster layer to hide it. You can also adjust its opacity using the slider.
+Click and drag, or click two points, to draw a straight line; the ends snap to nearby points. Hold `Shift` to constrain the line to horizontal or vertical. The lines go in the **Detail** layer. `Esc` or a right-click cancels the line in progress.
+
+## Layers and reference image
+
+The **Layers** panel groups the paths by category (Profile, Profile mirrored, Symmetry line, Diameter, Reconstruction, Detail, ...). Uncheck a layer to hide it: hidden layers are **left out of the saved SVG**. This is useful, for example, for a vessel without a preserved rim, where the app still draws a diameter line: hide it.
+
+Click **Add Reference Image** to place the original drawing under the vectors and check that the tracing is accurate. Each image layer has its own visibility and opacity, and can be removed with the trash icon.
+
+## Save
+
+Under **Export** choose **SVG Only** (transparent background) or **With Image** (the original image is embedded behind the paths at 30% opacity), then click **Save Modified SVG**. The file is saved in the project, in `vectorized/`, as `<image name>_vectorized.svg`, and replaces the previous version. The *Statistics* box shows the number of paths and points, and how many are selected.
+
+::: {.callout-important}
+Only the drawings you have **saved from the SVG Editor** are available in the Post-Processing tab. Save every drawing you want to export before moving on.
 :::
 
-However, while viewing the SVG, you might fear that the vectorization is inaccurate. Fortunately, you can click **📷 Add Current Image** to overlay the original image in the background as a reference.
+# Post-Processing
 
-![Adding the current image as reference.](imgs\21.png)
+The **Post-Processing** tab exports **all the saved drawings of the project** at once, in publication-ready formats, with the same line weights. It is enabled as soon as a project is open.
 
-Everything seems correct. I can remove the reference image from the layer list using the **Trash Icon 🗑️**.
+## Live Preview Studio
 
-To modify a point, switch to **👆 Select Mode** and click on it.
+The left panel shows one drawing, updated live as you change the settings on the right. Under the title, the file name is shown in a badge; the buttons let you pick a **Random** drawing, toggle **Original** to compare with the version saved from the editor, zoom, reset the view and switch the background between a dot grid and plain white. The bar at the bottom reports how many **vertices** the drawing has before and after the simplification, with the percentage saved, and how many categories are active.
 
-**Select Mode Controls:**
+## Settings
 
-- **Click**: Select a single point.
-- **Shift + Click**: Select multiple points.
-- **Ctrl + Drag**: Move the selected point(s).
+**Geometry & Simplification**
 
-The **➕ Add Point** mode allows you to click anywhere on a path to insert a new control point.
+- **Simplification (Epsilon)**, from 0 to 5: at 0 every vertex is kept; higher values give cleaner paths with fewer points.
+- **Path Smoothing**, from 0 to 1: at 0 the corners stay sharp; at 1 the curves are smooth.
 
-Conversely, the **🗑️ Delete Mode** allows you to click on any point to remove it.
+**Stroke Widths (px)**: the line thickness for each category, so that the drawings match your publication standards. The defaults are 1.0 for Profile/Rim, Application, Handle, Running element and Reconstruction, 0.8 for Decoration and Detail, and 0.5 for the technical lines (Symmetry axis and Diameter line). The **Defaults** button restores them.
 
-Once you have finished your edits, click **💾 Save Modified SVG** to save your changes.
+**Category Filter**: uncheck the categories you do not want in the export (for example the Reconstruction lines, or the construction lines); the preview updates immediately. A drawing without any selected category is skipped.
 
-:::{.callout-tip}
-## Hiding Elements
-If you uncheck an element in the layers panel, it will **not** be included in the final export. This is particularly useful, for example, when a vessel does not have a preserved rim and thus no diameter line. The system creates the line by default, but you can simply uncheck it to remove it from the final SVG.
-:::
+## Export
 
+1. **Output Formats**: **SVG** (editable vectors), **PNG** (raster) and **JPG** (compressed). SVG and PNG are on by default.
+2. **Export Options**:
+    - **Resolution**: 72 (web), 150 (draft), 300 (print, the default) or 600 DPI (archival).
+    - **Transparent PNG**: on by default; turn it off to choose a background colour. For JPG, choose the quality (60 to 100%, 90 by default).
+    - **Download ZIP Archive**: bundles everything into one file. Keep it checked: it is how the files reach you.
+    - **Category Subfolders**: puts each drawing in a folder named after its main category.
+3. Click **Export All Vectorized Files**. A progress bar follows the work, and the ZIP is downloaded by your browser. A window then reports how many files were created.
 
-# 🎨 Post-Processing
+The files keep the name of the original image (the `_vectorized` ending is removed), with the extension of each format.
 
-The **Post-Processing** tab is for batch exporting your work in publication-ready formats.
+# Tips
 
-<iframe src="animations/post_processing.html" style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 20px 0;"></iframe>
-
-## Export Settings
-
-**📄 Output Format**
-
-- **SVG**: Editable vector files.
-- **PNG**: High-quality raster images with transparency.
-- **JPG**: Compressed images.
-
-**🖼️ Raster Settings**
-
-- **DPI**: Set the resolution (72 for screen, 300 for print, 600 for high quality).
-- **Quality**: Adjust JPG compression.
-
-**🖊️ Stroke Width Settings**
-Customize the line thickness (in pixels) for each category to match your publication standards (e.g., thicker lines for Profiles, thinner for Details).
-
-**📦 Archive Options**
-
-- **Create ZIP archive**: Bundles all files into a single download.
-- **Organize by category**: Creates subfolders for Profiles, Handles, etc.
-
-Click **📤 Export Files** to process all vectorized data in your project and download the results.
+- **Small is usually enough.** Add a few positive and negative points before switching to a bigger model.
+- **Set the rotation center on every drawing** that needs a mirrored profile, and place it on the vessel's axis, not on a guess.
+- **Use the right tool for each shape.** Points for irregular shapes, a box for compact ones, a polygon when the model cannot find the outline.
+- **Save from the SVG Editor.** A drawing that you generated but did not save is not exported.
+- **Keep the drawings light.** Post-processing with Epsilon 0 keeps every vertex; raise it a little if the files are heavy or the lines look wobbly.

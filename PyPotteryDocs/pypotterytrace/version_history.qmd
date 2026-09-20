@@ -1,5 +1,49 @@
 ---
 title: "Version History"
+subtitle: "Development timeline and changes"
+format: html
 ---
 
-<iframe src="../animations/under_construction.html" width="750" height="500" style="border:none; overflow:hidden;"></iframe>
+## Latest Release
+
+### Version 0.1.2 (September 2026)
+
+**Interface**
+
+-   New look shared with the other PyPottery applications, with locally served fonts and icons
+-   The **Info** window shows the version, a ready-to-copy citation and the hardware the app detected (CPU cores, and the GPU or *CPU Only*); a **Guide** button opens a short manual inside the app, and in-app confirmation dialogs replace the browser pop-ups
+-   The header shows the open project (click it to go back to the Projects tab), and reloading the page reopens the project you were working on
+-   The project cards always show the real number of images in the project
+-   Images can be added from the **Setup** tab by drag and drop, and a SAM 2 model that is not on the computer is only downloaded after you confirm, with a progress bar
+
+**Segmentation**
+
+-   The **rotation center** is previewed as a dashed crosshair with its coordinates while you move the cursor
+-   Every segment has an **SVG / PNG** format that you can change from the list, together with its category; masks drawn by hand carry a *Manual* badge
+-   New **Line Threshold (Black Level)** setting to keep only dark lines or to capture faint strokes
+-   Changing tool or image while a mask is being edited is blocked, with a message, so the edit is not lost
+
+**SVG Editor**
+
+-   **Continuation Line** tool: draws the missing part of a fractured profile along a circle fitted through the break point, first on the outer face (mirrored to the other side) and then on the inner, fracture-section face. The length is adjustable and the lines go in their own *Reconstruction* layer
+-   **Internal Details** tool: straight lines, such as a marked rim, optionally constrained to horizontal or vertical
+-   Selection with a drag box, arrow-key nudging (10 px with `Shift`), movement constrained with `Shift`, panning with `Space`, and a right-click menu
+
+**Post-Processing**
+
+-   **Live Preview Studio**: a preview of the drawing that updates while you change the settings, with a random-drawing button, a comparison with the original, zoom, two backgrounds, and the number of vertices before and after the simplification
+-   Stroke widths for every category, including the Reconstruction lines, with a **Defaults** button, and a reorganized export panel (formats, resolution, background, ZIP archive with optional subfolders per category)
+
+**Fixes and stability**
+
+-   The app now starts correctly with `python app.py` (the previous launcher script could not import the server), and it opens the browser on the port it is really running on
+-   The model sizes shown in the interface and in the download prompt are now the real ones (Tiny ~156 MB, Small ~184 MB, Base+ ~323 MB, Large ~898 MB)
+-   The app listens only on the local computer (`127.0.0.1`), as the other PyPottery applications do
+-   The app shuts down by itself a few seconds after you close its browser tab
+-   Console messages are written as UTF-8 on Windows, and crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
+
+## Version History
+
+### Earlier versions (0.1.0 and 0.1.1)
+
+The first versions published through the automatic releases (July 2026), with the SAM 2 segmentation, the vectorization pipeline with profile mirroring, the SVG editor and the batch export. They were released without written notes, so the list above compares the current version with them.

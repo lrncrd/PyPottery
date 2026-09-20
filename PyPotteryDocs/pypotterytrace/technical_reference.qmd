@@ -19,13 +19,16 @@ Each segmented element is assigned a category, which decides how it is vectorize
 | **Diameter** | Diameter line (horizontal) | 0.8 pt |
 | **Running_Element** | Ridges, grooves, bands (mirrored, no construction lines) | 1.0 pt |
 | **Running_Element_Mirrored** | Mirrored running element | 1.0 pt |
-| **Application** | Applied elements (handles, spouts) | 1.2 pt |
+| **Application** | Applied elements (spouts, lugs, applied bands) | 1.2 pt |
 | **Handle** | Handles and attachments | 1.0 pt |
 | **Prospectus** | Front/rear view | 1.0 pt |
 | **Decoration** | Painted decorations | 0.5 pt |
 | **Detail** | Detail or annotation | 0.8 pt |
+| **Reconstruction** | Continuation lines drawn in the SVG Editor | 1.0 px (Post-Processing) |
 
-Only **Profile** and **Running_Element** are mirrored around the rotation center; all other categories use standard vectorization. Stroke widths can be adjusted in the interface before export.
+The widths above are the ones the vectorizer writes into the SVG. Only **Profile** and **Running_Element** are mirrored around the rotation center, and only when one is set; all other categories use standard vectorization. In the Post-Processing tab the stroke widths are set again for the export, with their own defaults (see [Using PyPotteryTrace](usage.qmd#post-processing)).
+
+Every segment is either traced into paths (**SVG**) or kept as a transparent image (**PNG**). The default is SVG for Profile, Application and Running_Element, and PNG for the other categories; it can be changed for each segment.
 
 ## Mirroring and Connection Logic
 
@@ -74,21 +77,36 @@ No construction lines are generated for Running_Element, which keeps the output 
 |-----------|-------------|---------|
 | `epsilon` | RDP simplification tolerance (higher = simpler paths) | 1.5 |
 | `smoothing_factor` | Bézier smoothing intensity | 0.3 |
+| `lines_threshold` | Binarization threshold (10 to 240) used to detect the lines: higher values keep only the darkest lines, lower values also capture faint strokes | 100 |
 | `proximity_threshold` | Distance (px) used when merging the mirrored profile with the mirrored running element | 50.0 |
+
+`epsilon`, `smoothing_factor` and `lines_threshold` are set in the **Settings** panel of the Segmentation tab. The Post-Processing tab has its own simplification and smoothing, applied to the paths of the saved SVG at export time (both start at 0, which keeps the geometry as saved).
+
+## Continuation lines
+
+In the SVG Editor, the **Continuation Line** tool completes a fractured profile. Given the break point *C* and a reference point *B* clicked further back on the same fragment, it takes a third point *A* just behind *B* and fits a circle through *A*, *B* and *C*. The continuation is a cubic Bézier that follows that circle from *C* for the length set in the editor (20 to 400 px, 100 by default), never turning by more than a quarter of a circle. If the three points are aligned, the line continues straight. The line starts a short gap after the break point, and it is stored in the `layer_Reconstruction` layer.
+
+For a closed profile, the tool works in two phases: first the **outer face**, the one the vectorizer mirrors, which is also mirrored across the axis; then the **inner (fracture-section) face**, which is not mirrored.
+
+The **Internal Details** tool draws straight lines (optionally constrained to 90°) in the `layer_Detail` layer.
 
 ## SAM2 Models
 
-Three SAM2 checkpoints are supported and downloaded on demand from the interface:
+Four SAM2 checkpoints are supported and downloaded on demand (the **Small** model is loaded when the app starts):
 
 | Model | Size | Notes |
 |-------|------|-------|
-| `tiny` | ~108MB | Fastest, good for quick tests |
-| `small` | ~180MB | Default |
-| `base_plus` | ~319MB | Slowest, best quality |
+| `tiny` | ~156MB | Fastest, good for quick tests |
+| `small` | ~184MB | Default |
+| `base` (Base+) | ~323MB | Slower, excellent quality |
+| `large` | ~898MB | Slowest, highest precision |
+
+The model runs on an NVIDIA GPU (CUDA) when available, and on the CPU otherwise.
 
 ## Exports
 
 - **Organized SVG**: category-grouped layers with proper z-ordering, easy to edit in Inkscape or Illustrator
-- **COCO annotations**: bounding boxes and polygons, ready for machine-learning use
-- **Individual masks**: one PNG per segmented element
-- **Project workspace**: originals, masks and annotations saved per project for iterative work
+- **COCO annotations**: bounding boxes and polygons, ready for machine-learning use; the annotations of each image are saved automatically in the project's `annotations/` folder
+- **Post-Processing export**: SVG, PNG and JPG at 72 to 600 DPI, in a ZIP archive, with the stroke widths and the categories you choose
+- **Individual masks**: one PNG per segmented element (the *DEBUG: Export Masks as PNG* button)
+- **Project workspace**: originals, annotations and saved SVG files kept per project for iterative work
