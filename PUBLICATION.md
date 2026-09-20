@@ -220,10 +220,9 @@ optional overrides with an in-app default, never required.
   caption fields showed all; random order differed between preview and export;
   preview wrote 20 JPGs per change and cut the first 25 files *before* sorting;
   dev server ran `debug=True` on `0.0.0.0` (Werkzeug debugger reachable from the
-  LAN). Not changed: `requirements.txt` lists `reportlab`, `cairosvg`, `pytest`,
-  none used by the code (cairosvg needs the Cairo DLL on Windows); the standalone
-  `.exe` was last published with 0.3.0 (docs now say so); `SECRET_KEY` defaults
-  to a fixed dev string. The 4 old Layout animations show the pre-redesign UI and
+  LAN). Also removed the unused `reportlab`, `cairosvg`, `pytest` from
+  `requirements.txt` and made the session key random unless `SECRET_KEY` is set.
+  The standalone `.exe` was last published with 0.3.0 (docs now say so). The 4 old Layout animations show the pre-redesign UI and
   are no longer referenced. **All 5 apps now have the new docs schema on `beta`;
   the docs are only live after the user merges and pushes.**
   Visuals: the user prefers real
