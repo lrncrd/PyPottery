@@ -63,6 +63,8 @@ CACHE_CATEGORY_APPS = {
     "transformers": "PyPottery Lens",
     "scan": "PyPottery Scan",
     "sam2": "PyPottery Trace",
+    "yolo": "PyPottery Lens",
+    "classifier": "PyPottery Lens",
 }
 
 logger = logging.getLogger("launcher.web")
