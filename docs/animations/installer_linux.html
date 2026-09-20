@@ -32,7 +32,7 @@
         .linux-desktop {
             width: 880px;
             height: 620px;
-            background: linear-gradient(135deg, #fbf7f2 0%, #f7efe6 35%, #efe3d5 70%, #e6d5c3 100%);
+            background: linear-gradient(135deg, #fde8d7 0%, #fed7aa 25%, #f6efe4 62%, #e6efe9 100%);
             border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08);
             position: relative;
@@ -48,9 +48,9 @@
             position: absolute;
             inset: 0;
             background: 
-                radial-gradient(circle at 85% 15%, rgba(119, 33, 111, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(13, 148, 136, 0.12) 0%, transparent 50%),
                 radial-gradient(circle at 15% 85%, rgba(233, 84, 32, 0.18) 0%, transparent 55%),
-                radial-gradient(circle at 50% 50%, rgba(94, 39, 80, 0.10) 0%, transparent 60%);
+                radial-gradient(circle at 50% 50%, rgba(194, 65, 12, 0.08) 0%, transparent 60%);
             pointer-events: none;
             filter: blur(24px);
         }
@@ -66,7 +66,7 @@
             justify-content: space-between;
             padding: 0 14px;
             font-size: 12px;
-            color: #1e293b;
+            color: #292524;
             font-weight: 500;
             z-index: 60;
         }
@@ -76,12 +76,12 @@
             letter-spacing: 0.2px;
             padding: 2px 8px;
             border-radius: 12px;
-            color: #1e293b;
+            color: #292524;
         }
 
         .topbar-clock {
             font-weight: 500;
-            color: #334155;
+            color: #44403c;
             letter-spacing: 0.3px;
         }
 
@@ -90,7 +90,7 @@
             align-items: center;
             gap: 12px;
             font-size: 11px;
-            color: #475569;
+            color: #57534e;
         }
 
         /* Main Workspace Container (Left Dock + Desktop Canvas) */
@@ -160,7 +160,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: #334155;
+            color: #44403c;
             font-size: 18px;
         }
 
@@ -197,8 +197,8 @@
 
         .nautilus-header {
             height: 46px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background: #fafaf9;
+            border-bottom: 1px solid #e7e5e4;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -210,12 +210,12 @@
             align-items: center;
             gap: 4px;
             font-size: 12px;
-            color: #334155;
+            color: #44403c;
         }
 
         .path-pill {
-            background: #e2e8f0;
-            color: #1e293b;
+            background: #e7e5e4;
+            color: #292524;
             padding: 4px 10px;
             border-radius: 6px;
             display: flex;
@@ -234,8 +234,8 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: #e2e8f0;
-            color: #475569;
+            background: #e7e5e4;
+            color: #57534e;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -258,14 +258,14 @@
         /* Nautilus Left Sidebar - Light Theme */
         .nautilus-sidebar {
             width: 150px;
-            background: #f8fafc;
-            border-right: 1px solid #e2e8f0;
+            background: #fafaf9;
+            border-right: 1px solid #e7e5e4;
             padding: 12px 8px;
             display: flex;
             flex-direction: column;
             gap: 4px;
             font-size: 12px;
-            color: #475569;
+            color: #57534e;
         }
 
         .sidebar-item {
@@ -278,13 +278,13 @@
         }
 
         .sidebar-item:hover {
-            background: #f1f5f9;
-            color: #0f172a;
+            background: #f5f5f4;
+            color: #1c1917;
         }
 
         .sidebar-item.active {
-            background: #e2e8f0;
-            color: #0f172a;
+            background: #e7e5e4;
+            color: #1c1917;
             font-weight: 600;
         }
 
@@ -331,7 +331,7 @@
             position: absolute;
             bottom: -2px;
             right: -4px;
-            background: #0284c7;
+            background: #c2410c;
             color: white;
             font-size: 8px;
             font-weight: 800;
@@ -343,7 +343,7 @@
 
         .file-name {
             font-size: 11px;
-            color: #1e293b;
+            color: #292524;
             text-align: center;
             font-weight: 600;
             line-height: 1.25;
@@ -352,7 +352,7 @@
 
         .file-size {
             font-size: 10px;
-            color: #64748b;
+            color: #78716c;
         }
 
         /* Right-Click Context Menu - Light Theme */
@@ -369,7 +369,7 @@
             flex-direction: column;
             gap: 2px;
             font-size: 11.5px;
-            color: #1e293b;
+            color: #292524;
         }
 
         .context-menu.open {
@@ -393,7 +393,7 @@
 
         .ctx-sep {
             height: 1px;
-            background: #e2e8f0;
+            background: #e7e5e4;
             margin: 3px 0;
         }
 
@@ -409,7 +409,7 @@
             display: none;
             flex-direction: column;
             overflow: hidden;
-            color: #1e293b;
+            color: #292524;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.95);
@@ -425,28 +425,28 @@
 
         .prop-header {
             height: 38px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background: #fafaf9;
+            border-bottom: 1px solid #e7e5e4;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
             font-size: 12px;
             font-weight: 600;
-            color: #1e293b;
+            color: #292524;
         }
 
         .prop-tabs {
             display: flex;
-            border-bottom: 1px solid #e2e8f0;
-            background: #f1f5f9;
+            border-bottom: 1px solid #e7e5e4;
+            background: #f5f5f4;
             padding: 0 10px;
         }
 
         .prop-tab {
             padding: 8px 12px;
             font-size: 11.5px;
-            color: #64748b;
+            color: #78716c;
             cursor: pointer;
         }
 
@@ -462,7 +462,7 @@
             flex-direction: column;
             gap: 12px;
             font-size: 11.5px;
-            color: #1e293b;
+            color: #292524;
         }
 
         .prop-row {
@@ -475,7 +475,7 @@
         .toggle-switch {
             width: 38px;
             height: 20px;
-            background: #cbd5e1;
+            background: #d6d3d1;
             border-radius: 20px;
             position: relative;
             cursor: pointer;
@@ -571,8 +571,8 @@
 
         .pypottery-titlebar {
             height: 40px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background: #fafaf9;
+            border-bottom: 1px solid #e7e5e4;
             display: flex;
             align-items: center;
             padding: 0 14px;
@@ -582,7 +582,7 @@
         .pypottery-titlebar-title {
             font-size: 12px;
             font-weight: 600;
-            color: #1e293b;
+            color: #292524;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -630,8 +630,8 @@
         <div class="gnome-toast" id="gnomeToast">
             <img src="icon_app.png" onerror="this.src='icon_app.ico'" class="w-6 h-6 object-contain" alt="PyPottery">
             <div class="flex flex-col text-xs">
-                <span class="font-bold text-slate-800">PyPottery Launcher</span>
-                <span class="text-slate-500">AppImage launched &amp; desktop integration ready</span>
+                <span class="font-bold text-stone-800">PyPottery Launcher</span>
+                <span class="text-stone-500">AppImage launched &amp; desktop integration ready</span>
             </div>
         </div>
 
@@ -656,7 +656,7 @@
 
                 <!-- Terminal -->
                 <div class="dock-app-btn" title="Terminal">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-900 to-black flex items-center justify-center text-emerald-400 font-mono text-xs font-bold shadow border border-slate-700">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-stone-900 to-black flex items-center justify-center text-emerald-400 font-mono text-xs font-bold shadow border border-stone-700">
                         &gt;_
                     </div>
                 </div>
@@ -682,10 +682,10 @@
                     <div class="nautilus-header">
                         <div class="nautilus-pathbar">
                             <div class="path-pill">
-                                <i class="fas fa-house text-xs text-gray-400"></i>
+                                <i class="fas fa-house text-xs text-stone-400"></i>
                                 <span>Home</span>
                             </div>
-                            <span class="text-gray-400">/</span>
+                            <span class="text-stone-400">/</span>
                             <div class="path-pill">
                                 <i class="fas fa-download text-xs text-amber-500"></i>
                                 <span>Downloads</span>
@@ -768,18 +768,18 @@
 
                     <div class="prop-content">
                         <div class="prop-row">
-                            <span class="text-slate-500">File type:</span>
-                            <span class="font-medium text-slate-800">AppImage package</span>
+                            <span class="text-stone-500">File type:</span>
+                            <span class="font-medium text-stone-800">AppImage package</span>
                         </div>
                         <div class="prop-row">
-                            <span class="text-slate-500">Owner access:</span>
-                            <span class="font-medium text-slate-800">Read and write</span>
+                            <span class="text-stone-500">Owner access:</span>
+                            <span class="font-medium text-stone-800">Read and write</span>
                         </div>
-                        <div class="border-t border-slate-200 my-1"></div>
+                        <div class="border-t border-stone-200 my-1"></div>
                         <div class="prop-row">
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-800 text-xs">Allow executing file as program</span>
-                                <span class="text-[10px] text-slate-400">Enables running the AppImage as an application</span>
+                                <span class="font-bold text-stone-800 text-xs">Allow executing file as program</span>
+                                <span class="text-[10px] text-stone-400">Enables running the AppImage as an application</span>
                             </div>
                             <div class="toggle-switch" id="execToggle">
                                 <div class="toggle-knob"></div>
@@ -869,10 +869,14 @@
             await wait(800);
 
             // 2. Cursor moves to PyPottery-Launcher.AppImage
+            // (the click lands on the right side of the file cell, so the menu that opens there
+            // does not cover the file name)
             const filePos = getCoords(appimageFile);
+            const iconPos = getCoords(appimageFile.querySelector('.appimage-icon-wrapper'));
+            const clickX = filePos.x + appimageFile.offsetWidth - 14, clickY = iconPos.cy;
             cursor.style.transition = 'all 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
-            cursor.style.top = (filePos.cy + 5) + 'px';
-            cursor.style.left = (filePos.cx + 5) + 'px';
+            cursor.style.top = clickY + 'px';
+            cursor.style.left = clickX + 'px';
 
             await wait(1000);
 
@@ -883,8 +887,10 @@
             cursor.style.transform = 'scale(1)';
 
             // Context Menu appears
-            contextMenu.style.top = '70px';
-            contextMenu.style.left = '80px';
+            // opens at the pointer, like a real context menu
+            const gridPos = getCoords(document.querySelector('.nautilus-files'));
+            contextMenu.style.top = (clickY - gridPos.y) + 'px';
+            contextMenu.style.left = (clickX - gridPos.x) + 'px';
             contextMenu.classList.add('open');
 
             await wait(500);
