@@ -16,6 +16,8 @@ PyPotteryTrace converts a scanned pottery drawing into a clean, layered vector d
 **Projects** (create one, load the drawings) → **Setup** (choose the SAM 2 model) → **Segmentation** (mark each element, set the rotation center, *Generate SVG*) → **SVG Editor** (refine, *Save Modified SVG*) → **Post-Processing** (export the whole project)
 :::
 
+<iframe src="../animations/coming_soon.html" name="Workflow overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## Key terms
 
 | Term | Meaning |
@@ -31,6 +33,8 @@ PyPotteryTrace converts a scanned pottery drawing into a clean, layered vector d
 # Projects
 
 Like the other PyPottery apps, PyPotteryTrace works with **projects**: a project is a folder that keeps your images, segmentations and SVG files together, so you can close the app and pick up the work later. The **Projects** tab lists them as cards.
+
+<iframe src="../animations/coming_soon.html" name="Projects" title="Animation coming soon: Projects" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Create a project
 
@@ -51,6 +55,8 @@ Projects live in the `projects/` folder next to the app. Inside each one, `uploa
 # Setup
 
 Once a project is open, the **Setup** tab shows its images and lets you choose the model.
+
+<iframe src="../animations/coming_soon.html" name="Setup" title="Animation coming soon: Setup" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Project images
 
@@ -74,6 +80,8 @@ Start with **Small**. Switch to a larger model only if the outline of a difficul
 # Segmentation
 
 This is where you tell the app what is in each drawing. The tab has three columns: the tools on the left, the image in the middle, and the list of segments and the export button on the right. Below the image, a strip with the project images lets you move from one drawing to the next. The work is **saved automatically** a moment after every change (a small *Saved* message appears), so switching image or closing the app loses nothing.
+
+<iframe src="../animations/coming_soon.html" name="Segmentation" title="Animation coming soon: Segmentation" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 **Moving around the image**: scroll the mouse wheel (or press `+` and `-`) to zoom, drag with the middle mouse button or with `Ctrl` + left button to pan, and use the toolbar under the image to zoom in and out, to **reset the view** and to **undo** (`Ctrl` + `Z`): undo removes the last point, or the last polygon vertex, of the mask you are building.
 
@@ -165,6 +173,8 @@ With a handle next to the profile, the model tends to include it. Add three posi
 
 The **SVG Editor** shows the vector drawing you just generated, with all its paths and points, and lets you correct them by hand. The tab is enabled the first time you generate an SVG.
 
+<iframe src="../animations/coming_soon.html" name="SVG Editor" title="Animation coming soon: SVG Editor" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## Tools
 
 | Tool | What it does |
@@ -210,6 +220,8 @@ Only the drawings you have **saved from the SVG Editor** are available in the Po
 # Post-Processing
 
 The **Post-Processing** tab exports **all the saved drawings of the project** at once, in publication-ready formats, with the same line weights. It is enabled as soon as a project is open.
+
+<iframe src="../animations/coming_soon.html" name="Post-Processing" title="Animation coming soon: Post-Processing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Live Preview Studio
 

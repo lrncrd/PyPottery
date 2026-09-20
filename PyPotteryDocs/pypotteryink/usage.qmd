@@ -16,6 +16,8 @@ PyPotteryInk takes a scan or a photograph of a pencil pottery drawing and redraw
 **Hardware Check** (once) → **Preprocessing** (optional) → **Model Diagnostics** (a few test images) → **Batch Processing** (the whole collection)
 :::
 
+<iframe src="../animations/coming_soon.html" name="Workflow overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## Key terms
 
 | Term | Meaning |
@@ -43,6 +45,8 @@ The **Info** button in the header opens a window with the version, the citation 
 
 Drawings differ a lot in brightness and contrast, and the models work best on images that look like the ones they were trained on. This optional tab adjusts your images towards a reference described by a statistics file.
 
+<iframe src="../animations/coming_soon.html" name="Preprocessing" title="Animation coming soon: Preprocessing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 1. **Upload Images to Preprocess**: click the area or drag and drop your images (PNG, JPG, JPEG or TIFF).
 2. **Upload Statistics File (.npy)**: choose the reference. The app ships with two, in its own folder:
     - `Montale_stats.npy`, measured on the dataset used to train the 6h-MCG model;
@@ -60,6 +64,8 @@ Open **Advanced: Calculate Custom Statistics** to build a statistics file from y
 # Model Diagnostics
 
 Before processing a whole collection, test the model on a few images. This tab runs the model on up to five of your drawings and shows you how the parameters change the result, so you can choose the best ones for the batch.
+
+<iframe src="../animations/coming_soon.html" name="Model Diagnostics" title="Animation coming soon: Model Diagnostics" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Set up the test
 
@@ -91,6 +97,8 @@ The diagnostic files are stored in the app's `temp_diagnostics` folder and are d
 # Batch Processing
 
 This is the tab where the whole collection is inked.
+
+<iframe src="../animations/coming_soon.html" name="Batch Processing" title="Animation coming soon: Batch Processing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Set up the batch
 

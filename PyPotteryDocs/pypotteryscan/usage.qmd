@@ -16,6 +16,8 @@ PyPotteryScan turns a folder of scanned plates into a dataset: one clean image p
 **Projects** → **1. Load** → **2. Annotate** → **3. Process OCR** → **4. Clean Drawings** → **5. Review Texts** → **6. Export** → *(optional)* **Parser Studio**
 :::
 
+<iframe src="../animations/coming_soon.html" name="Workflow overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 The numbered tabs unlock one after the other as you complete each step. When you reopen an existing project, the app unlocks the tabs that match what the project already contains (see [Reopening a project](#reopening-a-project)).
 
 ## Key terms
@@ -32,6 +34,8 @@ The numbered tabs unlock one after the other as you complete each step. When you
 # Projects
 
 Every dataset lives in its own project: a self-contained folder with your scans, annotations, crops, OCR results and few-shot examples. You can keep as many projects as you like and switch between them freely.
+
+<iframe src="../animations/coming_soon.html" name="Projects" title="Animation coming soon: Projects" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Create a project
 
@@ -82,6 +86,8 @@ project_id/
 
 The **Load** tab is where the scans enter the project.
 
+<iframe src="../animations/coming_soon.html" name="1. Load" title="Animation coming soon: 1. Load" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 - Drag and drop image files here, or click **Select Files**; or click **Select Folder** to import every image inside a folder. Supported formats are JPEG, PNG, WebP, TIFF and BMP; other files are ignored. When you import a folder, only the files directly inside it are read, not its subfolders.
 - The files are **copied** into the project (`original_images`), so your originals are never modified. If you load a file with the same name as one already in the project, it replaces it.
 - The **Plate Catalog** shows a thumbnail of every plate. **Add Files** and **Add Folder** bring in more scans at any time, and clicking a plate opens it directly in the Annotate tab.
@@ -94,6 +100,8 @@ Use one image per plate, at a resolution where the smallest label is still reada
 # 2. Annotate
 
 Here you tell the app what is on each plate. The plate is shown on a canvas; on the right you find the plate's metadata, the list of its drawings, and the overall progress.
+
+<iframe src="../animations/coming_soon.html" name="2. Annotate" title="Animation coming soon: 2. Annotate" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## The controls
 
@@ -132,6 +140,8 @@ Fill in **Table/Plate** (for example `Plate I`), and optionally **Context** and 
 
 This tab reads the text boxes with the OCR model you chose on first launch.
 
+<iframe src="../animations/coming_soon.html" name="3. Process OCR" title="Animation coming soon: 3. Process OCR" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## Run the recognition
 
 Click **Start OCR Processing**. The app crops every text box from the full-resolution plate and sends them to the local model one by one. You can follow it in three places: the **Extraction Progress** bar with the counter of text boxes, a status line saying which drawing and box is being read, and the list of **Recognized Text Labels**, which grows as results arrive, each tagged with its drawing and box (for example `plate_1.jpg_d1 · T1`).
@@ -151,6 +161,8 @@ The app asks for at least one text box, and for an installed OCR model. Without 
 # 4. Clean Drawings
 
 Every drawing you marked is opened here at full resolution, one after the other in plate order, so you can remove what does not belong to the vessel (numbers, dimensions, stray marks) before export. The header shows the plate name, the drawing (D1, D2...) and its size in pixels.
+
+<iframe src="../animations/coming_soon.html" name="4. Clean Drawings" title="Animation coming soon: 4. Clean Drawings" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Erase
 
@@ -179,6 +191,8 @@ Cleaning is optional per drawing: the export uses the cleaned version when it ex
 
 The tab lists every text box of every drawing as a pair: on the left the image of the label, tagged with the plate name and the drawing and box numbers (for example `Plate I, D2 - T1`); on the right an editable box with the recognized text. Compare and correct.
 
+<iframe src="../animations/coming_soon.html" name="5. Review Texts" title="Animation coming soon: 5. Review Texts" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 - Click the label image to open it enlarged.
 - **Changes are auto-saved** a moment after you stop typing. Only real edits count as corrections: if you change a text and then restore it, the correction is removed.
 - If you skipped OCR, the boxes start empty and you type each label from the image.
@@ -189,6 +203,8 @@ When you are done, **Continue to Export**.
 # 6. Export
 
 The last tab packages the project. At the top you see four counters: **Total Plates**, **Vessel Drawings**, **OCR Transcriptions** (number of text boxes) and **Manual Corrections**.
+
+<iframe src="../animations/coming_soon.html" name="6. Export" title="Animation coming soon: 6. Export" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Choose a prefix
 
@@ -234,6 +250,8 @@ After the download, **Continue to Few-Shot Parser Studio** takes you to the opti
 # Parser Studio
 
 The **Parser Studio** turns free text such as `MB 2024 US 112 inv. 4501` into fields (Site, Year, US, Inventory...). It is a separate tool, outside the main six steps: it works on a spreadsheet, so you can use it on the catalogue you just exported, or on a previous one.
+
+<iframe src="../animations/coming_soon.html" name="Parser Studio" title="Animation coming soon: Parser Studio" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 It uses a small local language model (**Qwen3.5-2B**) with **few-shot** learning: you show it a few lines already split into fields, and it applies the same pattern to all the others. Nothing leaves your computer.
 

@@ -16,6 +16,8 @@ PyPotteryLayout turns a folder of pottery drawings into publication plates: it s
 **Import** the images (and a spreadsheet) → choose the **layout** → set **sorting**, **captions** and the **scale bar** → check the live **preview** → **Generate Layout** and download
 :::
 
+<iframe src="../animations/coming_soon.html" name="Workflow overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 ## The screen
 
 The window has two columns. On the left, the settings: a **Basic Settings** tab (files, layout mode, page size, export format) and an **Advanced Settings** tab (scale, margins, captions, numbering, sorting, scale bar), with the **Generate Layout** and **Clear All** buttons at the bottom. On the right, **Output & Preview** shows the plate as it will look and, when you generate it, the result. The preview updates by itself while you change the settings.
@@ -33,6 +35,8 @@ The window has two columns. On the left, the settings: a **Basic Settings** tab 
 | **Px / cm** | The resolution of your drawings, used to draw the scale bar at the right length. |
 
 # Import the data
+
+<iframe src="../animations/coming_soon.html" name="Import the data" title="Animation coming soon: Import the data" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Images
 
@@ -52,6 +56,8 @@ The link between a row and an image is forgiving. It ignores the extension of th
 # Layout
 
 These settings are in the **Basic Settings** tab.
+
+<iframe src="../animations/coming_soon.html" name="Layout" title="Animation coming soon: Layout" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 - **Layout Mode**:
     - **Grid**: rows and columns. Best for systematic catalogues.
@@ -119,11 +125,15 @@ These settings are in **Captions & Numbering**.
 
 As soon as the images are loaded, the **Live Preview** shows the first page of the plate, and it updates about half a second after every change of the settings (**Update Preview** forces it). Click the preview to see it larger. Below it, a badge tells you how many images and pages the preview covers.
 
+<iframe src="../animations/coming_soon.html" name="Preview" title="Animation coming soon: Preview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
+
 To stay fast, the preview uses only the **first 25 drawings** in the chosen order; when your set is larger, a notice says so, and the page count refers to those 25. The generated file always contains all the drawings.
 
 # Generate and export
 
 Click **Generate Layout**. A progress message follows the work; when it ends, the result shows the file name and the number of pages, and **Download File** saves it.
+
+<iframe src="../animations/coming_soon.html" name="Generate and export" title="Animation coming soon: Generate and export" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 | Format | Result |
 |---|---|
