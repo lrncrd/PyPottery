@@ -1707,6 +1707,27 @@ footer.footer {
   z-index: 1;
 }
 
+/* The millimetric grid of the hero comes back above the footer, fading in towards it (more depth between the
+   page and the dark footer). Drawn on the footer's own top edge, so it needs no extra element. */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 300px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(194, 65, 12, 0.11) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 65, 12, 0.11) 1px, transparent 1px),
+    linear-gradient(to right, rgba(194, 65, 12, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 65, 12, 0.2) 1px, transparent 1px);
+  background-size: 14px 14px, 14px 14px, 70px 70px, 70px 70px;
+  background-position: bottom left;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.22) 45%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.22) 45%, #000 100%);
+}
+
 .site-footer .footer-inner {
   max-width: 1280px;
   margin: 0 auto 3.5rem auto;
