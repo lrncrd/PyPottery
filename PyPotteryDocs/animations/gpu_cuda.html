@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPU CUDA Animation</title>
+    <title>GPU CUDA Animation - PyPottery Style</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,23 +19,23 @@
             min-height: 100vh;
             background: transparent;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         .icon-container {
-            width: 92px;
-            height: 92px;
+            width: 88px;
+            height: 88px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.2));
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+            filter: drop-shadow(0 4px 14px rgba(120, 53, 15, 0.14));
         }
 
         .icon-container:hover {
-            transform: scale(1.12);
-            filter: drop-shadow(0 12px 24px rgba(16, 185, 129, 0.35));
+            transform: scale(1.08);
+            filter: drop-shadow(0 8px 22px rgba(194, 65, 12, 0.3));
         }
 
         svg {
@@ -59,36 +59,36 @@
             }
         }
 
-        /* NVIDIA Green LED Breathing Bar */
+        /* Terracotta / Amber Acceleration LED Glow Bar */
         .led-glow-bar {
             animation: ledBreath 2.2s ease-in-out infinite alternate;
         }
 
         @keyframes ledBreath {
             0% {
-                opacity: 0.7;
-                filter: drop-shadow(0 0 3px #10b981);
+                opacity: 0.75;
+                filter: drop-shadow(0 0 2px rgba(234, 88, 12, 0.5));
             }
             100% {
                 opacity: 1;
-                filter: drop-shadow(0 0 8px #22c55e);
+                filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.85));
             }
         }
 
-        /* Power LED Pulse */
-        .power-led {
-            animation: powerPulse 1.4s infinite ease-in-out alternate;
+        /* Power & Status LEDs */
+        .status-led {
+            animation: statusPulse 1.5s infinite ease-in-out alternate;
         }
 
-        @keyframes powerPulse {
+        @keyframes statusPulse {
             0% {
-                opacity: 0.4;
+                opacity: 0.45;
                 transform: scale(0.9);
             }
             100% {
                 opacity: 1;
                 transform: scale(1.15);
-                filter: drop-shadow(0 0 4px #76b900);
+                filter: drop-shadow(0 0 3px #ea580c);
             }
         }
     </style>
@@ -96,112 +96,127 @@
 
 <body>
 
-    <div class="icon-container" id="gpu-container">
+    <div class="icon-container" id="gpu-container" title="PyPottery GPU CUDA Accelerator">
         <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <!-- Shroud Carbon/Gunmetal Gradient -->
+                <!-- Warm Ceramic / Sand Shroud Gradient -->
                 <linearGradient id="shroud-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#334155"/>
-                    <stop offset="30%" stop-color="#1e293b"/>
-                    <stop offset="100%" stop-color="#0f172a"/>
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="40%" stop-color="#fcf9f4"/>
+                    <stop offset="80%" stop-color="#f3eae0"/>
+                    <stop offset="100%" stop-color="#e8dcce"/>
                 </linearGradient>
 
-                <!-- Fan Well Radial Shadow -->
+                <!-- Fan Recessed Well Radial Gradient -->
                 <radialGradient id="fan-well" cx="50%" cy="50%" r="50%">
-                    <stop offset="60%" stop-color="#090d16"/>
-                    <stop offset="100%" stop-color="#1e293b"/>
+                    <stop offset="50%" stop-color="#ede3d5"/>
+                    <stop offset="90%" stop-color="#ded0be"/>
+                    <stop offset="100%" stop-color="#cbbbaa"/>
                 </radialGradient>
 
-                <!-- Metallic Blade Gradient -->
+                <!-- Warm Bronze / Terracotta Blade Gradient -->
                 <linearGradient id="blade-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#64748b"/>
-                    <stop offset="50%" stop-color="#334155"/>
-                    <stop offset="100%" stop-color="#1e293b"/>
+                    <stop offset="0%" stop-color="#b45309"/>
+                    <stop offset="40%" stop-color="#d97706"/>
+                    <stop offset="100%" stop-color="#9a3412"/>
                 </linearGradient>
 
-                <!-- NVIDIA Emerald Green Gradient -->
-                <linearGradient id="nv-green" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#76b900"/>
-                    <stop offset="50%" stop-color="#22c55e"/>
-                    <stop offset="100%" stop-color="#10b981"/>
+                <!-- Terracotta to Golden Amber Lightbar Gradient -->
+                <linearGradient id="terra-amber-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#c2410c"/>
+                    <stop offset="35%" stop-color="#ea580c"/>
+                    <stop offset="70%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#fbbf24"/>
                 </linearGradient>
 
-                <!-- Gold PCIe Contacts -->
+                <!-- Gold PCIe Contacts Gradient -->
                 <linearGradient id="pcie-gold" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#fbbf24"/>
                     <stop offset="100%" stop-color="#d97706"/>
                 </linearGradient>
+
+                <!-- Copper Heatpipe Gradient -->
+                <linearGradient id="copper-pipe" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#b45309"/>
+                    <stop offset="50%" stop-color="#ea580c"/>
+                    <stop offset="100%" stop-color="#b45309"/>
+                </linearGradient>
             </defs>
 
-            <!-- Backplate / IO Bracket -->
-            <rect x="18" y="44" width="8" height="112" rx="3" fill="#64748b" stroke="#475569" stroke-width="1"/>
+            <!-- IO Bracket (Champagne Steel) -->
+            <rect x="17" y="44" width="7.5" height="114" rx="2.5" fill="#d6cbbe" stroke="#b8a998" stroke-width="1"/>
 
-            <!-- Main GPU Card Body / Armor Shroud -->
-            <rect x="24" y="48" width="154" height="104" rx="14" fill="url(#shroud-grad)" stroke="#475569" stroke-width="2.5"/>
-            <rect x="28" y="52" width="146" height="96" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+            <!-- Main GPU Armor Shroud (Warm Sand & Earthenware Ceramic) -->
+            <rect x="23" y="47" width="156" height="106" rx="14" fill="url(#shroud-grad)" stroke="#c2410c" stroke-opacity="0.35" stroke-width="2"/>
+            <rect x="26" y="50" width="150" height="100" rx="11" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="1.5"/>
 
-            <!-- Heatsink Fin Array Lines (Behind fans) -->
-            <g stroke="#1e293b" stroke-width="1.5" opacity="0.6">
-                <line x1="38" y1="62" x2="38" y2="138"/>
-                <line x1="44" y1="62" x2="44" y2="138"/>
-                <line x1="158" y1="62" x2="158" y2="138"/>
-                <line x1="164" y1="62" x2="164" y2="138"/>
+            <!-- Heatsink Aluminum Fin Grille Lines (Warm Gray) -->
+            <g stroke="#d5c7b5" stroke-width="1.4" opacity="0.65">
+                <line x1="36" y1="62" x2="36" y2="138"/>
+                <line x1="42" y1="62" x2="42" y2="138"/>
+                <line x1="160" y1="62" x2="160" y2="138"/>
+                <line x1="166" y1="62" x2="166" y2="138"/>
             </g>
 
-            <!-- Copper Heatpipe Accent (Top) -->
-            <path d="M 40,58 L 160,58" stroke="#b45309" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <!-- Copper Heatpipe Accent (Top Architecture) -->
+            <path d="M 38,57 L 162,57" stroke="url(#copper-pipe)" stroke-width="2.5" stroke-linecap="round"/>
 
             <!-- Left Fan Well -->
-            <circle cx="68" cy="100" r="32" fill="url(#fan-well)" stroke="#334155" stroke-width="2"/>
-            
+            <circle cx="67" cy="100" r="31" fill="url(#fan-well)" stroke="#d4a373" stroke-width="1.8"/>
+
             <!-- Left Spinning Fan -->
-            <g class="gpu-fan" id="fan-left" style="transform-origin: 68px 100px;">
-                <!-- 6 Aerodynamic Blades -->
-                <path d="M 68,100 C 60,82 72,74 78,74 C 74,84 72,94 68,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 68,100 C 86,92 94,104 94,110 C 84,106 74,104 68,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 68,100 C 76,118 64,126 58,126 C 62,116 64,106 68,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 68,100 C 50,108 42,96 42,90 C 52,94 62,96 68,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 68,100 C 52,86 64,76 70,76 C 68,88 66,96 68,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 68,100 C 84,114 72,124 66,124 C 68,112 70,104 68,100 Z" fill="url(#blade-grad)"/>
-                <!-- Center Metallic Hub Cap -->
-                <circle cx="68" cy="100" r="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
-                <circle cx="68" cy="100" r="3" fill="#76b900"/>
+            <g class="gpu-fan" id="fan-left" style="transform-origin: 67px 100px;">
+                <!-- 6 Curved Aerodynamic Blades -->
+                <path d="M 67,100 C 59,82 71,74 77,74 C 73,84 71,94 67,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 67,100 C 85,92 93,104 93,110 C 83,106 73,104 67,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 67,100 C 75,118 63,126 57,126 C 61,116 63,106 67,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 67,100 C 49,108 41,96 41,90 C 51,94 61,96 67,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 67,100 C 51,86 63,76 69,76 C 67,88 65,96 67,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 67,100 C 83,114 71,124 65,124 C 67,112 69,104 67,100 Z" fill="url(#blade-grad)"/>
+                <!-- Center Ceramic Hub Cap with Terracotta Ring -->
+                <circle cx="67" cy="100" r="8" fill="#fffaf5" stroke="#c2410c" stroke-width="1.6"/>
+                <circle cx="67" cy="100" r="3.2" fill="#ea580c"/>
             </g>
 
             <!-- Right Fan Well -->
-            <circle cx="134" cy="100" r="32" fill="url(#fan-well)" stroke="#334155" stroke-width="2"/>
+            <circle cx="133" cy="100" r="31" fill="url(#fan-well)" stroke="#d4a373" stroke-width="1.8"/>
 
             <!-- Right Spinning Fan -->
-            <g class="gpu-fan" id="fan-right" style="transform-origin: 134px 100px;">
-                <path d="M 134,100 C 126,82 138,74 144,74 C 140,84 138,94 134,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 134,100 C 152,92 160,104 160,110 C 150,106 140,104 134,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 134,100 C 142,118 130,126 124,126 C 128,116 130,106 134,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 134,100 C 116,108 108,96 108,90 C 118,94 128,96 134,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 134,100 C 118,86 130,76 136,76 C 134,88 132,96 134,100 Z" fill="url(#blade-grad)"/>
-                <path d="M 134,100 C 150,114 138,124 132,124 C 134,112 136,104 134,100 Z" fill="url(#blade-grad)"/>
-                <circle cx="134" cy="100" r="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
-                <circle cx="134" cy="100" r="3" fill="#76b900"/>
+            <g class="gpu-fan" id="fan-right" style="transform-origin: 133px 100px;">
+                <path d="M 133,100 C 125,82 137,74 143,74 C 139,84 137,94 133,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 133,100 C 151,92 159,104 159,110 C 149,106 139,104 133,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 133,100 C 141,118 129,126 123,126 C 127,116 129,106 133,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 133,100 C 115,108 107,96 107,90 C 117,94 127,96 133,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 133,100 C 117,86 129,76 135,76 C 133,88 131,96 133,100 Z" fill="url(#blade-grad)"/>
+                <path d="M 133,100 C 149,114 137,124 131,124 C 133,112 135,104 133,100 Z" fill="url(#blade-grad)"/>
+                <circle cx="133" cy="100" r="8" fill="#fffaf5" stroke="#c2410c" stroke-width="1.6"/>
+                <circle cx="133" cy="100" r="3.2" fill="#ea580c"/>
             </g>
 
-            <!-- NVIDIA CUDA LED Logo / Neon Bar (Top Edge) -->
-            <rect x="42" y="52" width="118" height="5" rx="2.5" fill="url(#nv-green)" class="led-glow-bar"/>
+            <!-- CUDA Acceleration Illuminated Terracotta Glow Bar (Top Edge) -->
+            <rect x="42" y="50" width="118" height="4.5" rx="2.2" fill="url(#terra-amber-glow)" class="led-glow-bar"/>
 
-            <!-- PCIe Gold Connection Fingers (Bottom Edge) -->
+            <!-- Subtle Engraving / Typographic Mark -->
+            <text x="100" y="145" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="5.8" font-weight="700" fill="#78716c" letter-spacing="1">CUDA • ACCEL</text>
+
+            <!-- PCIe Gold Connection Contacts (Bottom Edge) -->
             <g fill="url(#pcie-gold)">
-                <rect x="44" y="152" width="6" height="8" rx="1"/>
-                <rect x="54" y="152" width="6" height="8" rx="1"/>
-                <rect x="64" y="152" width="6" height="8" rx="1"/>
-                <rect x="74" y="152" width="6" height="8" rx="1"/>
-                <rect x="88" y="152" width="6" height="8" rx="1"/>
-                <rect x="98" y="152" width="6" height="8" rx="1"/>
-                <rect x="108" y="152" width="6" height="8" rx="1"/>
-                <rect x="118" y="152" width="6" height="8" rx="1"/>
-                <rect x="128" y="152" width="6" height="8" rx="1"/>
-                <rect x="138" y="152" width="6" height="8" rx="1"/>
+                <rect x="42" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="52" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="62" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="72" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="86" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="96" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="106" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="116" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="126" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="136" y="153" width="5.5" height="8" rx="1"/>
+                <rect x="146" y="153" width="5.5" height="8" rx="1"/>
             </g>
 
-            <!-- Power Status LED Indicator -->
-            <circle cx="166" cy="62" r="3" fill="#76b900" class="power-led"/>
+            <!-- Power & Activity Micro-LEDs -->
+            <circle cx="166" cy="62" r="3" fill="#ea580c" class="status-led"/>
+            <circle cx="34" cy="62" r="2" fill="#0d9488" opacity="0.8"/>
         </svg>
     </div>
 
@@ -212,9 +227,19 @@
         container.addEventListener('click', () => {
             turbo = !turbo;
             const fans = document.querySelectorAll('.gpu-fan');
+            const glowBar = document.querySelector('.led-glow-bar');
+
             fans.forEach(fan => {
                 fan.style.animationDuration = turbo ? '0.6s' : '2.6s';
             });
+
+            if (turbo) {
+                glowBar.style.filter = 'drop-shadow(0 0 10px rgba(234, 88, 12, 0.95))';
+                container.style.filter = 'drop-shadow(0 10px 26px rgba(234, 88, 12, 0.45))';
+            } else {
+                glowBar.style.filter = '';
+                container.style.filter = 'drop-shadow(0 4px 14px rgba(120, 53, 15, 0.14))';
+            }
         });
     </script>
 </body>

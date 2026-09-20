@@ -1370,13 +1370,16 @@
             consoleLastMsg.textContent = msg;
         }
 
+        let currentScale = 1;
+
         function getPos(el) {
             const r = el.getBoundingClientRect();
             const w = windowEl.getBoundingClientRect();
-            const scale = 0.85;
+            const scaleX = (w.width / (windowEl.offsetWidth || 1040)) || currentScale || 1;
+            const scaleY = (w.height / (windowEl.offsetHeight || 870)) || currentScale || 1;
             return {
-                x: ((r.left - w.left) + (r.width / 2)) / scale,
-                y: ((r.top - w.top) + (r.height / 2)) / scale
+                x: ((r.left - w.left) + (r.width / 2)) / scaleX,
+                y: ((r.top - w.top) + (r.height / 2)) / scaleY
             };
         }
 
@@ -1561,8 +1564,8 @@
             const w = window.innerWidth || document.documentElement.clientWidth;
             const h = window.innerHeight || document.documentElement.clientHeight;
             if (!w || !h) return;
-            const scale = Math.min(w / 1040, h / 870);
-            win.style.transform = `scale(${scale})`;
+            currentScale = Math.min(w / 1040, h / 870);
+            win.style.transform = `scale(${currentScale})`;
             win.style.transformOrigin = 'center center';
         }
 

@@ -15,7 +15,7 @@
         },
         "PyPotteryLens": {
             "name": "PyPottery Lens",
-            "description": "AI-powered pottery documentation tool with object detection",
+            "description": "Computer-vision-powered pottery documentation tool with object detection",
             "repo_owner": "lrncrd",
             "repo_name": "PyPotteryLens",
             "entry_script": "app.py",
@@ -41,7 +41,7 @@
         },
         "PyPotteryScan": {
             "name": "PyPottery Scan",
-            "description": "AI-powered pottery drawing digitization tool with OCR-based text recognition",
+            "description": "Pottery drawing digitization tool with OCR-based text recognition",
             "repo_owner": "lrncrd",
             "repo_name": "PyPotteryScan",
             "entry_script": "app.py",
@@ -54,7 +54,7 @@
         },
         "PyPotteryTrace": {
             "name": "PyPottery Trace",
-            "description": "AI-powered interactive tool for vectorizing pottery drawings using SAM2 segmentation",
+            "description": "Interactive tool for vectorizing pottery drawings using SAM2 segmentation",
             "repo_owner": "lrncrd",
             "repo_name": "PyPotteryTrace",
             "entry_script": "app.py",

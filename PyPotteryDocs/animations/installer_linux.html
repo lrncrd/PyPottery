@@ -830,15 +830,18 @@
         const gnomeToast = document.getElementById('gnomeToast');
         const pypotteryWindow = document.getElementById('pypotteryWindow');
 
+        let currentScale = 1;
+
         function getCoords(el) {
             const r = el.getBoundingClientRect();
             const w = screen.getBoundingClientRect();
-            const scale = w.width / 880;
+            const scaleX = (w.width / (screen.offsetWidth || 880)) || currentScale || 1;
+            const scaleY = (w.height / (screen.offsetHeight || 620)) || currentScale || 1;
             return {
-                x: (r.left - w.left) / scale,
-                y: (r.top - w.top) / scale,
-                cx: (r.left - w.left + r.width / 2) / scale,
-                cy: (r.top - w.top + r.height / 2) / scale
+                x: (r.left - w.left) / scaleX,
+                y: (r.top - w.top) / scaleY,
+                cx: (r.left - w.left + r.width / 2) / scaleX,
+                cy: (r.top - w.top + r.height / 2) / scaleY
             };
         }
 
@@ -1003,13 +1006,14 @@
         }
 
         function scaleDesktopToFit() {
-            const screen = document.querySelector('.linux-desktop');
-            if (!screen) return;
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            const scale = Math.min(w / 900, h / 640, 0.98);
-            screen.style.transform = `scale(${scale})`;
-            screen.style.transformOrigin = 'center center';
+            const screenEl = document.querySelector('.linux-desktop') || screen;
+            if (!screenEl) return;
+            const w = window.innerWidth || document.documentElement.clientWidth;
+            const h = window.innerHeight || document.documentElement.clientHeight;
+            if (!w || !h) return;
+            currentScale = Math.min(w / 900, h / 640, 0.98);
+            screenEl.style.transform = `scale(${currentScale})`;
+            screenEl.style.transformOrigin = 'center center';
         }
         window.addEventListener('resize', scaleDesktopToFit);
         window.addEventListener('DOMContentLoaded', scaleDesktopToFit);
