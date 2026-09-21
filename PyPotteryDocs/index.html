@@ -1689,6 +1689,13 @@
       border-color: var(--border-hover);
       background: white;
     }
+    button.preprint-btn {
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .preprints-strip + .preprints-strip {
+      margin-top: 1rem;
+    }
 
     /* ==========================================================================
        Frontier Techniques Glossary (Computer Vision / OCR / LLMs / Diffusion)
@@ -2411,7 +2418,7 @@
               <span class="metric-label">PyTorch Engine</span>
             </div>
             <div class="metric-item">
-              <span class="metric-val">Apache 2.0</span>
+              <span class="metric-val">Open Source</span>
               <span class="metric-label">Open Science</span>
             </div>
           </div>
@@ -2728,6 +2735,22 @@
           </a>
         </div>
       </div>
+
+      <!-- Software citation strip (CITATION.cff lives in the repository root) -->
+      <div class="preprints-strip">
+        <div class="preprints-title">
+          <i class="bi bi-quote" style="color: var(--primary);"></i>
+          <span>Citing the software itself:</span>
+        </div>
+        <div class="preprints-links">
+          <a href="https://github.com/lrncrd/PyPottery/blob/main/CITATION.cff" target="_blank" rel="noopener noreferrer" class="preprint-btn">
+            <i class="bi bi-file-earmark-code"></i> CITATION.cff
+          </a>
+          <button type="button" class="preprint-btn btn-bibtex" data-bib="software">
+            <i class="bi bi-clipboard"></i> Copy BibTeX
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- ==========================================================================
@@ -2796,11 +2819,14 @@
         <div class="developer-text">
           <h3>Building from Source or Contributing?</h3>
           <p>
-            All PyPottery tools are open source under the Apache 2.0 License. You can clone the repository to run standalone command-line scripts, inspect the neural architectures, or contribute improvements.
+            PyPottery is an open-source, community-driven project, and archaeologists and programmers are equally welcome to take part. You can clone the repository to run standalone command-line scripts, inspect the neural architectures, or contribute improvements.
           </p>
           <div style="margin-top: 1rem;">
             <a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="color: white; border-color: #44403c; background: #292524;">
               <i class="bi bi-github"></i> <span>Contribute on GitHub</span>
+            </a>
+            <a href="community.html" class="btn btn-outline btn-sm" style="color: white; border-color: #44403c; background: #292524; margin-left: 0.5rem;">
+              <i class="bi bi-people"></i> <span>Open Source &amp; Community</span>
             </a>
           </div>
         </div>
@@ -2894,7 +2920,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© 2024–2026 Lorenzo Cardarelli. Distributed under the Apache 2.0 Open Source License.</p>
+      <p>© 2024–2026 Lorenzo Cardarelli. Free and open source.</p>
       <p>Built so no advisor can make you hand-trace pottery for ten months • <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer">github.com/lrncrd</a></p>
     </div>
   </footer>
@@ -3077,6 +3103,12 @@
   year = {2025},
   publisher = {Elsevier},
   doi = {10.1016/j.culher.2025.01.010}
+}`,
+      software: `@software{cardarelli2025pypottery,
+  title = {{PyPottery Suite: Digitizing Archaeological Pottery Documentation}},
+  author = {Cardarelli, Lorenzo},
+  year = {2025},
+  url = {https://github.com/lrncrd/PyPottery}
 }`
     };
 

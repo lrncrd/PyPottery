@@ -432,6 +432,131 @@ To run a single tool outside the launcher, see its dedicated installation guide:
 - [PyPotteryTrace](pypotterytrace/index.qmd)
 - [PyPotteryLayout](pypotterylayout/index.qmd)
 
+## Uninstalling {#uninstalling}
+
+PyPottery keeps everything in a single folder and installs no services, drivers, or system-wide Python packages, so removing it means deleting that folder. The same folder also holds your projects.
+
+::: {.callout-warning}
+#### Save your projects first
+PyPotteryLens, PyPotteryScan and PyPotteryTrace store each project under `apps/<module>/projects/`, next to the module's own files, and PyPotteryInk and PyPotteryLayout keep their exports inside their module folder too. **Uninstalling the suite, or a single module, deletes them.** Export them first with the **Backup** button in the launcher's header (it saves the projects of Lens, Scan and Trace into one `.zip`), or copy the folders by hand.
+:::
+
+::: {.callout-note collapse="true"}
+#### Where the data lives, and how to back up your projects
+
+The launcher keeps all its data in one **data folder**. Where it is depends on how you installed it:
+
+| Installation | Data folder |
+|---|---|
+| **Windows installer** | `%LOCALAPPDATA%\PyPottery Launcher`, or the folder you picked in the setup wizard |
+| **Windows portable (.zip)** | The folder you extracted |
+| **macOS (.dmg)** | `~/Library/Application Support/PyPottery`, deliberately *outside* the app, so it survives updates and is not removed when you trash the app |
+| **Linux AppImage** | The folder that contains the `.AppImage` file (or `~/.local/share/pypottery` if that folder is read-only) |
+| **Linux (.zip)** | The folder you extracted |
+| **Source & CLI** | The cloned repository folder |
+
+Inside it:
+
+| Folder | What it holds |
+|---|---|
+| `apps/` | The five modules, each with its own `projects/` folder |
+| `pypottery_env/` | The isolated Python environment, including PyTorch |
+| `python_runtime/` | The Python interpreter the launcher provisions (where present) |
+| `model_cache/` | AI model weights shared by all modules |
+| `shared_assets/` | Files the modules share |
+| `logs/` | Launcher logs |
+
+To back up your work, click **Backup** in the launcher header, choose **Export**, select the projects and save the `.zip` somewhere outside the data folder. After a reinstall, open **Backup → Import** and pick that file; the modules must be installed and stopped.
+
+The Backup covers Lens, Scan and Trace. Anything you want to keep from Ink or Layout (their exports) has to be copied by hand from the module's folder under `apps/`. You can also copy a module's `projects/` folder manually, and press **Refresh** in its Project Repository after putting it back.
+:::
+
+::: {.callout-note collapse="true"}
+#### Uninstall on Windows
+
+Stop any running module from the launcher panel and quit the launcher, then:
+
+1. Open **Settings → Apps → Installed apps** (**Apps & features** on Windows 10), find **PyPottery Launcher** and choose **Uninstall**. The **Uninstall PyPottery Launcher** shortcut in the Start Menu does the same.
+2. Confirm. The uninstaller stops a running launcher if it finds one, then deletes the installation folder, the Start Menu and Desktop shortcuts, and its entry in *Installed apps*. It needs no admin rights, just as the installer didn't.
+3. If `%LOCALAPPDATA%\PyPottery Launcher` is still there afterwards (antivirus software sometimes holds a file open for a moment), restart Windows and delete the folder by hand.
+
+The portable `.zip` packages have no uninstaller: delete the folder you extracted, and any shortcut you created yourself.
+:::
+
+::: {.callout-note collapse="true"}
+#### Uninstall on macOS
+
+1. Quit PyPottery, open `/Applications` and drag `PyPottery Launcher.app` to the Trash.
+2. In Finder choose **Go → Go to Folder…**, paste `~/Library/Application Support/PyPottery` and drag that folder to the Trash. This is what actually frees the disk space: the environment, the model cache and your projects all live there.
+3. Empty the Trash. If you find a `~/Library/Logs/PyPottery` folder, it only holds log files and can go too.
+
+The same from the Terminal:
+
+```bash
+rm -rf "/Applications/PyPottery Launcher.app"
+rm -rf "$HOME/Library/Application Support/PyPottery"
+```
+:::
+
+::: {.callout-note collapse="true"}
+#### Uninstall on Linux
+
+**AppImage**
+
+1. Quit PyPottery.
+2. Remove the application-menu entry the AppImage registered for itself, by running it once with a flag:
+
+   ```bash
+   ./PyPottery-Launcher-linux-x86_64.AppImage --uninstall-desktop
+   ```
+
+3. Delete the `.AppImage` file **and** the folders next to it (`apps/`, `pypottery_env/`, `model_cache/`, and so on). The AppImage keeps its data beside itself, so deleting only the file leaves several GB behind.
+
+**Zip package**
+
+1. Quit PyPottery.
+2. If you ran `install_desktop.sh` to get a menu entry, remove it:
+
+   ```bash
+   rm -f ~/.local/share/applications/pypottery.desktop
+   rm -f ~/.local/share/icons/hicolor/512x512/apps/pypottery.png
+   rm -f ~/.local/share/icons/hicolor/256x256/apps/pypottery.png
+   update-desktop-database ~/.local/share/applications 2>/dev/null
+   ```
+
+3. Delete the folder you extracted.
+:::
+
+::: {.callout-note collapse="true"}
+#### Uninstall a Source & CLI install
+
+1. Stop the launcher (`Ctrl+C` in the terminal where it runs) and run `deactivate` if a virtual environment is active.
+2. Delete the cloned `PyPottery` folder. It holds the virtual environment if you created it there, `launcher/dev_config.py`, the model cache, and each module's projects, so copy those first.
+
+A module installed on its own is removed the same way: delete its folder and the virtual environment you made for it.
+:::
+
+::: {.callout-note collapse="true"}
+#### Remove one module, or free disk space without uninstalling
+
+**One module.** In the launcher, stop the module if it is running, then click the **trash icon** on its card and confirm. This deletes the module's files **and its projects**, and keeps the AI models already downloaded to the shared model cache. You can install it again from the same card. The option is not available in Developer Mode, where the modules are your own Git checkouts.
+
+**Disk space, keeping the suite.** Delete part of the data folder instead of all of it:
+
+- `pypottery_env/`: the largest part of the installation. After deleting it, open the launcher and run **Configure Environment** again to rebuild it.
+- `model_cache/`: AI model weights. Each module downloads the models it needs again the next time you use it, so you need an internet connection for that.
+
+Leave `apps/` alone unless you mean to remove modules: it holds your projects.
+
+**Package caches outside the folder.** The tools that install the Python packages (`pip` and `uv`) keep their own download caches in your user profile, shared with any other Python software you use. They may hold copies of the large PyTorch packages, and are safe to delete:
+
+| | pip cache | uv cache |
+|---|---|---|
+| **Windows** | `%LOCALAPPDATA%\pip\cache` | `%LOCALAPPDATA%\uv\cache` |
+| **macOS** | `~/Library/Caches/pip` | `~/.cache/uv` |
+| **Linux** | `~/.cache/pip` | `~/.cache/uv` |
+:::
+
 ## Troubleshooting
 
 ```{=html}

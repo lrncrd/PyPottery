@@ -10,7 +10,7 @@ toc: true
 ```{=html}
 <div class="app-card">
   <img src="../imgs/LogoScan.png" alt="PyPotteryScan" class="app-card-logo">
-  <span class="app-card-version">Version 0.1.2</span>
+  <span class="app-card-version">Version {{< var version.scan >}}</span>
   <div class="app-card-platforms">
     <span class="app-card-chip"><i class="bi bi-cpu"></i> CPU (GLM-OCR)</span>
     <span class="app-card-chip"><i class="bi bi-gpu-card"></i> CUDA (GLM-OCR or OlmOCR)</span>

@@ -1041,227 +1041,182 @@ tbody tr:hover {
 }
 
 /* --------------------------------------------------------------------------
-   12. Visual Archaeological Pipeline (Option B: Input ➔ Core AI ➔ Output)
+   12. Suite Modules pipeline chapter (three phases, each: intro + what goes in/out, then its tools)
    -------------------------------------------------------------------------- */
 .archaeo-pipeline-container {
   display: flex;
   flex-direction: column;
-  gap: 2.2rem;
   margin: 2rem 0 3.5rem 0;
-  position: relative;
 }
 
-/* A phase is an open section: its colour rule and heading lead, the tool cards inside are the only boxes
-   (a card around a diagram around more cards read as one flat pile). */
+/* A phase is an open section, not a card: a colour rule on top, the phase story on the left, and the
+   tools (the only boxed thing) on the right. */
 .pipeline-stage-card {
-  padding: 1.35rem 0 0 0;
-  position: relative;
+  --phase: var(--primary);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 1.5rem 3rem;
+  align-items: start;
+  padding-top: 1.6rem;
+  border-top: 3px solid var(--phase);
 }
 
-.pipeline-stage-card.phase-ingestion {
-  border-top: 3px solid var(--teal);
-}
-
-.pipeline-stage-card.phase-inking {
-  border-top: 3px solid var(--primary);
-}
-
-.pipeline-stage-card.phase-synthesis {
-  border-top: 3px solid #334155;
-}
-
-/* Stage Header */
-.pipeline-stage-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.4rem;
-}
-
-.pipeline-stage-title-group {
-  flex: 1;
-  min-width: 260px;
-}
+.pipeline-stage-card.phase-ingestion { --phase: var(--teal); }
+.pipeline-stage-card.phase-inking    { --phase: var(--primary); }
+.pipeline-stage-card.phase-synthesis { --phase: #334155; }
 
 .pipeline-stage-title {
   font-size: 1.5rem !important;
   font-weight: 800;
   color: var(--text-main);
-  margin: 0 0 0.3rem 0 !important;
+  margin: 0 0 0.6rem 0 !important;
   line-height: 1.25;
+  text-wrap: balance;
 }
 
 .pipeline-stage-lead {
-  font-size: 0.92rem;
   color: var(--text-dim);
   margin: 0 !important;
-  line-height: 1.5;
+  text-wrap: pretty;
 }
 
-/* Three-Box Flow Strip: Input ➔ Core AI ➔ Output */
-.pipeline-flow-strip {
-  display: grid;
-  grid-template-columns: 1fr auto 1.15fr auto 1fr;
-  align-items: center;
-  gap: 0.75rem;
+/* Takes in / Runs on / Hands over: a small vertical trace, the middle step (the engine) filled */
+.pipeline-io {
+  margin: 1.6rem 0 0 0;
+  padding: 0;
+}
+
+.pipeline-io-step {
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.15rem 1.7rem;
+}
+
+.pipeline-io-step:last-child {
+  padding-bottom: 0;
+}
+
+.pipeline-io-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.22rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  box-sizing: border-box;
+  border: 2px solid var(--phase);
+  border-radius: 50%;
+  background: var(--bg-page);
+}
+
+.pipeline-io-step.is-engine::before {
+  background: var(--phase);
+}
+
+.pipeline-io-step::after {
+  content: "";
+  position: absolute;
+  left: calc(0.35rem - 1px);
+  top: 1.05rem;
+  bottom: -0.1rem;
+  width: 2px;
+  background: var(--border-light);
+}
+
+.pipeline-io-step:last-child::after {
+  display: none;
+}
+
+.pipeline-io-step dt {
+  margin: 0 0 0.15rem 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.pipeline-io-step dd {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.pipeline-io-step dd strong {
+  color: var(--text-main);
+}
+
+.pipeline-io-step dd code {
+  font-size: 0.78rem;
+  padding: 1px 5px;
   background: var(--bg-subtle);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 1.1rem;
-  margin-bottom: 1.5rem;
+  border-radius: 4px;
 }
 
-.pipeline-flow-box {
-  background: white;
+/* Tools: one panel per phase, rows divided by hairlines */
+.pipeline-tools {
+  background: var(--bg-card);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 0.85rem 1rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  min-height: 84px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
-.pipeline-flow-box.engine-box {
-  border-color: rgba(194, 65, 12, 0.35);
-  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.06);
+.pipeline-tool {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.25rem 1.35rem 1.35rem 1.35rem;
+  transition: background-color 0.2s ease;
+}
+
+.pipeline-tool + .pipeline-tool {
+  border-top: 1px solid var(--border-light);
+}
+
+.pipeline-tool:hover {
   background: #fffdfa;
 }
 
-.flow-box-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  color: var(--primary);
-  flex-shrink: 0;
-}
-
-.flow-box-icon.engine-icon {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border-color: var(--primary-border);
-}
-
-.flow-box-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.flow-box-title {
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--text-main);
-  line-height: 1.25;
-}
-
-.flow-box-details {
-  font-size: 0.74rem;
-  color: var(--text-dim);
-  line-height: 1.35;
-}
-
-.flow-box-details code {
-  font-size: 0.68rem;
-  padding: 1px 4px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  border-radius: 3px;
-}
-
-.pipeline-flow-arrow {
-  color: var(--text-muted);
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.6;
-}
-
-/* Subtools Row */
-.pipeline-subtools-grid {
-  margin-top: 0.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
-.pipeline-tool-card {
-  background: white;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 1.15rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.85rem;
-  transition: all 0.2s ease;
-}
-
-.pipeline-tool-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 14px rgba(120, 53, 15, 0.08);
-  transform: translateY(-2px);
-}
-
-.pipeline-tool-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-}
-
 .pipeline-tool-logo {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   background: var(--bg-subtle);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   padding: 3px;
-  flex-shrink: 0;
 }
 
-.pipeline-tool-meta {
-  flex: 1;
+.pipeline-tool-body {
   min-width: 0;
 }
 
 .pipeline-tool-name-line {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  margin-bottom: 2px;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  margin-bottom: 0.15rem;
 }
 
 .pipeline-tool-name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-main);
   margin: 0 !important;
 }
 
 .pipeline-tool-desc {
-  font-size: 0.88rem;
-  color: var(--text-dim);
-  line-height: 1.45;
-  margin: 0 0 0.5rem 0 !important;
+  margin: 0 0 0.45rem 0 !important;
+  text-wrap: pretty;
 }
 
 .pipeline-tool-caps {
-  font-size: 0.86rem;
-  color: var(--text-dim);
-  line-height: 1.5;
-  margin: 0;
+  font-size: 0.86rem !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
 }
 
 .pipeline-tool-caps .cap-lead {
@@ -1271,55 +1226,53 @@ tbody tr:hover {
 
 .pipeline-tool-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.65rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border-light);
+  gap: 0.6rem;
+  margin-top: 1rem;
 }
 
-/* Stage Down Connector */
-.pipeline-stage-connector {
+.pipeline-tool a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Between phases: what the previous phase passes on */
+.pipeline-handoff {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  height: 24px;
+  gap: 1rem;
+  margin: 2rem 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
-.pipeline-connector-line {
-  position: absolute;
-  top: -16px;
-  bottom: -16px;
-  width: 0;
-  border-right: 2px dashed var(--border-hover);
-  z-index: 1;
+.pipeline-handoff::before,
+.pipeline-handoff::after {
+  content: "";
+  flex: 1;
+  border-top: 1px dashed var(--border-hover);
 }
 
-.pipeline-connector-pill {
-  background: white;
-  border: 1px solid var(--border-light);
-  color: var(--primary);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
+.pipeline-handoff span {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  z-index: 2;
+  gap: 0.4rem;
 }
 
-/* Responsive */
-@media (max-width: 860px) {
-  .pipeline-flow-strip {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
+@media (max-width: 900px) {
+  .pipeline-stage-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
   }
-  .pipeline-flow-arrow {
-    transform: rotate(90deg);
-    margin: -2px 0;
+}
+
+@media (max-width: 480px) {
+  .pipeline-tool {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 1.1rem 1rem 1.2rem 1rem;
   }
 }
 
@@ -2268,3 +2221,268 @@ footer.footer {
   border-bottom: none;
 }
 
+/* --------------------------------------------------------------------------
+   19. Contact page: where to ask what, direct e-mail, support
+   -------------------------------------------------------------------------- */
+.contact-routes {
+  margin: 1.25rem 0 0.5rem 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.contact-routes .contact-route {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.2rem 1.5rem;
+  padding: 1.1rem 1.35rem;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease;
+}
+
+.contact-routes .contact-route + .contact-route {
+  border-top: 1px solid var(--border-light);
+}
+
+.contact-routes a.contact-route:hover {
+  background: var(--bg-subtle);
+}
+
+.contact-routes a.contact-route:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.contact-route-title .bi {
+  color: var(--primary);
+  margin-right: 0.35rem;
+}
+
+.contact-route-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.contact-route-desc {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.contact-route-go {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--primary);
+}
+
+.contact-mail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  margin: 1.25rem 0 0.5rem 0;
+  padding: 1.6rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.contact-mail-text {
+  flex: 1 1 320px;
+  max-width: 52ch;
+}
+
+.contact-mail-text h3 {
+  margin: 0 0 0.4rem 0 !important;
+  font-size: 1.15rem !important;
+  text-wrap: balance;
+}
+
+.contact-mail-text p {
+  margin: 0 !important;
+}
+
+.contact-mail-address {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .contact-routes .contact-route {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .contact-route-go {
+    grid-row: auto;
+    grid-column: 1;
+    margin-top: 0.35rem;
+  }
+  .contact-mail {
+    padding: 1.25rem 1rem;
+  }
+}
+
+/* the support box right under its own heading (Contact): no double top margin */
+main h2 + .archaeo-cta-box {
+  margin-top: 1.25rem;
+}
+
+main h2 + .archaeo-cta-box .archaeo-cta-title {
+  margin-top: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   20. Open Source & Community page: two voices, contribution steps, scrolling tables
+   -------------------------------------------------------------------------- */
+.voices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 1.75rem 0;
+  align-items: stretch;
+}
+
+.voice {
+  padding: 1.5rem 1.6rem 1.35rem 1.6rem;
+  border-radius: var(--radius-lg);
+}
+
+.voice h3 {
+  margin: 0 0 0.6rem 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.voice > p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0 0 0.9rem 0;
+}
+
+.voice ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.voice li {
+  font-size: 0.93rem;
+  line-height: 1.6;
+  margin-bottom: 0.55rem;
+}
+
+.voice li:last-child {
+  margin-bottom: 0;
+}
+
+/* the archaeologists: drawing paper */
+.voice-field {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.voice-field > p,
+.voice-field li {
+  color: var(--text-dim) !important;
+}
+
+.voice-field li::marker {
+  color: var(--primary);
+}
+
+/* the programmers: the dark developer surface used on the landing page */
+.voice-code {
+  background: #1c1917;
+  border: 1px solid #292524;
+  box-shadow: 0 10px 28px -8px rgba(28, 25, 23, 0.35);
+}
+
+.voice-code h3 {
+  color: #f5f5f4 !important;
+}
+
+.voice-code > p,
+.voice-code li {
+  color: #d6d3d1 !important;
+}
+
+.voice-code li::marker {
+  color: #fb923c;
+}
+
+/* tables that must not squash their columns on a phone */
+.table-scroll {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll table {
+  margin: 0 !important;
+  min-width: 34rem;
+}
+
+.table-scroll tbody td:first-child {
+  white-space: nowrap;
+  color: var(--text-main) !important;
+}
+
+.table-scroll tbody td:first-child a {
+  font-weight: 700;
+}
+
+/* a real sequence, so the numbers earn their place */
+.contribute-steps ol {
+  list-style: none;
+  counter-reset: contribute;
+  margin: 1.25rem 0 0 0;
+  padding: 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.contribute-steps li {
+  counter-increment: contribute;
+  position: relative;
+  max-width: 72ch;
+  padding: 1.05rem 0 1.05rem 3rem;
+  border-bottom: 1px solid var(--border-light);
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+.contribute-steps li::before {
+  content: counter(contribute);
+  position: absolute;
+  left: 0.25rem;
+  top: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--primary);
+}
+
+.contribute-steps li strong {
+  color: var(--text-main);
+}
+
+@media (max-width: 760px) {
+  .voices {
+    grid-template-columns: 1fr;
+  }
+}

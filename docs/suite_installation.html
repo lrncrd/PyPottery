@@ -356,6 +356,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./community.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Open Source &amp; Community</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./contact.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Contact</span></a>
   </div>
@@ -390,6 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#enable-developer-mode" id="toc-enable-developer-mode" class="nav-link" data-scroll-target="#enable-developer-mode">4. Enable Developer Mode</a></li>
   <li><a href="#standalone-module-installation" id="toc-standalone-module-installation" class="nav-link" data-scroll-target="#standalone-module-installation">5. Standalone module installation</a></li>
   </ul></li>
+  <li><a href="#uninstalling" id="toc-uninstalling" class="nav-link" data-scroll-target="#uninstalling">Uninstalling</a></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/lrncrd/PyPottery/blob/main/suite_installation.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -848,6 +855,264 @@ Offline use in the field
 </ul>
 </section>
 </section>
+<section id="uninstalling" class="level2">
+<h2 class="anchored" data-anchor-id="uninstalling">Uninstalling</h2>
+<p>PyPottery keeps everything in a single folder and installs no services, drivers, or system-wide Python packages, so removing it means deleting that folder. The same folder also holds your projects.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Save your projects first
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PyPotteryLens, PyPotteryScan and PyPotteryTrace store each project under <code>apps/&lt;module&gt;/projects/</code>, next to the module’s own files, and PyPotteryInk and PyPotteryLayout keep their exports inside their module folder too. <strong>Uninstalling the suite, or a single module, deletes them.</strong> Export them first with the <strong>Backup</strong> button in the launcher’s header (it saves the projects of Lens, Scan and Trace into one <code>.zip</code>), or copy the folders by hand.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Where the data lives, and how to back up your projects
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The launcher keeps all its data in one <strong>data folder</strong>. Where it is depends on how you installed it:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Installation</th>
+<th>Data folder</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Windows installer</strong></td>
+<td><code>%LOCALAPPDATA%\PyPottery Launcher</code>, or the folder you picked in the setup wizard</td>
+</tr>
+<tr class="even">
+<td><strong>Windows portable (.zip)</strong></td>
+<td>The folder you extracted</td>
+</tr>
+<tr class="odd">
+<td><strong>macOS (.dmg)</strong></td>
+<td><code>~/Library/Application Support/PyPottery</code>, deliberately <em>outside</em> the app, so it survives updates and is not removed when you trash the app</td>
+</tr>
+<tr class="even">
+<td><strong>Linux AppImage</strong></td>
+<td>The folder that contains the <code>.AppImage</code> file (or <code>~/.local/share/pypottery</code> if that folder is read-only)</td>
+</tr>
+<tr class="odd">
+<td><strong>Linux (.zip)</strong></td>
+<td>The folder you extracted</td>
+</tr>
+<tr class="even">
+<td><strong>Source &amp; CLI</strong></td>
+<td>The cloned repository folder</td>
+</tr>
+</tbody>
+</table>
+<p>Inside it:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Folder</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>apps/</code></td>
+<td>The five modules, each with its own <code>projects/</code> folder</td>
+</tr>
+<tr class="even">
+<td><code>pypottery_env/</code></td>
+<td>The isolated Python environment, including PyTorch</td>
+</tr>
+<tr class="odd">
+<td><code>python_runtime/</code></td>
+<td>The Python interpreter the launcher provisions (where present)</td>
+</tr>
+<tr class="even">
+<td><code>model_cache/</code></td>
+<td>AI model weights shared by all modules</td>
+</tr>
+<tr class="odd">
+<td><code>shared_assets/</code></td>
+<td>Files the modules share</td>
+</tr>
+<tr class="even">
+<td><code>logs/</code></td>
+<td>Launcher logs</td>
+</tr>
+</tbody>
+</table>
+<p>To back up your work, click <strong>Backup</strong> in the launcher header, choose <strong>Export</strong>, select the projects and save the <code>.zip</code> somewhere outside the data folder. After a reinstall, open <strong>Backup → Import</strong> and pick that file; the modules must be installed and stopped.</p>
+<p>The Backup covers Lens, Scan and Trace. Anything you want to keep from Ink or Layout (their exports) has to be copied by hand from the module’s folder under <code>apps/</code>. You can also copy a module’s <code>projects/</code> folder manually, and press <strong>Refresh</strong> in its Project Repository after putting it back.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uninstall on Windows
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Stop any running module from the launcher panel and quit the launcher, then:</p>
+<ol type="1">
+<li>Open <strong>Settings → Apps → Installed apps</strong> (<strong>Apps &amp; features</strong> on Windows 10), find <strong>PyPottery Launcher</strong> and choose <strong>Uninstall</strong>. The <strong>Uninstall PyPottery Launcher</strong> shortcut in the Start Menu does the same.</li>
+<li>Confirm. The uninstaller stops a running launcher if it finds one, then deletes the installation folder, the Start Menu and Desktop shortcuts, and its entry in <em>Installed apps</em>. It needs no admin rights, just as the installer didn’t.</li>
+<li>If <code>%LOCALAPPDATA%\PyPottery Launcher</code> is still there afterwards (antivirus software sometimes holds a file open for a moment), restart Windows and delete the folder by hand.</li>
+</ol>
+<p>The portable <code>.zip</code> packages have no uninstaller: delete the folder you extracted, and any shortcut you created yourself.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uninstall on macOS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Quit PyPottery, open <code>/Applications</code> and drag <code>PyPottery Launcher.app</code> to the Trash.</li>
+<li>In Finder choose <strong>Go → Go to Folder…</strong>, paste <code>~/Library/Application Support/PyPottery</code> and drag that folder to the Trash. This is what actually frees the disk space: the environment, the model cache and your projects all live there.</li>
+<li>Empty the Trash. If you find a <code>~/Library/Logs/PyPottery</code> folder, it only holds log files and can go too.</li>
+</ol>
+<p>The same from the Terminal:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> <span class="st">"/Applications/PyPottery Launcher.app"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/Library/Application Support/PyPottery"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uninstall on Linux
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>AppImage</strong></p>
+<ol type="1">
+<li><p>Quit PyPottery.</p></li>
+<li><p>Remove the application-menu entry the AppImage registered for itself, by running it once with a flag:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./PyPottery-Launcher-linux-x86_64.AppImage</span> <span class="at">--uninstall-desktop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Delete the <code>.AppImage</code> file <strong>and</strong> the folders next to it (<code>apps/</code>, <code>pypottery_env/</code>, <code>model_cache/</code>, and so on). The AppImage keeps its data beside itself, so deleting only the file leaves several GB behind.</p></li>
+</ol>
+<p><strong>Zip package</strong></p>
+<ol type="1">
+<li><p>Quit PyPottery.</p></li>
+<li><p>If you ran <code>install_desktop.sh</code> to get a menu entry, remove it:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> ~/.local/share/applications/pypottery.desktop</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> ~/.local/share/icons/hicolor/512x512/apps/pypottery.png</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> ~/.local/share/icons/hicolor/256x256/apps/pypottery.png</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">update-desktop-database</span> ~/.local/share/applications <span class="dv">2</span><span class="op">&gt;</span>/dev/null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Delete the folder you extracted.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uninstall a Source &amp; CLI install
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Stop the launcher (<code>Ctrl+C</code> in the terminal where it runs) and run <code>deactivate</code> if a virtual environment is active.</li>
+<li>Delete the cloned <code>PyPottery</code> folder. It holds the virtual environment if you created it there, <code>launcher/dev_config.py</code>, the model cache, and each module’s projects, so copy those first.</li>
+</ol>
+<p>A module installed on its own is removed the same way: delete its folder and the virtual environment you made for it.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remove one module, or free disk space without uninstalling
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>One module.</strong> In the launcher, stop the module if it is running, then click the <strong>trash icon</strong> on its card and confirm. This deletes the module’s files <strong>and its projects</strong>, and keeps the AI models already downloaded to the shared model cache. You can install it again from the same card. The option is not available in Developer Mode, where the modules are your own Git checkouts.</p>
+<p><strong>Disk space, keeping the suite.</strong> Delete part of the data folder instead of all of it:</p>
+<ul>
+<li><code>pypottery_env/</code>: the largest part of the installation. After deleting it, open the launcher and run <strong>Configure Environment</strong> again to rebuild it.</li>
+<li><code>model_cache/</code>: AI model weights. Each module downloads the models it needs again the next time you use it, so you need an internet connection for that.</li>
+</ul>
+<p>Leave <code>apps/</code> alone unless you mean to remove modules: it holds your projects.</p>
+<p><strong>Package caches outside the folder.</strong> The tools that install the Python packages (<code>pip</code> and <code>uv</code>) keep their own download caches in your user profile, shared with any other Python software you use. They may hold copies of the large PyTorch packages, and are safe to delete:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>pip cache</th>
+<th>uv cache</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Windows</strong></td>
+<td><code>%LOCALAPPDATA%\pip\cache</code></td>
+<td><code>%LOCALAPPDATA%\uv\cache</code></td>
+</tr>
+<tr class="even">
+<td><strong>macOS</strong></td>
+<td><code>~/Library/Caches/pip</code></td>
+<td><code>~/.cache/uv</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Linux</strong></td>
+<td><code>~/.cache/pip</code></td>
+<td><code>~/.cache/uv</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
 <section id="troubleshooting" class="level2">
 <h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
 <div class="diagnostic-table-wrapper">
@@ -970,7 +1235,7 @@ Offline use in the field
   </div>
 
   <div class="footer-bottom">
-    <p>© 2024–2026 Lorenzo Cardarelli. Distributed under the Apache 2.0 Open Source License.</p>
+    <p>© 2024–2026 Lorenzo Cardarelli. Free and open source.</p>
     <p>Built so no advisor can make you hand-trace pottery for ten months • <a href="https://github.com/lrncrd" target="_blank" rel="noopener noreferrer">github.com/lrncrd</a></p>
   </div>
 </footer>

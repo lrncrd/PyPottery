@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: >-
+  If you use PyPottery in your research, please cite the software and, for each
+  module you used, the article listed under references.
+type: software
+title: "PyPottery Suite: Digitizing Archaeological Pottery Documentation"
+abstract: >-
+  PyPottery is a suite of five open-source tools (PyPotteryLens, PyPotteryScan,
+  PyPotteryInk, PyPotteryTrace and PyPotteryLayout) that automate the classical
+  archaeological pottery documentation workflow: extracting figures from
+  monograph PDFs, digitizing field cards, inking pencil drawings, vectorizing
+  vessel profiles and composing publication plates. Everything runs locally.
+authors:
+  - family-names: Cardarelli
+    given-names: Lorenzo
+    email: lorenzo.cardarelli@uni-goettingen.de
+repository-code: "https://github.com/lrncrd/PyPottery"
+url: "https://lrncrd.github.io/PyPottery/"
+keywords:
+  - archaeology
+  - pottery
+  - ceramics
+  - computer vision
+  - digitization
+  - vectorization
+  - open source
+references:
+  - type: article
+    authors:
+      - family-names: Cardarelli
+        given-names: Lorenzo
+    title: "PyPotteryLens: An Open-Source Framework for Automated Pottery Digitisation"
+    journal: Digital Applications in Archaeology and Cultural Heritage
+    volume: "36"
+    start: e00380
+    year: 2025
+    doi: "10.1016/j.daach.2025.e00380"
+    publisher:
+      name: Elsevier
+  - type: article
+    authors:
+      - family-names: Cardarelli
+        given-names: Lorenzo
+    title: "PyPotteryInk: A One-Step Diffusion Model for Archaeological Drawing Vectorization"
+    journal: Journal of Cultural Heritage
+    volume: "72"
+    year: 2025
+    doi: "10.1016/j.culher.2025.01.010"
+    publisher:
+      name: Elsevier

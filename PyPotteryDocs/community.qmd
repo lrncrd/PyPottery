@@ -1,0 +1,150 @@
+---
+title: "Open Source & Community"
+format: html
+toc: true
+---
+
+::: {.prose}
+
+PyPottery is an open-source project, and it works best as a collaborative one. It is written for archaeologists, and the people who can make it better are as often the archaeologists who use it every day as the programmers who can read its code.
+
+:::
+
+::: {.key-point}
+
+**Both are welcome, and you do not need to write code to help.** Pottery documentation is a craft, and these tools are only as good as the workflows they have been tested on.
+
+:::
+
+## What open source means here
+
+```{=html}
+<dl class="principles-list">
+
+  <div class="principle">
+    <dt>Free to use</dt>
+    <dd>
+      <p class="principle-title">No fees, no accounts, no subscription</p>
+      <p class="principle-text">
+        Install the whole suite and use it on your own material, in the field, in the lab or at home.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Inspectable</dt>
+    <dd>
+      <p class="principle-title">Nothing hidden</p>
+      <p class="principle-text">
+        The full source code is public, so you can check exactly what happens to your drawings. By default,
+        everything runs on your own machine.
+      </p>
+    </dd>
+  </div>
+
+  <div class="principle">
+    <dt>Yours to keep</dt>
+    <dd>
+      <p class="principle-title">Your work is never locked in</p>
+      <p class="principle-text">
+        Projects and exports are ordinary files in open formats (images, SVG, CSV, Excel, JSON). No proprietary
+        format stands between you and your own data.
+      </p>
+    </dd>
+  </div>
+
+</dl>
+```
+
+## Who can take part
+
+```{=html}
+<div class="voices">
+
+  <section class="voice voice-field" aria-labelledby="voice-field-title">
+    <h3 id="voice-field-title">If you work with pottery</h3>
+    <p>Archaeologists, ceramicists and illustrators know what a good result looks like. That is exactly what the models and the workflows are missing.</p>
+    <ul>
+      <li>Try the tools on your own material and tell us where they fail: a drawing style the inking model misreads, a monograph layout Lens cannot split, a label format Scan cannot read.</li>
+      <li>Point out the steps of your workflow that are still done by hand.</li>
+      <li>Share sample drawings you have the right to publish, to test and to train the models.</li>
+      <li>Help write, correct and translate the guides.</li>
+    </ul>
+  </section>
+
+  <section class="voice voice-code" aria-labelledby="voice-code-title">
+    <h3 id="voice-code-title">If you write code</h3>
+    <p>Each tool is a small Flask application with a plain HTML and JavaScript front end, and lives in its own repository, so you can work on just the one you use.</p>
+    <ul>
+      <li>Fix bugs, add tests, improve speed and memory use.</li>
+      <li>Verify the suite on macOS and Linux and report what breaks.</li>
+      <li>Work on the models: better training data, lighter weights, new hardware backends.</li>
+      <li>Take on a feature from the issue tracker.</li>
+    </ul>
+  </section>
+
+</div>
+```
+
+Teaching a course or running a field school? Use PyPottery with your students and tell us what worked and what confused them. If you got stuck on an unclear message or a missing explanation, others will too, and that is worth an issue.
+
+## Where help is needed most
+
+::: {.table-scroll}
+
+| Help wanted | What it involves | Who is best placed |
+|:---|:---|:---|
+| **Testing on macOS and Linux** | Install the suite, run each tool from start to finish, report what breaks. The launcher is developed mainly on Windows. | Anyone with a Mac or a Linux machine |
+| **Real-world material** | Run the tools on unusual drawing conventions, periods and publication layouts, and share the results, good or bad. | Archaeologists, ceramicists, illustrators |
+| **Documentation and translations** | Clearer guides, worked examples, versions in other languages. | Users of any tool, in any language |
+| **Datasets and models** | Annotated examples, with the right to share them, so the models improve for everyone. | Projects with digitised, publishable drawings |
+
+:::
+
+## How to contribute
+
+::: {.contribute-steps}
+
+1. **Look around.** Read the [documentation](docs_home.qmd) and try the tools. Check the [issue tracker](https://github.com/lrncrd/PyPottery/issues) to see whether your idea or problem is already there.
+2. **Open an issue.** Describe what you were doing, what you expected and what happened. A screenshot or a small example file helps a lot. For a bigger change, start a discussion first, so the effort goes in the right direction.
+3. **Send your change.** To fix or build something yourself, fork the repository of the tool concerned and open a pull request that explains what it does and why.
+4. **Talk to us.** Not sure where to begin, or interested in a research collaboration? [Write to me](contact.qmd#get-in-touch).
+
+:::
+
+## The repositories
+
+::: {.table-scroll}
+
+| Repository | What it is |
+|:---|:---|
+| [PyPottery](https://github.com/lrncrd/PyPottery) | The suite launcher, the installers and this documentation |
+| [PyPotteryLens](https://github.com/lrncrd/PyPotteryLens) | Extract pottery from PDF monographs |
+| [PyPotteryScan](https://github.com/lrncrd/PyPotteryScan) | Digitize field drawings and read their labels |
+| [PyPotteryInk](https://github.com/lrncrd/PyPotteryInk) | Turn pencil sketches into ink drawings |
+| [PyPotteryTrace](https://github.com/lrncrd/PyPotteryTrace) | Vectorize vessel profiles with SAM 2 |
+| [PyPotteryLayout](https://github.com/lrncrd/PyPotteryLayout) | Compose publication-ready plates |
+
+:::
+
+## Credit and citation
+
+If PyPottery is useful for your research, please cite it: the [publications](docs_home.qmd#academic-citations) list the right reference for each module. Contributors who would like to be mentioned are credited in the release notes.
+
+```{=html}
+<div class="archaeo-cta-box">
+  <h3 class="archaeo-cta-title">Built by archaeologists, for archaeologists</h3>
+  <p class="archaeo-cta-desc">
+    PyPottery started from a real documentation backlog and grows with the people who use it.
+    Your feedback, your samples and your code all move it forward.
+  </p>
+  <div class="archaeo-cta-buttons">
+    <a href="https://github.com/lrncrd/PyPottery" target="_blank" rel="noopener noreferrer" class="btn-editorial-github">
+      <i class="bi bi-github"></i> Join on GitHub
+    </a>
+    <a href="contact.html" class="btn-editorial-secondary">
+      <i class="bi bi-envelope"></i> Get in touch
+    </a>
+  </div>
+</div>
+```

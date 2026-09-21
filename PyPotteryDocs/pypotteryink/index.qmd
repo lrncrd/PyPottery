@@ -10,7 +10,7 @@ toc: true
 ```{=html}
 <div class="app-card">
   <img src="../imgs/LogoInk.png" alt="PyPotteryInk" class="app-card-logo">
-  <span class="app-card-version">Version 2.1.2</span>
+  <span class="app-card-version">Version {{< var version.ink >}}</span>
   <div class="app-card-platforms">
     <span class="app-card-chip"><i class="bi bi-cpu"></i> CPU</span>
     <span class="app-card-chip"><i class="bi bi-gpu-card"></i> CUDA</span>

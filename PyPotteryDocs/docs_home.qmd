@@ -50,340 +50,172 @@ toc: false
 
 ## Suite Modules: The Archaeological Pipeline {#suite-modules}
 
-Five integrated modules orchestrated into three operational phases, transforming raw archaeological field data and historical monographs into publication-grade plates and structured data.
+Five modules in three phases, taking raw field data and legacy monographs to publication-grade plates and structured data. Use the whole chain, or only the phase you need.
 
 ```{=html}
 <div class="archaeo-pipeline-container">
 
-  <!-- =========================================================================
-       PHASE 01: INGESTION & DATA CAPTURE
-       ========================================================================= -->
-  <div class="pipeline-stage-card phase-ingestion">
-    <div class="pipeline-stage-header">
-      <div class="pipeline-stage-title-group">
-        <h3 class="pipeline-stage-title">From Physical Books &amp; Legacy PDFs to Structured Data</h3>
-        <p class="pipeline-stage-lead">
-          Automates the tedious hours spent screenshotting monograph tables or hand-cropping drawing plates and retyping handwritten field notes — cutting transcription time by roughly 90%.
-        </p>
-      </div>
+  <!-- PHASE 1: INGESTION & DATA CAPTURE -->
+  <section class="pipeline-stage-card phase-ingestion" aria-labelledby="phase-ingestion-title">
+    <div class="pipeline-stage-intro">
+      <h3 class="pipeline-stage-title" id="phase-ingestion-title">From Physical Books &amp; Legacy PDFs to Structured Data</h3>
+      <p class="pipeline-stage-lead">
+        Automates the tedious hours spent screenshotting monograph tables or hand-cropping drawing plates and retyping handwritten field notes, cutting transcription time by roughly 90%.
+      </p>
+      <dl class="pipeline-io">
+        <div class="pipeline-io-step">
+          <dt>Takes in</dt>
+          <dd>PDF reports, scanned cards, handwritten notes</dd>
+        </div>
+        <div class="pipeline-io-step is-engine">
+          <dt>Runs on</dt>
+          <dd><strong>YOLOv8 + OCR + LLMs</strong>: vessel bounding-box detection, field handwriting OCR, and metadata structuring</dd>
+        </div>
+        <div class="pipeline-io-step">
+          <dt>Hands over</dt>
+          <dd>Standardized card crops, linked inventory tables (<code>.xlsx</code> or <code>.csv</code>), structured catalog records</dd>
+        </div>
+      </dl>
     </div>
 
-    <!-- 3-Box Flow Strip: Input ➔ Core AI ➔ Output -->
-    <div class="pipeline-flow-strip">
-      <!-- 1. Input -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-file-earmark-pdf"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Monographs &amp; Cards</div>
-          <div class="flow-box-details">PDF reports, scanned *cards*, handwritten notes</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 2. Core AI -->
-      <div class="pipeline-flow-box engine-box">
-        <div class="flow-box-icon engine-icon">
-          <i class="bi bi-cpu"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">YOLOv8 + OCR + LLMs</div>
-          <div class="flow-box-details">Vessel bounding-box detection, field handwriting OCR, and metadata structuring</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 3. Output -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-database-check"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Segmented Corpora</div>
-          <div class="flow-box-details">Standardized card crops, linked inventory tables (<code>.xlsx</code> or <code>.csv</code>), structured catalog records</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dedicated Tools Subgrid -->
-    <div class="pipeline-subtools-grid">
-      <!-- Tool 1: Lens -->
-      <div class="pipeline-tool-card">
-        <div>
-          <div class="pipeline-tool-top">
-            <img src="imgs/LogoLens.png" alt="PyPotteryLens" class="pipeline-tool-logo">
-            <div class="pipeline-tool-meta">
-              <div class="pipeline-tool-name-line">
-                <h4 class="pipeline-tool-name">PyPotteryLens</h4>
-                <span class="module-ver-badge">v0.2.1</span>
-              </div>
-              <p class="pipeline-tool-desc">
-                Mines published monographs and excavation report PDFs, detecting and segmenting pottery drawings with Computer Vision.
-              </p>
-            </div>
+    <div class="pipeline-tools">
+      <article class="pipeline-tool">
+        <img src="imgs/LogoLens.png" alt="" class="pipeline-tool-logo">
+        <div class="pipeline-tool-body">
+          <div class="pipeline-tool-name-line">
+            <h4 class="pipeline-tool-name">PyPotteryLens</h4>
+            <span class="module-ver-badge">v{{< var version.lens >}}</span>
           </div>
+          <p class="pipeline-tool-desc">Mines published monographs and excavation report PDFs, detecting and segmenting pottery drawings with Computer Vision.</p>
           <p class="pipeline-tool-caps"><span class="cap-lead">YOLO Detection</span> · Interactive Review · LLM Metadata · Cards Export</p>
-        </div>
-        <div class="pipeline-tool-actions">
-          <a href="pypotterylens/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
-          <a href="https://github.com/lrncrd/PyPotteryLens" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryLens on GitHub">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Tool 2: Scan -->
-      <div class="pipeline-tool-card">
-        <div>
-          <div class="pipeline-tool-top">
-            <img src="imgs/LogoScan.png" alt="PyPotteryScan" class="pipeline-tool-logo">
-            <div class="pipeline-tool-meta">
-              <div class="pipeline-tool-name-line">
-                <h4 class="pipeline-tool-name">PyPotteryScan</h4>
-                <span class="module-ver-badge">v0.2.0</span>
-              </div>
-              <p class="pipeline-tool-desc">
-                Digitizes handwritten drawing tables on index cards: segments multi-sherd plates, reads context notes via OCR, and outputs relational Excel tables.
-              </p>
-            </div>
+          <div class="pipeline-tool-actions">
+            <a href="pypotterylens/index.html" class="btn-editorial-primary btn-sm">Documentation <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/lrncrd/PyPotteryLens" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryLens on GitHub"><i class="bi bi-github"></i> GitHub</a>
           </div>
+        </div>
+      </article>
+
+      <article class="pipeline-tool">
+        <img src="imgs/LogoScan.png" alt="" class="pipeline-tool-logo">
+        <div class="pipeline-tool-body">
+          <div class="pipeline-tool-name-line">
+            <h4 class="pipeline-tool-name">PyPotteryScan</h4>
+            <span class="module-ver-badge">v{{< var version.scan >}}</span>
+          </div>
+          <p class="pipeline-tool-desc">Digitizes handwritten drawing tables on index cards: segments multi-sherd plates, reads context notes via OCR, and outputs relational Excel tables.</p>
           <p class="pipeline-tool-caps"><span class="cap-lead">Handwriting OCR</span> · Auto Vessel Cropping · Relational Excel</p>
-        </div>
-        <div class="pipeline-tool-actions">
-          <a href="pypotteryscan/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
-          <a href="https://github.com/lrncrd/PyPotteryScan" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryScan on GitHub">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Connector: Phase 1 -> Phase 2 -->
-  <div class="pipeline-stage-connector">
-    <div class="pipeline-connector-line"></div>
-    <div class="pipeline-connector-pill">
-      <i class="bi bi-arrow-down"></i> Isolated Vessel Drawings
-    </div>
-  </div>
-
-  <!-- =========================================================================
-       PHASE 02: INKING & VECTOR GEOMETRY
-       ========================================================================= -->
-  <div class="pipeline-stage-card phase-inking">
-    <div class="pipeline-stage-header">
-      <div class="pipeline-stage-title-group">
-        <h3 class="pipeline-stage-title">From Faded Pencil to Crisp SVG Vector Curves</h3>
-        <p class="pipeline-stage-lead">
-          Replaces the manual ordeal of tracing paper and point-by-point bezier retracing in vector software.
-        </p>
-      </div>
-    </div>
-
-    <!-- 3-Box Flow Strip: Input ➔ Core AI ➔ Output -->
-    <div class="pipeline-flow-strip">
-      <!-- 1. Input -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-pencil"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Pencil Sketches &amp; Scans</div>
-          <div class="flow-box-details">Graph paper drawings, faded graphite, raster pottery figures</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 2. Core AI -->
-      <div class="pipeline-flow-box engine-box">
-        <div class="flow-box-icon engine-icon">
-          <i class="bi bi-magic"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Diffusion Model + SAM 2</div>
-          <div class="flow-box-details">Custom one-step diffusion for archaeological line weight &amp; Segment Anything 2 for geometry</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 3. Output -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-vector-pen"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Archival Ink &amp; Clean SVG</div>
-          <div class="flow-box-details">Pure high-contrast ink drawings and separated Bézier splines of each archaeological element (rim, profile, section)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dedicated Tools Subgrid -->
-    <div class="pipeline-subtools-grid">
-      <!-- Tool 3: Ink -->
-      <div class="pipeline-tool-card">
-        <div>
-          <div class="pipeline-tool-top">
-            <img src="imgs/LogoInk.png" alt="PyPotteryInk" class="pipeline-tool-logo">
-            <div class="pipeline-tool-meta">
-              <div class="pipeline-tool-name-line">
-                <h4 class="pipeline-tool-name">PyPotteryInk</h4>
-                <span class="module-ver-badge">v2.1.0</span>
-              </div>
-              <p class="pipeline-tool-desc">
-                Transforms pencil sketches into publication-grade ink drawings in seconds using a dedicated diffusion architecture.
-              </p>
-            </div>
+          <div class="pipeline-tool-actions">
+            <a href="pypotteryscan/index.html" class="btn-editorial-primary btn-sm">Documentation <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/lrncrd/PyPotteryScan" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryScan on GitHub"><i class="bi bi-github"></i> GitHub</a>
           </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="pipeline-handoff"><span><i class="bi bi-arrow-down"></i> Isolated vessel drawings</span></div>
+
+  <!-- PHASE 2: INKING & VECTOR GEOMETRY -->
+  <section class="pipeline-stage-card phase-inking" aria-labelledby="phase-inking-title">
+    <div class="pipeline-stage-intro">
+      <h3 class="pipeline-stage-title" id="phase-inking-title">From Faded Pencil to Crisp SVG Vector Curves</h3>
+      <p class="pipeline-stage-lead">
+        Replaces the manual ordeal of tracing paper and point-by-point Bézier retracing in vector software.
+      </p>
+      <dl class="pipeline-io">
+        <div class="pipeline-io-step">
+          <dt>Takes in</dt>
+          <dd>Graph paper drawings, faded graphite, raster pottery figures</dd>
+        </div>
+        <div class="pipeline-io-step is-engine">
+          <dt>Runs on</dt>
+          <dd><strong>Diffusion model + SAM 2</strong>: a custom one-step diffusion for archaeological line weight, and Segment Anything 2 for geometry</dd>
+        </div>
+        <div class="pipeline-io-step">
+          <dt>Hands over</dt>
+          <dd>High-contrast ink drawings and separated Bézier splines of each element (rim, profile, section)</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="pipeline-tools">
+      <article class="pipeline-tool">
+        <img src="imgs/LogoInk.png" alt="" class="pipeline-tool-logo">
+        <div class="pipeline-tool-body">
+          <div class="pipeline-tool-name-line">
+            <h4 class="pipeline-tool-name">PyPotteryInk</h4>
+            <span class="module-ver-badge">v{{< var version.ink >}}</span>
+          </div>
+          <p class="pipeline-tool-desc">Transforms pencil sketches into publication-grade ink drawings in seconds using a dedicated diffusion architecture.</p>
           <p class="pipeline-tool-caps"><span class="cap-lead">Diffusion</span> · Diagnostic Line Weight · Batch Processing · CUDA / MPS / CPU</p>
-        </div>
-        <div class="pipeline-tool-actions">
-          <a href="pypotteryink/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
-          <a href="https://github.com/lrncrd/PyPotteryInk" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryInk on GitHub">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Tool 4: Trace -->
-      <div class="pipeline-tool-card">
-        <div>
-          <div class="pipeline-tool-top">
-            <img src="imgs/LogoTrace.png" alt="PyPotteryTrace" class="pipeline-tool-logo">
-            <div class="pipeline-tool-meta">
-              <div class="pipeline-tool-name-line">
-                <h4 class="pipeline-tool-name">PyPotteryTrace</h4>
-                <span class="module-ver-badge">v0.2.0</span>
-              </div>
-              <p class="pipeline-tool-desc">
-                Interactive profile vectorization powered by SAM 2: click on drawing elements to generate editable, smoothed Bézier curves.
-              </p>
-            </div>
+          <div class="pipeline-tool-actions">
+            <a href="pypotteryink/index.html" class="btn-editorial-primary btn-sm">Documentation <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/lrncrd/PyPotteryInk" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryInk on GitHub"><i class="bi bi-github"></i> GitHub</a>
           </div>
+        </div>
+      </article>
+
+      <article class="pipeline-tool">
+        <img src="imgs/LogoTrace.png" alt="" class="pipeline-tool-logo">
+        <div class="pipeline-tool-body">
+          <div class="pipeline-tool-name-line">
+            <h4 class="pipeline-tool-name">PyPotteryTrace</h4>
+            <span class="module-ver-badge">v{{< var version.trace >}}</span>
+          </div>
+          <p class="pipeline-tool-desc">Interactive profile vectorization powered by SAM 2: click on drawing elements to generate editable, smoothed Bézier curves.</p>
           <p class="pipeline-tool-caps"><span class="cap-lead">SAM 2 Interactive</span> · Bézier Spline Editor · Layered SVG Export</p>
-        </div>
-        <div class="pipeline-tool-actions">
-          <a href="pypotterytrace/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
-          <a href="https://github.com/lrncrd/PyPotteryTrace" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryTrace on GitHub">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Connector: Phase 2 -> Phase 3 -->
-  <div class="pipeline-stage-connector">
-    <div class="pipeline-connector-line"></div>
-    <div class="pipeline-connector-pill">
-      <i class="bi bi-arrow-down"></i> Refined Vector Profiles
-    </div>
-  </div>
-
-  <!-- =========================================================================
-       PHASE 03: SYNTHESIS & PUBLISHING
-       ========================================================================= -->
-  <div class="pipeline-stage-card phase-synthesis">
-    <div class="pipeline-stage-header">
-      <div class="pipeline-stage-title-group">
-        <h3 class="pipeline-stage-title">From Individual Vessels to Publication-Ready Plates</h3>
-        <p class="pipeline-stage-lead">
-          Eliminates hand-recalculated reduction scales, hand-drawn millimeter bars, and tedious manual alignment of figures on the page.
-        </p>
-      </div>
-    </div>
-
-    <!-- 3-Box Flow Strip: Input ➔ Core AI ➔ Output -->
-    <div class="pipeline-flow-strip">
-      <!-- 1. Input -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-collection"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Vector Figures &amp; SVGs</div>
-          <div class="flow-box-details">Individual vessel vectors, inking outputs, contextual catalog metadata</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 2. Core AI -->
-      <div class="pipeline-flow-box engine-box">
-        <div class="flow-box-icon engine-icon">
-          <i class="bi bi-aspect-ratio"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Deterministic Vector Engine</div>
-          <div class="flow-box-details">True DPI scale bar calibration, standardized reduction (1:3, 1:4), automated grid layout</div>
-        </div>
-      </div>
-
-      <!-- Arrow -->
-      <div class="pipeline-flow-arrow">
-        <i class="bi bi-arrow-right"></i>
-      </div>
-
-      <!-- 3. Output -->
-      <div class="pipeline-flow-box">
-        <div class="flow-box-icon">
-          <i class="bi bi-file-earmark-richtext"></i>
-        </div>
-        <div class="flow-box-content">
-          <div class="flow-box-title">Publication Plates</div>
-          <div class="flow-box-details">Print-ready vector PDF &amp; SVG plates, calibrated scale bars, automated catalog numbering</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dedicated Tools Subgrid -->
-    <div class="pipeline-subtools-grid">
-      <!-- Tool 5: Layout -->
-      <div class="pipeline-tool-card" style="grid-column: 1 / -1;">
-        <div>
-          <div class="pipeline-tool-top">
-            <img src="imgs/LogoLayout.png" alt="PyPotteryLayout" class="pipeline-tool-logo">
-            <div class="pipeline-tool-meta">
-              <div class="pipeline-tool-name-line">
-                <h4 class="pipeline-tool-name">PyPotteryLayout</h4>
-                <span class="module-ver-badge">v0.2.0</span>
-              </div>
-              <p class="pipeline-tool-desc">
-                Composes multi-vessel publication plates with automatic metric scaling, calibrated scale bars, typological grouping, and editable vector PDF/SVG export.
-              </p>
-            </div>
+          <div class="pipeline-tool-actions">
+            <a href="pypotterytrace/index.html" class="btn-editorial-primary btn-sm">Documentation <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/lrncrd/PyPotteryTrace" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryTrace on GitHub"><i class="bi bi-github"></i> GitHub</a>
           </div>
-          <p class="pipeline-tool-caps"><span class="cap-lead">Automatic Layout</span> · Calibrated Metric Scale Bars · Automated Metadata Placement &amp; Numbers · Vector PDF &amp; SVG</p>
         </div>
-        <div class="pipeline-tool-actions">
-          <a href="pypotterylayout/index.html" class="btn-editorial-primary btn-sm">Documentation →</a>
-          <a href="https://github.com/lrncrd/PyPotteryLayout" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryLayout on GitHub">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </div>
-      </div>
+      </article>
     </div>
-  </div>
+  </section>
+
+  <div class="pipeline-handoff"><span><i class="bi bi-arrow-down"></i> Refined vector profiles</span></div>
+
+  <!-- PHASE 3: SYNTHESIS & PUBLISHING -->
+  <section class="pipeline-stage-card phase-synthesis" aria-labelledby="phase-synthesis-title">
+    <div class="pipeline-stage-intro">
+      <h3 class="pipeline-stage-title" id="phase-synthesis-title">From Individual Vessels to Publication-Ready Plates</h3>
+      <p class="pipeline-stage-lead">
+        Eliminates hand-recalculated reduction scales, hand-drawn millimeter bars, and tedious manual alignment of figures on the page.
+      </p>
+      <dl class="pipeline-io">
+        <div class="pipeline-io-step">
+          <dt>Takes in</dt>
+          <dd>Individual vessel vectors, inking outputs, contextual catalog metadata</dd>
+        </div>
+        <div class="pipeline-io-step is-engine">
+          <dt>Runs on</dt>
+          <dd><strong>Deterministic vector engine</strong>: true DPI scale bar calibration, standardized reduction (1:3, 1:4), automated grid layout</dd>
+        </div>
+        <div class="pipeline-io-step">
+          <dt>Hands over</dt>
+          <dd>Print-ready vector PDF &amp; SVG plates, calibrated scale bars, automated catalog numbering</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="pipeline-tools">
+      <article class="pipeline-tool">
+        <img src="imgs/LogoLayout.png" alt="" class="pipeline-tool-logo">
+        <div class="pipeline-tool-body">
+          <div class="pipeline-tool-name-line">
+            <h4 class="pipeline-tool-name">PyPotteryLayout</h4>
+            <span class="module-ver-badge">v{{< var version.layout >}}</span>
+          </div>
+          <p class="pipeline-tool-desc">Composes multi-vessel publication plates with automatic metric scaling, calibrated scale bars, typological grouping, and editable vector PDF/SVG export.</p>
+          <p class="pipeline-tool-caps"><span class="cap-lead">Automatic Layout</span> · Calibrated Metric Scale Bars · Automated Metadata Placement &amp; Numbers · Vector PDF &amp; SVG</p>
+          <div class="pipeline-tool-actions">
+            <a href="pypotterylayout/index.html" class="btn-editorial-primary btn-sm">Documentation <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/lrncrd/PyPotteryLayout" target="_blank" rel="noopener noreferrer" class="btn-editorial-github btn-sm" title="PyPotteryLayout on GitHub"><i class="bi bi-github"></i> GitHub</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
 
 </div>
 ```
@@ -589,7 +421,7 @@ With PyPottery
 
 ## Academic Citations {#academic-citations}
 
-If you use PyPottery tools in academic publications, excavation reports, or museum catalogues, please cite the corresponding peer-reviewed articles:
+If you use PyPottery tools in academic publications, excavation reports, or museum catalogues, please cite the peer-reviewed article of each module you used, and the software itself.
 
 ```{=html}
 <div class="pub-editorial-grid">
@@ -627,6 +459,23 @@ If you use PyPottery tools in academic publications, excavation reports, or muse
   </div>
 
 </div>
+```
+
+### Citing the software {#citing-the-software}
+
+::: {.prose}
+
+The repository ships a [`CITATION.cff`](https://github.com/lrncrd/PyPottery/blob/main/CITATION.cff) file, so GitHub's **Cite this repository** button on the [PyPottery page](https://github.com/lrncrd/PyPottery) gives you ready-made APA and BibTeX entries, and reference managers such as Zotero can import it directly. The same entry as BibTeX:
+
+:::
+
+```bibtex
+@software{cardarelli2025pypottery,
+  title = {{PyPottery Suite: Digitizing Archaeological Pottery Documentation}},
+  author = {Cardarelli, Lorenzo},
+  year = {2025},
+  url = {https://github.com/lrncrd/PyPottery}
+}
 ```
 
 ```{=html}

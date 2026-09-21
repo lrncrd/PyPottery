@@ -239,3 +239,10 @@ shared_assets/
 ArchaeoVision/
 .gemini/
 PyPotteryDocs/.agent
+
+AUTO_SHUTDOWN_MODULES_GUIDE.md
+KNOWN_ISSUES.md
+MACOS_LINUX_VERIFICATION.md
+NATIVE_WINDOW_ROADMAP.md
+PRODUCT.md
+PUBLICATION.md

@@ -119,6 +119,10 @@ __MUI_ICON__
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
+; The uninstaller deletes the whole install folder, and the users' own projects
+; live inside it (apps\<module>\projects), so say so on the confirmation page
+; instead of only naming the folder. Must be defined before the page macro.
+!define MUI_UNCONFIRMPAGE_TEXT_TOP "This removes the whole PyPottery Launcher folder, including the projects you created in Lens, Scan and Trace and the AI models it downloaded. To keep your projects, cancel now and use the Backup button in the launcher (or copy apps\<module>\projects somewhere else), then run the uninstaller again."
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 

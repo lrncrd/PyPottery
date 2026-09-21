@@ -69,6 +69,8 @@ website:
           - pypotterylayout/version_history.qmd
       - text: "Suite Version History"
         href: suite_version.qmd
+      - text: "Open Source & Community"
+        href: community.qmd
       - contact.qmd
       - acknowledgment.qmd
 
