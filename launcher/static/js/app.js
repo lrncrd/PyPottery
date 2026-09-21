@@ -821,8 +821,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const isRunning = app.is_running && !isStarting;
     const isLocked = !store.envExists;
     
-    const versionText = app.installed_version
-      ? `v${app.installed_version}${app.update_available ? " • Update Available" : ""}`
+    const versionHtml = app.installed_version
+      ? `<span class="app-version">v${escapeHtml(app.installed_version)}${app.update_available ? ' · <span class="app-update-flag">Update available</span>' : ""}</span>`
       : "";
 
     const fallbackIcon = app.icon || 'bi-collection';
@@ -883,46 +883,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `
       <div class="app-card ${isRunning ? 'running-card' : ''} ${isLocked ? 'card-locked' : ''}" data-app-id="${app.id}">
-        <div class="app-card-top">
-          <div class="app-logo-box">
-            ${logoHtml}
-          </div>
-          <div class="app-info-body">
-            <div class="app-title-line">
-              <span class="app-name">${formatAppNameHtml(app.name)}</span>
-              ${badgePillHtml}
-            </div>
-            <p class="app-desc">${escapeHtml(app.description)}</p>
-            <div class="app-chips">
-              <span class="chip"><i class="bi bi-memory"></i> ${app.min_ram_gb}GB RAM</span>
-              ${app.requires_gpu ? `<span class="chip chip-gpu"><i class="bi bi-gpu-card"></i> GPU</span>` : ""}
-              ${app.developer_mode ? `<span class="chip chip-dev" title="Running from the local git checkout at the repo root - install/update disabled"><i class="bi bi-code-slash"></i> DEV MODE</span>` : ""}
-              ${versionText ? `<span class="chip">${escapeHtml(versionText)}</span>` : ""}
-            </div>
-            ${lockBannerHtml}
-          </div>
+        <div class="app-logo-box">
+          ${logoHtml}
         </div>
-
-        <div class="app-card-bottom">
-          ${progressHtml}
-          <div class="app-actions-row">
-            <div class="app-actions-left">
-              <button class="btn ${action.cls} main-action" data-action="${action.action}" data-app-id="${app.id}"
-                ${isLocked || isStarting
-                  ? `disabled title='${isStarting ? "Application is starting up..." : "Please set up the Python Environment first to unlock"}'`
-                  : action.action === 'none'
-                    ? `disabled title='Clone ${escapeHtml(app.repo_name)} into the repo root to enable it in developer mode'`
-                    : ""}>
-                ${action.action === 'starting' ? '<i class="bi bi-arrow-repeat spinner"></i> ' : action.action === 'launch' ? '<i class="bi bi-play-fill"></i> ' : action.action === 'stop' ? '<i class="bi bi-stop-fill"></i> ' : action.action === 'none' ? '<i class="bi bi-search"></i> ' : '<i class="bi bi-download"></i> '}${action.label}
-              </button>
-              ${openBrowserBtn}
-            </div>
-            <div class="app-actions-right">
-              ${updateBtnHtml}
-              <button class="btn btn-quiet btn-icon-only" data-action="folder" data-app-id="${app.id}" title="Open Application Directory" ${!app.installed || isLocked ? "disabled" : ""}><i class="bi bi-folder2-open"></i></button>
-              ${uninstallBtnHtml}
-            </div>
-          </div>
+        <div class="app-name">${formatAppNameHtml(app.name)}</div>
+        <div class="app-status-line">
+          ${badgePillHtml}
+          ${versionHtml}
+        </div>
+        <p class="app-desc">${escapeHtml(app.description)}</p>
+        <div class="app-meta">
+          <span><i class="bi bi-memory"></i>${app.min_ram_gb}GB RAM</span>
+          ${app.requires_gpu ? `<span><i class="bi bi-gpu-card"></i>GPU</span>` : ""}
+          ${app.developer_mode ? `<span class="chip chip-dev" title="Running from the local git checkout at the repo root - install/update disabled"><i class="bi bi-code-slash"></i> DEV MODE</span>` : ""}
+        </div>
+        ${lockBannerHtml}
+        ${progressHtml}
+        <div class="app-main-row">
+          <button class="btn ${action.cls} main-action" data-action="${action.action}" data-app-id="${app.id}"
+            ${isLocked || isStarting
+              ? `disabled title='${isStarting ? "Application is starting up..." : "Please set up the Python Environment first to unlock"}'`
+              : action.action === 'none'
+                ? `disabled title='Clone ${escapeHtml(app.repo_name)} into the repo root to enable it in developer mode'`
+                : ""}>
+            ${action.action === 'starting' ? '<i class="bi bi-arrow-repeat spinner"></i> ' : action.action === 'launch' ? '<i class="bi bi-play-fill"></i> ' : action.action === 'stop' ? '<i class="bi bi-stop-fill"></i> ' : action.action === 'none' ? '<i class="bi bi-search"></i> ' : '<i class="bi bi-download"></i> '}${action.label}
+          </button>
+          ${openBrowserBtn}
+        </div>
+        <div class="app-tools">
+          ${updateBtnHtml}
+          <button class="btn btn-quiet btn-icon-only" data-action="folder" data-app-id="${app.id}" title="Open Application Directory" ${!app.installed || isLocked ? "disabled" : ""}><i class="bi bi-folder2-open"></i></button>
+          ${uninstallBtnHtml}
         </div>
       </div>`;
   }

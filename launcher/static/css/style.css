@@ -1201,61 +1201,43 @@ body {
   }
 }
 
-/* Application Card - Prominent Suite Tools */
+/* Application Card - minimal, centered like the About dialog */
 .app-card {
   background: #ffffff;
-  border: 1px solid #e7e2d9;
+  border: 1px solid var(--border-light);
   border-radius: 20px;
-  padding: 24px 22px;
+  padding: 26px 22px 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 18px;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 16px -2px rgba(28, 25, 23, 0.05), 0 1px 3px rgba(28, 25, 23, 0.03);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .app-card:hover {
-  transform: translateY(-3px);
   border-color: #d1c7b7;
-  box-shadow: 0 12px 28px -4px rgba(28, 25, 23, 0.09), 0 2px 8px rgba(28, 25, 23, 0.04);
+  box-shadow: 0 6px 18px -6px rgba(28, 25, 23, 0.10);
 }
 
 .app-card.running-card {
-  border-color: #0f766e;
-  background: linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%);
-  border-top: 3px solid #0f766e;
-  box-shadow: 0 8px 24px -2px rgba(28, 25, 23, 0.08), 0 2px 6px rgba(28, 25, 23, 0.04);
-}
-
-.app-card-top {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  border-color: var(--teal);
 }
 
 .app-logo-box {
-  width: 68px;
-  height: 68px;
-  min-width: 68px;
-  min-height: 68px;
-  border-radius: 16px;
-  background: #fbf9f5;
-  border: 1.5px solid #e2dcd2;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 12px -2px rgba(28, 25, 23, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: 8px;
-  box-shadow: 0 2px 6px rgba(28, 25, 23, 0.04);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.app-card:hover .app-logo-box {
-  border-color: #cbbfad;
-  transform: scale(1.02);
+  padding: 15px;
 }
 
 .app-logo-box img {
@@ -1265,21 +1247,8 @@ body {
 }
 
 .app-logo-box > i.bi {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   color: var(--primary);
-}
-
-.app-info-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.app-title-line {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 6px;
 }
 
 .app-name {
@@ -1342,16 +1311,43 @@ body {
 
 .app-desc {
   font-size: 0.86rem;
-  color: #57534e;
+  color: var(--text-dim);
   line-height: 1.5;
-  margin-top: 4px;
-  margin-bottom: 12px;
+  margin: 0;
 }
 
-.app-chips {
+.app-status-line {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-version {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.app-version .app-update-flag {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.app-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.app-meta i {
+  margin-right: 4px;
 }
 
 .chip {
@@ -1386,39 +1382,41 @@ body {
   font-weight: 700;
 }
 
-.app-card-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  border-top: 1px solid #f0eae1;
-  padding-top: 14px;
-}
-
-.app-actions-row {
+.app-main-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.app-actions-left {
-  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
-  align-items: center;
-  flex: 1;
+  margin-top: 6px;
 }
 
-.app-actions-left .main-action {
-  padding: 10px 18px;
+.app-main-row .main-action {
+  padding: 10px 26px;
   font-size: 0.88rem;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: 10px;
   letter-spacing: 0.01em;
 }
 
-.app-actions-right {
+.app-tools {
   display: flex;
-  gap: 6px;
+  justify-content: center;
+  gap: 4px;
+}
+
+.app-tools .btn-icon-only {
+  background: transparent;
+  border-color: transparent;
+}
+
+.app-tools .btn-icon-only:hover:not(:disabled) {
+  background: var(--bg-subtle);
+}
+
+.app-card .app-progress-box {
+  width: 100%;
+  text-align: left;
 }
 
 /* Download / Install Progress */
@@ -2923,6 +2921,13 @@ body {
   box-shadow: 0 4px 12px rgba(28, 25, 23, 0.08);
 }
 
+/* Third button: on its own row, centered under the two above */
+.about-btn-data {
+  grid-column: 1 / -1;
+  justify-self: center;
+  min-width: calc(50% - 6px);
+}
+
 .about-btn-web .external-icon {
   font-size: 0.7rem;
   opacity: 0.6;
@@ -3142,23 +3147,6 @@ body {
 /* ── Status chip: clean steady indicator for launcher-ready state ── */
 .status-dot-pulse {
   opacity: 1;
-}
-
-/* ── App cards: thin top-bar per tool (hierarchy via color, not shape) ── */
-.app-card {
-  border-top: 3px solid rgba(194, 65, 12, 0.18);
-}
-.app-card:hover {
-  border-top-color: var(--primary);
-}
-.app-card.running-card {
-  border-top: 3px solid var(--teal);
-}
-
-/* App logo box: warm-white background with faint terracotta ring on hover */
-.app-card:hover .app-logo-box {
-  background: rgba(255, 247, 237, 0.7);
-  border-color: rgba(194, 65, 12, 0.25);
 }
 
 /* ── System dashboard: tinted column headers and hw-stat rows ── */
