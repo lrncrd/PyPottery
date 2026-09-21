@@ -350,10 +350,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
   <ul class="collapse">
-  <li><a href="#version-1.1.0-31072026" id="toc-version-1.1.0-31072026" class="nav-link" data-scroll-target="#version-1.1.0-31072026">Version 1.1.0 (31/07/2026)</a></li>
+  <li><a href="#version-1.2.0-21092026" id="toc-version-1.2.0-21092026" class="nav-link" data-scroll-target="#version-1.2.0-21092026">Version 1.2.0 (21/09/2026)</a></li>
   </ul></li>
   <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
   <ul class="collapse">
+  <li><a href="#version-1.1.0-31072026" id="toc-version-1.1.0-31072026" class="nav-link" data-scroll-target="#version-1.1.0-31072026">Version 1.1.0 (31/07/2026)</a></li>
   <li><a href="#version-1.0.2-27122025" id="toc-version-1.0.2-27122025" class="nav-link" data-scroll-target="#version-1.0.2-27122025">Version 1.0.2 (27/12/2025)</a></li>
   <li><a href="#version-1.0.1-11122025" id="toc-version-1.0.1-11122025" class="nav-link" data-scroll-target="#version-1.0.1-11122025">Version 1.0.1 (11/12/2025)</a></li>
   <li><a href="#version-1.0.0-december-2025" id="toc-version-1.0.0-december-2025" class="nav-link" data-scroll-target="#version-1.0.0-december-2025">Version 1.0.0 (December 2025)</a></li>
@@ -386,6 +387,28 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-1.2.0-21092026" class="level3">
+<h3 class="anchored" data-anchor-id="version-1.2.0-21092026">Version 1.2.0 (21/09/2026)</h3>
+<p><strong>Your projects</strong></p>
+<ul>
+<li>New <strong>Backup</strong> button in the launcher header: export the projects of PyPotteryLens, PyPotteryScan and PyPotteryTrace to a single <code>.zip</code> file, and import them back on any installation. You choose which projects to save, and what to do when one already exists (keep both, replace it, or skip it)</li>
+<li><strong>Updating or reinstalling a module no longer deletes its projects.</strong> Before, an update replaced the whole module folder, projects included. Uninstalling a module or the suite still removes them, so the uninstall confirmation and the Windows uninstaller now say so and point to Backup</li>
+</ul>
+<p><strong>Interface</strong></p>
+<ul>
+<li>The module cards, the start and install dialogs and the changelog now use the new logos without the written name</li>
+<li>The changelog panel shows the release notes written in the documentation</li>
+<li>Fonts, icons and the Excel export library are served from the launcher itself, so it looks the same without an internet connection</li>
+<li>The downloaded AI models list shows the YOLO and classifier weights as used by PyPotteryLens</li>
+</ul>
+<p><strong>For testers</strong></p>
+<ul>
+<li><strong>Beta channel</strong>: set <code>PYPOTTERY_CHANNEL=beta</code> (or put a <code>channel.txt</code> containing <code>beta</code> next to the launcher) to install the modules from their <code>beta</code> branch instead of the latest release. The channel is read again at every install</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-1.1.0-31072026" class="level3">
 <h3 class="anchored" data-anchor-id="version-1.1.0-31072026">Version 1.1.0 (31/07/2026)</h3>
 <ul>
@@ -394,9 +417,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Live “Check Updates” now correctly refreshes installed version numbers when running from a local git checkout</li>
 </ul>
 </section>
-</section>
-<section id="version-history" class="level2">
-<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-1.0.2-27122025" class="level3">
 <h3 class="anchored" data-anchor-id="version-1.0.2-27122025">Version 1.0.2 (27/12/2025)</h3>
 <ul>

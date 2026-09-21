@@ -1611,7 +1611,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (els.btnAbout && els.aboutModal) {
     els.btnAbout.addEventListener("click", () => {
       if (els.aboutVersionBadge && els.launcherVersion) {
-        els.aboutVersionBadge.textContent = els.launcherVersion.textContent || "v1.1.0";
+        els.aboutVersionBadge.textContent = els.launcherVersion.textContent || "v1.2.0";
       }
       els.aboutModal.classList.remove("hidden");
     });

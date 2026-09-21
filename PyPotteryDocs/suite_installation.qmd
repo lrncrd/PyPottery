@@ -123,8 +123,8 @@ SmartScreen may show *"Windows protected your PC"*. Click **"More info"**, then 
 ::: {.callout-tip}
 #### Prefer a portable version?
 Two no-installer alternatives sit on the same [releases page](https://github.com/lrncrd/PyPottery/releases/latest):
-`PyPottery-Launcher-Windows-v1.1.0.zip` (extract, then run `PyPottery.bat`) and
-`PyPottery-Launcher-Windows-EXE-v1.1.0.zip` (extract, then run `PyPottery.exe` directly). Both skip the installer
+`PyPottery-Launcher-Windows-v1.2.0.zip` (extract, then run `PyPottery.bat`) and
+`PyPottery-Launcher-Windows-EXE-v1.2.0.zip` (extract, then run `PyPottery.exe` directly). Both skip the installer
 entirely — useful on a locked-down machine. Unlike the installer, they don't create shortcuts for you; right-click
 the executable and choose **Send to → Desktop (create shortcut)** if you want one.
 :::
@@ -438,7 +438,7 @@ PyPottery keeps everything in a single folder and installs no services, drivers,
 
 ::: {.callout-warning}
 #### Save your projects first
-PyPotteryLens, PyPotteryScan and PyPotteryTrace store each project under `apps/<module>/projects/`, next to the module's own files, and PyPotteryInk and PyPotteryLayout keep their exports inside their module folder too. **Uninstalling the suite, or a single module, deletes them.** Export them first with the **Backup** button in the launcher's header (it saves the projects of Lens, Scan and Trace into one `.zip`), or copy the folders by hand.
+PyPotteryLens, PyPotteryScan and PyPotteryTrace store each project under `apps/<module>/projects/`, next to the module's own files, and PyPotteryInk and PyPotteryLayout keep their exports inside their module folder too. **Uninstalling the suite, or a single module, deletes them** (updating a module keeps them). Export them first with the **Backup** button in the launcher's header (it saves the projects of Lens, Scan and Trace into one `.zip`), or copy the folders by hand.
 :::
 
 ::: {.callout-note collapse="true"}

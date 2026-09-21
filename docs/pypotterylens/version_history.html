@@ -350,10 +350,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
   <ul class="collapse">
-  <li><a href="#version-0.3.1-july-2026" id="toc-version-0.3.1-july-2026" class="nav-link" data-scroll-target="#version-0.3.1-july-2026">Version 0.3.1 (July 2026)</a></li>
+  <li><a href="#version-0.3.2-september-2026" id="toc-version-0.3.2-september-2026" class="nav-link" data-scroll-target="#version-0.3.2-september-2026">Version 0.3.2 (September 2026)</a></li>
   </ul></li>
   <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
   <ul class="collapse">
+  <li><a href="#version-0.3.1-july-2026" id="toc-version-0.3.1-july-2026" class="nav-link" data-scroll-target="#version-0.3.1-july-2026">Version 0.3.1 (July 2026)</a></li>
   <li><a href="#version-0.3.0" id="toc-version-0.3.0" class="nav-link" data-scroll-target="#version-0.3.0">Version 0.3.0</a></li>
   <li><a href="#version-0.2.1-december-2025" id="toc-version-0.2.1-december-2025" class="nav-link" data-scroll-target="#version-0.2.1-december-2025">Version 0.2.1 (December 2025)</a></li>
   <li><a href="#version-0.2.0-december-2025" id="toc-version-0.2.0-december-2025" class="nav-link" data-scroll-target="#version-0.2.0-december-2025">Version 0.2.0 (December 2025)</a></li>
@@ -388,6 +389,33 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-0.3.2-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.3.2-september-2026">Version 0.3.2 (September 2026)</h3>
+<p><strong>Annotation tab</strong></p>
+<ul>
+<li>New <strong>Select</strong> tool (<code>V</code>) to select and move whole vessels and single vertices</li>
+<li><code>Ctrl+Z</code> now undoes the polygon edits</li>
+<li>Each vessel shows again the scale zone it belongs to (Z1, Z2, …) on the canvas and in the lists</li>
+</ul>
+<p><strong>Export</strong></p>
+<ul>
+<li>Cards are numbered in the natural order of the plates (page 2 before page 10) instead of alphabetical order</li>
+<li><code>merged_annotations.csv</code> keeps the type, position and rotation of each vessel (they were lost when merging with the classification file)</li>
+</ul>
+<p><strong>Models</strong></p>
+<ul>
+<li>When PyPotteryLens is started from the launcher, the YOLO and classifier weights are stored in the suite’s shared model cache and appear in the launcher’s <em>Downloaded AI Models</em> list. Weights found in the old folder are moved there once. Started on its own, nothing changes</li>
+</ul>
+<p><strong>Interface and reliability</strong></p>
+<ul>
+<li>New header and About window, in the style of the other modules, with a hardware chip and a <em>Copy citation</em> button</li>
+<li>Fonts and icons are served from the app, so the interface looks the same without an internet connection</li>
+<li>Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-0.3.1-july-2026" class="level3">
 <h3 class="anchored" data-anchor-id="version-0.3.1-july-2026">Version 0.3.1 (July 2026)</h3>
 <p><strong>Key Features:</strong></p>
@@ -396,9 +424,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Fixed local model loading on recent <code>transformers</code> versions</li>
 </ul>
 </section>
-</section>
-<section id="version-history" class="level2">
-<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-0.3.0" class="level3">
 <h3 class="anchored" data-anchor-id="version-0.3.0">Version 0.3.0</h3>
 <p><strong>Annotation tab</strong></p>

@@ -6,14 +6,32 @@ format: html
 
 ## Latest Release
 
+### Version 1.2.0 (21/09/2026)
+
+**Your projects**
+
+- New **Backup** button in the launcher header: export the projects of PyPotteryLens, PyPotteryScan and PyPotteryTrace to a single `.zip` file, and import them back on any installation. You choose which projects to save, and what to do when one already exists (keep both, replace it, or skip it)
+- **Updating or reinstalling a module no longer deletes its projects.** Before, an update replaced the whole module folder, projects included. Uninstalling a module or the suite still removes them, so the uninstall confirmation and the Windows uninstaller now say so and point to Backup
+
+**Interface**
+
+- The module cards, the start and install dialogs and the changelog now use the new logos without the written name
+- The changelog panel shows the release notes written in the documentation
+- Fonts, icons and the Excel export library are served from the launcher itself, so it looks the same without an internet connection
+- The downloaded AI models list shows the YOLO and classifier weights as used by PyPotteryLens
+
+**For testers**
+
+- **Beta channel**: set `PYPOTTERY_CHANNEL=beta` (or put a `channel.txt` containing `beta` next to the launcher) to install the modules from their `beta` branch instead of the latest release. The channel is read again at every install
+
+
+## Version History
+
 ### Version 1.1.0 (31/07/2026)
 
 - Added **Developer Mode**: run sub-apps directly from their local git checkout instead of a downloaded copy, for contributors working on the source
 - The launcher now shuts itself down (and stops any running app) automatically when its browser tab is closed
 - Live "Check Updates" now correctly refreshes installed version numbers when running from a local git checkout
-
-
-## Version History
 
 ### Version 1.0.2 (27/12/2025)
 

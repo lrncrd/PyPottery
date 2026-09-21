@@ -246,3 +246,5 @@ MACOS_LINUX_VERIFICATION.md
 NATIVE_WINDOW_ROADMAP.md
 PRODUCT.md
 PUBLICATION.md
+# Local design-review tooling output
+.impeccable/

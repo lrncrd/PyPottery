@@ -6,14 +6,37 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.2 (September 2026)
+
+**Annotation tab**
+
+-   New **Select** tool (`V`) to select and move whole vessels and single vertices
+-   `Ctrl+Z` now undoes the polygon edits
+-   Each vessel shows again the scale zone it belongs to (Z1, Z2, ...) on the canvas and in the lists
+
+**Export**
+
+-   Cards are numbered in the natural order of the plates (page 2 before page 10) instead of alphabetical order
+-   `merged_annotations.csv` keeps the type, position and rotation of each vessel (they were lost when merging with the classification file)
+
+**Models**
+
+-   When PyPotteryLens is started from the launcher, the YOLO and classifier weights are stored in the suite's shared model cache and appear in the launcher's *Downloaded AI Models* list. Weights found in the old folder are moved there once. Started on its own, nothing changes
+
+**Interface and reliability**
+
+-   New header and About window, in the style of the other modules, with a hardware chip and a *Copy citation* button
+-   Fonts and icons are served from the app, so the interface looks the same without an internet connection
+-   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
+
+## Version History
+
 ### Version 0.3.1 (July 2026)
 
 **Key Features:**
 
 -   Hardware Eligibility Guardrail: the local AI extraction model now checks your GPU/CPU/RAM before downloading, and blocks the download with a clear explanation on underpowered hardware
 -   Fixed local model loading on recent `transformers` versions
-
-## Version History
 
 ### Version 0.3.0
 
