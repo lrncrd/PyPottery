@@ -64,6 +64,10 @@
         <span class="btn-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></span>
         <span>Changelog</span>
       </button>
+      <button id="btn-backup" class="btn btn-outline btn-icon-text" title="Export or import your projects (backup)">
+        <span class="btn-icon"><i class="bi bi-archive" aria-hidden="true"></i></span>
+        <span>Backup</span>
+      </button>
       <button id="btn-check-updates" class="btn btn-outline btn-icon-text" title="Check for Application &amp; Launcher Updates">
         <span class="btn-icon"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></span>
         <span>Check Updates</span>
@@ -436,6 +440,60 @@
         <div class="spinner"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></div>
         <p>Loading latest release notes from GitHub...</p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project Backup (export / import) Modal -->
+<div id="backup-modal" class="installer-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="backup-modal-title">
+  <div class="changelog-modal-card">
+    <div class="changelog-modal-header">
+      <div class="changelog-header-info">
+        <div class="changelog-header-icon">
+          <i class="bi bi-archive" aria-hidden="true"></i>
+        </div>
+        <div class="changelog-header-titles">
+          <h2 class="changelog-modal-title" id="backup-modal-title">Backup Projects</h2>
+          <p class="changelog-modal-subtitle">Keep your work safe before updating or reinstalling</p>
+        </div>
+      </div>
+      <button class="changelog-close-btn" id="btn-backup-close" title="Close" aria-label="Close backup dialog"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="backup-tabs" role="tablist" aria-label="Backup actions">
+      <button class="backup-tab active" id="tab-backup-export" role="tab" aria-selected="true" aria-controls="backup-export-pane"><i class="bi bi-box-arrow-up" aria-hidden="true"></i> Export</button>
+      <button class="backup-tab" id="tab-backup-import" role="tab" aria-selected="false" aria-controls="backup-import-pane"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> Import</button>
+    </div>
+
+    <div class="changelog-modal-body" id="backup-modal-body">
+      <section id="backup-export-pane" role="tabpanel" aria-labelledby="tab-backup-export">
+        <p class="backup-note">Saves the projects of Lens, Scan and Trace into a single <strong>.zip</strong> file you can keep anywhere. Uninstalling an app deletes its projects, so export first if you want to keep them.</p>
+        <div id="backup-export-list" class="backup-list" aria-live="polite"></div>
+        <div class="backup-footer">
+          <label class="backup-check-all"><input type="checkbox" id="backup-export-all" checked> Select all</label>
+          <span class="backup-summary" id="backup-export-summary"></span>
+          <button id="btn-backup-export" class="btn btn-primary btn-sm"><i class="bi bi-download" aria-hidden="true"></i> Export selected</button>
+        </div>
+      </section>
+
+      <section id="backup-import-pane" class="hidden" role="tabpanel" aria-labelledby="tab-backup-import">
+        <div id="backup-import-pick">
+          <p class="backup-note">Restore projects from a backup made with this launcher. Existing projects are never replaced unless you choose so. The app must be installed and stopped.</p>
+          <label class="backup-dropzone" id="backup-dropzone">
+            <input type="file" id="backup-file-input" accept=".zip,application/zip" hidden>
+            <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+            <span><strong>Choose a backup file</strong> or drop it here</span>
+          </label>
+        </div>
+        <div id="backup-import-review" class="hidden">
+          <div id="backup-import-list" class="backup-list" aria-live="polite"></div>
+          <div class="backup-footer">
+            <button id="btn-backup-import-reset" class="btn btn-outline btn-sm"><i class="bi bi-arrow-left" aria-hidden="true"></i> Choose another file</button>
+            <span class="backup-summary" id="backup-import-summary"></span>
+            <button id="btn-backup-import" class="btn btn-primary btn-sm"><i class="bi bi-upload" aria-hidden="true"></i> Import selected</button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>

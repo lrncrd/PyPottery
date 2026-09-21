@@ -12,19 +12,21 @@ import os
 import queue
 import shutil
 import sys
+import tempfile
 import threading
 import time
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from flask import Flask, Response, abort, jsonify, request, send_from_directory
+from flask import Flask, Response, abort, jsonify, request, send_file, send_from_directory
 
 from .app_manager import AppInfo, AppManager, DownloadProgress
 from .environment_manager import EnvironmentManager, InstallProgress
 from .error_messages import classify
 from .hardware_detector import HardwareInfo, detect_hardware
 from .logging_setup import app_log_dir, get_log_dir, guarded
+from . import project_backup
 from .process_utils import open_path, resource_path
 from .update_checker import UpdateChecker
 from .updater import LauncherProgress, LauncherUpdater
@@ -37,7 +39,7 @@ try:
 except ImportError:
     DEVELOPER_MODE = False
 
-LAUNCHER_VERSION = "1.1.0"
+LAUNCHER_VERSION = "1.2.0"
 
 # How long to wait after the last browser tab disconnects from /api/events
 # before treating the launcher as closed. A page reload drops the old
@@ -145,6 +147,8 @@ class LauncherState:
         self.app_manager: Optional[AppManager] = None
         self.update_checker = UpdateChecker()
         self.updater = LauncherUpdater(self.base_path)
+        # Uploaded backup zips waiting for the user to confirm an import.
+        self.pending_imports = project_backup.PendingImports()
 
         # Set by gui.py once the werkzeug server is created, so /api/shutdown
         # can stop it from a background thread (never from the serving thread).
@@ -792,6 +796,152 @@ def create_app(state: LauncherState) -> Flask:
             return jsonify(success=False, error="Not initialized"), 409
         ok = state.app_manager.open_app_folder(app_id)
         return jsonify(success=ok)
+
+    # ---- Project backup (export / import) ----------------------------------
+
+    def _backup_app_paths(installed_only: bool = True) -> dict:
+        manager = state.app_manager
+        return {
+            app_id: manager._app_path(app_id)
+            for app_id, info in manager.apps.items()
+            if info.installed or not installed_only
+        }
+
+    def _app_is_busy(app_id: str) -> Optional[str]:
+        """Why projects of this app can't be written to right now, if they can't."""
+        manager = state.app_manager
+        if manager.get_app_status(app_id).is_running:
+            return f"{manager.apps[app_id].name} is running - stop it first."
+        if state.jobs.get(f"app:{app_id}"):
+            return f"{manager.apps[app_id].name} is being installed or updated - try again in a moment."
+        return None
+
+    @app.route("/api/projects")
+    def list_backup_projects():
+        if not state.app_manager:
+            return jsonify(success=False, error="Not initialized"), 409
+        projects = project_backup.list_projects(_backup_app_paths())
+        for project in projects:
+            project["app_name"] = state.app_manager.apps[project["app_id"]].name
+        return jsonify(success=True, projects=projects)
+
+    @app.route("/api/projects/export", methods=["POST"])
+    def export_backup():
+        if not state.app_manager:
+            return jsonify(success=False, error="Not initialized"), 409
+        body = request.get_json(silent=True) or {}
+        selection = body.get("selection")
+        if not isinstance(selection, dict) or not any(selection.values()):
+            return jsonify(success=False, error="Select at least one project to export."), 400
+        selection = {a: list(ids) for a, ids in selection.items() if isinstance(ids, list) and ids}
+
+        manager = state.app_manager
+        handle, tmp_name = tempfile.mkstemp(prefix="pypottery_backup_", suffix=".zip")
+        os.close(handle)
+        tmp_path = Path(tmp_name)
+        try:
+            project_backup.export_projects(
+                _backup_app_paths(),
+                selection,
+                tmp_path,
+                launcher_version=state.launcher_version,
+                app_versions={a: (i.installed_version or "") for a, i in manager.apps.items()},
+            )
+        except project_backup.BackupError as exc:
+            tmp_path.unlink(missing_ok=True)
+            return jsonify(success=False, error=str(exc)), 400
+        except Exception:
+            tmp_path.unlink(missing_ok=True)
+            raise
+
+        count = sum(len(ids) for ids in selection.values())
+        state.log(f"Exported {count} project{'s' if count != 1 else ''} to a backup file", "success")
+        response = send_file(
+            tmp_path,
+            mimetype="application/zip",
+            as_attachment=True,
+            download_name=f"PyPottery-backup-{datetime.now().strftime('%Y%m%d-%H%M')}.zip",
+        )
+        response.call_on_close(lambda: tmp_path.unlink(missing_ok=True))
+        return response
+
+    @app.route("/api/projects/import/inspect", methods=["POST"])
+    def inspect_backup():
+        if not state.app_manager:
+            return jsonify(success=False, error="Not initialized"), 409
+        upload = request.files.get("file")
+        if upload is None or not upload.filename:
+            return jsonify(success=False, error="Choose a backup file first."), 400
+
+        token, path = state.pending_imports.new_path()
+        try:
+            upload.save(path)
+            info = project_backup.inspect_backup(path, _backup_app_paths(installed_only=False))
+        except project_backup.BackupError as exc:
+            state.pending_imports.discard(token)
+            return jsonify(success=False, error=str(exc)), 400
+        except Exception:
+            state.pending_imports.discard(token)
+            raise
+
+        installed = _backup_app_paths()
+        for project in info["projects"]:
+            project["app_name"] = state.app_manager.apps[project["app_id"]].name
+            project["installed"] = project["app_id"] in installed
+            project["busy"] = _app_is_busy(project["app_id"]) if project["installed"] else None
+        return jsonify(success=True, token=token, **info)
+
+    @app.route("/api/projects/import/apply", methods=["POST"])
+    def apply_backup():
+        if not state.app_manager:
+            return jsonify(success=False, error="Not initialized"), 409
+        body = request.get_json(silent=True) or {}
+        token = body.get("token") or ""
+        path = state.pending_imports.get(token)
+        if path is None:
+            return jsonify(success=False, error="The uploaded backup expired - choose the file again."), 410
+        choices = body.get("choices")
+        if not isinstance(choices, list) or not choices:
+            return jsonify(success=False, error="Select at least one project to import."), 400
+
+        installed = _backup_app_paths()
+        usable, refused = [], []
+        for choice in choices:
+            if not isinstance(choice, dict):
+                continue
+            app_id = choice.get("app_id")
+            if app_id not in state.app_manager.apps:
+                problem = "Unknown application."
+            elif app_id not in installed:
+                problem = f"{state.app_manager.apps[app_id].name} is not installed - install it first."
+            else:
+                problem = _app_is_busy(app_id)
+            if problem:
+                refused.append({"app_id": app_id, "project_id": choice.get("project_id"),
+                                "status": "error", "message": problem})
+            else:
+                usable.append(choice)
+
+        try:
+            results = (
+                project_backup.apply_backup(path, _backup_app_paths(installed_only=False), usable)
+                if usable else []
+            )
+        except project_backup.BackupError as exc:
+            return jsonify(success=False, error=str(exc)), 400
+        results += refused
+
+        state.pending_imports.discard(token)
+        done = sum(1 for r in results if r["status"] in ("imported", "renamed"))
+        state.log(f"Imported {done} project{'s' if done != 1 else ''} from a backup file",
+                  "success" if done else "warning")
+        return jsonify(success=True, results=results)
+
+    @app.route("/api/projects/import/cancel", methods=["POST"])
+    def cancel_backup_import():
+        body = request.get_json(silent=True) or {}
+        state.pending_imports.discard(body.get("token") or "")
+        return jsonify(success=True)
 
     @app.route("/api/env/status")
     def env_status():

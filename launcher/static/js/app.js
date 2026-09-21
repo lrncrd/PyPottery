@@ -85,6 +85,25 @@ document.addEventListener("DOMContentLoaded", () => {
     btnModelsToggle: document.getElementById("btn-models-toggle"),
     btnCheckUpdates: document.getElementById("btn-check-updates"),
     btnQuit: document.getElementById("btn-quit"),
+    btnBackup: document.getElementById("btn-backup"),
+    backupModal: document.getElementById("backup-modal"),
+    btnBackupClose: document.getElementById("btn-backup-close"),
+    tabBackupExport: document.getElementById("tab-backup-export"),
+    tabBackupImport: document.getElementById("tab-backup-import"),
+    backupExportPane: document.getElementById("backup-export-pane"),
+    backupImportPane: document.getElementById("backup-import-pane"),
+    backupExportList: document.getElementById("backup-export-list"),
+    backupExportAll: document.getElementById("backup-export-all"),
+    backupExportSummary: document.getElementById("backup-export-summary"),
+    btnBackupExport: document.getElementById("btn-backup-export"),
+    backupImportPick: document.getElementById("backup-import-pick"),
+    backupImportReview: document.getElementById("backup-import-review"),
+    backupImportList: document.getElementById("backup-import-list"),
+    backupImportSummary: document.getElementById("backup-import-summary"),
+    backupDropzone: document.getElementById("backup-dropzone"),
+    backupFileInput: document.getElementById("backup-file-input"),
+    btnBackupImport: document.getElementById("btn-backup-import"),
+    btnBackupImportReset: document.getElementById("btn-backup-import-reset"),
     btnChangelog: document.getElementById("btn-changelog"),
     changelogModal: document.getElementById("changelog-modal"),
     btnChangelogClose: document.getElementById("btn-changelog-close"),
@@ -1296,6 +1315,298 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---- Project Backup (export / import) ----
+
+  const backup = { projects: [], token: null, importing: false };
+
+  function backupSetTab(tab) {
+    const isExport = tab === "export";
+    els.tabBackupExport.classList.toggle("active", isExport);
+    els.tabBackupExport.setAttribute("aria-selected", String(isExport));
+    els.tabBackupImport.classList.toggle("active", !isExport);
+    els.tabBackupImport.setAttribute("aria-selected", String(!isExport));
+    els.backupExportPane.classList.toggle("hidden", !isExport);
+    els.backupImportPane.classList.toggle("hidden", isExport);
+    if (isExport) loadBackupProjects();
+  }
+
+  async function openBackupModal() {
+    els.backupModal.classList.remove("hidden");
+    backupResetImport();
+    backupSetTab("export");
+  }
+
+  function closeBackupModal() {
+    els.backupModal.classList.add("hidden");
+    backupResetImport();
+  }
+
+  async function loadBackupProjects() {
+    els.backupExportList.innerHTML = `<p class="backup-empty">Looking for projects...</p>`;
+    const res = await api("/api/projects", { quiet: true });
+    backup.projects = res.ok ? res.data.projects : [];
+    if (!res.ok) {
+      els.backupExportList.innerHTML = `<p class="backup-empty">${escapeHtml(res.error || "Could not list projects.")}</p>`;
+      updateBackupExportSummary();
+      return;
+    }
+    renderBackupExport();
+  }
+
+  function renderBackupExport() {
+    if (!backup.projects.length) {
+      els.backupExportList.innerHTML = `<p class="backup-empty">No saved projects yet. Projects created in Lens, Scan or Trace will show up here.</p>`;
+      els.backupExportAll.checked = false;
+      updateBackupExportSummary();
+      return;
+    }
+    let html = "";
+    let currentApp = null;
+    backup.projects
+      .slice()
+      .sort((a, b) => a.app_name.localeCompare(b.app_name))
+      .forEach((p) => {
+        if (p.app_id !== currentApp) {
+          currentApp = p.app_id;
+          html += `<div class="backup-group-title">${escapeHtml(p.app_name)}</div>`;
+        }
+        const when = p.last_modified ? new Date(p.last_modified).toLocaleString() : "";
+        html += `
+          <label class="backup-row">
+            <input type="checkbox" data-app-id="${escapeHtml(p.app_id)}" data-project-id="${escapeHtml(p.project_id)}" checked>
+            <span class="backup-row-main">
+              <div class="backup-row-name">${escapeHtml(p.name)}</div>
+              <div class="backup-row-meta">${formatBytes(p.size)}${when ? ` • modified ${escapeHtml(when)}` : ""}</div>
+            </span>
+          </label>`;
+      });
+    els.backupExportList.innerHTML = html;
+    els.backupExportAll.checked = true;
+    updateBackupExportSummary();
+  }
+
+  function backupExportSelection() {
+    const selection = {};
+    els.backupExportList.querySelectorAll('input[type="checkbox"]:checked').forEach((box) => {
+      (selection[box.dataset.appId] = selection[box.dataset.appId] || []).push(box.dataset.projectId);
+    });
+    return selection;
+  }
+
+  function updateBackupExportSummary() {
+    const boxes = els.backupExportList.querySelectorAll('input[type="checkbox"]');
+    const chosen = els.backupExportList.querySelectorAll('input[type="checkbox"]:checked');
+    let bytes = 0;
+    chosen.forEach((box) => {
+      const p = backup.projects.find((x) => x.app_id === box.dataset.appId && x.project_id === box.dataset.projectId);
+      if (p) bytes += p.size;
+    });
+    els.backupExportSummary.textContent = chosen.length
+      ? `${chosen.length} project${chosen.length === 1 ? "" : "s"} • ${formatBytes(bytes)}`
+      : "";
+    els.btnBackupExport.disabled = chosen.length === 0;
+    els.backupExportAll.disabled = boxes.length === 0;
+    els.backupExportAll.checked = boxes.length > 0 && chosen.length === boxes.length;
+  }
+
+  async function runBackupExport() {
+    const selection = backupExportSelection();
+    if (!Object.keys(selection).length) return;
+    els.btnBackupExport.disabled = true;
+    const label = els.btnBackupExport.innerHTML;
+    els.btnBackupExport.innerHTML = `<i class="bi bi-hourglass-split" aria-hidden="true"></i> Preparing...`;
+    try {
+      const response = await fetch("/api/projects/export", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selection }),
+      });
+      if (!response.ok) {
+        let message = `Export failed (${response.status})`;
+        try { message = (await response.json()).error || message; } catch (e) { /* not JSON */ }
+        showToast(message, "error", 6000);
+        return;
+      }
+      const blob = await response.blob();
+      const disposition = response.headers.get("Content-Disposition") || "";
+      const match = /filename="?([^";]+)"?/i.exec(disposition);
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = match ? match[1] : "PyPottery-backup.zip";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 10000);
+      showToast(`Backup saved (${formatBytes(blob.size)}) - check your Downloads folder`, "success", 6000);
+    } catch (err) {
+      showToast("Cannot reach the launcher - is it still running?", "error", 6000);
+    } finally {
+      els.btnBackupExport.innerHTML = label;
+      updateBackupExportSummary();
+    }
+  }
+
+  // -- Import --
+
+  function backupResetImport() {
+    if (backup.token) {
+      api("/api/projects/import/cancel", { method: "POST", body: { token: backup.token }, quiet: true });
+      backup.token = null;
+    }
+    backup.importing = false;
+    els.backupImportPick.classList.remove("hidden");
+    els.backupImportReview.classList.add("hidden");
+    els.backupImportList.innerHTML = "";
+    els.backupDropzone.classList.remove("is-busy", "is-dragover");
+    els.backupFileInput.value = "";
+    els.btnBackupImport.classList.remove("hidden");
+  }
+
+  async function inspectBackupFile(file) {
+    if (!file) return;
+    els.backupDropzone.classList.add("is-busy");
+    const form = new FormData();
+    form.append("file", file);
+    let data = null;
+    try {
+      const response = await fetch("/api/projects/import/inspect", { method: "POST", body: form });
+      try { data = await response.json(); } catch (e) { data = null; }
+      if (!response.ok || !data || data.success === false) {
+        showToast((data && data.error) || `Could not read the backup (${response.status})`, "error", 6000);
+        return;
+      }
+    } catch (err) {
+      showToast("Cannot reach the launcher - is it still running?", "error", 6000);
+      return;
+    } finally {
+      els.backupDropzone.classList.remove("is-busy");
+      els.backupFileInput.value = "";
+    }
+    backup.token = data.token;
+    renderBackupImport(data.projects);
+  }
+
+  function renderBackupImport(projects) {
+    let html = "";
+    projects.forEach((p, i) => {
+      const blocked = !p.installed ? `${p.app_name} is not installed` : p.busy;
+      const action = p.exists && !blocked
+        ? `<select data-role="action" aria-label="What to do with ${escapeHtml(p.name)}">
+             <option value="rename">Keep both</option>
+             <option value="overwrite">Replace existing</option>
+             <option value="skip">Skip</option>
+           </select>`
+        : "";
+      const note = blocked
+        ? `<span class="backup-row-note">${escapeHtml(blocked)}</span>`
+        : p.exists ? `<span class="backup-row-note">already exists</span>` : "";
+      html += `
+        <label class="backup-row ${blocked ? "is-disabled" : ""}" data-index="${i}">
+          <input type="checkbox" data-app-id="${escapeHtml(p.app_id)}" data-project-id="${escapeHtml(p.project_id)}" ${blocked ? "disabled" : "checked"}>
+          <span class="backup-row-main">
+            <div class="backup-row-name">${escapeHtml(p.name)}</div>
+            <div class="backup-row-meta">${escapeHtml(p.app_name)} • ${formatBytes(p.size)}${note ? ` • ${note}` : ""}</div>
+          </span>
+          ${action}
+        </label>`;
+    });
+    els.backupImportList.innerHTML = html;
+    els.backupImportPick.classList.add("hidden");
+    els.backupImportReview.classList.remove("hidden");
+    els.btnBackupImport.classList.remove("hidden");
+    updateBackupImportSummary();
+  }
+
+  function updateBackupImportSummary() {
+    const chosen = els.backupImportList.querySelectorAll('input[type="checkbox"]:checked');
+    els.backupImportSummary.textContent = chosen.length
+      ? `${chosen.length} project${chosen.length === 1 ? "" : "s"} selected`
+      : "";
+    els.btnBackupImport.disabled = chosen.length === 0 || backup.importing;
+  }
+
+  async function runBackupImport() {
+    const choices = [];
+    els.backupImportList.querySelectorAll(".backup-row").forEach((row) => {
+      const box = row.querySelector('input[type="checkbox"]');
+      if (!box.checked || box.disabled) return;
+      const select = row.querySelector('select[data-role="action"]');
+      choices.push({
+        app_id: box.dataset.appId,
+        project_id: box.dataset.projectId,
+        action: select ? select.value : "rename",
+      });
+    });
+    if (!choices.length) return;
+
+    backup.importing = true;
+    els.btnBackupImport.disabled = true;
+    const res = await api("/api/projects/import/apply", { method: "POST", body: { token: backup.token, choices } });
+    backup.importing = false;
+    if (!res.ok) {
+      // An expired upload can't be retried; anything else can.
+      if (res.status === 410) backupResetImport();
+      updateBackupImportSummary();
+      return;
+    }
+    backup.token = null; // the server discarded it
+    showBackupImportResults(res.data.results);
+  }
+
+  function showBackupImportResults(results) {
+    const labels = { imported: "Imported", renamed: "Imported", skipped: "Skipped", error: "Failed" };
+    const classes = { imported: "is-ok", renamed: "is-ok", skipped: "", error: "is-error" };
+    els.backupImportList.innerHTML = results.map((r) => `
+      <div class="backup-row is-disabled">
+        <span class="backup-row-main">
+          <div class="backup-row-name">${escapeHtml(r.project_id || "")}</div>
+          <div class="backup-row-meta"><span class="backup-row-note ${classes[r.status] || ""}">${labels[r.status] || r.status}</span>${r.message ? ` • ${escapeHtml(r.message)}` : ""}</div>
+        </span>
+      </div>`).join("");
+    els.backupImportSummary.textContent = "";
+    els.btnBackupImport.classList.add("hidden");
+    const done = results.filter((r) => r.status === "imported" || r.status === "renamed").length;
+    if (done) showToast(`Imported ${done} project${done === 1 ? "" : "s"}`, "success", 5000);
+  }
+
+  if (els.btnBackup && els.backupModal) {
+    els.btnBackup.addEventListener("click", openBackupModal);
+    els.btnBackupClose.addEventListener("click", closeBackupModal);
+    els.backupModal.addEventListener("click", (e) => {
+      if (e.target === els.backupModal) closeBackupModal();
+    });
+    els.tabBackupExport.addEventListener("click", () => backupSetTab("export"));
+    els.tabBackupImport.addEventListener("click", () => backupSetTab("import"));
+
+    els.backupExportList.addEventListener("change", updateBackupExportSummary);
+    els.backupExportAll.addEventListener("change", () => {
+      els.backupExportList.querySelectorAll('input[type="checkbox"]').forEach((box) => {
+        box.checked = els.backupExportAll.checked;
+      });
+      updateBackupExportSummary();
+    });
+    els.btnBackupExport.addEventListener("click", runBackupExport);
+
+    els.backupFileInput.addEventListener("change", () => inspectBackupFile(els.backupFileInput.files[0]));
+    ["dragenter", "dragover"].forEach((type) =>
+      els.backupDropzone.addEventListener(type, (e) => {
+        e.preventDefault();
+        els.backupDropzone.classList.add("is-dragover");
+      })
+    );
+    ["dragleave", "drop"].forEach((type) =>
+      els.backupDropzone.addEventListener(type, (e) => {
+        e.preventDefault();
+        els.backupDropzone.classList.remove("is-dragover");
+      })
+    );
+    els.backupDropzone.addEventListener("drop", (e) => inspectBackupFile(e.dataTransfer.files[0]));
+
+    els.backupImportList.addEventListener("change", updateBackupImportSummary);
+    els.btnBackupImport.addEventListener("click", runBackupImport);
+    els.btnBackupImportReset.addEventListener("click", backupResetImport);
+  }
+
   // ---- About / Info Modal Controller ----
   if (els.btnAbout && els.aboutModal) {
     els.btnAbout.addEventListener("click", () => {
@@ -1583,7 +1894,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!app || !app.installed) return;
       showConfirmModal({
         title: `Uninstall ${app.name}?`,
-        message: `This removes ${app.name} and its files from disk. Any AI models it downloaded to the shared model cache are kept. This cannot be undone.`,
+        message: `This removes ${app.name} and its files from disk, including any projects saved in it (use Backup to export them first). Any AI models it downloaded to the shared model cache are kept. This cannot be undone.`,
         confirmText: "Uninstall",
         cancelText: "Cancel",
         danger: true,
@@ -2107,6 +2418,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (els.changelogModal && !els.changelogModal.classList.contains("hidden")) {
         els.changelogModal.classList.add("hidden");
+        return;
+      }
+      if (els.backupModal && !els.backupModal.classList.contains("hidden")) {
+        closeBackupModal();
         return;
       }
       if (els.gpuVariantModal && !els.gpuVariantModal.classList.contains("hidden")) {

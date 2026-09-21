@@ -24,6 +24,7 @@ from urllib.error import URLError
 
 from .error_messages import classify
 from .logging_setup import app_log_dir, guarded
+from .project_backup import preserve_projects
 from .process_utils import (
     find_available_port_for_app,
     find_port_owner,
@@ -537,6 +538,16 @@ class AppManager:
             raise
 
         if backup is not None:
+            # The downloaded release ships no projects, so anything under the
+            # old copy's projects/ is the user's own work - carry it over
+            # before the old copy is deleted.
+            try:
+                preserve_projects(backup, app_path)
+            except OSError:
+                # Keep the old copy rather than delete the user's work; the
+                # next start retries the carry-over (_cleanup_stale_downloads).
+                logger.exception("Could not carry projects over for %s - keeping %s", app_id, backup)
+                return
             shutil.rmtree(backup, ignore_errors=True)
 
     @staticmethod
@@ -585,6 +596,14 @@ class AppManager:
             if staging_root.exists():
                 shutil.rmtree(staging_root, ignore_errors=True)
             for leftover in self.apps_path.glob("*.old-*"):
+                # An interrupted swap can leave projects behind in the old copy.
+                app_dir = self.apps_path / leftover.name.split(".old-")[0]
+                if app_dir.is_dir():
+                    try:
+                        preserve_projects(leftover, app_dir)
+                    except OSError:
+                        logger.exception("Could not recover projects from %s - leaving it in place", leftover)
+                        continue
                 shutil.rmtree(leftover, ignore_errors=True)
             for leftover in self.base_path.glob("temp_*.zip"):
                 leftover.unlink(missing_ok=True)
