@@ -1560,6 +1560,78 @@
     }
 
     /* ==========================================================================
+       Video Showcase: click-to-play facade over a real YouTube embed
+       ========================================================================== */
+    .video-showcase-frame {
+      max-width: 860px;
+      margin: 0 auto;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-elevated);
+      border: 1px solid var(--border-light);
+    }
+
+    .video-showcase-poster {
+      display: block;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      padding: 0;
+      border: none;
+      background: var(--text-main);
+      cursor: pointer;
+    }
+
+    .video-showcase-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.92;
+      transition: opacity 0.2s ease;
+    }
+
+    .video-showcase-poster:hover img,
+    .video-showcase-poster:focus-visible img {
+      opacity: 1;
+    }
+
+    .video-showcase-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-showcase-play i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.9rem;
+      box-shadow: var(--shadow-hover);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .video-showcase-poster:hover .video-showcase-play i,
+    .video-showcase-poster:focus-visible .video-showcase-play i {
+      transform: scale(1.08);
+      background: var(--primary-hover);
+    }
+
+    .video-showcase-frame iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      display: block;
+    }
+
+    /* ==========================================================================
        Scientific Publications & Research Citations
        ========================================================================== */
     .publications-grid {
@@ -2430,6 +2502,28 @@
     </div>
 
     <!-- ==========================================================================
+         Video Showcase (click-to-play facade, so the YouTube player and its
+         scripts only load once the visitor actually asks for it)
+         ========================================================================== -->
+    <section class="section-wrap" id="showcase">
+      <div class="section-header-centered">
+        <h2 class="section-h2">See PyPottery in Action</h2>
+        <p class="section-p">
+          A full walkthrough of the suite, from a monograph PDF to a publication-ready plate.
+        </p>
+      </div>
+
+      <div class="video-showcase-frame">
+        <button type="button" class="video-showcase-poster" id="showcase-video-poster"
+                data-video-id="qtugvHTwFcs" aria-label="Play the PyPottery showcase video on YouTube">
+          <img src="https://i.ytimg.com/vi/qtugvHTwFcs/hqdefault.jpg"
+               alt="" loading="lazy" width="480" height="360">
+          <span class="video-showcase-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
          Pipeline Flowchart Section (5-Step Archival Spine)
          ========================================================================== -->
     <section class="section-wrap" id="pipeline">
@@ -3058,6 +3152,25 @@
           dropdownMenu.hidden = true;
           dropdownTrigger.focus();
         }
+      });
+    }
+
+    // Video showcase: swap the poster for a real YouTube embed only once
+    // the visitor clicks play, so the page never pays for YouTube's own
+    // scripts unless someone actually wants to watch.
+    const showcasePoster = document.getElementById('showcase-video-poster');
+    if (showcasePoster) {
+      showcasePoster.addEventListener('click', () => {
+        const videoId = showcasePoster.dataset.videoId;
+        const frame = showcasePoster.parentElement;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&si=oKsjN0rySdtE1XYb`;
+        iframe.title = 'PyPottery Suite showcase video';
+        iframe.loading = 'lazy';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.allowFullscreen = true;
+        frame.replaceChild(iframe, showcasePoster);
       });
     }
 
