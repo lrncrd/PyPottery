@@ -6,6 +6,18 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.3 (September 2026)
+
+**Annotation tab**
+
+-   Default mask expansion raised from 8px to 20px, so rims and handles are less likely to be clipped out of the box
+
+**Export**
+
+-   `position` and `rotation` (internal fields used by the orientation classifier) are no longer written to the exported metadata CSV
+
+## Version History
+
 ### Version 0.3.2 (September 2026)
 
 **Annotation tab**
@@ -28,8 +40,6 @@ format: html
 -   New header and About window, in the style of the other modules, with a hardware chip and a *Copy citation* button
 -   Fonts and icons are served from the app, so the interface looks the same without an internet connection
 -   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
-
-## Version History
 
 ### Version 0.3.1 (July 2026)
 
