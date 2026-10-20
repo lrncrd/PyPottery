@@ -5,6 +5,23 @@ subtitle: "Development timeline and changes"
 
 ## Latest Release
 
+### Version 0.1.3 (October 2026)
+
+**Annotate**
+
+-   **Auto-detect**: a YOLO detector (about 19 MB, downloaded at startup) finds the drawings and the labels on a plate and attaches each label to its nearest drawing, ready for you to check
+-   Right-click menus on the canvas: assign a text to another drawing, delete a text, add a text to a drawing or delete it. `1`-`9` reassigns the selected text box
+-   Boxes follow the cursor outside the canvas and stop at the image edge; the **Delete Box** button no longer wraps the toolbar
+-   Opening or deleting a project now resets all of the previous project's state
+
+**Load, OCR and Clean**
+
+-   Large folders are uploaded in batches, which fixes the *413* error
+-   The **OCR model** can be switched from the Projects page after the first launch; GLM-OCR no longer outputs non-Latin or LaTeX tokens
+-   Clean Drawings is faster with many drawings: thumbnails load lazily, undo copies the canvas, and a drawing is saved only if you edited it. Review Texts loads its previews lazily
+
+## Version History
+
 ### Version 0.1.2 (September 2026)
 
 **OCR and models**
@@ -45,8 +62,6 @@ subtitle: "Development timeline and changes"
 -   The app now shuts down by itself a few seconds after you close its browser tab
 -   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
 -   The model download shows its progress live (it stayed at 0 MB with recent versions of `huggingface_hub`) and no longer fails with "No such file or directory" when the app is installed in a deeply nested folder on Windows
-
-## Version History
 
 ### Version 0.2.0 (Initial Release, December 2025)
 

@@ -106,11 +106,25 @@ Here you tell the app what is on each plate. The plate is shown on a canvas; on 
 ## The controls
 
 - **Prev / Next** and the counter (for example `3 / 12`) move between plates. A **Saved** badge confirms every change.
+- **Auto-detect** finds the drawings and their labels for you (see below).
 - **Drawing (D)** starts a new drawing box. **Delete Box (Del)** appears when something is selected. **Clear** removes every box on the current plate, after a confirmation.
 - **Image Metadata**: **Table/Plate**, **Context** and **Notes** for the current plate.
 - **Drawings**: a card per drawing (D1, D2...) with the number of texts it has, its size in pixels, a delete button and **Add Text (T)**.
 - **Plate Annotation**: the percentage of plates completed. A plate counts as completed when it has at least one drawing **and** a Table/Plate name.
 - **Finish & Process OCR** saves everything and moves on.
+
+## Auto-detect
+
+**Auto-detect** runs a small detector (YOLO) on the current plate. It draws a box around every vessel and every label, and attaches each label to its nearest drawing, exactly as if you had marked them by hand. If the plate already has boxes, the app asks before replacing them.
+
+The detector (about 19 MB) is downloaded the first time the app starts, or at the first click if that download failed. It runs locally. Treat the result as a first draft: check it, then fix what is wrong with the tools below.
+
+- **Right-click a text box** to assign it to another drawing, or to delete it. With a text box selected, press `1`-`9` to assign it to drawing D1-D9.
+- **Right-click a drawing** to add a text to it or to delete it.
+
+::: {.callout-note}
+The detector was trained on pottery plates, not on generic documents, so it expects drawings and labels similar to the ones it was trained on. Plates with a very different layout may need more manual corrections.
+:::
 
 ## Mark the vessels
 
@@ -143,6 +157,8 @@ This tab reads the text boxes with the OCR model you chose on first launch.
 <iframe src="../animations/coming_soon.html" name="3. Process OCR" title="Animation coming soon: 3. Process OCR" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 
 ## Run the recognition
+
+The **OCR model** selector on the Projects page changes the engine after the first launch (GLM-OCR, OlmOCR-FP4 or no OCR). A model that is not on disk yet is downloaded when you select it.
 
 Click **Start OCR Processing**. The app crops every text box from the full-resolution plate and sends them to the local model one by one. You can follow it in three places: the **Extraction Progress** bar with the counter of text boxes, a status line saying which drawing and box is being read, and the list of **Recognized Text Labels**, which grows as results arrive, each tagged with its drawing and box (for example `plate_1.jpg_d1 · T1`).
 
@@ -273,6 +289,7 @@ If the parsing model could not be downloaded on first launch, **Run Parsing** te
 |---|---|---|
 | Annotate | `D` | New drawing box |
 | Annotate | `T` | New text box for the selected drawing |
+| Annotate | `1`-`9` | Assign the selected text box to drawing D1-D9 |
 | Annotate | `Delete` / `Backspace` | Delete the selected box |
 | Annotate | `Esc` | Cancel the tool or the selection |
 | Annotate | Arrow keys | Nudge the selected box by 2 px (10 px with `Shift`) |

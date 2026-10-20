@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.36">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-639fec91e128486cdca00caa3a81f8b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6d5f49080fd7a04518cb6db3008564bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -360,6 +360,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#annotate" id="toc-annotate" class="nav-link" data-scroll-target="#annotate">2. Annotate</a>
   <ul class="collapse">
   <li><a href="#the-controls" id="toc-the-controls" class="nav-link" data-scroll-target="#the-controls">The controls</a></li>
+  <li><a href="#auto-detect" id="toc-auto-detect" class="nav-link" data-scroll-target="#auto-detect">Auto-detect</a></li>
   <li><a href="#mark-the-vessels" id="toc-mark-the-vessels" class="nav-link" data-scroll-target="#mark-the-vessels">Mark the vessels</a></li>
   <li><a href="#mark-the-labels" id="toc-mark-the-labels" class="nav-link" data-scroll-target="#mark-the-labels">Mark the labels</a></li>
   <li><a href="#give-the-plate-a-name" id="toc-give-the-plate-a-name" class="nav-link" data-scroll-target="#give-the-plate-a-name">Give the plate a name</a></li>
@@ -583,12 +584,35 @@ Tip
 <h2 class="anchored" data-anchor-id="the-controls">The controls</h2>
 <ul>
 <li><strong>Prev / Next</strong> and the counter (for example <code>3 / 12</code>) move between plates. A <strong>Saved</strong> badge confirms every change.</li>
+<li><strong>Auto-detect</strong> finds the drawings and their labels for you (see below).</li>
 <li><strong>Drawing (D)</strong> starts a new drawing box. <strong>Delete Box (Del)</strong> appears when something is selected. <strong>Clear</strong> removes every box on the current plate, after a confirmation.</li>
 <li><strong>Image Metadata</strong>: <strong>Table/Plate</strong>, <strong>Context</strong> and <strong>Notes</strong> for the current plate.</li>
 <li><strong>Drawings</strong>: a card per drawing (D1, D2…) with the number of texts it has, its size in pixels, a delete button and <strong>Add Text (T)</strong>.</li>
 <li><strong>Plate Annotation</strong>: the percentage of plates completed. A plate counts as completed when it has at least one drawing <strong>and</strong> a Table/Plate name.</li>
 <li><strong>Finish &amp; Process OCR</strong> saves everything and moves on.</li>
 </ul>
+</section>
+<section id="auto-detect" class="level2">
+<h2 class="anchored" data-anchor-id="auto-detect">Auto-detect</h2>
+<p><strong>Auto-detect</strong> runs a small detector (YOLO) on the current plate. It draws a box around every vessel and every label, and attaches each label to its nearest drawing, exactly as if you had marked them by hand. If the plate already has boxes, the app asks before replacing them.</p>
+<p>The detector (about 19 MB) is downloaded the first time the app starts, or at the first click if that download failed. It runs locally. Treat the result as a first draft: check it, then fix what is wrong with the tools below.</p>
+<ul>
+<li><strong>Right-click a text box</strong> to assign it to another drawing, or to delete it. With a text box selected, press <code>1</code>-<code>9</code> to assign it to drawing D1-D9.</li>
+<li><strong>Right-click a drawing</strong> to add a text to it or to delete it.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The detector was trained on pottery plates, not on generic documents, so it expects drawings and labels similar to the ones it was trained on. Plates with a very different layout may need more manual corrections.</p>
+</div>
+</div>
 </section>
 <section id="mark-the-vessels" class="level2">
 <h2 class="anchored" data-anchor-id="mark-the-vessels">Mark the vessels</h2>
@@ -624,6 +648,7 @@ Tip
 </iframe>
 <section id="run-the-recognition" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-recognition">Run the recognition</h2>
+<p>The <strong>OCR model</strong> selector on the Projects page changes the engine after the first launch (GLM-OCR, OlmOCR-FP4 or no OCR). A model that is not on disk yet is downloaded when you select it.</p>
 <p>Click <strong>Start OCR Processing</strong>. The app crops every text box from the full-resolution plate and sends them to the local model one by one. You can follow it in three places: the <strong>Extraction Progress</strong> bar with the counter of text boxes, a status line saying which drawing and box is being read, and the list of <strong>Recognized Text Labels</strong>, which grows as results arrive, each tagged with its drawing and box (for example <code>plate_1.jpg_d1 · T1</code>).</p>
 <p>The <strong>Details</strong> button opens a log of the run; <strong>Copy Extracted Texts</strong> copies the results to the clipboard. When the run ends you see <em>Text Extraction Complete!</em>, the results are saved in the project, and <strong>Continue to Clean Drawings</strong> appears. You can run the recognition again with <strong>Re-run OCR Processing</strong>: the recognized text is replaced, while the corrections you typed in the Review tab are stored separately and are kept.</p>
 <p>If a box cannot be read, its entry shows the error in red and the text is recorded as <code>Error</code>; you can fix it by hand in the Review tab or retry the run. A GPU makes the recognition faster.</p>
@@ -817,60 +842,65 @@ Note
 </tr>
 <tr class="odd">
 <td>Annotate</td>
+<td><code>1</code>-<code>9</code></td>
+<td>Assign the selected text box to drawing D1-D9</td>
+</tr>
+<tr class="even">
+<td>Annotate</td>
 <td><code>Delete</code> / <code>Backspace</code></td>
 <td>Delete the selected box</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Annotate</td>
 <td><code>Esc</code></td>
 <td>Cancel the tool or the selection</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Annotate</td>
 <td>Arrow keys</td>
 <td>Nudge the selected box by 2 px (10 px with <code>Shift</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Clean Drawings</td>
 <td><code>E</code></td>
 <td>Toggle the eraser</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Clean Drawings</td>
 <td><code>G</code></td>
 <td>Toggle the alignment grid</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Clean Drawings</td>
 <td><code>R</code></td>
 <td>Reset the straighten angle to 0°</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Clean Drawings</td>
 <td><code>M</code></td>
 <td>Mark the drawing as clean</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Clean Drawings</td>
 <td><code>Ctrl+Z</code></td>
 <td>Undo</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Clean Drawings</td>
 <td><code>[</code> / <code>]</code></td>
 <td>Smaller / larger eraser</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Clean Drawings</td>
 <td><code>+</code> / <code>-</code></td>
 <td>Zoom in / out</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Clean Drawings</td>
 <td><code>←</code> / <code>→</code></td>
 <td>Previous / next drawing</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Clean Drawings</td>
 <td>Mouse wheel</td>
 <td>Eraser size (with the eraser on); <code>Ctrl</code>/<code>Alt</code> + wheel to zoom</td>
