@@ -70,7 +70,7 @@ On first launch the app opens a setup screen and downloads what it needs from Hu
 | **OlmOCR-FP4** | ~5 GB | NVIDIA GPU (CUDA) only | Higher quality; the card is greyed out when no CUDA GPU is found |
 | **No OCR model** | 0 GB | any | Skip automated recognition and type the label text yourself in the Review tab |
 
-You can choose only one of the three. In addition, a small text model (**Qwen3.5-2B**) is downloaded for the Parser Studio. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.
+You can choose only one of the three. In addition, a small text model (**Qwen3.5-2B**) is downloaded for the Parser Studio, and a ~19 MB detector for **Auto-detect**. If that second download fails, PyPotteryScan still starts: only the Parser Studio is unavailable, and it retries at the next launch.
 
 If a download fails, the setup screen offers **Retry Download**, **Choose a Different Model** and **Continue Without OCR**, so you are never stuck on the splash screen.
 
