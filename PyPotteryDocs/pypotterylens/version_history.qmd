@@ -6,6 +6,25 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.4 (October 2026)
+
+**Export**
+
+-   New **Also export Excel (.xlsx)** switch in the Export dialog: the ZIP also contains `{acronym}_metadata.xlsx`, which Excel opens directly
+-   The metadata CSV is now safer: every value is quoted, line breaks inside a value (for example in text read by the AI) are replaced by spaces, and the file is saved as UTF-8 with BOM. Commas, quotes and accents no longer break the table
+
+## Version History
+
+### Version 0.3.3 (September 2026)
+
+**Annotation tab**
+
+-   Default mask expansion raised from 8px to 20px, so rims and handles are less likely to be clipped out of the box
+
+**Export**
+
+-   `position` and `rotation` (internal fields used by the orientation classifier) are no longer written to the exported metadata CSV
+
 ### Version 0.3.2 (September 2026)
 
 **Annotation tab**
@@ -28,8 +47,6 @@ format: html
 -   New header and About window, in the style of the other modules, with a hardware chip and a *Copy citation* button
 -   Fonts and icons are served from the app, so the interface looks the same without an internet connection
 -   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
-
-## Version History
 
 ### Version 0.3.1 (July 2026)
 

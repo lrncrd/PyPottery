@@ -350,10 +350,12 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
   <ul class="collapse">
-  <li><a href="#version-0.3.2-september-2026" id="toc-version-0.3.2-september-2026" class="nav-link" data-scroll-target="#version-0.3.2-september-2026">Version 0.3.2 (September 2026)</a></li>
+  <li><a href="#version-0.3.4-october-2026" id="toc-version-0.3.4-october-2026" class="nav-link" data-scroll-target="#version-0.3.4-october-2026">Version 0.3.4 (October 2026)</a></li>
   </ul></li>
   <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
   <ul class="collapse">
+  <li><a href="#version-0.3.3-september-2026" id="toc-version-0.3.3-september-2026" class="nav-link" data-scroll-target="#version-0.3.3-september-2026">Version 0.3.3 (September 2026)</a></li>
+  <li><a href="#version-0.3.2-september-2026" id="toc-version-0.3.2-september-2026" class="nav-link" data-scroll-target="#version-0.3.2-september-2026">Version 0.3.2 (September 2026)</a></li>
   <li><a href="#version-0.3.1-july-2026" id="toc-version-0.3.1-july-2026" class="nav-link" data-scroll-target="#version-0.3.1-july-2026">Version 0.3.1 (July 2026)</a></li>
   <li><a href="#version-0.3.0" id="toc-version-0.3.0" class="nav-link" data-scroll-target="#version-0.3.0">Version 0.3.0</a></li>
   <li><a href="#version-0.2.1-december-2025" id="toc-version-0.2.1-december-2025" class="nav-link" data-scroll-target="#version-0.2.1-december-2025">Version 0.2.1 (December 2025)</a></li>
@@ -389,6 +391,28 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-0.3.4-october-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.3.4-october-2026">Version 0.3.4 (October 2026)</h3>
+<p><strong>Export</strong></p>
+<ul>
+<li>New <strong>Also export Excel (.xlsx)</strong> switch in the Export dialog: the ZIP also contains <code>{acronym}_metadata.xlsx</code>, which Excel opens directly</li>
+<li>The metadata CSV is now safer: every value is quoted, line breaks inside a value (for example in text read by the AI) are replaced by spaces, and the file is saved as UTF-8 with BOM. Commas, quotes and accents no longer break the table</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
+<section id="version-0.3.3-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-0.3.3-september-2026">Version 0.3.3 (September 2026)</h3>
+<p><strong>Annotation tab</strong></p>
+<ul>
+<li>Default mask expansion raised from 8px to 20px, so rims and handles are less likely to be clipped out of the box</li>
+</ul>
+<p><strong>Export</strong></p>
+<ul>
+<li><code>position</code> and <code>rotation</code> (internal fields used by the orientation classifier) are no longer written to the exported metadata CSV</li>
+</ul>
+</section>
 <section id="version-0.3.2-september-2026" class="level3">
 <h3 class="anchored" data-anchor-id="version-0.3.2-september-2026">Version 0.3.2 (September 2026)</h3>
 <p><strong>Annotation tab</strong></p>
@@ -413,9 +437,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
 </ul>
 </section>
-</section>
-<section id="version-history" class="level2">
-<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-0.3.1-july-2026" class="level3">
 <h3 class="anchored" data-anchor-id="version-0.3.1-july-2026">Version 0.3.1 (July 2026)</h3>
 <p><strong>Key Features:</strong></p>
