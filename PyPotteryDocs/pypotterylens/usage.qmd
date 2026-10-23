@@ -379,6 +379,9 @@ The ZIP contains:
 
 - The cards, renamed `OSA_2024_1.png`, `OSA_2024_2.png`, ... in plate order (plate 2 before plate 10, then by vessel ID), **leaving out the cards you excluded**. If you post-processed, they are the cards from `cards_modified/`; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.
 - `OSA_2024_metadata.csv`, one row per exported image. The first column is `id` (the new file name), then `type` (ENT/FRAG), then the other columns in alphabetical order: your own columns (page, plate, figure, number, Notes, and any you added), the classifier's `position` and `rotation`, and `px_per_cm` if you calibrated scales. Every value is written as plain text, so nothing is silently turned into a number or a date.
+- Optionally, `OSA_2024_metadata.xlsx`, the same table as an Excel file. Turn on **Also export Excel (.xlsx)** in the export dialog to include it. Use it if you open the metadata in Excel: the CSV is a standard comma-separated file, and some Excel installations (for example with an Italian or other European regional setting) expect a semicolon and show it as a single column.
+
+The CSV has every value in quotes, so commas and quotation marks inside a value (for example in text read by the AI) are safe, and line breaks inside a value are replaced by spaces. It is saved as UTF-8 with BOM, so accented characters are kept.
 
 <!--
 ANIMATION (NEW, priority: low) - "Export"

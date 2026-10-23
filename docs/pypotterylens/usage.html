@@ -957,7 +957,9 @@ Warning
 <ul>
 <li>The cards, renamed <code>OSA_2024_1.png</code>, <code>OSA_2024_2.png</code>, … in plate order (plate 2 before plate 10, then by vessel ID), <strong>leaving out the cards you excluded</strong>. If you post-processed, they are the cards from <code>cards_modified/</code>; otherwise, the plain extracted cards. Each image carries its resolution (300 DPI) in its own metadata.</li>
 <li><code>OSA_2024_metadata.csv</code>, one row per exported image. The first column is <code>id</code> (the new file name), then <code>type</code> (ENT/FRAG), then the other columns in alphabetical order: your own columns (page, plate, figure, number, Notes, and any you added), the classifier’s <code>position</code> and <code>rotation</code>, and <code>px_per_cm</code> if you calibrated scales. Every value is written as plain text, so nothing is silently turned into a number or a date.</li>
+<li>Optionally, <code>OSA_2024_metadata.xlsx</code>, the same table as an Excel file. Turn on <strong>Also export Excel (.xlsx)</strong> in the export dialog to include it. Use it if you open the metadata in Excel: the CSV is a standard comma-separated file, and some Excel installations (for example with an Italian or other European regional setting) expect a semicolon and show it as a single column.</li>
 </ul>
+<p>The CSV has every value in quotes, so commas and quotation marks inside a value (for example in text read by the AI) are safe, and line breaks inside a value are replaced by spaces. It is saved as UTF-8 with BOM, so accented characters are kept.</p>
 <!--
 ANIMATION (NEW, priority: low) - "Export"
 Storyboard: 1) Export Results; 2) type an acronym, invalid characters are rejected;

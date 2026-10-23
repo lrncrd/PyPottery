@@ -6,6 +6,15 @@ format: html
 
 ## Latest Release
 
+### Version 0.3.4 (October 2026)
+
+**Export**
+
+-   New **Also export Excel (.xlsx)** switch in the Export dialog: the ZIP also contains `{acronym}_metadata.xlsx`, which Excel opens directly
+-   The metadata CSV is now safer: every value is quoted, line breaks inside a value (for example in text read by the AI) are replaced by spaces, and the file is saved as UTF-8 with BOM. Commas, quotes and accents no longer break the table
+
+## Version History
+
 ### Version 0.3.3 (September 2026)
 
 **Annotation tab**
@@ -15,8 +24,6 @@ format: html
 **Export**
 
 -   `position` and `rotation` (internal fields used by the orientation classifier) are no longer written to the exported metadata CSV
-
-## Version History
 
 ### Version 0.3.2 (September 2026)
 
