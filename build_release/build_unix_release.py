@@ -86,9 +86,10 @@ def _install_launcher_deps(python_dest: Path, platform_name: str):
     site_packages = _target_site_packages(python_dest)
     site_packages.mkdir(parents=True, exist_ok=True)
 
+    host_arch = "arm64" if platform.machine().lower() in ("arm64", "aarch64") else "x86_64"
     host_native = (
-        (platform_name.startswith("macos") and sys.platform == "darwin")
-        or (platform_name.startswith("linux") and sys.platform.startswith("linux"))
+        (platform_name == f"macos-{host_arch}" and sys.platform == "darwin")
+        or (platform_name == f"linux-{host_arch}" and sys.platform.startswith("linux"))
     )
 
     if host_native:
