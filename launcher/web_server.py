@@ -39,7 +39,7 @@ try:
 except ImportError:
     DEVELOPER_MODE = False
 
-LAUNCHER_VERSION = "1.2.0"
+LAUNCHER_VERSION = "1.2.1"
 
 # How long to wait after the last browser tab disconnects from /api/events
 # before treating the launcher as closed. A page reload drops the old
