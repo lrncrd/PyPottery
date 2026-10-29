@@ -170,6 +170,17 @@ If a box cannot be read, its entry shows the error in red and the text is record
 The app asks for at least one text box, and for an installed OCR model. Without a text box you are told to draw one in step 2; without a model you are told to use **Skip OCR**.
 :::
 
+## Automatic typo correction
+
+OCR engines read each label on its own, so they confuse characters that look alike: `INV.` becomes `1NV.` or `INU`, `PDB` becomes `POB`, `US` becomes `VS`, the sector `S.4` becomes `5.4`. The labels of a catalogue reuse the same abbreviations, so when the recognition ends the app compares them with each other: a rare token that matches a frequent one once look-alike characters (O/0/D, I/1, S/5, U/V, N/M, B/8, Z/2) are merged is replaced by the frequent spelling.
+
+- Numbers are never changed: tokens made only of digits are left alone, and only the letters of a token such as `S.4` or `Q26` can be fixed.
+- Labels you already corrected by hand in the Review tab are used for the comparison but never rewritten.
+- In **Recognized Text Labels** a fixed label shows the corrected text with the changed parts highlighted, *was* followed by the original reading, and an **Undo** button that restores the OCR text for that label.
+- The **Auto-fix OCR typos** switch below the toolbar is on by default; turn it off to keep the raw OCR. **Fix OCR Typos** runs the correction on results you already have, for example in a project processed with an earlier version.
+
+The fixes are stored as corrections, so the raw OCR is never lost: the catalogue keeps both versions (see [Export](#export)). The correction works on the patterns it can see, so it is more reliable the more labels a project has. Errors that only the position in the label can reveal, such as `1111` in place of `INV.`, are not fixed and are left for the Review tab.
+
 ## Skip OCR
 
 **Skip OCR (Manual Input)** (after a confirmation) unlocks the next tabs without recognizing anything: you type the label text yourself in the Review tab. It is the right choice when you chose *No OCR model* on first launch, when the labels are handwritten and unreadable, or when you only need the drawings. You can still come back and click **Start OCR Processing** at any time.
@@ -212,13 +223,14 @@ The tab lists every text box of every drawing as a pair: on the left the image o
 - Click the label image to open it enlarged.
 - **Changes are auto-saved** a moment after you stop typing. Only real edits count as corrections: if you change a text and then restore it, the correction is removed.
 - If you skipped OCR, the boxes start empty and you type each label from the image.
+- Labels fixed by the [automatic typo correction](#automatic-typo-correction) carry an *Auto-corrected* badge and start with the fixed text. Editing one by hand turns it into a manual correction.
 - The catalogue keeps both versions: the raw OCR and your corrected text (see [Export](#export)).
 
 When you are done, **Continue to Export**.
 
 # 6. Export
 
-The last tab packages the project. At the top you see four counters: **Total Plates**, **Vessel Drawings**, **OCR Transcriptions** (number of text boxes) and **Manual Corrections**.
+The last tab packages the project. At the top you see four counters: **Total Plates**, **Vessel Drawings**, **OCR Transcriptions** (number of text boxes) and **Manual Corrections** (automatic typo fixes are not counted).
 
 <iframe src="../animations/coming_soon.html" name="6. Export" title="Animation coming soon: 6. Export" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no"></iframe>
 

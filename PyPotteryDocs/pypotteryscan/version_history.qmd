@@ -5,6 +5,21 @@ subtitle: "Development timeline and changes"
 
 ## Latest Release
 
+### Version 0.1.4 (October 2026)
+
+**Process OCR**
+
+-   **Auto-fix OCR typos**: when the recognition ends, the labels of the project are compared with each other and look-alike misreadings are corrected by the most frequent spelling (`1NV.` or `INU` → `INV.`, `POB` → `PDB`, `VS` → `US`, `5.4` → `S.4`). Numbers are never changed, and the labels you corrected by hand are never rewritten
+-   Fixed labels show the corrected text with the changed parts highlighted, the original reading below, and an **Undo** button. The switch below the toolbar turns the step off; **Fix OCR Typos** runs it on results you already have
+-   The raw OCR is kept: the fixes go into the corrected text, so the catalogue still has both versions
+
+**Review Texts and Export**
+
+-   Labels fixed automatically carry an *Auto-corrected* badge; editing one by hand turns it into a manual correction
+-   The **Manual Corrections** counter no longer counts the automatic fixes
+
+## Version History
+
 ### Version 0.1.3 (October 2026)
 
 **Annotate**
@@ -19,8 +34,6 @@ subtitle: "Development timeline and changes"
 -   Large folders are uploaded in batches, which fixes the *413* error
 -   The **OCR model** can be switched from the Projects page after the first launch; GLM-OCR no longer outputs non-Latin or LaTeX tokens
 -   Clean Drawings is faster with many drawings: thumbnails load lazily, undo copies the canvas, and a drawing is saved only if you edited it. Review Texts loads its previews lazily
-
-## Version History
 
 ### Version 0.1.2 (September 2026)
 
