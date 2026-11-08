@@ -6,6 +6,36 @@ format: html
 
 ## Latest Release
 
+### Version 2.1.3 (November 2026)
+
+**Projects**
+
+-   **A project is now required.** Everything happens inside a project, which keeps your drawings, the results and the history of every run. Until one is open, only the **Projects** and **Hardware Check** tabs can be used
+-   **One library per project.** Drawings are added once (files, a folder, or dragged onto the page) and copied into the project; the same image is never copied twice. Preprocessing, Model Diagnostics, Batch Processing and Cloud Inking all pick their drawings from the library, as a grid of thumbnails with filters (*To ink with these settings*, *Already inked*, *All*)
+-   **Preprocessing keeps the original.** It saves a corrected version next to it, and inking uses that version when *Use the preprocessed version when there is one* is on. Statistics files you add or calculate are saved in the project
+-   **One folder for every combination of settings**, local and cloud (for example `6h-MCG-Model_p512_o64_c1_x1`, with `_pre` for the preprocessed version). The same settings replace only their own earlier results, so different models or values never overwrite each other
+-   **Run history** with the parameters, folders, failed drawings and, for cloud runs, the cost; an optional **external copy** of every run (for example on a shared drive); projects are included in the Launcher's **Backup**
+
+**Batch Processing**
+
+-   **Full-screen progress view** that blocks the app while the model works, with the drawing in progress, patch progress, time elapsed and estimated time left, and a **Stop** button: what is finished is kept and the drawings not started stay in *To ink*
+-   The app **asks before inking again** drawings already done with the same settings (ink them again, ink only the new ones, or cancel) instead of doing nothing
+-   A prominent **Open the results folder** button when the run ends, and the reason for any failure is now shown instead of a success message
+-   Clearer model list: only the model name in the menu and its description in a note below; no more horizontal scrolling in the side menu
+-   Redesigned tabs, with the drawings on the left and the settings and the main button always in view on the right
+
+**Cloud Inking (optional, beta)**
+
+-   New tab that inks with a general-purpose image model through [OpenRouter](https://openrouter.ai) (GPT Image 2 by default): no GPU and no download, about 0.05 $ per drawing. Choose the *Fine* or *Coarse* stippling, 1 to 4 versions per drawing and a cost limit; the cost of every image is shown and saved in the log
+-   Optional **reference drawing** to show the style you want: a pencil drawing with its inked version, a sheet with both, or **just one inked drawing** to copy the style from
+-   Your drawings leave the computer in this workflow, so the tab asks you to confirm it; the API key is kept in memory only and is never saved. Registration of the ink onto the pencil drawing is off by default
+
+**Fixes**
+
+-   A batch with **FP16** failed on every drawing, without a message, after a run in full precision (the model was reused whatever the precision); this is fixed and failures are reported
+
+## Version History
+
 ### Version 2.1.2 (September 2026)
 
 **Interface**
@@ -22,8 +52,6 @@ format: html
 -   The app shuts down by itself a few seconds after you close its browser tab
 -   Console messages are written as UTF-8 on Windows, so log lines with special characters no longer risk an encoding error
 -   Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose
-
-## Version History
 
 ### Version 2.1.1
 

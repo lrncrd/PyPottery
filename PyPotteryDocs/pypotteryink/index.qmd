@@ -25,10 +25,12 @@ toc: true
 
 ## What you can do
 
-1.  **Check your hardware** to see whether your computer is suited to the job.
-2.  **Preprocess** your images so that their brightness and contrast resemble the drawings the model was trained on.
-3.  **Run a diagnostic** on a few images to choose the model, the patch size and the contrast.
-4.  **Process a whole batch** of drawings and get the inked versions, side-by-side comparisons and a log.
+1.  **Create a project** and add your drawings to its library. The project keeps them, every result and the history of what was run with which settings.
+2.  **Check your hardware** to see whether your computer is suited to the job.
+3.  **Preprocess** your drawings so that their brightness and contrast resemble the ones the model was trained on. The originals are kept.
+4.  **Run a diagnostic** on a few drawings to choose the model, the patch size and the contrast.
+5.  **Process a whole batch** of drawings and get the inked versions, side-by-side comparisons and a log, with a full-screen progress view you can stop.
+6.  **Or ink in the cloud** (optional): no GPU and no model download, but the drawings are sent to an online provider.
 
 The [Model Zoo](model_zoo.qmd) describes the available models, and the [Advanced guide](advanced.qmd) and the [API](api.qmd) cover the same tools from Python.
 
@@ -75,11 +77,11 @@ Nothing has to be downloaded by hand: the app fetches what it needs the first ti
 - **A style model** (about 38 MB each) is downloaded the first time you run a diagnostic or a batch with it, and stored in the `models/` folder.
 - **The diffusion backbone** (`stabilityai/sd-turbo`, about **5 GB**) is downloaded once, the first time any model is loaded. A progress overlay shows the download so the app does not look stuck. With the launcher, the download is stored in a cache shared by all PyPottery apps; standalone, it goes to `models/.cache/huggingface`.
 
-After that, everything runs on your computer, without an internet connection. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
+After that, the local workflow runs entirely on your computer, without an internet connection (only the optional **Cloud Inking** tab goes online). To stop the app, close its browser tab: it shuts down a few seconds later. You can also press `Ctrl+C` in the terminal, or close it from the launcher.
 
 ::: {.callout-important}
 ## AI disclosure and citation
-PyPotteryInk uses generative AI to redraw archaeological drawings. If you use it in a publication, presentation or report, please state which model you used, how many drawings you processed and the version of the software, for example: *"This research utilized PyPotteryInk (version 2.1.2) for the AI-assisted translation of [number] pottery drawings. PyPotteryInk is a generative AI tool developed by Lorenzo Cardarelli (https://github.com/lrncrd/PyPotteryInk)."* The **Info** button in the app has a ready-to-copy version of this sentence with the right version number.
+PyPotteryInk uses generative AI to redraw archaeological drawings. If you use it in a publication, presentation or report, please state which model you used, how many drawings you processed and the version of the software, for example: *"This research utilized PyPotteryInk (version 2.1.3) for the AI-assisted translation of [number] pottery drawings. PyPotteryInk is a generative AI tool developed by Lorenzo Cardarelli (https://github.com/lrncrd/PyPotteryInk)."* The **Info** button in the app has a ready-to-copy version of this sentence with the right version number.
 :::
 
 ## Troubleshooting
@@ -100,7 +102,7 @@ With the launcher, updates are handled for you. From source, pull the latest cod
 
 ## Next step
 
-Head to the [Usage guide](usage.qmd) for a walkthrough of the four tabs.
+Head to the [Usage guide](usage.qmd) for a walkthrough of the tabs.
 
 
 ## Contributors
