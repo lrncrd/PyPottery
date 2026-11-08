@@ -358,10 +358,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#latest-release" id="toc-latest-release" class="nav-link active" data-scroll-target="#latest-release">Latest Release</a>
   <ul class="collapse">
-  <li><a href="#version-2.1.2-september-2026" id="toc-version-2.1.2-september-2026" class="nav-link" data-scroll-target="#version-2.1.2-september-2026">Version 2.1.2 (September 2026)</a></li>
+  <li><a href="#version-2.1.3-november-2026" id="toc-version-2.1.3-november-2026" class="nav-link" data-scroll-target="#version-2.1.3-november-2026">Version 2.1.3 (November 2026)</a></li>
   </ul></li>
   <li><a href="#version-history" id="toc-version-history" class="nav-link" data-scroll-target="#version-history">Version History</a>
   <ul class="collapse">
+  <li><a href="#version-2.1.2-september-2026" id="toc-version-2.1.2-september-2026" class="nav-link" data-scroll-target="#version-2.1.2-september-2026">Version 2.1.2 (September 2026)</a></li>
   <li><a href="#version-2.1.1" id="toc-version-2.1.1" class="nav-link" data-scroll-target="#version-2.1.1">Version 2.1.1</a></li>
   <li><a href="#version-2.1.0" id="toc-version-2.1.0" class="nav-link" data-scroll-target="#version-2.1.0">Version 2.1.0</a></li>
   <li><a href="#version-2.0.1-12122025" id="toc-version-2.0.1-12122025" class="nav-link" data-scroll-target="#version-2.0.1-12122025">Version 2.0.1 (12/12/2025)</a></li>
@@ -399,6 +400,38 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="latest-release" class="level2">
 <h2 class="anchored" data-anchor-id="latest-release">Latest Release</h2>
+<section id="version-2.1.3-november-2026" class="level3">
+<h3 class="anchored" data-anchor-id="version-2.1.3-november-2026">Version 2.1.3 (November 2026)</h3>
+<p><strong>Projects</strong></p>
+<ul>
+<li><strong>A project is now required.</strong> Everything happens inside a project, which keeps your drawings, the results and the history of every run. Until one is open, only the <strong>Projects</strong> and <strong>Hardware Check</strong> tabs can be used</li>
+<li><strong>One library per project.</strong> Drawings are added once (files, a folder, or dragged onto the page) and copied into the project; the same image is never copied twice. Preprocessing, Model Diagnostics, Batch Processing and Cloud Inking all pick their drawings from the library, as a grid of thumbnails with filters (<em>To ink with these settings</em>, <em>Already inked</em>, <em>All</em>)</li>
+<li><strong>Preprocessing keeps the original.</strong> It saves a corrected version next to it, and inking uses that version when <em>Use the preprocessed version when there is one</em> is on. Statistics files you add or calculate are saved in the project</li>
+<li><strong>One folder for every combination of settings</strong>, local and cloud (for example <code>6h-MCG-Model_p512_o64_c1_x1</code>, with <code>_pre</code> for the preprocessed version). The same settings replace only their own earlier results, so different models or values never overwrite each other</li>
+<li><strong>Run history</strong> with the parameters, folders, failed drawings and, for cloud runs, the cost; an optional <strong>external copy</strong> of every run (for example on a shared drive); projects are included in the Launcher’s <strong>Backup</strong></li>
+</ul>
+<p><strong>Batch Processing</strong></p>
+<ul>
+<li><strong>Full-screen progress view</strong> that blocks the app while the model works, with the drawing in progress, patch progress, time elapsed and estimated time left, and a <strong>Stop</strong> button: what is finished is kept and the drawings not started stay in <em>To ink</em></li>
+<li>The app <strong>asks before inking again</strong> drawings already done with the same settings (ink them again, ink only the new ones, or cancel) instead of doing nothing</li>
+<li>A prominent <strong>Open the results folder</strong> button when the run ends, and the reason for any failure is now shown instead of a success message</li>
+<li>Clearer model list: only the model name in the menu and its description in a note below; no more horizontal scrolling in the side menu</li>
+<li>Redesigned tabs, with the drawings on the left and the settings and the main button always in view on the right</li>
+</ul>
+<p><strong>Cloud Inking (optional, beta)</strong></p>
+<ul>
+<li>New tab that inks with a general-purpose image model through <a href="https://openrouter.ai">OpenRouter</a> (GPT Image 2 by default): no GPU and no download, about 0.05 $ per drawing. Choose the <em>Fine</em> or <em>Coarse</em> stippling, 1 to 4 versions per drawing and a cost limit; the cost of every image is shown and saved in the log</li>
+<li>Optional <strong>reference drawing</strong> to show the style you want: a pencil drawing with its inked version, a sheet with both, or <strong>just one inked drawing</strong> to copy the style from</li>
+<li>Your drawings leave the computer in this workflow, so the tab asks you to confirm it; the API key is kept in memory only and is never saved. Registration of the ink onto the pencil drawing is off by default</li>
+</ul>
+<p><strong>Fixes</strong></p>
+<ul>
+<li>A batch with <strong>FP16</strong> failed on every drawing, without a message, after a run in full precision (the model was reused whatever the precision); this is fixed and failures are reported</li>
+</ul>
+</section>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-2.1.2-september-2026" class="level3">
 <h3 class="anchored" data-anchor-id="version-2.1.2-september-2026">Version 2.1.2 (September 2026)</h3>
 <p><strong>Interface</strong></p>
@@ -417,9 +450,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Crashes are reported with a timestamp and the name of the thread that failed, which makes problems easier to diagnose</li>
 </ul>
 </section>
-</section>
-<section id="version-history" class="level2">
-<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
 <section id="version-2.1.1" class="level3">
 <h3 class="anchored" data-anchor-id="version-2.1.1">Version 2.1.1</h3>
 <ul>
@@ -601,6 +631,7 @@ ul.task-list li input[type="checkbox"] {
     });
   })();
 </script>
+
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

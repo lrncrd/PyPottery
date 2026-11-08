@@ -357,7 +357,14 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#key-terms" id="toc-key-terms" class="nav-link active" data-scroll-target="#key-terms">Key terms</a></li>
+  <li><a href="#projects" id="toc-projects" class="nav-link" data-scroll-target="#projects">Projects</a>
+  <ul class="collapse">
+  <li><a href="#create-a-project-and-add-the-drawings" id="toc-create-a-project-and-add-the-drawings" class="nav-link" data-scroll-target="#create-a-project-and-add-the-drawings">Create a project and add the drawings</a></li>
+  <li><a href="#one-folder-for-every-combination-of-settings" id="toc-one-folder-for-every-combination-of-settings" class="nav-link" data-scroll-target="#one-folder-for-every-combination-of-settings">One folder for every combination of settings</a></li>
+  <li><a href="#settings-history-and-the-external-copy" id="toc-settings-history-and-the-external-copy" class="nav-link" data-scroll-target="#settings-history-and-the-external-copy">Settings, history and the external copy</a></li>
+  </ul></li>
   <li><a href="#hardware-check" id="toc-hardware-check" class="nav-link" data-scroll-target="#hardware-check">Hardware Check</a></li>
+  <li><a href="#choosing-the-drawings" id="toc-choosing-the-drawings" class="nav-link" data-scroll-target="#choosing-the-drawings">Choosing the drawings</a></li>
   <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a></li>
   <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics">Model Diagnostics</a>
   <ul class="collapse">
@@ -370,6 +377,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#while-it-runs" id="toc-while-it-runs" class="nav-link" data-scroll-target="#while-it-runs">While it runs</a></li>
   <li><a href="#the-results" id="toc-the-results" class="nav-link" data-scroll-target="#the-results">The results</a></li>
   </ul></li>
+  <li><a href="#cloud-inking-optional-beta" id="toc-cloud-inking-optional-beta" class="nav-link" data-scroll-target="#cloud-inking-optional-beta">Cloud Inking (optional, beta)</a></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/lrncrd/PyPottery/blob/main/pypotteryink/usage.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/lrncrd/PyPottery/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -399,7 +407,7 @@ ul.task-list li input[type="checkbox"] {
 <div style="text-align: center;">
 <p><img src="../imgs/LogoInk.png" style="max-width: 25%; height: auto; margin-bottom: 1em;"></p>
 </div>
-<p>PyPotteryInk takes a scan or a photograph of a pencil pottery drawing and redraws it as clean ink line art, ready for publication. It does this with a generative model that works on the image in small squares (<strong>patches</strong>), so plates of any size can be processed. This guide follows the four tabs of the app in the order you will normally use them. The <strong>Need help?</strong> button in the header of the app (Pixel) opens this page.</p>
+<p>PyPotteryInk takes a scan or a photograph of a pencil pottery drawing and redraws it as clean ink line art, ready for publication. It does this with a generative model that works on the image in small squares (<strong>patches</strong>), so plates of any size can be processed. This guide follows the tabs of the app in the order you will normally use them. The <strong>Need help?</strong> button in the header of the app (Pixel) opens this page.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -410,7 +418,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Hardware Check</strong> (once) → <strong>Preprocessing</strong> (optional) → <strong>Model Diagnostics</strong> (a few test images) → <strong>Batch Processing</strong> (the whole collection)</p>
+<p><strong>Projects</strong> (create one and add your drawings) → <strong>Hardware Check</strong> (once) → <strong>Preprocessing</strong> (optional) → <strong>Model Diagnostics</strong> (a few test drawings) → <strong>Batch Processing</strong> (the whole collection) → or <strong>Cloud Inking</strong> (optional, no GPU needed)</p>
 </div>
 </div>
 <iframe src="../animations/coming_soon.html" name="Workflow overview" title="Animation coming soon: Workflow overview" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no">
@@ -425,6 +433,14 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td><strong>Project</strong></td>
+<td>The place where your drawings, their results and the history of every run are kept together. Everything in the app happens inside a project.</td>
+</tr>
+<tr class="even">
+<td><strong>Library</strong></td>
+<td>The drawings of a project. They are added once and every tab picks from them.</td>
+</tr>
 <tr class="odd">
 <td><strong>Model</strong></td>
 <td>The trained “style” the app applies: one is best for Bronze Age drawings, another for painted pottery, and so on. See the <a href="../pypotteryink/model_zoo.html">Model Zoo</a>.</td>
@@ -452,6 +468,41 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
+<section id="projects" class="level1">
+<h1>Projects</h1>
+<p>A project is the first thing you need. Until one is open, the Preprocessing, Model Diagnostics, Batch Processing and Cloud Inking tabs show a prompt to open or create a project, and only <strong>Projects</strong> and <strong>Hardware Check</strong> can be used.</p>
+<iframe src="../animations/coming_soon.html" name="Projects" title="Animation coming soon: Projects" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no">
+</iframe>
+<section id="create-a-project-and-add-the-drawings" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-project-and-add-the-drawings">Create a project and add the drawings</h2>
+<ol type="1">
+<li>In the <strong>Projects</strong> tab, type a name (and, if you like, a short description) and click <strong>Create and open</strong>. Projects you made earlier are listed below the form: click one to open it.</li>
+<li>Click <strong>Add drawings</strong> and choose image files or a whole folder (PNG, JPG, JPEG or TIFF), or drop them on the page. The drawings are <strong>copied into the project</strong>, so the project never mixes images from elsewhere and the originals are never touched.</li>
+<li>The library shows a thumbnail of every drawing. Small chips tell you which ones are preprocessed and with how many different settings each has been inked.</li>
+</ol>
+<p>The same image added twice is recognised by its content and copied only once. A different image with the same file name gets a numbered name (<code>name_2</code>). To take a drawing out of the project, remove it from the library.</p>
+</section>
+<section id="one-folder-for-every-combination-of-settings" class="level2">
+<h2 class="anchored" data-anchor-id="one-folder-for-every-combination-of-settings">One folder for every combination of settings</h2>
+<p>Results are never mixed. Every run saves into a folder inside the project whose name contains the settings that were used, for example:</p>
+<pre><code>projects/&lt;project&gt;/outputs/
+├── local/
+│   ├── 6h-MCG-Model_p512_o64_c1_x1/          # model, patch, overlap, contrast, scale
+│   └── 6h-MCG-Model_p512_o64_c1.5_x1_pre/    # _pre: the preprocessed drawings were used
+└── cloud/
+    └── gpt-image-2_fine_v1/                  # model, style, number of versions</code></pre>
+<p>If you run the same settings again, only the results of those settings are replaced. Other settings never overwrite each other, so you can compare two models or two contrast values side by side.</p>
+</section>
+<section id="settings-history-and-the-external-copy" class="level2">
+<h2 class="anchored" data-anchor-id="settings-history-and-the-external-copy">Settings, history and the external copy</h2>
+<ul>
+<li><strong>Run history</strong>: every run is listed with its parameters, the folder it wrote to, the drawings that failed and, for cloud runs, the cost. A run that you stopped is recorded too, with the drawings that were not started.</li>
+<li><strong>External copy</strong> (optional): choose a second folder, for example a shared drive. Every run is then also copied there, in a folder with the same name. The project always keeps its own copy, so an unreachable drive only shows a warning.</li>
+<li><strong>Open the project folder</strong>, or <strong>delete</strong> the project, from the same tab.</li>
+</ul>
+<p>Projects are stored in the <code>projects/</code> folder of the app, with the same layout as the other PyPottery applications. The Launcher’s <strong>Backup</strong> button can export and import them.</p>
+</section>
+</section>
 <section id="hardware-check" class="level1">
 <h1>Hardware Check</h1>
 <p>This tab tells you whether your computer is suited to the job. It lists the recommended specifications (an NVIDIA GPU with at least 8 GB of VRAM, minimum 4 GB, or Apple Silicon; 4 or more modern CPU cores; 16 GB of RAM, minimum 8 GB; a fast SSD).</p>
@@ -463,22 +514,32 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>The <strong>Info</strong> button in the header opens a window with the version, the citation to copy, links to the documentation and to GitHub, and the hardware the app detected (the number of CPU cores, and the GPU or <em>CPU Only</em>).</p>
 </section>
+<section id="choosing-the-drawings" class="level1">
+<h1>Choosing the drawings</h1>
+<p>Preprocessing, Model Diagnostics, Batch Processing and Cloud Inking all choose the drawings in the same way: the <strong>library of the project</strong> is shown as a grid of thumbnails, with a checkbox on each one, a count of the selection and <strong>Select all</strong> and <strong>Clear</strong>. A row of filters changes what is shown:</p>
+<ul>
+<li>in <strong>Batch Processing</strong> and <strong>Cloud Inking</strong>: <strong>To ink with these settings</strong> (the default), <strong>Already inked</strong> and <strong>All</strong>. A drawing already inked with the settings on screen is left out of the first view, so a new run does not repeat work or, in the cloud, pay for it twice. <strong>Already inked</strong> never selects anything by itself. A drawing that was inked only with <em>other</em> settings is marked, and hovering it tells you which;</li>
+<li>in <strong>Preprocessing</strong>: <strong>Not preprocessed</strong>, <strong>Preprocessed</strong> and <strong>All</strong>;</li>
+<li>in <strong>Model Diagnostics</strong>: <strong>All</strong> and <strong>Preprocessed</strong>.</li>
+</ul>
+<p>If you try to run drawings that were already inked with the same settings, the app asks first: <strong>ink them again</strong>, ink <strong>only the new ones</strong>, or cancel. It never silently does nothing.</p>
+</section>
 <section id="preprocessing" class="level1">
 <h1>Preprocessing</h1>
-<p>Drawings differ a lot in brightness and contrast, and the models work best on images that look like the ones they were trained on. This optional tab adjusts your images towards a reference described by a statistics file.</p>
+<p>Drawings differ a lot in brightness and contrast, and the models work best on images that look like the ones they were trained on. This optional tab adjusts your drawings towards a reference described by a statistics file.</p>
 <iframe src="../animations/coming_soon.html" name="Preprocessing" title="Animation coming soon: Preprocessing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <ol type="1">
-<li><strong>Upload Images to Preprocess</strong>: click the area or drag and drop your images (PNG, JPG, JPEG or TIFF).</li>
-<li><strong>Upload Statistics File (.npy)</strong>: choose the reference. The app ships with two, in its own folder:
+<li><strong>Select the drawings</strong> to preprocess from the library.</li>
+<li><strong>Statistics file (.npy)</strong>: choose the reference. The app ships with two, in its own folder:
 <ul>
 <li><code>Montale_stats.npy</code>, measured on the dataset used to train the 6h-MCG model;</li>
 <li><code>Cimino_stats.npy</code>, measured on the dataset used to train the 6h-MC model.</li>
 </ul></li>
-<li><strong>Output Directory</strong>: where the adjusted images are saved (<code>./preprocessed_images</code> by default, created if it does not exist). <strong>Browse…</strong> opens a folder dialog on the computer that runs the app.</li>
-<li>Click <strong>Apply Preprocessing</strong>. A progress bar follows the work.</li>
+<li>Click <strong>Preprocess</strong>. A progress bar follows the work.</li>
 </ol>
-<p>Each image is compared with the statistics: only the images that need it are adjusted, the others are saved unchanged. All of them are written to the output directory with their original file name. When it ends, the app reports the total processed, how many images were adjusted and how many needed no adjustment.</p>
+<p>Each drawing is compared with the statistics: only those that need it are adjusted. The corrected version is saved <strong>next to the original, which is kept</strong>: the library marks it as preprocessed, and the inking tabs use it when <strong>Use the preprocessed version when there is one</strong> is on (the default). Drawings that were already within range get no corrected version and are inked as they are. When it ends, the app reports how many drawings were processed, how many were adjusted and how many needed no adjustment.</p>
+<p>Because the preprocessed drawings are a different input, runs that use them go to their own folder (the name ends in <code>_pre</code>) and never overwrite the results obtained from the originals.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -489,33 +550,33 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Open <strong>Advanced: Calculate Custom Statistics</strong> to build a statistics file from your own drawings. Upload a representative set of images (for example the drawings you want your results to resemble), choose where to <strong>Save Statistics As</strong> (<code>./custom_stats.npy</code> by default) and click <strong>Calculate Statistics</strong>. The app shows how many images it analyzed, where the file is, and a table with the mean, standard deviation, minimum, maximum and median of every metric. You can then use the new file in the steps above.</p>
+<p>Open <strong>Calculate statistics from the selection</strong> to build a statistics file from drawings of the project: select drawings that already give good results (their values become the reference for the others), give the file a name in <strong>Save as</strong> and click <strong>Calculate</strong>. The app shows how many drawings it analyzed and a table with the mean, standard deviation, minimum, maximum and median of every metric. The file is saved in the project and you can use it in the steps above.</p>
 </div>
 </div>
 </section>
 <section id="model-diagnostics" class="level1">
 <h1>Model Diagnostics</h1>
-<p>Before processing a whole collection, test the model on a few images. This tab runs the model on up to five of your drawings and shows you how the parameters change the result, so you can choose the best ones for the batch.</p>
+<p>Before processing a whole collection, test the model on a few drawings. This tab runs the model on up to five drawings of the project and shows you how the parameters change the result, so you can choose the best ones for the batch.</p>
 <iframe src="../animations/coming_soon.html" name="Model Diagnostics" title="Animation coming soon: Model Diagnostics" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <section id="set-up-the-test" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-test">Set up the test</h2>
 <ol type="1">
-<li><strong>Select Model</strong>: the list shows every available model with its size and description, and <em>Custom Model (Local File)…</em> to use your own <code>.pkl</code> file (it must be trained with the same architecture). A model is downloaded automatically the first time it is used.</li>
-<li><strong>Upload Sample Images (Max 5)</strong>: choose up to five drawings. With more than five the app asks you to select fewer.</li>
+<li><strong>Select Model</strong>: the list shows the available models, and a short note below describes the one you picked (size, what it was trained on). <em>Custom Model (Local File)…</em> lets you use your own <code>.pkl</code> file (it must be trained with the same architecture). A model is downloaded automatically the first time it is used.</li>
+<li><strong>Select the drawings</strong> (at most 5) from the library. With more than five the app asks you to select fewer.</li>
 <li><strong>Patch Size</strong> (512 by default, from 256 to 1024 in steps of 64) and <strong>Overlap</strong> (64 by default, from 0 to 256 in steps of 16).</li>
 <li><strong>Contrast Test Values</strong>: the contrast factors to try, separated by commas (<code>0.75, 1.0, 1.5, 2.0</code> by default). Add or remove values as you like.</li>
-<li>Click <strong>Run Diagnostics</strong>. A progress bar counts the tests: one per image and contrast value.</li>
+<li>Click <strong>Run diagnostics</strong>. A progress bar counts the tests: one per drawing and contrast value.</li>
 </ol>
 </section>
 <section id="read-the-results" class="level2">
 <h2 class="anchored" data-anchor-id="read-the-results">Read the results</h2>
-<p>When the test ends, a gallery shows, for every image:</p>
+<p>When the test ends, a gallery shows, for every drawing:</p>
 <ul>
 <li>a <strong>patch map</strong> (<code>patches_N.png</code>): how the image is divided into patches with your patch size and overlap;</li>
 <li>a <strong>contrast analysis</strong> (<code>contrast_analysis_N.png</code>): one row for every contrast value, with the input at that contrast on the left and the model output on the right.</li>
 </ul>
-<p>Click any picture to open it in full screen (<code>Esc</code> or a click outside closes it). <strong>Open Diagnostics Folder</strong> opens the folder with the files, which also contains a short <code>summary_N.txt</code> per image (file name, size, number of patches, estimated memory).</p>
+<p>Click any picture to open it in full screen (<code>Esc</code> or a click outside closes it). <strong>Open folder</strong> opens the folder with the files, which also contains a short <code>summary_N.txt</code> per drawing (file name, size, number of patches, estimated memory).</p>
 <p>Look for the row where the lines are complete and clean. As a rule of thumb, pencil lines that disappear call for a higher contrast, and a background that turns into noise for a lower one. That value is the <strong>Contrast Scale</strong> to use in the batch.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -540,24 +601,27 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The diagnostic files are stored in the app’s <code>temp_diagnostics</code> folder and are deleted the next time you run a diagnostic. Copy the ones you want to keep.</p>
+<p>Every diagnostic is saved in its own dated folder inside the <code>diagnostics</code> folder of the project, so nothing is overwritten.</p>
 </div>
 </div>
 </section>
 </section>
 <section id="batch-processing" class="level1">
 <h1>Batch Processing</h1>
-<p>This is the tab where the whole collection is inked.</p>
+<p>This is the tab where the whole collection is inked, on your own computer.</p>
 <iframe src="../animations/coming_soon.html" name="Batch Processing" title="Animation coming soon: Batch Processing" style="width: 100%; height: 260px; border: none; overflow: hidden;" scrolling="no">
 </iframe>
 <section id="set-up-the-batch" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-batch">Set up the batch</h2>
-<p><strong>1. AI Model &amp; Source Drawings</strong></p>
+<p>On wide screens the drawings are on the left and the settings on the right, with the <strong>Ink</strong> button always in view; on narrow screens they follow one another.</p>
+<p><strong>1. Drawings</strong></p>
+<p>Select them from the library (see <a href="#choosing-the-drawings">Choosing the drawings</a>). By default only the drawings not yet inked with the current settings are shown. <strong>Use the preprocessed version when there is one</strong> (on by default) inks the corrected drawing where there is one.</p>
+<p><strong>2. Model and main settings</strong></p>
 <ul>
-<li><strong>Select Model</strong>: as in the diagnostic, with the same option to use a custom <code>.pkl</code> model. Below the list a note says the model will be downloaded if it is not present.</li>
-<li><strong>Upload Pottery Drawings</strong>: click or drag and drop all your images (PNG, JPG, JPEG or TIFF). The number of files selected is shown.</li>
+<li><strong>Select Model</strong>: as in the diagnostic, with the same option to use a custom <code>.pkl</code> model. A short note describes the model, and says that it will be downloaded if it is not present.</li>
+<li><strong>Contrast Scale</strong>: above 1 strengthens faint lines (see the table below).</li>
 </ul>
-<p><strong>2. Reconstruction Parameters</strong></p>
+<p><strong>3. Advanced</strong></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -606,36 +670,61 @@ Warning
 </tr>
 </tbody>
 </table>
-<p><strong>3. Output Destination &amp; Execution</strong></p>
-<ul>
-<li><strong>Output Directory</strong>: the folder where the results are saved (<code>./enhanced_pottery</code> by default, relative to the app folder; an absolute path works too). <strong>Browse…</strong> opens a folder dialog.</li>
-<li>Click <strong>Start Processing</strong>.</li>
-</ul>
+<p>Under the settings a line tells you where the results will be saved, for example <code>outputs/local/6h-MCG-Model_p512_o64_c1_x1</code> (and the external copy, if you set one). There is no output directory to choose: the folder is managed by the project. Click <strong>Ink drawings</strong>.</p>
 </section>
 <section id="while-it-runs" class="level2">
 <h2 class="anchored" data-anchor-id="while-it-runs">While it runs</h2>
-<p>The app uploads the images, checks the model and the diffusion backbone (downloading them if needed), and starts. Two progress bars follow the work: <strong>Overall Progress</strong> for the images, and <strong>Current Image Patches</strong> for the patches of the image being processed. If one image fails, the others continue.</p>
+<p>A <strong>full-screen progress view</strong> covers the app so that nothing can be changed while the model works. It shows the drawing being processed, the <strong>Overall Progress</strong> for the drawings, the progress through the <strong>patches</strong> of the current drawing, the number of drawings done, the elapsed time and an estimate of the time left. If one drawing fails, the others continue.</p>
+<p>The <strong>Stop</strong> button ends the run <strong>after the drawing in progress</strong>. The drawings already inked are kept and recorded, and the ones not started stay in <em>To ink with these settings</em>, ready for a later run.</p>
 </section>
 <section id="the-results" class="level2">
 <h2 class="anchored" data-anchor-id="the-results">The results</h2>
-<p>At the end the app shows a summary: how many images were <strong>Successful</strong> and <strong>Failed</strong>, the <strong>Average time</strong> per image, the <strong>Output directory</strong> and the <strong>Log file</strong>; the <strong>Open Output Folder</strong> button opens that folder in your file manager. Below it, a gallery shows the first 20 comparison images; click one to see it full screen.</p>
-<p>The output directory contains:</p>
-<pre><code>&lt;output directory&gt;/
-├── &lt;name&gt;.&lt;ext&gt;                   # one image per input, same file name as the input
+<p>When the run ends, the progress view turns into a summary: how many drawings were inked and how many failed, the time per drawing and, for any failure, the reason. If nothing could be inked, the screen says so and shows the error instead of a success message. A large <strong>Open the results folder</strong> button opens the folder in your file manager, and <strong>View results</strong> shows the gallery of side-by-side comparisons (the first 20; click one to see it full screen).</p>
+<p>The folder of the run contains:</p>
+<pre><code>&lt;settings folder&gt;/
+├── &lt;name&gt;.&lt;ext&gt;                   # one image per drawing, same file name as the library
 ├── comparisons/
 │   └── comparison_&lt;name&gt;.&lt;ext&gt;    # original and result side by side
 └── logs/
     └── processing_log_&lt;date&gt;.txt  # settings, sizes, times and failed files</code></pre>
-<p>Every result is a grayscale image at the original size of the drawing. If an image is smaller than the patch size, it is padded with white up to the patch size first. Existing files with the same name in the output folder are overwritten, so use a new folder for each run.</p>
+<p>Every result is a grayscale image at the original size of the drawing. If an image is smaller than the patch size, it is padded with white up to the patch size first.</p>
 </section>
+</section>
+<section id="cloud-inking-optional-beta" class="level1">
+<h1>Cloud Inking (optional, beta)</h1>
+<p>The <em>Cloud Inking</em> tab is a second workflow next to the local one. Instead of the fine-tuned models it sends each drawing to a general-purpose image-editing model, <strong>GPT Image 2</strong> by default (or any other model id of <a href="https://openrouter.ai">OpenRouter</a>), and returns an ink drawing of the same size. There is no GPU and no download: you need an OpenRouter API key and some credit.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Your drawings leave the computer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each image is sent to OpenRouter and to the company that runs the model. Use the local tabs for unpublished material that you cannot share. The tab shows this notice and you have to confirm it before you can start. The API key stays in memory for the session: it is never saved in the project, in a file or in the log.</p>
+</div>
+</div>
+<ol type="1">
+<li><strong>API key</strong>: paste your OpenRouter key and accept the notice.</li>
+<li><strong>Select the drawings</strong> from the library, as in the local tabs.</li>
+<li><strong>Style</strong>: <strong>Fine</strong> (small dots) or <strong>Coarse</strong> (larger, bolder dots).</li>
+<li><strong>Model</strong>: GPT Image 2 is the only one offered by default because it gave the best results in our benchmark. <em>Other OpenRouter model…</em> accepts any model id, but models other than the recommended one were not tested and some do not accept images as input.</li>
+<li>Under <strong>Versions, cost limit and registration</strong>: how many <strong>versions</strong> to make of each drawing (1 to 4), a <strong>cost limit</strong> at which the run stops, and <strong>Register the ink onto the pencil drawing</strong> (off by default), which aligns the result with the pencil lines.</li>
+<li>Under <strong>Reference drawing</strong> (optional): show the model an example of the style you want. It copies the line weights and the stippling, never the shapes. You can give a pencil drawing and its inked version, one sheet with the two side by side, or <strong>just one inked drawing to copy the style from</strong>. In our benchmark a reference did not improve GPT Image 2 on average, and it is sent to the provider like the drawings.</li>
+<li>Under <strong>Additional instructions</strong> (optional): text added after the standard prompt. The standard prompt cannot be changed, and custom text makes results harder to reproduce.</li>
+</ol>
+<p>The button shows the estimated cost (about 0.05 $ per drawing with GPT Image 2), stays inactive until everything required is filled in and says what is missing. The run uses the same full-screen progress view, with <strong>Stop</strong>, and the real cost of each image is shown as it goes and saved in the log. Results are saved in <code>outputs/cloud/&lt;settings&gt;</code> of the project, with the style, the number of versions and, if used, the reference in the folder name. The reference of a run is kept in the project, so the run can be repeated.</p>
 </section>
 <section id="tips" class="level1">
 <h1>Tips</h1>
 <ul>
-<li><strong>Do a diagnostic first.</strong> Five images and a handful of contrast values tell you more than a full batch run.</li>
-<li><strong>Keep the settings consistent.</strong> Process a collection with the same model, patch size, overlap and contrast, so the drawings look alike in the publication.</li>
+<li><strong>Start with a project.</strong> Add all the drawings of a collection to one project, so the history shows what was done and with which settings.</li>
+<li><strong>Do a diagnostic first.</strong> Five drawings and a handful of contrast values tell you more than a full batch run.</li>
+<li><strong>Keep the settings consistent.</strong> Process a collection with the same model, patch size, overlap and contrast, so the drawings look alike in the publication. The project keeps a separate folder for any other combination, so nothing is lost when you try something else.</li>
 <li><strong>Preprocessing needs a statistics file.</strong> If the button says to select a <code>.npy</code> file, choose one of the two provided or build your own.</li>
-<li><strong>Slow?</strong> Lower the overlap, use a smaller scale factor, or use FP16 on an NVIDIA GPU. On the CPU alone, run a small batch first to estimate the time.</li>
+<li><strong>Slow?</strong> Lower the overlap, use a smaller scale factor, or use FP16 on an NVIDIA GPU. On the CPU alone, run a small batch first to estimate the time. You can always press <strong>Stop</strong>: what is finished is kept.</li>
 <li><strong>Say you used it.</strong> Results come from a generative model: state the model, the number of drawings and the version in your methods, as described in <a href="../pypotteryink/index.html#first-launch">Getting Started</a>.</li>
 </ul>
 
@@ -710,6 +799,7 @@ Warning
     });
   })();
 </script>
+
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

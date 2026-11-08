@@ -426,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="app-card">
   <img src="../imgs/LogoInk.png" alt="PyPotteryInk" class="app-card-logo">
-  <span class="app-card-version">Version 2.1.2</span>
+  <span class="app-card-version">Version 2.1.3</span>
   <div class="app-card-platforms">
     <span class="app-card-chip"><i class="bi bi-cpu"></i> CPU</span>
     <span class="app-card-chip"><i class="bi bi-gpu-card"></i> CUDA</span>
@@ -438,10 +438,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-you-can-do" class="level2">
 <h2 class="anchored" data-anchor-id="what-you-can-do">What you can do</h2>
 <ol type="1">
+<li><strong>Create a project</strong> and add your drawings to its library. The project keeps them, every result and the history of what was run with which settings.</li>
 <li><strong>Check your hardware</strong> to see whether your computer is suited to the job.</li>
-<li><strong>Preprocess</strong> your images so that their brightness and contrast resemble the drawings the model was trained on.</li>
-<li><strong>Run a diagnostic</strong> on a few images to choose the model, the patch size and the contrast.</li>
-<li><strong>Process a whole batch</strong> of drawings and get the inked versions, side-by-side comparisons and a log.</li>
+<li><strong>Preprocess</strong> your drawings so that their brightness and contrast resemble the ones the model was trained on. The originals are kept.</li>
+<li><strong>Run a diagnostic</strong> on a few drawings to choose the model, the patch size and the contrast.</li>
+<li><strong>Process a whole batch</strong> of drawings and get the inked versions, side-by-side comparisons and a log, with a full-screen progress view you can stop.</li>
+<li><strong>Or ink in the cloud</strong> (optional): no GPU and no model download, but the drawings are sent to an online provider.</li>
 </ol>
 <p>The <a href="../pypotteryink/model_zoo.html">Model Zoo</a> describes the available models, and the <a href="../pypotteryink/advanced.html">Advanced guide</a> and the <a href="../pypotteryink/api.html">API</a> cover the same tools from Python.</p>
 </section>
@@ -512,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>A style model</strong> (about 38 MB each) is downloaded the first time you run a diagnostic or a batch with it, and stored in the <code>models/</code> folder.</li>
 <li><strong>The diffusion backbone</strong> (<code>stabilityai/sd-turbo</code>, about <strong>5 GB</strong>) is downloaded once, the first time any model is loaded. A progress overlay shows the download so the app does not look stuck. With the launcher, the download is stored in a cache shared by all PyPottery apps; standalone, it goes to <code>models/.cache/huggingface</code>.</li>
 </ul>
-<p>After that, everything runs on your computer, without an internet connection. To stop the app, close its browser tab: it shuts down a few seconds later. You can also press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</p>
+<p>After that, the local workflow runs entirely on your computer, without an internet connection (only the optional <strong>Cloud Inking</strong> tab goes online). To stop the app, close its browser tab: it shuts down a few seconds later. You can also press <code>Ctrl+C</code> in the terminal, or close it from the launcher.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -523,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>PyPotteryInk uses generative AI to redraw archaeological drawings. If you use it in a publication, presentation or report, please state which model you used, how many drawings you processed and the version of the software, for example: <em>“This research utilized PyPotteryInk (version 2.1.2) for the AI-assisted translation of [number] pottery drawings. PyPotteryInk is a generative AI tool developed by Lorenzo Cardarelli (https://github.com/lrncrd/PyPotteryInk).”</em> The <strong>Info</strong> button in the app has a ready-to-copy version of this sentence with the right version number.</p>
+<p>PyPotteryInk uses generative AI to redraw archaeological drawings. If you use it in a publication, presentation or report, please state which model you used, how many drawings you processed and the version of the software, for example: <em>“This research utilized PyPotteryInk (version 2.1.3) for the AI-assisted translation of [number] pottery drawings. PyPotteryInk is a generative AI tool developed by Lorenzo Cardarelli (https://github.com/lrncrd/PyPotteryInk).”</em> The <strong>Info</strong> button in the app has a ready-to-copy version of this sentence with the right version number.</p>
 </div>
 </div>
 </section>
@@ -574,7 +576,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="next-step" class="level2">
 <h2 class="anchored" data-anchor-id="next-step">Next step</h2>
-<p>Head to the <a href="../pypotteryink/usage.html">Usage guide</a> for a walkthrough of the four tabs.</p>
+<p>Head to the <a href="../pypotteryink/usage.html">Usage guide</a> for a walkthrough of the tabs.</p>
 </section>
 <section id="contributors" class="level2">
 <h2 class="anchored" data-anchor-id="contributors">Contributors</h2>
@@ -674,6 +676,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     });
   })();
 </script>
+
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
